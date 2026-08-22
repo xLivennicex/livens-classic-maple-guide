@@ -59,11 +59,43 @@
 	--cursor-pointer: url("/cursors/point_click.cur") 4 4, pointer;
 }
 
-/* Henesys-specific decorations. Applied via body::before and ::after so
- * pages don't need extra markup. The cloud layer sits behind content;
- * the grass strip sits at the sky/ground boundary (~22rem in body bg). */
+/* Henesys uses a full scenic background image (mushroom houses, hills,
+ * clouds, stream). Cards float over it like guide papers on a picnic
+ * blanket. The image handles clouds and grass, so the CSS decorations
+ * from earlier are disabled for this theme (see block below).
+ *
+ * The image lives on <body> so it can span the whole page; a soft
+ * cream scrim rides on top to keep body text and cards readable.
+ * background-attachment: fixed gives a subtle parallax feel on scroll. */
 
-body[data-theme-decorations="on"]::before {
+html[data-theme="henesys"] body {
+	background-color: var(--bg-sky-top); /* fallback if image fails */
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 253, 246, 0.35) 45%,
+			rgba(244, 240, 223, 0.85) 100%
+		),
+		url("/images/henesys-background.png");
+	background-size: cover, cover;
+	background-position: center top, center top;
+	background-repeat: no-repeat, no-repeat;
+	background-attachment: fixed, fixed;
+}
+
+/* Image already contains clouds + grass, so kill the CSS decorations
+ * layer to avoid double-decorating. Other themes still get the CSS
+ * clouds/grass when decorations=on. */
+html[data-theme="henesys"] body[data-theme-decorations="on"]::before,
+html[data-theme="henesys"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
+}
+
+/* Decorations still apply to any NON-Henesys theme that opts in. */
+html:not([data-theme="henesys"]) body[data-theme-decorations="on"]::before {
 	content: "";
 	position: fixed;
 	inset: 0 0 auto 0;
@@ -71,14 +103,14 @@ body[data-theme-decorations="on"]::before {
 	pointer-events: none;
 	z-index: -1;
 	background-image:
-		radial-gradient(ellipse 90px 32px at 12% 3rem, #fff 55%, transparent 60%),
-		radial-gradient(ellipse 120px 40px at 78% 5rem, #fff 55%, transparent 60%),
-		radial-gradient(ellipse 70px 26px at 45% 9rem, #fff 55%, transparent 60%),
-		radial-gradient(ellipse 100px 34px at 92% 13rem, #fff 55%, transparent 60%);
+		radial-gradient(ellipse 90px 32px at 12% 3rem, var(--bg-cloud) 55%, transparent 60%),
+		radial-gradient(ellipse 120px 40px at 78% 5rem, var(--bg-cloud) 55%, transparent 60%),
+		radial-gradient(ellipse 70px 26px at 45% 9rem, var(--bg-cloud) 55%, transparent 60%),
+		radial-gradient(ellipse 100px 34px at 92% 13rem, var(--bg-cloud) 55%, transparent 60%);
 	opacity: 0.9;
 }
 
-body[data-theme-decorations="on"]::after {
+html:not([data-theme="henesys"]) body[data-theme-decorations="on"]::after {
 	content: "";
 	position: fixed;
 	top: 21.4rem;
