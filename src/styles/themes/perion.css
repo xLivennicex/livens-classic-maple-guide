@@ -1,40 +1,70 @@
 /* Perion: warrior canyon, rocky sunset.
- * STUB palette - refine once we build the Warrior guide.
+ * Palette leans on rust, terracotta, and deep canyon shadow. Text
+ * kept on warm cream surfaces for readability against warm backgrounds.
  */
 
 [data-theme="perion"] {
-	--bg-sky-top: #e8a878;
-	--bg-ground: #b8804a;
-	--bg-cloud: #f5d5b0;
-	--bg-grass: #8b5a2b;
+	/* --- Backgrounds --- */
+	--bg-sky-top: #d97a4a;         /* warm sunset canyon sky */
+	--bg-ground: #7a4020;          /* deep canyon rock */
+	--bg-cloud: #f5c9a8;           /* dust cloud */
+	--bg-grass: #5a3018;           /* rocky ledge silhouette */
 
-	--surface-card: #f3e0c2;
-	--surface-nav: #8b4513;
-	--surface-nav-hover: #b8763a;
-	--surface-announcement: #5a2e0a;
-	--surface-hero-panel: rgba(243, 224, 194, 0.94);
+	/* --- Surfaces --- */
+	--surface-card: #fbf1de;       /* warm cream parchment */
+	--surface-nav: #6b2f0a;        /* dark warrior brown */
+	--surface-nav-hover: #a55a2a;  /* rust hover */
+	--surface-announcement: #3a1a08;
+	--surface-hero-panel: rgba(251, 241, 222, 0.96);
 
-	--border-card: #a67035;
+	/* --- Borders --- */
+	--border-card: #b8804a;
 	--border-card-strong: #6b3d0f;
-	--border-nav: #5a2e0a;
-	--border-hero: #a67035;
-	--border-divider: #c9a878;
+	--border-nav: #3a1a08;
+	--border-hero: #a55a2a;
+	--border-divider: #d9b898;
 
-	--text-body: #3a1e00;
-	--text-heading: #4a1e00;
+	/* --- Text --- */
+	--text-body: #2a1408;          /* near-black on cream cards */
+	--text-heading: #6b2f0a;       /* dark warrior brown */
 	--text-muted: #6b4b2a;
-	--text-brand-tagline: #8b5a2b;
-	--text-on-nav: #fff5e6;
-	--text-on-announcement: #fff5e6;
-	--text-on-accent: #ffffff;
+	--text-brand-tagline: #a55a2a;
+	--text-on-nav: #fbf1de;        /* cream on dark nav */
+	--text-on-announcement: #fbf1de;
+	--text-on-accent: #fbf1de;
 
-	--accent-primary: #b8460e;
+	/* --- Accents --- */
+	--accent-primary: #b8460e;         /* forge red */
 	--accent-primary-strong: #8b2f0a;
-	--accent-secondary: #f5c078;
+	--accent-secondary: #f5c078;       /* warm sand */
 	--accent-secondary-border: #8b5a2b;
 	--accent-secondary-text: #3a1e00;
-	--accent-blossom: #d97a4a;
+	--accent-blossom: #d97a4a;         /* Perion sunset "blossom" */
 	--accent-blossom-strong: #a55a2a;
 
-	--shadow-panel: 0 10px 30px rgba(90, 46, 10, 0.3);
+	/* --- Effects --- */
+	--shadow-panel: 0 10px 30px rgba(58, 26, 8, 0.35);
+
+	/* --- Cursors ---
+	 * Perion is warrior country - use the red horizontal pointer for
+	 * interactives to hint at aggression. Default stays as the generic
+	 * point cursor so text/typing behavior stays predictable. */
+	--cursor-default: url("/cursors/point.cur") 4 4, auto;
+	--cursor-pointer: url("/cursors/point_horizontal_red.cur") 4 4, pointer;
+}
+
+/* Perion-specific decoration: a jagged rock silhouette strip where sky
+ * meets ground. Same mechanism as Henesys's grass strip, different SVG. */
+html[data-theme="perion"] body[data-theme-decorations="on"]::after {
+	content: "";
+	position: fixed;
+	top: 21.4rem;
+	left: 0;
+	right: 0;
+	height: 1.6rem;
+	pointer-events: none;
+	z-index: -1;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16' preserveAspectRatio='none'><path d='M0 16 L0 10 L4 6 L8 11 L12 4 L18 9 L22 5 L28 12 L34 3 L40 10 L46 6 L52 11 L58 4 L60 8 L60 16 Z' fill='%235a3018'/></svg>");
+	background-repeat: repeat-x;
+	background-size: 60px 16px;
 }

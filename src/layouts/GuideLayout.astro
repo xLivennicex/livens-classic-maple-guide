@@ -1,0 +1,230 @@
+---
+// GuideLayout wraps BaseLayout with structure every deep-dive guide
+// shares: a guide-hero (class name / title / tagline / verification
+// banner / last-checked), an optional jump nav (TOC), the main slot,
+// and a footer that lists the sources the guide draws from.
+//
+// Every future job guide (Magician, Bowman, Thief) should use this,
+// so add anything guide-wide here rather than duplicating per page.
+
+import BaseLayout, { type SiteTheme } from "./BaseLayout.astro";
+import SourceBadge from "../components/SourceBadge.astro";
+import SourceCard from "../components/SourceCard.astro";
+import VerificationNotice from "../components/VerificationNotice.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import { getSource, type SourceType } from "../data/sources";
+
+interface TocEntry {
+	href: string;
+	label: string;
+}
+
+interface Props {
+	// Browser tab title.
+	title: string;
+	// Meta description; falls back to auto-generated from tagline.
+	description?: string;
+	// Which nav item to highlight in the top bar.
+	currentPath?: string;
+	// Which theme to render under.
+	theme?: SiteTheme;
+	// Whether to draw theme decorations (clouds/grass etc).
+	decorations?: boolean;
+	// Guide-hero fields.
+	eyebrow: string;             /* e.g. "Class Guide" or "Party Quest" */
+	heading: string;             /* e.g. "Warrior" */
+	tagline?: string;            /* one-line summary above the badges */
+	// Verification: how confident are we in the guide as a whole?
+	verificationStatus: SourceType;
+	lastChecked: string;
+	sourceSlugs: string[];       /* citations that back the whole guide */
+	// Optional table-of-contents chips shown under the hero.
+	toc?: TocEntry[];
+	// Optional editorial note shown in the verification banner.
+	verificationNote?: string;
+}
+
+const {
+	title,
+	description,
+	currentPath,
+	theme = "henesys",
+	decorations = false,
+	eyebrow,
+	heading,
+	tagline,
+	verificationStatus,
+	lastChecked,
+	sourceSlugs,
+	toc = [],
+	verificationNote,
+} = Astro.props;
+
+// Resolve source slugs into cards for the footer section.
+const guideSources = sourceSlugs.map((slug) => getSource(slug));
+
+const autoDescription =
+	description ?? (tagline ? `${heading}: ${tagline}` : `${heading} guide.`);
+---
+
+<BaseLayout
+	title={title}
+	description={autoDescription}
+	currentPath={currentPath}
+	theme={theme}
+	decorations={decorations}
+>
+	<header class="guide-hero">
+		<span class="eyebrow">{eyebrow}</span>
+		<h1>{heading}</h1>
+		{tagline && <p class="guide-hero__tagline">{tagline}</p>}
+
+		<div class="guide-hero__meta">
+			<SourceBadge type={verificationStatus} />
+			<LastUpdated date={lastChecked} />
+		</div>
+	</header>
+
+	<VerificationNotice
+		type={verificationStatus}
+		checkedOn={lastChecked}
+		sourceSlugs={sourceSlugs}
+		note={verificationNote}
+	/>
+
+	{toc.length > 0 && (
+		<nav class="guide-toc" aria-label="On this page">
+			<span class="guide-toc__label">On this page:</span>
+			{toc.map((entry) => (
+				<a href={entry.href}>{entry.label}</a>
+			))}
+		</nav>
+	)}
+
+	<div class="guide-body">
+		<slot />
+	</div>
+
+	<section id="sources" class="guide-sources">
+		<h2>Sources for this guide</h2>
+		<p class="guide-sources__lede">
+			Every claim above traces back to one of these entries. Historical
+			archives are the research baseline; entries labeled Awaiting
+			Confirmation will be updated once we can verify against Classic
+			World directly.
+		</p>
+		<ul class="guide-sources__list">
+			{guideSources.map((source) => (
+				<li>
+					<SourceCard source={source} />
+				</li>
+			))}
+		</ul>
+	</section>
+
+	<footer class="guide-footer">
+		<LastUpdated date={lastChecked} label="Guide last reviewed" />
+	</footer>
+</BaseLayout>
+
+<style>
+	.guide-hero {
+		padding: 2rem;
+		background: var(--surface-hero-panel);
+		border: 3px solid var(--border-hero);
+		border-radius: 1.25rem;
+		box-shadow: var(--shadow-panel);
+	}
+
+	.guide-hero h1 {
+		margin: 0.4rem 0 0.6rem;
+	}
+
+	.guide-hero__tagline {
+		max-width: 46rem;
+		margin: 0 0 1rem;
+		line-height: 1.55;
+		font-size: 1.05rem;
+	}
+
+	.guide-hero__meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.guide-toc {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem;
+		margin: 1.5rem 0;
+		padding: 0.65rem 0.9rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.guide-toc__label {
+		margin-right: 0.5rem;
+		font-size: 0.8rem;
+		font-weight: bold;
+		color: var(--accent-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.guide-toc a {
+		padding: 0.35rem 0.7rem;
+		border-radius: 999px;
+		background: var(--bg-ground);
+		color: var(--text-heading);
+		font-size: 0.85rem;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.guide-toc a:hover,
+	.guide-toc a:focus-visible {
+		background: var(--surface-nav-hover);
+	}
+
+	.guide-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		margin-top: 1.5rem;
+	}
+
+	.guide-sources {
+		margin-top: 3rem;
+		scroll-margin-top: 1rem;
+	}
+
+	.guide-sources h2 {
+		margin-bottom: 0.5rem;
+	}
+
+	.guide-sources__lede {
+		max-width: 46rem;
+		margin-bottom: 1rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+
+	.guide-sources__list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.guide-footer {
+		margin: 3rem 0 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-divider);
+		text-align: center;
+	}
+</style>

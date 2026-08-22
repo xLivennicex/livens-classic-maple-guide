@@ -19,6 +19,7 @@ const META: Record<SourceType, { label: string; tone: string }> = {
 	"launch-verified": { label: "Launch Verified", tone: "launch" },
 	"community-reported": { label: "Community Reported", tone: "community" },
 	"awaiting-confirmation": { label: "Awaiting Confirmation", tone: "warning" },
+	"historical-archive": { label: "v83 Historical Archive", tone: "archive" },
 };
 
 const { label, tone } = META[type];
@@ -82,5 +83,11 @@ const { label, tone } = META[type];
 		background: #f8d8d0;
 		color: #8a2f1c;
 		border-color: #d97a63;
+	}
+
+	.source-badge--archive {
+		background: #e8ddc8;
+		color: #5a4020;
+		border-color: #a88855;
 	}
 </style>

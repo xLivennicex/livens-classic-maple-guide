@@ -38,7 +38,11 @@ export const themeAudio: Record<ThemeName, AudioTrack | null> = {
 		title: "New Age Kerning City",
 		credit: "Fan composition (credit TBD)",
 	},
-	perion: null,
+	perion: {
+		src: "/audio/perion.wav",
+		title: "Cliffs of Ancestry",
+		credit: "Fan composition (credit TBD)",
+	},
 	ellinia: null,
 	sleepywood: null,
 };

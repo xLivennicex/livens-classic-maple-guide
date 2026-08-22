@@ -74,11 +74,12 @@ leaving the site in a broken state.
 Homepage, launch hub, source system, theming, brand mark, countdowns,
 music, cursors.
 
-### Phase 2 - First vertical slice `NEXT`
-- Warrior guide (`/jobs/warrior`) as a fully-realized MDX guide
-- Establishes the guide layout template that every future job reuses
-- Fills in Perion's palette properly so the Warrior guide lands themed
-- Proves the MDX + accuracy-badge + sources pipeline end to end
+### Phase 2 - First vertical slice `SHIPPED`
+- Warrior guide (`/jobs/warrior`) as a fully-realized guide page
+- Established `GuideLayout` template that every future job reuses
+- Polished Perion palette (canyon rust, warrior cursor, rock silhouette)
+- Added `historical-archive` source type + Ayumilove/HiddenStreet entries
+- Added `Cliffs of Ancestry` BGM for Perion theme
 
 ### Phase 3 - Publishing platform
 - Astro **content collections** for guides (MDX)
@@ -184,7 +185,8 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   WebP)
 
 **Next up:**
-- Phase 2 (Warrior vertical slice + Perion theme polish)
+- Phase 3 (Publishing platform: MDX content collections, so Magician/
+  Bowman/Thief guides become one-file drop-ins)
 
 ---
 
@@ -192,3 +194,7 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
 
 - **2026-08-22** - Phase 1 complete. Mission statement moved to
   homepage. Roadmap document created.
+- **2026-08-22** - Phase 2 complete. Warrior guide live at
+  `/jobs/warrior`. GuideLayout component reusable. Perion theme
+  polished (colors, rock decorations, red cursor, BGM).
+  Added `historical-archive` source type.

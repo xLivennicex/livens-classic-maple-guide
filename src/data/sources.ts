@@ -8,7 +8,8 @@ export type SourceType =
 	| "closed-test-info"
 	| "launch-verified"
 	| "community-reported"
-	| "awaiting-confirmation";
+	| "awaiting-confirmation"
+	| "historical-archive"; /* v83-era wikis, fan sites, forum archives */
 
 export type SourceStatus = "current" | "superseded";
 
@@ -75,6 +76,44 @@ export const sources: ArchivedSource[] = [
 		status: "current",
 		summary:
 			"Official patch notes from Classic World's second Closed Online Test. Describes the state of systems during testing; specific values may still change before Founder's Access.",
+		confirmedFacts: [],
+	},
+
+	// v83-era historical archives. Used as the baseline research layer
+	// for job guides, quests, and item data - EVERY claim traced back
+	// here must be cross-checked at launch and labeled accordingly.
+	{
+		slug: "ayumilove-v83-warrior",
+		title: "Ayumilove MapleStory Warrior Guide (v83 era)",
+		publisher: "Ayumilove",
+		publishedOn: "v83 era (approximate)",
+		sourceType: "historical-archive",
+		topics: ["Warrior", "Builds", "Skills", "AP allocation"],
+		originalUrl: "https://ayumilove.net/maplestory/",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Long-running fan reference from the v83 era. Used as the baseline for Warrior playstyle and skill-order recommendations pending Classic World verification.",
+		confirmedFacts: [
+			"Warriors use STR as their primary damage stat (v83 baseline)",
+			"First job advancement requires level 10 and 35 STR (v83 baseline)",
+			"First job trainer is Dances with Balrog in Perion (v83 baseline)",
+			"Second job branches are Fighter, Page, and Spearman (v83 baseline)",
+		],
+	},
+
+	{
+		slug: "hiddenstreet-v83-database",
+		title: "HiddenStreet.net Database (v83 era)",
+		publisher: "HiddenStreet",
+		publishedOn: "v83 era (approximate)",
+		sourceType: "historical-archive",
+		topics: ["Items", "Monsters", "Maps", "Quests", "Drops"],
+		originalUrl: "https://www.hidden-street.net/",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Comprehensive v83-era item, monster, and map database. Used as the baseline for reference data pending Classic World verification.",
 		confirmedFacts: [],
 	},
 ];

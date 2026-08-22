@@ -1,0 +1,565 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import SourceBadge from "../../components/SourceBadge.astro";
+import InfoCard from "../../components/InfoCard.astro";
+
+const LAST_CHECKED = "2026-08-22";
+
+const toc = [
+	{ href: "#overview", label: "Overview" },
+	{ href: "#advancement", label: "How to advance" },
+	{ href: "#ap", label: "AP allocation" },
+	{ href: "#skills", label: "First job skills" },
+	{ href: "#training", label: "Training routes" },
+	{ href: "#equipment", label: "Equipment" },
+	{ href: "#second-job", label: "Second job branches" },
+	{ href: "#faq", label: "FAQ" },
+];
+
+// Every content block on this page comes from v83 baseline knowledge
+// and needs Classic World verification. The SourceCard footer already
+// makes this clear; the per-section VerificationNotices reinforce it.
+const guideSources = [
+	"ayumilove-v83-warrior",
+	"hiddenstreet-v83-database",
+];
+
+// First-job skills structured as data so the table renders cleanly
+// and future MDX migration is trivial (this becomes frontmatter).
+const firstJobSkills = [
+	{
+		name: "Improved Max HP Recovery",
+		type: "Passive",
+		maxLevel: "16 (v83)",
+		summary: "Faster natural HP regeneration over time.",
+		suggested: "1 point (prerequisite for other passives)",
+	},
+	{
+		name: "Improved Max HP Increase",
+		type: "Passive",
+		maxLevel: "10 (v83)",
+		summary: "Bonus HP gained per level-up. Compounds with every level, so investing early pays for the rest of the character's life.",
+		suggested: "Max out first (v83 baseline)",
+	},
+	{
+		name: "Iron Body",
+		type: "Buff",
+		maxLevel: "20 (v83)",
+		summary: "Temporary boost to Weapon Defense.",
+		suggested: "Skip early or 1-point utility; damage skills come first",
+	},
+	{
+		name: "Power Strike",
+		type: "Attack",
+		maxLevel: "20 (v83)",
+		summary: "Single strong hit. Higher damage-per-point than Slash Blast against single targets.",
+		suggested: "Max after HP passive (v83 baseline)",
+	},
+	{
+		name: "Slash Blast",
+		type: "Attack",
+		maxLevel: "20 (v83)",
+		summary: "Short-range AoE hit. The AoE pick once you start training on grouped mobs.",
+		suggested: "Max after Power Strike (v83 baseline)",
+	},
+];
+
+const secondJobs = [
+	{
+		name: "Fighter",
+		weapon: "Sword or Axe",
+		summary: "Highest sustained single-target damage in v83. Party utility via Rage (+ATT buff). Straightforward, damage-first playstyle.",
+		bestFor: "Players who want pure DPS and a simple decision tree",
+	},
+	{
+		name: "Page",
+		weapon: "Sword or Blunt Weapon (BW)",
+		summary: "Utility and control. Threaten debuffs mob attack; strong element-based follow-up skills at 3rd job. Historically the least DPS-focused of the three.",
+		bestFor: "Players who value party utility and lower damage-taken over raw output",
+	},
+	{
+		name: "Spearman",
+		weapon: "Spear or Polearm",
+		summary: "AoE-focused. Iron Will (party Weapon Def buff). Later unlocks Hyper Body (+HP/MP for the party) which is a core group-content buff.",
+		bestFor: "Players who plan to party a lot and want to bring buffs everyone loves",
+	},
+];
+---
+
+<GuideLayout
+	title="Warrior - Liven's Classic Maple Guide"
+	currentPath="/jobs"
+	theme="perion"
+	decorations={true}
+	eyebrow="Class Guide"
+	heading="Warrior"
+	tagline="High HP, high defense, melee physical damage. The class that survives your mistakes."
+	verificationStatus="historical-archive"
+	lastChecked={LAST_CHECKED}
+	sourceSlugs={guideSources}
+	verificationNote="Every claim here reflects v83-era baseline. Classic World values will be re-verified once Founder's Access begins on October 6."
+	toc={toc}
+>
+	<!-- ============================================================ -->
+	<section id="overview" class="guide-section">
+		<h2>Overview</h2>
+		<div class="card prose">
+			<p>
+				Warriors are Classic World's melee tank archetype: high HP,
+				high defense, and STR-based physical damage. They trade the
+				ranged safety of Bowmen and the magical utility of Magicians
+				for the ability to walk into a mob and stay there.
+			</p>
+			<p>
+				The class rewards steady play. Damage scales primarily off
+				STR and weapon choice; survival scales off HP investment and
+				defensive equipment. There is no mana-management minigame,
+				no positional dance - the moment-to-moment gameplay is
+				"attack, watch HP, use a potion when needed."
+			</p>
+
+			<div class="callout">
+				<strong>Best for:</strong> players who want to survive
+				mistakes, prefer simple decision trees, or plan to party
+				often and appreciate having the meat shield.
+				<br />
+				<strong>Not ideal for:</strong> players who want ranged
+				safety (Bowman), magical burst (Magician), or high-mobility
+				assassination gameplay (Thief).
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="advancement" class="guide-section">
+		<h2>How to become a Warrior</h2>
+
+		<div class="card prose">
+			<p><strong>Requirements (v83 baseline):</strong></p>
+			<ul>
+				<li>Character level <strong>10</strong></li>
+				<li>At least <strong>35 STR</strong></li>
+			</ul>
+
+			<p><strong>Where to go:</strong></p>
+			<ol>
+				<li>
+					From Lith Harbor (arrival point after Maple Island), take
+					the taxi or travel to <strong>Perion</strong> in Ossyria.
+				</li>
+				<li>
+					Enter the <em>Chief's Residence</em> in Perion and speak
+					with <strong>Dances with Balrog</strong>, the Warrior job
+					instructor.
+				</li>
+				<li>
+					Accept the job change. Historically this was a direct
+					conversation with no combat trial - Classic World may
+					reintroduce an advancement quest. See FAQ below.
+				</li>
+			</ol>
+
+			<p>
+				After advancement you gain 1 SP and unlock the first job
+				skill set (listed below).
+			</p>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="ap" class="guide-section">
+		<h2>AP allocation</h2>
+
+		<div class="card prose">
+			<p>
+				<strong>The short version (v83 baseline):</strong> pour
+				points into STR every level. DEX only exists to keep your
+				hit rate acceptable.
+			</p>
+
+			<p><strong>Two schools of thought exist:</strong></p>
+			<ul>
+				<li>
+					<strong>Pure STR:</strong> Every AP into STR. Maximum
+					damage output; you will miss more often, especially on
+					same-level or higher mobs.
+				</li>
+				<li>
+					<strong>DEX = (character level - 1):</strong> Keep DEX
+					one below your level for reliable hit rate. Slightly
+					lower damage; substantially more consistent.
+				</li>
+			</ul>
+
+			<p>
+				The DEX-level rule is the more forgiving choice for a first
+				character and the recommendation most v83 guides made. Whether
+				the hit-rate formula still behaves this way in Classic World
+				is one of the values we will verify at launch.
+			</p>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="skills" class="guide-section">
+		<h2>First job skills</h2>
+
+		<p class="section-lede">
+			First job gives you five skills. The recommended v83 order is:
+			<strong>1 point in Improved HP Recovery,</strong> then max
+			Improved MaxHP Increase, then max Power Strike, then max Slash
+			Blast, then Iron Body with anything left over.
+		</p>
+
+		<div class="skill-table" role="table" aria-label="Warrior first job skills">
+			<div class="skill-table__header" role="row">
+				<span role="columnheader">Skill</span>
+				<span role="columnheader">Type</span>
+				<span role="columnheader">Summary</span>
+				<span role="columnheader">Suggested investment</span>
+			</div>
+			{firstJobSkills.map((skill) => (
+				<div class="skill-table__row" role="row">
+					<div role="cell">
+						<strong>{skill.name}</strong>
+						<small>Max Level: {skill.maxLevel}</small>
+					</div>
+					<div role="cell">{skill.type}</div>
+					<div role="cell">{skill.summary}</div>
+					<div role="cell">{skill.suggested}</div>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="training" class="guide-section">
+		<h2>Training routes (levels 1-30)</h2>
+
+		<p class="section-lede">
+			v83 baseline routes. Classic World map spawns and monster
+			levels may have shifted; verify at Founder's Access.
+		</p>
+
+		<div class="route-grid">
+			<div class="card route-card">
+				<h3>Levels 1 - 10 (Beginner)</h3>
+				<p><strong>Where:</strong> Maple Island</p>
+				<p><strong>What:</strong> Snails, Blue Snails, Red Snails</p>
+				<p>Complete the Maple Island story quests, then take the ship to Victoria Island. Reach 35 STR before hitting Perion.</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 10 - 15</h3>
+				<p><strong>Where:</strong> Henesys area or Perion outskirts</p>
+				<p><strong>What:</strong> Orange Mushrooms, Green Snails, Ribbon Pigs</p>
+				<p>Get comfortable with Power Strike here. Party quests are usually low priority at this range.</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 15 - 25</h3>
+				<p><strong>Where:</strong> Perion (Stumps, Axe Stumps), Kerning City (Ligators, Octopus), or Ellinia (Green Trixters)</p>
+				<p><strong>What:</strong> Whichever has fewer players competing for spawns.</p>
+				<p>This is where Slash Blast starts pulling ahead if you find grouped mobs.</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 25 - 30</h3>
+				<p><strong>Where:</strong> Perion Excavation Site (Fire Boars) or Ant Tunnel entrance (Zombie Mushrooms)</p>
+				<p><strong>What:</strong> Denser mobs, higher EXP-per-kill.</p>
+				<p>Second job advancement quest becomes available at level 30. Save some mesos for the second-job weapon.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="equipment" class="guide-section">
+		<h2>Equipment progression</h2>
+
+		<div class="card prose">
+			<p>
+				Warrior gear is the least specialized of the four classes:
+				you want raw Weapon ATT on your weapon, and Weapon Def with
+				STR/DEX bonuses on everything else.
+			</p>
+
+			<ul>
+				<li>
+					<strong>Level 1 - 10:</strong> Whatever the beginner
+					shops sell. Warriors can use most weapon categories, so
+					pick whichever your starting mesos allow.
+				</li>
+				<li>
+					<strong>Level 10 - 20:</strong> A basic sword or axe
+					from Perion's weapon shop. Look for drops from Stumps.
+				</li>
+				<li>
+					<strong>Level 20 - 30:</strong> Zombie's Lost Gold Tooth
+					(sword) or a Fusion Axe were common v83 upgrades. Check
+					the market before hunting - drops can be cheaper than
+					farm time.
+				</li>
+				<li>
+					<strong>Approaching 30:</strong> Save mesos for the
+					second-job weapon you have already chosen. Second-job
+					weapons are a large power jump.
+				</li>
+			</ul>
+
+			<div class="callout">
+				<strong>Scroll safely.</strong> Ten-percent scrolls with
+				stat boosts read tempting but usually destroy your gear at
+				this level range. Sixty and hundred-percent scrolls are the
+				beginner-friendly choices.
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="second-job" class="guide-section">
+		<h2>Second job branches (level 30)</h2>
+
+		<p class="section-lede">
+			At level 30 you choose one of three second-job paths. All are
+			viable; the pick shapes what you do for the next 40+ levels.
+		</p>
+
+		<div class="branches-grid">
+			{secondJobs.map((job) => (
+				<article class="card branch-card">
+					<h3>{job.name}</h3>
+					<p class="branch-card__weapon">
+						<strong>Weapon:</strong> {job.weapon}
+					</p>
+					<p>{job.summary}</p>
+					<p class="branch-card__for">
+						<strong>Best for:</strong> {job.bestFor}
+					</p>
+				</article>
+			))}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="faq" class="guide-section">
+		<h2>Frequently asked questions</h2>
+
+		<InfoCard eyebrow="FAQ" heading="Common Warrior questions">
+			<dl class="faq">
+				<dt>Do I need to do a job advancement quest, or just talk?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> v83 was talk-only; some
+					later versions added a "prove yourself" combat trial.
+					Which one Classic World uses will be visible at Founder's
+					Access.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+
+				<dt>Is pure STR still viable at launch?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> Depends on the hit-rate
+					formula. In v83 pure STR was playable but painful. If
+					Classic World keeps the same math, DEX = (level - 1)
+					stays the safer general recommendation.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+
+				<dt>Which second job does the most damage?</dt>
+				<dd>
+					<em>v83 baseline:</em> Fighter had the highest sustained
+					single-target output; Spearman won on AoE; Page had the
+					best party utility but the lowest raw DPS. Classic World
+					may rebalance any of these.
+					<span class="inline-badge"><SourceBadge type="historical-archive" compact /></span>
+				</dd>
+
+				<dt>Can I change my mind at second job?</dt>
+				<dd>
+					No. Second job is a one-time choice per character. If
+					you want to try another branch, you make a new Warrior.
+				</dd>
+
+				<dt>Do I need to grind Mark of Beta on this character?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> Mark of Beta details are
+					not public yet. If it is per-character rather than
+					per-account, it will affect early-game choices - see the
+					<a href="/launch#mark-of-beta">Launch Hub Mark of Beta
+					section</a>.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+			</dl>
+		</InfoCard>
+	</section>
+</GuideLayout>
+
+<style>
+	.guide-section {
+		scroll-margin-top: 1rem;
+	}
+
+	.guide-section > h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.section-lede {
+		max-width: 46rem;
+		margin-bottom: 1rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin: 0 0 0.85rem;
+		line-height: 1.65;
+	}
+
+	.prose p:last-child,
+	.prose ul:last-child,
+	.prose ol:last-child {
+		margin-bottom: 0;
+	}
+
+	.prose ul,
+	.prose ol {
+		padding-left: 1.4rem;
+	}
+
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+
+	.callout {
+		margin-top: 1rem;
+		padding: 0.8rem 1rem;
+		border-radius: 0.5rem;
+		border-left: 4px solid var(--accent-secondary-border);
+		background: var(--accent-secondary);
+		color: var(--accent-secondary-text);
+		line-height: 1.55;
+	}
+
+	/* ---------- Skill table ---------- */
+
+	.skill-table {
+		display: grid;
+		grid-template-columns: 1.2fr 0.7fr 2fr 1.3fr;
+		gap: 1px;
+		background: var(--border-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+
+	.skill-table__header {
+		display: contents;
+		font-weight: bold;
+	}
+
+	.skill-table__header > span {
+		background: var(--surface-nav);
+		color: var(--text-on-nav);
+		padding: 0.6rem 0.75rem;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.skill-table__row {
+		display: contents;
+	}
+
+	.skill-table__row > div {
+		background: var(--surface-card);
+		padding: 0.75rem;
+		line-height: 1.5;
+		font-size: 0.92rem;
+	}
+
+	.skill-table__row strong {
+		display: block;
+		color: var(--text-heading);
+	}
+
+	.skill-table__row small {
+		display: block;
+		margin-top: 0.2rem;
+		color: var(--text-muted);
+		font-size: 0.75rem;
+	}
+
+	/* ---------- Route + branch grids ---------- */
+
+	.route-grid,
+	.branches-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+		gap: 1rem;
+	}
+
+	.route-card h3,
+	.branch-card h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1.1rem;
+	}
+
+	.route-card p,
+	.branch-card p {
+		margin: 0 0 0.5rem;
+		line-height: 1.5;
+	}
+
+	.branch-card__weapon,
+	.branch-card__for {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+	}
+
+	/* ---------- FAQ ---------- */
+
+	.faq {
+		margin: 0;
+	}
+
+	.faq dt {
+		margin-top: 0.9rem;
+		font-weight: bold;
+		color: var(--text-heading);
+	}
+
+	.faq dt:first-child {
+		margin-top: 0;
+	}
+
+	.faq dd {
+		margin: 0.4rem 0 0;
+		line-height: 1.55;
+	}
+
+	.inline-badge {
+		display: inline-block;
+		margin-left: 0.35rem;
+		vertical-align: middle;
+	}
+
+	@media (max-width: 720px) {
+		/* Collapse the skill table into stacked rows on mobile. */
+		.skill-table {
+			grid-template-columns: 1fr;
+		}
+
+		.skill-table__header {
+			display: none;
+		}
+
+		.skill-table__row > div {
+			border-bottom: 1px solid var(--border-divider);
+		}
+
+		.skill-table__row > div:first-child {
+			padding-top: 1rem;
+		}
+	}
+</style>

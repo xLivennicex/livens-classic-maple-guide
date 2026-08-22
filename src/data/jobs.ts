@@ -20,7 +20,7 @@ export const jobs: Job[] = [
 		monogram: "W",
 		description:
 			"Durable melee combat, weapon planning, and steady progression.",
-		href: null,
+		href: "/jobs/warrior",
 	},
 	{
 		slug: "magician",
