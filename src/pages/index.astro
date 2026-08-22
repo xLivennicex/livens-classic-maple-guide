@@ -1,0 +1,482 @@
+---
+const jobs = [
+	{
+		name: "Warrior",
+		icon: "⚔️",
+		description: "Durable melee combat, weapon planning, and steady progression.",
+	},
+	{
+		name: "Magician",
+		icon: "✨",
+		description: "Early advancement, MP management, and elemental skill paths.",
+	},
+	{
+		name: "Bowman",
+		icon: "🏹",
+		description: "Ranged positioning, equipment choices, and precise attacks.",
+	},
+	{
+		name: "Thief",
+		icon: "🗡️",
+		description: "Fast movement, LUK planning, claws, daggers, and throwing stars.",
+	},
+];
+
+const launchDates = [
+	{ date: "September 2", event: "Founder’s Packages" },
+	{ date: "October 6", event: "Founder’s Access" },
+	{ date: "October 21", event: "Grand Launch" },
+];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta
+			name="description"
+			content="An unofficial guide to Global MapleStory Classic World."
+		/>
+		<title>Liven’s Classic Maple Guide</title>
+	</head>
+
+	<body>
+		<div class="announcement">
+			<span>🍁 Unofficial Classic World Guide</span>
+			<span>Founder’s Access begins October 6</span>
+		</div>
+
+		<header class="site-header">
+			<a class="brand" href="/">
+				<span class="brand-icon">🍁</span>
+				<span>
+					<strong>Liven’s Classic Maple Guide</strong>
+					<small>Adventure begins again</small>
+				</span>
+			</a>
+
+			<label class="search">
+				<span class="sr-only">Search the guide</span>
+				<input type="search" placeholder="Search guides, quests, items…" />
+			</label>
+		</header>
+
+		<nav class="navigation" aria-label="Primary navigation">
+			<a href="/">Home</a>
+			<a href="#jobs">Jobs</a>
+			<a href="#guides">Leveling</a>
+			<a href="#guides">Quests &amp; PQs</a>
+			<a href="#guides">Database</a>
+			<a href="#guides">Tools</a>
+		</nav>
+
+		<main>
+			<section class="hero">
+				<div class="hero-copy">
+					<span class="badge">Global Classic World</span>
+					<h1>Your first adventure, mapped.</h1>
+					<p>
+						Clear, verified answers for launch day—without twenty years
+						of modern MapleStory information mixed into your search results.
+					</p>
+
+					<div class="hero-actions">
+						<a class="primary-button" href="#jobs">Choose your job</a>
+						<a class="secondary-button" href="#guides">Launch checklist</a>
+					</div>
+				</div>
+
+				<div class="launch-card">
+					<h2>Launch timeline</h2>
+
+					{launchDates.map((item) => (
+						<div class="launch-date">
+							<strong>{item.date}</strong>
+							<span>{item.event}</span>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section" id="jobs">
+				<div class="section-heading">
+					<div>
+						<span class="eyebrow">CLASS GUIDES</span>
+						<h2>Choose your path</h2>
+					</div>
+
+					<span class="status">Closed-test information</span>
+				</div>
+
+				<div class="job-grid">
+					{jobs.map((job) => (
+						<article class="job-card">
+							<span class="job-icon">{job.icon}</span>
+							<h3>{job.name}</h3>
+							<p>{job.description}</p>
+							<button type="button">Guide coming next</button>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="guide-grid" id="guides">
+				<article class="information-card">
+					<span class="eyebrow">START HERE</span>
+					<h2>Prepare for launch</h2>
+
+					<ul>
+						<li>Choosing your first character</li>
+						<li>Items worth keeping</li>
+						<li>Beginner Island walkthrough</li>
+						<li>Early mesos and equipment</li>
+						<li>Party and quest preparation</li>
+					</ul>
+				</article>
+
+				<article class="information-card">
+					<span class="eyebrow">ACCURACY LEDGER</span>
+					<h2>Know what is confirmed</h2>
+
+					<div class="accuracy-row">
+						<span>Official announcement</span>
+						<strong>Confirmed</strong>
+					</div>
+					<div class="accuracy-row">
+						<span>Closed Online Test</span>
+						<strong>Provisional</strong>
+					</div>
+					<div class="accuracy-row">
+						<span>Founder’s Access</span>
+						<strong>Verify Oct. 6</strong>
+					</div>
+				</article>
+			</section>
+		</main>
+
+		<footer>
+			<p>
+				Unofficial fan guide. MapleStory and related game material belong to NEXON.
+			</p>
+		</footer>
+	</body>
+</html>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(html) {
+		scroll-behavior: smooth;
+	}
+
+	:global(body) {
+		margin: 0;
+		color: #243126;
+		background:
+			radial-gradient(circle at 15% 5%, #ffffff 0 5rem, transparent 5.1rem),
+			radial-gradient(circle at 85% 8%, #ffffff 0 7rem, transparent 7.1rem),
+			linear-gradient(#bfe4f4 0 22rem, #f4f0df 22rem);
+		font-family: "Trebuchet MS", Arial, sans-serif;
+		min-height: 100vh;
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.announcement {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.65rem max(1rem, calc((100% - 1150px) / 2));
+		background: #395e3d;
+		color: white;
+		font-size: 0.85rem;
+	}
+
+	.site-header {
+		width: min(1150px, calc(100% - 2rem));
+		margin: auto;
+		padding: 1.4rem 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		text-decoration: none;
+	}
+
+	.brand-icon {
+		font-size: 2rem;
+	}
+
+	.brand strong,
+	.brand small {
+		display: block;
+	}
+
+	.brand strong {
+		font-size: 1.25rem;
+	}
+
+	.brand small {
+		margin-top: 0.15rem;
+		color: #4f6653;
+	}
+
+	.search {
+		width: min(24rem, 100%);
+	}
+
+	.search input {
+		width: 100%;
+		padding: 0.8rem 1rem;
+		border: 2px solid #72987a;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.9);
+		font: inherit;
+	}
+
+	.navigation {
+		display: flex;
+		justify-content: center;
+		gap: 0.3rem;
+		padding: 0.45rem 1rem;
+		background: #f5ad42;
+		border-block: 3px solid #d18428;
+	}
+
+	.navigation a {
+		padding: 0.6rem 0.9rem;
+		border-radius: 0.5rem;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.navigation a:hover {
+		background: #ffe2a5;
+	}
+
+	main {
+		width: min(1150px, calc(100% - 2rem));
+		margin: 2rem auto;
+	}
+
+	.hero {
+		display: grid;
+		grid-template-columns: 1.5fr 0.75fr;
+		gap: 1.5rem;
+		padding: 2.5rem;
+		background: rgba(255, 255, 255, 0.94);
+		border: 3px solid #8caf73;
+		border-radius: 1.25rem;
+		box-shadow: 0 10px 30px rgba(49, 75, 50, 0.15);
+	}
+
+	.hero-copy {
+		align-self: center;
+	}
+
+	.badge,
+	.status,
+	.eyebrow {
+		color: #48734b;
+		font-size: 0.78rem;
+		font-weight: bold;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		margin: 0.7rem 0;
+		font-size: clamp(2.3rem, 6vw, 4.4rem);
+		line-height: 1;
+		color: #304f34;
+	}
+
+	h2,
+	h3,
+	p {
+		margin-top: 0;
+	}
+
+	.hero-copy p {
+		max-width: 42rem;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.4rem;
+	}
+
+	.primary-button,
+	.secondary-button,
+	.job-card button {
+		display: inline-block;
+		padding: 0.75rem 1rem;
+		border-radius: 0.65rem;
+		font: inherit;
+		font-weight: bold;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.primary-button {
+		border: 2px solid #365c3a;
+		background: #46784b;
+		color: white;
+	}
+
+	.secondary-button,
+	.job-card button {
+		border: 2px solid #b77a2d;
+		background: #ffd785;
+		color: #4b351d;
+	}
+
+	.launch-card,
+	.job-card,
+	.information-card {
+		padding: 1.25rem;
+		background: #fffdf6;
+		border: 2px solid #d8c99c;
+		border-radius: 1rem;
+	}
+
+	.launch-date {
+		display: grid;
+		grid-template-columns: 7rem 1fr;
+		gap: 0.7rem;
+		padding: 0.75rem 0;
+		border-top: 1px solid #ded4b7;
+	}
+
+	.launch-date span {
+		color: #5d665d;
+	}
+
+	.section {
+		margin-top: 3rem;
+	}
+
+	.section-heading {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.section-heading h2 {
+		margin-bottom: 0;
+	}
+
+	.status {
+		padding: 0.45rem 0.65rem;
+		background: #dcebd2;
+		border-radius: 999px;
+	}
+
+	.job-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+
+	.job-icon {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-size: 2rem;
+	}
+
+	.job-card p {
+		min-height: 5rem;
+		color: #5d665d;
+		line-height: 1.5;
+	}
+
+	.guide-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.information-card ul {
+		padding-left: 1.2rem;
+		line-height: 1.9;
+	}
+
+	.accuracy-row {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.8rem 0;
+		border-top: 1px solid #ded4b7;
+	}
+
+	footer {
+		padding: 2rem 1rem;
+		text-align: center;
+		color: #5f6a61;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (max-width: 800px) {
+		.site-header,
+		.section-heading {
+			align-items: stretch;
+			flex-direction: column;
+		}
+
+		.hero,
+		.guide-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.job-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.navigation {
+			justify-content: flex-start;
+			overflow-x: auto;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.announcement {
+			flex-direction: column;
+		}
+
+		.job-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.hero {
+			padding: 1.3rem;
+		}
+	}
+</style>
