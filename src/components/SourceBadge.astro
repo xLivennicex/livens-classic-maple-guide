@@ -1,0 +1,86 @@
+---
+// SourceBadge describes a citation's TYPE (what kind of source is this?).
+// Sibling to StatusBadge, which describes a CLAIM's verification level.
+// Kept separate because the two can diverge - e.g. a claim could be
+// "Founder's Verified" while its source type is "Official Announcement".
+
+import type { SourceType } from "../data/sources";
+
+interface Props {
+	type: SourceType;
+	compact?: boolean;
+}
+
+const { type, compact = false } = Astro.props;
+
+const META: Record<SourceType, { label: string; tone: string }> = {
+	"official-announcement": { label: "Official Announcement", tone: "confirmed" },
+	"closed-test-info": { label: "Closed-Test Information", tone: "provisional" },
+	"launch-verified": { label: "Launch Verified", tone: "launch" },
+	"community-reported": { label: "Community Reported", tone: "community" },
+	"awaiting-confirmation": { label: "Awaiting Confirmation", tone: "warning" },
+};
+
+const { label, tone } = META[type];
+---
+
+<span class={`source-badge source-badge--${tone} ${compact ? "source-badge--compact" : ""}`}>
+	<span class="source-badge__dot" aria-hidden="true"></span>
+	<span class="source-badge__label">{label}</span>
+</span>
+
+<style>
+	.source-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.4rem 0.7rem;
+		border-radius: 999px;
+		font-size: 0.78rem;
+		font-weight: bold;
+		letter-spacing: 0.03em;
+		border: 2px solid transparent;
+	}
+
+	.source-badge--compact {
+		padding: 0.2rem 0.55rem;
+		font-size: 0.72rem;
+	}
+
+	.source-badge__dot {
+		width: 0.55rem;
+		height: 0.55rem;
+		border-radius: 50%;
+		background: currentColor;
+	}
+
+	.source-badge--confirmed {
+		background: #dcebd2;
+		color: #2f5c33;
+		border-color: #8caf73;
+	}
+
+	.source-badge--provisional {
+		background: #fdecc8;
+		color: #7a5312;
+		border-color: #d9b063;
+	}
+
+	.source-badge--launch {
+		background: #cfe8ea;
+		color: #1f5f66;
+		border-color: #6ab0b6;
+	}
+
+	.source-badge--community {
+		background: #f1e7d8;
+		color: #6b4c1f;
+		border-color: #c5a677;
+	}
+
+	.source-badge--warning {
+		background: #f8d8d0;
+		color: #8a2f1c;
+		border-color: #d97a63;
+	}
+</style>

@@ -1,0 +1,94 @@
+---
+// Callout banner placed at the top of a page section, tying the content
+// beneath it to specific sources. Meant to answer "why should I trust
+// this?" without the reader hunting through a bibliography.
+
+import SourceBadge from "./SourceBadge.astro";
+import { getSource, type SourceType } from "../data/sources";
+
+interface Props {
+	type: SourceType;
+	checkedOn: string;
+	// slugs from src/data/sources.ts; rendered as inline links to the
+	// #sources section anchor on the same page (or elsewhere if provided).
+	sourceSlugs?: string[];
+	sourcesAnchor?: string;
+	note?: string;
+}
+
+const {
+	type,
+	checkedOn,
+	sourceSlugs = [],
+	sourcesAnchor = "#sources",
+	note,
+} = Astro.props;
+
+// Resolve slugs into { slug, title } tuples up front so the template
+// stays readable. Errors surface early if a slug is wrong.
+const cited = sourceSlugs.map((slug) => ({
+	slug,
+	title: getSource(slug).title,
+}));
+---
+
+<aside class="verification-notice" role="note">
+	<SourceBadge type={type} compact />
+
+	<span class="verification-notice__meta">
+		<time datetime={checkedOn}>Checked {checkedOn}</time>
+
+		{cited.length > 0 && (
+			<>
+				<span aria-hidden="true">-</span>
+				<span>
+					{cited.map((entry, index) => (
+						<>
+							<a href={`${sourcesAnchor}-${entry.slug}`}>{entry.title}</a>
+							{index < cited.length - 1 && <span>, </span>}
+						</>
+					))}
+				</span>
+			</>
+		)}
+	</span>
+
+	{note && <p class="verification-notice__note">{note}</p>}
+</aside>
+
+<style>
+	.verification-notice {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		padding: 0.65rem 0.9rem;
+		margin-bottom: 1rem;
+		background: rgba(255, 253, 246, 0.85);
+		border: 1px solid #d8c99c;
+		border-left: 4px solid #48734b;
+		border-radius: 0.5rem;
+		font-size: 0.85rem;
+	}
+
+	.verification-notice__meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		color: #4f6653;
+	}
+
+	.verification-notice__meta a {
+		color: #365c3a;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.verification-notice__note {
+		flex-basis: 100%;
+		margin: 0.3rem 0 0;
+		color: #4f6653;
+		font-style: italic;
+	}
+</style>

@@ -1,0 +1,463 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LaunchTimeline from "../components/LaunchTimeline.astro";
+import SourceBadge from "../components/SourceBadge.astro";
+import SourceCard from "../components/SourceCard.astro";
+import VerificationNotice from "../components/VerificationNotice.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import { sources } from "../data/sources";
+import { openQuestions, type QuestionCategory } from "../data/openQuestions";
+
+// Date the human editor last reviewed every claim on this page against
+// its cited sources. Change this whenever content is verified again.
+const LAST_CHECKED = "2026-08-22";
+
+// Table of contents. Labels are phrased as visitor questions so the
+// navigation itself answers "what can I learn here?" at a glance.
+const jumpNav = [
+	{ href: "#timeline", label: "When can I play?" },
+	{ href: "#founders", label: "Founder's Access" },
+	{ href: "#grand-launch", label: "Grand Launch" },
+	{ href: "#mark-of-beta", label: "Mark of Beta" },
+	{ href: "#confirmed", label: "Confirmed features" },
+	{ href: "#open-questions", label: "Not yet announced" },
+	{ href: "#sources", label: "Sources" },
+];
+
+// Page-specific "what we know is coming" list. Kept small on purpose -
+// this section grows as Nexon announces more. Every entry cites the
+// source it came from (via slug).
+const confirmedFeatures: {
+	feature: string;
+	detail: string;
+	sourceSlug: string;
+}[] = [
+	{
+		feature: "Ossyria region content",
+		detail: "The announcement is titled Ossyria Exploration Report, indicating Ossyria-focused content at launch.",
+		sourceSlug: "nexon-ossyria-exploration-report",
+	},
+	{
+		feature: "Founder's Access early-play period",
+		detail: "Roughly two weeks of pre-launch play (October 6 through October 20) for Founder's Package holders.",
+		sourceSlug: "nexon-ossyria-exploration-report",
+	},
+	{
+		feature: "Official launch on October 21",
+		detail: "The game opens to all players, ending Founder's Access.",
+		sourceSlug: "nexon-ossyria-exploration-report",
+	},
+	{
+		feature: "Mark of Beta limited-time quest",
+		detail: "A time-boxed launch-window quest rewarding an iconic in-game item; runs through late November.",
+		sourceSlug: "nexon-ossyria-exploration-report",
+	},
+];
+
+// Group open questions by category for the "Not yet announced" section.
+// Doing this in the frontmatter keeps the markup clean.
+const questionsByCategory = openQuestions.reduce<
+	Record<QuestionCategory, typeof openQuestions>
+>((acc, q) => {
+	(acc[q.category] ||= []).push(q);
+	return acc;
+}, {} as Record<QuestionCategory, typeof openQuestions>);
+---
+
+<BaseLayout
+	title="Launch Hub - Liven's Classic Maple Guide"
+	description="Everything confirmed about the Global MapleStory Classic World launch - and everything that is not - with every claim linked to its source."
+	currentPath="/launch"
+>
+	<header class="launch-hero">
+		<span class="eyebrow">Launch Hub</span>
+		<h1>When can I play, and what should I expect?</h1>
+		<p>
+			Plain-English answers to every Classic World launch question, with
+			every claim traceable to its official source. Unknowns are labeled
+			as unknowns.
+		</p>
+		<LastUpdated date={LAST_CHECKED} />
+	</header>
+
+	<nav class="jump-nav" aria-label="On this page">
+		{jumpNav.map((item) => (
+			<a href={item.href}>{item.label}</a>
+		))}
+	</nav>
+
+	<!-- ============================================================ -->
+	<section id="timeline" class="launch-section">
+		<h2>Launch timeline</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-ossyria-exploration-report"]}
+		/>
+		<LaunchTimeline />
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="founders" class="launch-section">
+		<h2>Founder's Package and Founder's Access</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			note="Package contents and progression carryover are among the open questions below."
+		/>
+
+		<div class="card prose">
+			<p>
+				<strong>Founder's Packages</strong> go on sale
+				<strong>September 2</strong>. Purchasing one grants access to
+				<strong>Founder's Access</strong>: a roughly two-week early-play
+				period beginning <strong>October 6</strong> and running until
+				the official launch on <strong>October 21</strong>.
+			</p>
+			<p>
+				Package tiers, pricing, and specific contents have not been
+				publicly detailed. Whether progression made during Founder's
+				Access carries into the October 21 official launch has also
+				not been explicitly confirmed. See
+				<a href="#open-questions">Not yet announced</a> for the specific
+				unknowns we are tracking.
+			</p>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="grand-launch" class="launch-section">
+		<h2>Grand Launch</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-ossyria-exploration-report"]}
+		/>
+
+		<div class="card prose">
+			<p>
+				The <strong>official ("grand") launch</strong> is
+				<strong>October 21</strong>. Founder's Access ends and the game
+				opens to all players. The exact time of day servers open has
+				not been announced.
+			</p>
+			<p>
+				Content available at grand launch beyond what appears during
+				Founder's Access has not yet been fully detailed. The launch
+				announcement is titled <em>Ossyria Exploration Report</em>,
+				pointing to Ossyria-region content as a featured element.
+			</p>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="mark-of-beta" class="launch-section">
+		<h2>Mark of Beta</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			note="Quest tasks and reward requirements are not yet publicly detailed."
+		/>
+
+		<div class="card prose">
+			<p>
+				The <strong>Mark of Beta</strong> is a limited-time quest tied
+				to Classic World's launch window. It rewards an iconic in-game
+				item associated with participating in the opening period, and
+				it runs through <strong>late November</strong>.
+			</p>
+			<p>
+				Specific quest steps, prerequisites, and reward mechanics have
+				not been publicly detailed. When the details are confirmed, we
+				will move them out of the <a href="#open-questions">Not yet
+				announced</a> list and cite the source.
+			</p>
+
+			<div class="callout callout--heads-up">
+				<strong>Why this matters:</strong> the quest window is
+				approximately seven weeks from Founder's Access opening.
+				Players who want the reward should plan to complete it during
+				the launch window rather than saving it for later.
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="confirmed" class="launch-section">
+		<h2>Confirmed launch features</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			note="Only features currently backed by an official announcement appear here. The list will grow as Nexon publishes more."
+		/>
+
+		<ul class="confirmed-list">
+			{confirmedFeatures.map((item) => (
+				<li class="card confirmed-list__item">
+					<div class="confirmed-list__body">
+						<h3>{item.feature}</h3>
+						<p>{item.detail}</p>
+					</div>
+					<a class="confirmed-list__source" href={`#sources-${item.sourceSlug}`}>
+						<SourceBadge type="official-announcement" compact />
+					</a>
+				</li>
+			))}
+		</ul>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="open-questions" class="launch-section">
+		<h2>Not yet announced</h2>
+		<VerificationNotice
+			type="awaiting-confirmation"
+			checkedOn={LAST_CHECKED}
+			note="These items are deliberately unresolved. When answers arrive from an official source, they move into a Confirmed section and are archived under Sources."
+		/>
+
+		{Object.entries(questionsByCategory).map(([category, questions]) => (
+			<div class="open-questions__group">
+				<h3>{category}</h3>
+				<ul class="open-questions__list">
+					{questions.map((q) => (
+						<li class="card open-question">
+							<div class="open-question__header">
+								<h4>{q.question}</h4>
+								<SourceBadge type="awaiting-confirmation" compact />
+							</div>
+							{q.detail && <p class="open-question__detail">{q.detail}</p>}
+							{q.expectedFrom && (
+								<p class="open-question__expected">
+									<strong>Expected from:</strong> {q.expectedFrom}
+								</p>
+							)}
+						</li>
+					))}
+				</ul>
+			</div>
+		))}
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="sources" class="launch-section">
+		<h2>Official sources</h2>
+		<p class="section-lede">
+			Every claim on this page traces back to one of these entries. Each
+			card includes a summary, the confirmed facts we draw from it, and
+			links to the original page and an archive snapshot.
+		</p>
+
+		<ul class="source-list">
+			{sources.map((source) => (
+				<li>
+					<SourceCard source={source} />
+				</li>
+			))}
+		</ul>
+	</section>
+
+	<footer class="page-footer">
+		<LastUpdated date={LAST_CHECKED} label="Page last reviewed" />
+	</footer>
+</BaseLayout>
+
+<style>
+	.launch-hero {
+		padding: 2rem;
+		background: rgba(255, 255, 255, 0.94);
+		border: 3px solid #8caf73;
+		border-radius: 1.25rem;
+		box-shadow: 0 10px 30px rgba(49, 75, 50, 0.15);
+	}
+
+	.launch-hero h1 {
+		font-size: clamp(2rem, 5vw, 3.4rem);
+		margin: 0.4rem 0 0.8rem;
+	}
+
+	.launch-hero p {
+		max-width: 46rem;
+		line-height: 1.6;
+		margin-bottom: 1rem;
+	}
+
+	.jump-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 1.5rem 0;
+		padding: 0.65rem;
+		background: #fffdf6;
+		border: 2px solid #d8c99c;
+		border-radius: 0.75rem;
+	}
+
+	.jump-nav a {
+		padding: 0.4rem 0.75rem;
+		border-radius: 999px;
+		background: #f4f0df;
+		color: #48734b;
+		font-size: 0.85rem;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.jump-nav a:hover,
+	.jump-nav a:focus-visible {
+		background: #ffe2a5;
+		color: #4b351d;
+	}
+
+	.launch-section {
+		margin-top: 2.5rem;
+		scroll-margin-top: 1rem;
+	}
+
+	.launch-section > h2 {
+		margin-bottom: 0.75rem;
+		color: #304f34;
+	}
+
+	.section-lede {
+		max-width: 46rem;
+		margin-bottom: 1rem;
+		line-height: 1.55;
+		color: #4f6653;
+	}
+
+	.prose p {
+		margin: 0 0 0.75rem;
+		line-height: 1.65;
+	}
+
+	.prose p:last-child {
+		margin-bottom: 0;
+	}
+
+	.prose a {
+		color: #365c3a;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.callout {
+		margin-top: 1rem;
+		padding: 0.8rem 1rem;
+		border-radius: 0.5rem;
+		border-left: 4px solid #b77a2d;
+		background: #fdecc8;
+		color: #4b351d;
+		line-height: 1.55;
+	}
+
+	.callout--heads-up {
+		border-left-color: #b77a2d;
+	}
+
+	.confirmed-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.confirmed-list__item {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.confirmed-list__body {
+		flex: 1;
+		min-width: 16rem;
+	}
+
+	.confirmed-list__body h3 {
+		margin: 0 0 0.25rem;
+		font-size: 1.05rem;
+		color: #304f34;
+	}
+
+	.confirmed-list__body p {
+		margin: 0;
+		color: #4f6653;
+		line-height: 1.5;
+	}
+
+	.confirmed-list__source {
+		text-decoration: none;
+	}
+
+	.open-questions__group {
+		margin-top: 1.25rem;
+	}
+
+	.open-questions__group h3 {
+		margin: 0 0 0.5rem;
+		color: #48734b;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.open-questions__list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.open-question__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.open-question__header h4 {
+		margin: 0;
+		font-size: 1rem;
+		color: #304f34;
+	}
+
+	.open-question__detail,
+	.open-question__expected {
+		margin: 0.4rem 0 0;
+		color: #4f6653;
+		line-height: 1.55;
+		font-size: 0.92rem;
+	}
+
+	.source-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.page-footer {
+		margin: 3rem 0 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #d8c99c;
+		text-align: center;
+	}
+
+	@media (max-width: 600px) {
+		.launch-hero {
+			padding: 1.25rem;
+		}
+
+		.confirmed-list__item {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

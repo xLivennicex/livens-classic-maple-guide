@@ -1,0 +1,37 @@
+---
+// Small "Last checked: DATE" line for the top or footer of a page or
+// section. Kept minimal so it composes into headers, cards, and notices
+// without forcing layout decisions.
+
+interface Props {
+	date: string;
+	by?: string;
+	// Optional prefix so callers can say "Last checked" vs "Verified" etc.
+	label?: string;
+}
+
+const { date, by, label = "Last checked" } = Astro.props;
+---
+
+<p class="last-updated">
+	<span class="last-updated__label">{label}:</span>
+	<time datetime={date}>{date}</time>
+	{by && <span class="last-updated__by">by {by}</span>}
+</p>
+
+<style>
+	.last-updated {
+		margin: 0;
+		font-size: 0.8rem;
+		color: #5d665d;
+	}
+
+	.last-updated__label {
+		font-weight: bold;
+	}
+
+	.last-updated__by {
+		margin-left: 0.35rem;
+		font-style: italic;
+	}
+</style>

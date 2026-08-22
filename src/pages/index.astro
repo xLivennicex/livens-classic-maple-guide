@@ -64,7 +64,7 @@ const prepChecklist = [
 
 			<div class="hero-actions">
 				<a class="primary-button" href="/jobs">Choose your job</a>
-				<a class="secondary-button" href="#prepare">Launch checklist</a>
+				<a class="secondary-button" href="/launch">Launch checklist</a>
 			</div>
 		</div>
 
@@ -94,6 +94,9 @@ const prepChecklist = [
 
 		<InfoCard eyebrow="Accuracy ledger" heading="Know what is confirmed">
 			<AccuracyLedger entries={ledgerEntries} />
+			<p class="see-all">
+				<a href="/launch#sources">See all sources on the Launch Hub &rarr;</a>
+			</p>
 		</InfoCard>
 	</section>
 </BaseLayout>
@@ -154,6 +157,18 @@ const prepChecklist = [
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
 		margin-top: 2rem;
+	}
+
+	.see-all {
+		margin: 1rem 0 0;
+		font-size: 0.9rem;
+	}
+
+	.see-all a {
+		color: #365c3a;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		font-weight: bold;
 	}
 
 	@media (max-width: 800px) {
