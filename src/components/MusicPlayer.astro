@@ -1,0 +1,184 @@
+---
+// Floating background-music toggle. Behavior:
+//
+//  - Reads the active theme from <html data-theme="..."> and looks up
+//    the matching track in src/data/audio.ts.
+//  - Muted by default (browsers block autoplay-with-sound anyway).
+//  - Clicking the button toggles playback; preference is stored in
+//    localStorage so the choice sticks across navigations.
+//  - When theme changes (new page load with different theme), swaps to
+//    the new track and RESPECTS the user's prior on/off preference.
+//  - If a theme has no track (null), the button hides.
+
+import { themeAudio } from "../data/audio";
+
+// Serialize the full audio map into a data-attribute so the client
+// script can look up tracks by theme without another network trip.
+const audioMapJson = JSON.stringify(themeAudio);
+---
+
+<div id="music-player" class="music-player" data-audio-map={audioMapJson}>
+	<audio id="music-player-audio" loop preload="none"></audio>
+
+	<button
+		id="music-player-toggle"
+		type="button"
+		class="music-player__button"
+		aria-pressed="false"
+		aria-label="Toggle background music"
+		title="Music: off"
+		hidden
+	>
+		<span class="music-player__icon" data-role="icon-muted" aria-hidden="true">
+			<!-- Muted speaker icon -->
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+				<line x1="22" y1="9" x2="16" y2="15"></line>
+				<line x1="16" y1="9" x2="22" y2="15"></line>
+			</svg>
+		</span>
+		<span class="music-player__icon" data-role="icon-playing" aria-hidden="true" hidden>
+			<!-- Playing speaker icon -->
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+				<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+				<path d="M15.5 8.5 a 5 5 0 0 1 0 7"></path>
+				<path d="M19 5 a 10 10 0 0 1 0 14"></path>
+			</svg>
+		</span>
+		<span class="music-player__label" data-role="label">Music off</span>
+	</button>
+</div>
+
+<script>
+	interface AudioTrack {
+		src: string;
+		title: string;
+		credit?: string;
+	}
+
+	const STORAGE_KEY = "cerberos-music-on";
+
+	function initMusicPlayer() {
+		const container = document.getElementById("music-player") as HTMLElement | null;
+		const audio = document.getElementById("music-player-audio") as HTMLAudioElement | null;
+		const button = document.getElementById("music-player-toggle") as HTMLButtonElement | null;
+		if (!container || !audio || !button) return;
+
+		const audioMap = JSON.parse(container.dataset.audioMap ?? "{}") as Record<string, AudioTrack | null>;
+		const theme = document.documentElement.dataset.theme ?? "henesys";
+		const track = audioMap[theme];
+
+		// No track for this theme? Leave the button hidden.
+		if (!track) return;
+
+		audio.src = track.src;
+
+		const iconMuted = button.querySelector<HTMLElement>('[data-role="icon-muted"]');
+		const iconPlaying = button.querySelector<HTMLElement>('[data-role="icon-playing"]');
+		const label = button.querySelector<HTMLElement>('[data-role="label"]');
+
+		function setUiState(playing: boolean) {
+			button!.setAttribute("aria-pressed", playing ? "true" : "false");
+			button!.title = playing ? `Music: ${track!.title}` : "Music: off";
+			if (iconMuted) iconMuted.hidden = playing;
+			if (iconPlaying) iconPlaying.hidden = !playing;
+			if (label) label.textContent = playing ? track!.title : "Music off";
+		}
+
+		async function play() {
+			try {
+				await audio!.play();
+				localStorage.setItem(STORAGE_KEY, "1");
+				setUiState(true);
+			} catch (err) {
+				// Autoplay blocked or file failed; leave muted.
+				console.warn("Music playback blocked:", err);
+				setUiState(false);
+			}
+		}
+
+		function pause() {
+			audio!.pause();
+			localStorage.setItem(STORAGE_KEY, "0");
+			setUiState(false);
+		}
+
+		button.hidden = false;
+		setUiState(false);
+
+		button.addEventListener("click", () => {
+			if (audio.paused) {
+				play();
+			} else {
+				pause();
+			}
+		});
+
+		// If the user had music on last visit, try resuming on first
+		// user gesture (any click) - browsers count that as consent.
+		if (localStorage.getItem(STORAGE_KEY) === "1") {
+			const attemptResume = () => {
+				play();
+				document.removeEventListener("click", attemptResume);
+			};
+			document.addEventListener("click", attemptResume, { once: true });
+		}
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initMusicPlayer);
+	} else {
+		initMusicPlayer();
+	}
+</script>
+
+<style>
+	.music-player {
+		position: fixed;
+		right: 1rem;
+		bottom: 1rem;
+		z-index: 50;
+	}
+
+	.music-player__button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.55rem 0.9rem;
+		border-radius: 999px;
+		border: 2px solid var(--accent-primary-strong, #365c3a);
+		background: var(--surface-card, #fffdf6);
+		color: var(--text-heading, #304f34);
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: bold;
+		cursor: var(--cursor-pointer, pointer);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	.music-player__button:hover {
+		background: var(--surface-nav-hover, #ffe2a5);
+	}
+
+	.music-player__button[aria-pressed="true"] {
+		background: var(--accent-primary, #46784b);
+		color: var(--text-on-accent, #fff);
+	}
+
+	.music-player__icon {
+		display: inline-flex;
+	}
+
+	.music-player__label {
+		max-width: 12rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 500px) {
+		.music-player__label {
+			display: none;
+		}
+	}
+</style>

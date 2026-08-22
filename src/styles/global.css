@@ -37,6 +37,20 @@ body {
 		);
 	font-family: var(--font-body);
 	min-height: 100vh;
+	/* Themed cursor. Individual themes can override --cursor-default and
+	 * --cursor-pointer in their .css to swap in area-specific pointers.
+	 * Falls back to native cursors if the .cur fails to load. */
+	cursor: var(--cursor-default, url("/cursors/point.cur") 4 4, auto);
+}
+
+a,
+button,
+[role="button"],
+.primary-button,
+.secondary-button,
+.navigation a,
+.jump-nav a {
+	cursor: var(--cursor-pointer, url("/cursors/point_click.cur") 4 4, pointer);
 }
 
 a {
@@ -251,6 +265,17 @@ main.page-width {
 	padding: 2rem 1rem;
 	text-align: center;
 	color: var(--text-muted);
+}
+
+.site-footer__credits {
+	margin-top: 0.5rem;
+	font-size: 0.8rem;
+	opacity: 0.85;
+}
+
+.site-footer__credits a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 /* ---------- Accessibility ---------- */

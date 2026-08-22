@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import MapleLeaf from "../components/MapleLeaf.astro";
+import MusicPlayer from "../components/MusicPlayer.astro";
 import { nextMilestoneHeadline } from "../data/launch";
 
 interface NavItem {
@@ -103,6 +104,14 @@ const navItems: NavItem[] = [
 			<p>
 				Unofficial fan guide. MapleStory and related game material belong to NEXON.
 			</p>
+			<p class="site-footer__credits">
+				Cursors by
+				<a href="https://github.com/zaytri/maplestory-cursors" target="_blank" rel="noopener noreferrer">
+					zaytri/maplestory-cursors
+				</a>. Background music: fan compositions (credit pending).
+			</p>
 		</footer>
+
+		<MusicPlayer />
 	</body>
 </html>

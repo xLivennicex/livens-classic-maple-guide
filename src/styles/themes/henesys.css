@@ -52,6 +52,11 @@
 	/* --- Typography --- */
 	--font-heading: "Trebuchet MS", Arial, sans-serif;
 	--font-body: "Trebuchet MS", Arial, sans-serif;
+
+	/* --- Cursors (theme-specific!) ---
+	 * Henesys gets the leaf cursor - home-town flourish. */
+	--cursor-default: url("/cursors/leaf.cur") 4 4, auto;
+	--cursor-pointer: url("/cursors/point_click.cur") 4 4, pointer;
 }
 
 /* Henesys-specific decorations. Applied via body::before and ::after so
