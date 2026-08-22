@@ -1,0 +1,198 @@
+---
+// Countdown to a target date, updating live on the client.
+//
+// Server render outputs static placeholders so the layout is stable
+// before JavaScript runs (no CLS). A single hoisted script handles every
+// countdown on the page.
+
+interface Props {
+	targetIso: string;
+	label: string;
+	sublabel?: string;
+	// Optional tone override so callers can visually distinguish e.g.
+	// "early access" vs "official launch".
+	tone?: "green" | "amber";
+}
+
+const { targetIso, label, sublabel, tone = "green" } = Astro.props;
+
+const units: { key: string; label: string }[] = [
+	{ key: "days", label: "days" },
+	{ key: "hours", label: "hours" },
+	{ key: "minutes", label: "min" },
+	{ key: "seconds", label: "sec" },
+];
+---
+
+<div
+	class:list={["countdown", `countdown--${tone}`]}
+	data-target={targetIso}
+	role="timer"
+	aria-live="polite"
+>
+	<p class="countdown__label">{label}</p>
+
+	<div class="countdown__grid">
+		{units.map((unit) => (
+			<div class="countdown__unit">
+				<span class="countdown__value" data-unit={unit.key}>--</span>
+				<span class="countdown__unit-label">{unit.label}</span>
+			</div>
+		))}
+	</div>
+
+	{sublabel && <p class="countdown__sublabel">{sublabel}</p>}
+	<p class="countdown__live" data-role="live-message" hidden>It's happening now!</p>
+</div>
+
+<script>
+	// Runs once per page. Selects every .countdown[data-target] and
+	// updates all of them on a shared interval so pages with multiple
+	// timers don't spawn multiple loops.
+	function initCountdowns() {
+		const nodes = document.querySelectorAll<HTMLElement>(".countdown[data-target]");
+		if (nodes.length === 0) return;
+
+		const timers = Array.from(nodes).map((node) => ({
+			node,
+			target: new Date(node.dataset.target ?? "").getTime(),
+			values: {
+				days: node.querySelector<HTMLElement>('[data-unit="days"]'),
+				hours: node.querySelector<HTMLElement>('[data-unit="hours"]'),
+				minutes: node.querySelector<HTMLElement>('[data-unit="minutes"]'),
+				seconds: node.querySelector<HTMLElement>('[data-unit="seconds"]'),
+			},
+			liveMessage: node.querySelector<HTMLElement>('[data-role="live-message"]'),
+			grid: node.querySelector<HTMLElement>(".countdown__grid"),
+		}));
+
+		function pad(n: number): string {
+			return n < 10 ? "0" + n : String(n);
+		}
+
+		function tick() {
+			const now = Date.now();
+			for (const t of timers) {
+				const ms = t.target - now;
+
+				if (ms <= 0) {
+					if (t.grid) t.grid.hidden = true;
+					if (t.liveMessage) t.liveMessage.hidden = false;
+					continue;
+				}
+
+				const seconds = Math.floor(ms / 1000);
+				const days = Math.floor(seconds / 86400);
+				const hours = Math.floor((seconds % 86400) / 3600);
+				const minutes = Math.floor((seconds % 3600) / 60);
+				const secs = seconds % 60;
+
+				if (t.values.days) t.values.days.textContent = String(days);
+				if (t.values.hours) t.values.hours.textContent = pad(hours);
+				if (t.values.minutes) t.values.minutes.textContent = pad(minutes);
+				if (t.values.seconds) t.values.seconds.textContent = pad(secs);
+			}
+		}
+
+		tick();
+		setInterval(tick, 1000);
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initCountdowns);
+	} else {
+		initCountdowns();
+	}
+</script>
+
+<style>
+	.countdown {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 1.5rem 1.25rem;
+		background: #fffdf6;
+		border: 3px solid #d8c99c;
+		border-radius: 1rem;
+		text-align: center;
+	}
+
+	.countdown--green {
+		border-color: #8caf73;
+		background: linear-gradient(180deg, #f2f8ec 0%, #fffdf6 60%);
+	}
+
+	.countdown--amber {
+		border-color: #d9b063;
+		background: linear-gradient(180deg, #fdecc8 0%, #fffdf6 60%);
+	}
+
+	.countdown__label {
+		margin: 0;
+		font-size: 0.85rem;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #48734b;
+	}
+
+	.countdown--amber .countdown__label {
+		color: #7a5312;
+	}
+
+	.countdown__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.5rem;
+		width: 100%;
+		max-width: 26rem;
+	}
+
+	.countdown__unit {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 0.6rem 0.4rem;
+		background: rgba(255, 255, 255, 0.7);
+		border: 2px solid rgba(140, 175, 115, 0.4);
+		border-radius: 0.6rem;
+	}
+
+	.countdown--amber .countdown__unit {
+		border-color: rgba(217, 176, 99, 0.5);
+	}
+
+	.countdown__value {
+		font-size: clamp(1.8rem, 5vw, 2.8rem);
+		font-weight: bold;
+		line-height: 1;
+		color: #304f34;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.countdown--amber .countdown__value {
+		color: #7a5312;
+	}
+
+	.countdown__unit-label {
+		margin-top: 0.35rem;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: #5d665d;
+	}
+
+	.countdown__sublabel {
+		margin: 0;
+		font-size: 0.8rem;
+		color: #5d665d;
+	}
+
+	.countdown__live {
+		margin: 0.25rem 0 0;
+		font-weight: bold;
+		font-size: 1.1rem;
+		color: #46784b;
+	}
+</style>

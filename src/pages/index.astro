@@ -5,7 +5,9 @@ import LaunchTimeline from "../components/LaunchTimeline.astro";
 import InfoCard from "../components/InfoCard.astro";
 import AccuracyLedger, { type LedgerEntry } from "../components/AccuracyLedger.astro";
 import StatusBadge from "../components/StatusBadge.astro";
+import Countdown from "../components/Countdown.astro";
 import { jobs } from "../data/jobs";
+import { countdownTargets } from "../data/launch";
 
 // The Nexon 'Ossyria Exploration Report' post is the primary
 // launch-timeline source. Archived via the Internet Archive so the
@@ -69,6 +71,31 @@ const prepChecklist = [
 		</div>
 
 		<LaunchTimeline />
+	</section>
+
+	<section class="section countdown-section" aria-labelledby="countdown-heading">
+		<div class="section-heading">
+			<div>
+				<span class="eyebrow">Countdown</span>
+				<h2 id="countdown-heading">How long until launch?</h2>
+			</div>
+			<span class="countdown-note">Times estimated - awaiting Nexon confirmation</span>
+		</div>
+
+		<div class="countdown-grid">
+			<Countdown
+				targetIso={countdownTargets.foundersAccess.iso}
+				label={countdownTargets.foundersAccess.label}
+				sublabel={countdownTargets.foundersAccess.sublabel}
+				tone="amber"
+			/>
+			<Countdown
+				targetIso={countdownTargets.officialLaunch.iso}
+				label={countdownTargets.officialLaunch.label}
+				sublabel={countdownTargets.officialLaunch.sublabel}
+				tone="green"
+			/>
+		</div>
 	</section>
 
 	<section class="section" id="jobs">
@@ -157,6 +184,24 @@ const prepChecklist = [
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
 		margin-top: 2rem;
+	}
+
+	.countdown-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+
+	.countdown-note {
+		font-size: 0.78rem;
+		color: #5d665d;
+		font-style: italic;
+	}
+
+	@media (max-width: 800px) {
+		.countdown-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.see-all {

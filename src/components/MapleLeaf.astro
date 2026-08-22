@@ -1,6 +1,7 @@
 ---
-// A small inline maple-leaf SVG used as the brand mark. Inline so we can
-// color it with currentColor and avoid another network request.
+// Brand mark. Uses a raster PNG (public/images/maple-leaf.png) rather
+// than an inline SVG so the actual designed emblem is what ships. Props
+// mirror the previous SVG version so callers do not need to change.
 interface Props {
 	size?: number;
 	title?: string;
@@ -8,29 +9,21 @@ interface Props {
 const { size = 28, title = "Maple leaf" } = Astro.props;
 ---
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="0 0 32 32"
+<img
+	src="/images/maple-leaf.png"
+	alt={title}
 	width={size}
 	height={size}
-	role="img"
-	aria-label={title}
->
-	<title>{title}</title>
-	<path
-		fill="#c94a2b"
-		stroke="#7d2c17"
-		stroke-width="1.2"
-		stroke-linejoin="round"
-		d="M16 2 L18 8 L23 6 L21 12 L28 12 L23 16 L27 20 L20 20 L21 26 L16 22 L11 26 L12 20 L5 20 L9 16 L4 12 L11 12 L9 6 L14 8 Z"
-	></path>
-	<line
-		x1="16"
-		y1="22"
-		x2="16"
-		y2="30"
-		stroke="#7d2c17"
-		stroke-width="1.5"
-		stroke-linecap="round"
-	></line>
-</svg>
+	class="maple-leaf"
+	loading="eager"
+	decoding="async"
+/>
+
+<style>
+	.maple-leaf {
+		display: inline-block;
+		object-fit: contain;
+		/* Preserve crisp edges when rendered smaller than native res. */
+		image-rendering: auto;
+	}
+</style>
