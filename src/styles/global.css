@@ -10,12 +10,19 @@
  * tokenized. They mean things and shouldn't shift by theme.
  */
 
-@import "./themes/henesys.css"; /* also sets :root defaults */
-@import "./themes/kerning.css";
-@import "./themes/perion.css";
-@import "./themes/lith.css";
-@import "./themes/ellinia.css";
-@import "./themes/sleepywood.css";
+/* Explicit cascade layers: base < themes.
+ * Anything declared inside @layer base is guaranteed to LOSE against
+ * anything declared inside @layer themes (or unlayered rules), no
+ * matter their specificity or source order. This makes theme image
+ * backgrounds win over the base gradient without needing !important. */
+@layer base, themes;
+
+@import "./themes/henesys.css" layer(themes); /* also sets :root defaults */
+@import "./themes/kerning.css" layer(themes);
+@import "./themes/perion.css" layer(themes);
+@import "./themes/lith.css" layer(themes);
+@import "./themes/ellinia.css" layer(themes);
+@import "./themes/sleepywood.css" layer(themes);
 
 *,
 *::before,
@@ -27,26 +34,28 @@ html {
 	scroll-behavior: smooth;
 }
 
-body {
-	margin: 0;
-	color: var(--text-body);
-	/* Use longhand background-* properties (not the `background:`
-	 * shorthand) so themes can override individual layers without the
-	 * shorthand blowing away their other values. The default is the
-	 * simple sky-to-ground gradient; Henesys swaps in a scenic image. */
-	background-color: var(--bg-sky-top);
-	background-image: linear-gradient(
-		var(--bg-sky-top) 0 22rem,
-		var(--bg-ground) 22rem
-	);
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	font-family: var(--font-body);
-	min-height: 100vh;
-	/* Themed cursor. Individual themes can override --cursor-default and
-	 * --cursor-pointer in their .css to swap in area-specific pointers.
-	 * Falls back to native cursors if the .cur fails to load. */
-	cursor: var(--cursor-default, url("/cursors/point.cur") 4 4, auto);
+/* Body base rule lives in the `base` layer so themes always win when
+ * they define their own background. Themes without explicit body rules
+ * (Kerning, Lith, Ellinia, Sleepywood - still stubs) fall back to this
+ * sky-to-ground gradient using whatever token values their theme sets. */
+@layer base {
+	body {
+		margin: 0;
+		color: var(--text-body);
+		background-color: var(--bg-sky-top);
+		background-image: linear-gradient(
+			var(--bg-sky-top) 0 22rem,
+			var(--bg-ground) 22rem
+		);
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		font-family: var(--font-body);
+		min-height: 100vh;
+		/* Themed cursor. Individual themes can override --cursor-default
+		 * and --cursor-pointer via tokens; falls back to native cursors
+		 * if the .cur fails to load. */
+		cursor: var(--cursor-default, url("/cursors/point.cur") 4 4, auto);
+	}
 }
 
 a,
