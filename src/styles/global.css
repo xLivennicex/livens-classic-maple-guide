@@ -30,11 +30,17 @@ html {
 body {
 	margin: 0;
 	color: var(--text-body);
-	background:
-		linear-gradient(
-			var(--bg-sky-top) 0 22rem,
-			var(--bg-ground) 22rem
-		);
+	/* Use longhand background-* properties (not the `background:`
+	 * shorthand) so themes can override individual layers without the
+	 * shorthand blowing away their other values. The default is the
+	 * simple sky-to-ground gradient; Henesys swaps in a scenic image. */
+	background-color: var(--bg-sky-top);
+	background-image: linear-gradient(
+		var(--bg-sky-top) 0 22rem,
+		var(--bg-ground) 22rem
+	);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 	font-family: var(--font-body);
 	min-height: 100vh;
 	/* Themed cursor. Individual themes can override --cursor-default and
