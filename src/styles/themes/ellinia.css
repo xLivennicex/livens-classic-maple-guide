@@ -1,0 +1,40 @@
+/* Ellinia: magician's forest canopy, mystical gold accents.
+ * STUB palette - refine once we build the Magician guide.
+ */
+
+[data-theme="ellinia"] {
+	--bg-sky-top: #a8d5c0;
+	--bg-ground: #d8e8d0;
+	--bg-cloud: #f0f8e8;
+	--bg-grass: #5a8a5a;
+
+	--surface-card: #f5fcf0;
+	--surface-nav: #3a7050;
+	--surface-nav-hover: #5a9070;
+	--surface-announcement: #1e4028;
+	--surface-hero-panel: rgba(245, 252, 240, 0.94);
+
+	--border-card: #a8c890;
+	--border-card-strong: #5a8a5a;
+	--border-nav: #1e4028;
+	--border-hero: #5a8a5a;
+	--border-divider: #b8d0a8;
+
+	--text-body: #1a2e1a;
+	--text-heading: #1e4028;
+	--text-muted: #4a6a4a;
+	--text-brand-tagline: #3a7050;
+	--text-on-nav: #f5fcf0;
+	--text-on-announcement: #f5fcf0;
+	--text-on-accent: #ffffff;
+
+	--accent-primary: #3a7050;
+	--accent-primary-strong: #1e5030;
+	--accent-secondary: #f0d878;
+	--accent-secondary-border: #b89540;
+	--accent-secondary-text: #3a2e0a;
+	--accent-blossom: #d878b8;
+	--accent-blossom-strong: #a54890;
+
+	--shadow-panel: 0 10px 30px rgba(30, 64, 40, 0.2);
+}

@@ -1,0 +1,40 @@
+/* Perion: warrior canyon, rocky sunset.
+ * STUB palette - refine once we build the Warrior guide.
+ */
+
+[data-theme="perion"] {
+	--bg-sky-top: #e8a878;
+	--bg-ground: #b8804a;
+	--bg-cloud: #f5d5b0;
+	--bg-grass: #8b5a2b;
+
+	--surface-card: #f3e0c2;
+	--surface-nav: #8b4513;
+	--surface-nav-hover: #b8763a;
+	--surface-announcement: #5a2e0a;
+	--surface-hero-panel: rgba(243, 224, 194, 0.94);
+
+	--border-card: #a67035;
+	--border-card-strong: #6b3d0f;
+	--border-nav: #5a2e0a;
+	--border-hero: #a67035;
+	--border-divider: #c9a878;
+
+	--text-body: #3a1e00;
+	--text-heading: #4a1e00;
+	--text-muted: #6b4b2a;
+	--text-brand-tagline: #8b5a2b;
+	--text-on-nav: #fff5e6;
+	--text-on-announcement: #fff5e6;
+	--text-on-accent: #ffffff;
+
+	--accent-primary: #b8460e;
+	--accent-primary-strong: #8b2f0a;
+	--accent-secondary: #f5c078;
+	--accent-secondary-border: #8b5a2b;
+	--accent-secondary-text: #3a1e00;
+	--accent-blossom: #d97a4a;
+	--accent-blossom-strong: #a55a2a;
+
+	--shadow-panel: 0 10px 30px rgba(90, 46, 10, 0.3);
+}

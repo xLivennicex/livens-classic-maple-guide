@@ -1,0 +1,40 @@
+/* Kerning: neon-lit night, thief quarter.
+ * STUB palette - refine once we build a Kerning-themed page.
+ */
+
+[data-theme="kerning"] {
+	--bg-sky-top: #1a1830;
+	--bg-ground: #0d0f1a;
+	--bg-cloud: #2a2440;
+	--bg-grass: #2a2440;
+
+	--surface-card: #241f3a;
+	--surface-nav: #7c3aed;
+	--surface-nav-hover: #a97dfa;
+	--surface-announcement: #3d1f6b;
+	--surface-hero-panel: rgba(36, 31, 58, 0.92);
+
+	--border-card: #4b3d78;
+	--border-card-strong: #7c3aed;
+	--border-nav: #4b1a9a;
+	--border-hero: #a97dfa;
+	--border-divider: #3a3260;
+
+	--text-body: #d4c7f0;
+	--text-heading: #f0e7ff;
+	--text-muted: #a89dc7;
+	--text-brand-tagline: #c084fc;
+	--text-on-nav: #ffffff;
+	--text-on-announcement: #ffffff;
+	--text-on-accent: #ffffff;
+
+	--accent-primary: #c084fc;
+	--accent-primary-strong: #a855f7;
+	--accent-secondary: #f0abfc;
+	--accent-secondary-border: #c026d3;
+	--accent-secondary-text: #ffffff;
+	--accent-blossom: #ec4899;
+	--accent-blossom-strong: #be185d;
+
+	--shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.5);
+}

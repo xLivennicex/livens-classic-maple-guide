@@ -1,0 +1,40 @@
+/* Lith Harbor: coastal, driftwood and sails.
+ * STUB palette - refine once we build a Lith-themed page.
+ */
+
+[data-theme="lith"] {
+	--bg-sky-top: #a8d8e8;
+	--bg-ground: #e8dcc0;
+	--bg-cloud: #ffffff;
+	--bg-grass: #6ba8b8;
+
+	--surface-card: #fff8ec;
+	--surface-nav: #4a7c95;
+	--surface-nav-hover: #6ba0b8;
+	--surface-announcement: #1e4a5c;
+	--surface-hero-panel: rgba(255, 248, 236, 0.94);
+
+	--border-card: #c9b58c;
+	--border-card-strong: #8b7550;
+	--border-nav: #2a5a70;
+	--border-hero: #6ba8b8;
+	--border-divider: #d4c8a0;
+
+	--text-body: #1e3a4a;
+	--text-heading: #1e4a5c;
+	--text-muted: #4a6a78;
+	--text-brand-tagline: #4a7c95;
+	--text-on-nav: #ffffff;
+	--text-on-announcement: #ffffff;
+	--text-on-accent: #ffffff;
+
+	--accent-primary: #2a7595;
+	--accent-primary-strong: #1e5570;
+	--accent-secondary: #f0d090;
+	--accent-secondary-border: #a88855;
+	--accent-secondary-text: #3a2a10;
+	--accent-blossom: #e8a878;
+	--accent-blossom-strong: #b8763a;
+
+	--shadow-panel: 0 10px 30px rgba(30, 74, 92, 0.2);
+}

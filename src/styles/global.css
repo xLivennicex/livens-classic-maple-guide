@@ -1,7 +1,21 @@
 /* Global styles for Liven's Classic Maple Guide.
- * One consistent visual identity across every page.
- * Component-specific tweaks live inside their .astro <style> blocks.
+ *
+ * Layout chrome (backgrounds, borders, text, accent buttons) references
+ * theme tokens (--bg-*, --surface-*, --border-*, --text-*, --accent-*)
+ * declared in src/styles/themes/*.css. To retheme a page, put a
+ * data-theme attribute on <html> - no component changes needed.
+ *
+ * Semantic component colors (green = confirmed, red = warning, purple
+ * = founder verified) live in their respective components and are NOT
+ * tokenized. They mean things and shouldn't shift by theme.
  */
+
+@import "./themes/henesys.css"; /* also sets :root defaults */
+@import "./themes/kerning.css";
+@import "./themes/perion.css";
+@import "./themes/lith.css";
+@import "./themes/ellinia.css";
+@import "./themes/sleepywood.css";
 
 *,
 *::before,
@@ -15,12 +29,13 @@ html {
 
 body {
 	margin: 0;
-	color: #243126;
+	color: var(--text-body);
 	background:
-		radial-gradient(circle at 15% 5%, #ffffff 0 5rem, transparent 5.1rem),
-		radial-gradient(circle at 85% 8%, #ffffff 0 7rem, transparent 7.1rem),
-		linear-gradient(#bfe4f4 0 22rem, #f4f0df 22rem);
-	font-family: "Trebuchet MS", Arial, sans-serif;
+		linear-gradient(
+			var(--bg-sky-top) 0 22rem,
+			var(--bg-ground) 22rem
+		);
+	font-family: var(--font-body);
 	min-height: 100vh;
 }
 
@@ -39,7 +54,14 @@ h1 {
 	margin: 0.7rem 0;
 	font-size: clamp(2.3rem, 6vw, 4.4rem);
 	line-height: 1;
-	color: #304f34;
+	color: var(--text-heading);
+	font-family: var(--font-heading);
+}
+
+h2,
+h3 {
+	color: var(--text-heading);
+	font-family: var(--font-heading);
 }
 
 /* ---------- Layout wrappers ---------- */
@@ -60,8 +82,8 @@ main.page-width {
 	justify-content: space-between;
 	gap: 1rem;
 	padding: 0.65rem max(1rem, calc((100% - 1150px) / 2));
-	background: #395e3d;
-	color: white;
+	background: var(--surface-announcement);
+	color: var(--text-on-announcement);
 	font-size: 0.85rem;
 }
 
@@ -81,7 +103,14 @@ main.page-width {
 }
 
 .brand-icon {
-	font-size: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	/* font-size stays small so if the img ever 404s, alt text is not
+	 * comically huge (that bug ate an afternoon once). */
+	font-size: 0.75rem;
 }
 
 .brand strong,
@@ -91,11 +120,12 @@ main.page-width {
 
 .brand strong {
 	font-size: 1.25rem;
+	color: var(--text-heading);
 }
 
 .brand small {
 	margin-top: 0.15rem;
-	color: #4f6653;
+	color: var(--text-brand-tagline);
 }
 
 .search {
@@ -105,7 +135,7 @@ main.page-width {
 .search input {
 	width: 100%;
 	padding: 0.8rem 1rem;
-	border: 2px solid #72987a;
+	border: 2px solid var(--border-hero);
 	border-radius: 999px;
 	background: rgba(255, 255, 255, 0.9);
 	font: inherit;
@@ -116,8 +146,8 @@ main.page-width {
 	justify-content: center;
 	gap: 0.3rem;
 	padding: 0.45rem 1rem;
-	background: #f5ad42;
-	border-block: 3px solid #d18428;
+	background: var(--surface-nav);
+	border-block: 3px solid var(--border-nav);
 }
 
 .navigation a {
@@ -125,18 +155,19 @@ main.page-width {
 	border-radius: 0.5rem;
 	font-weight: bold;
 	text-decoration: none;
+	color: var(--text-on-nav);
 }
 
 .navigation a:hover,
 .navigation a[aria-current="page"] {
-	background: #ffe2a5;
+	background: var(--surface-nav-hover);
 }
 
 /* ---------- Typographic helpers ---------- */
 
 .badge,
 .eyebrow {
-	color: #48734b;
+	color: var(--accent-primary);
 	font-size: 0.78rem;
 	font-weight: bold;
 	letter-spacing: 0.05em;
@@ -158,21 +189,30 @@ main.page-width {
 }
 
 .primary-button {
-	border: 2px solid #365c3a;
-	background: #46784b;
-	color: white;
+	border: 2px solid var(--accent-primary-strong);
+	background: var(--accent-primary);
+	color: var(--text-on-accent);
+}
+
+.primary-button:hover {
+	background: var(--accent-primary-strong);
 }
 
 .secondary-button {
-	border: 2px solid #b77a2d;
-	background: #ffd785;
-	color: #4b351d;
+	border: 2px solid var(--accent-secondary-border);
+	background: var(--accent-secondary);
+	color: var(--accent-secondary-text);
+}
+
+.secondary-button:hover {
+	border-color: var(--accent-blossom-strong);
+	background: var(--accent-blossom);
 }
 
 .ghost-button {
-	border: 2px solid #b77a2d;
-	background: #ffd785;
-	color: #4b351d;
+	border: 2px solid var(--accent-secondary-border);
+	background: var(--accent-secondary);
+	color: var(--accent-secondary-text);
 	opacity: 0.7;
 	cursor: default;
 }
@@ -181,8 +221,8 @@ main.page-width {
 
 .card {
 	padding: 1.25rem;
-	background: #fffdf6;
-	border: 2px solid #d8c99c;
+	background: var(--surface-card);
+	border: 2px solid var(--border-card);
 	border-radius: 1rem;
 }
 
@@ -193,7 +233,7 @@ main.page-width {
 	justify-content: space-between;
 	gap: 1rem;
 	padding: 0.8rem 0;
-	border-top: 1px solid #ded4b7;
+	border-top: 1px solid var(--border-divider);
 }
 
 .data-row--dated {
@@ -202,7 +242,7 @@ main.page-width {
 }
 
 .data-row--dated span {
-	color: #5d665d;
+	color: var(--text-muted);
 }
 
 /* ---------- Footer ---------- */
@@ -210,7 +250,7 @@ main.page-width {
 .site-footer {
 	padding: 2rem 1rem;
 	text-align: center;
-	color: #5f6a61;
+	color: var(--text-muted);
 }
 
 /* ---------- Accessibility ---------- */

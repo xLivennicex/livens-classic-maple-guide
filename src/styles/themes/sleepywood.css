@@ -1,0 +1,40 @@
+/* Sleepywood: deep forest, misty, muted.
+ * STUB palette - refine once we build a Sleepywood-themed page.
+ */
+
+[data-theme="sleepywood"] {
+	--bg-sky-top: #4a5a4a;
+	--bg-ground: #3a3020;
+	--bg-cloud: #6a7a68;
+	--bg-grass: #2a3a20;
+
+	--surface-card: #4a4030;
+	--surface-nav: #3a5030;
+	--surface-nav-hover: #5a7048;
+	--surface-announcement: #1e2818;
+	--surface-hero-panel: rgba(74, 64, 48, 0.92);
+
+	--border-card: #6a5a40;
+	--border-card-strong: #8a7a58;
+	--border-nav: #1e2818;
+	--border-hero: #5a7048;
+	--border-divider: #5a4838;
+
+	--text-body: #d8d0b8;
+	--text-heading: #f0e8c8;
+	--text-muted: #a89880;
+	--text-brand-tagline: #b8a880;
+	--text-on-nav: #f0e8c8;
+	--text-on-announcement: #f0e8c8;
+	--text-on-accent: #f0e8c8;
+
+	--accent-primary: #7a8a5a;
+	--accent-primary-strong: #5a7048;
+	--accent-secondary: #a88855;
+	--accent-secondary-border: #6a5030;
+	--accent-secondary-text: #f0e8c8;
+	--accent-blossom: #b87858;
+	--accent-blossom-strong: #8a5030;
+
+	--shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.5);
+}

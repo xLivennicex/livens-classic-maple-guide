@@ -8,6 +8,16 @@ interface NavItem {
 	href: string;
 }
 
+// Which visual theme to apply. Defaults to Henesys (the site's home
+// palette). See src/styles/themes/*.css for the full set.
+export type SiteTheme =
+	| "henesys"
+	| "kerning"
+	| "perion"
+	| "lith"
+	| "ellinia"
+	| "sleepywood";
+
 interface Props {
 	title: string;
 	description?: string;
@@ -15,12 +25,19 @@ interface Props {
 	// NavItem.href. Optional so pages that don't map cleanly (e.g. a
 	// specific guide) can just leave it undefined.
 	currentPath?: string;
+	theme?: SiteTheme;
+	// Whether to render theme-specific background decorations (clouds,
+	// grass strip, etc). On for immersive pages like the homepage; off
+	// for reference-heavy pages where they'd fight with content.
+	decorations?: boolean;
 }
 
 const {
 	title,
 	description = "An unofficial guide to Global MapleStory Classic World.",
 	currentPath,
+	theme = "henesys",
+	decorations = false,
 } = Astro.props;
 
 // One nav list, sourced here. Adding a section is a one-line edit.
@@ -37,15 +54,16 @@ const navItems: NavItem[] = [
 ];
 ---
 
-<html lang="en">
+<html lang="en" data-theme={theme}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
+		<link rel="icon" type="image/png" href="/images/maple-leaf.png" />
 		<title>{title}</title>
 	</head>
 
-	<body>
+	<body data-theme-decorations={decorations ? "on" : "off"}>
 		<div class="announcement">
 			<span>Unofficial Classic World Guide</span>
 			<span>{nextMilestoneHeadline}</span>
@@ -53,7 +71,7 @@ const navItems: NavItem[] = [
 
 		<header class="site-header page-width">
 			<a class="brand" href="/">
-				<span class="brand-icon"><MapleLeaf size={32} /></span>
+				<span class="brand-icon"><MapleLeaf size={44} /></span>
 				<span>
 					<strong>Liven's Classic Maple Guide</strong>
 					<small>Adventure begins again</small>
