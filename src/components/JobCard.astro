@@ -1,0 +1,59 @@
+---
+import type { Job } from "../data/jobs";
+
+interface Props {
+	job: Job;
+}
+const { job } = Astro.props;
+
+// If a guide exists, render a real link. Otherwise show a disabled
+// placeholder button. Keeps the surrounding grid uniform without the
+// caller having to branch.
+const hasGuide = job.href !== null;
+---
+
+<article class="card job-card">
+	<span class="job-monogram" aria-hidden="true">{job.monogram}</span>
+	<h3>{job.name}</h3>
+	<p>{job.description}</p>
+
+	{hasGuide ? (
+		<a class="secondary-button" href={job.href}>Read the guide</a>
+	) : (
+		<span class="ghost-button" aria-disabled="true">Guide coming soon</span>
+	)}
+</article>
+
+<style>
+	.job-card {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.job-monogram {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: 0.6rem;
+		border-radius: 0.6rem;
+		background: #f5ad42;
+		color: #4b351d;
+		font-size: 1.5rem;
+		font-weight: bold;
+		border: 2px solid #d18428;
+	}
+
+	.job-card p {
+		flex: 1;
+		min-height: 5rem;
+		color: #5d665d;
+		line-height: 1.5;
+	}
+
+	.job-card :global(.secondary-button),
+	.job-card :global(.ghost-button) {
+		align-self: flex-start;
+	}
+</style>

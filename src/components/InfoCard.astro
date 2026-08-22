@@ -1,0 +1,30 @@
+---
+// Generic informational card. Consumers supply the eyebrow, heading and
+// arbitrary body content via the default slot. Keeps the visual chrome
+// (border, padding, radius, eyebrow style) in one place.
+interface Props {
+	eyebrow: string;
+	heading: string;
+}
+const { eyebrow, heading } = Astro.props;
+---
+
+<article class="card info-card">
+	<span class="eyebrow">{eyebrow}</span>
+	<h2>{heading}</h2>
+	<slot />
+</article>
+
+<style>
+	.info-card h2 {
+		margin: 0.4rem 0 0.8rem;
+		font-size: 1.4rem;
+		color: #304f34;
+	}
+
+	.info-card :global(ul) {
+		padding-left: 1.2rem;
+		line-height: 1.9;
+		margin: 0;
+	}
+</style>

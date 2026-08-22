@@ -1,0 +1,89 @@
+---
+import "../styles/global.css";
+import MapleLeaf from "../components/MapleLeaf.astro";
+import { nextMilestoneHeadline } from "../data/launch";
+
+interface NavItem {
+	label: string;
+	href: string;
+}
+
+interface Props {
+	title: string;
+	description?: string;
+	// Which nav item should render as the current page. Matched against
+	// NavItem.href. Optional so pages that don't map cleanly (e.g. a
+	// specific guide) can just leave it undefined.
+	currentPath?: string;
+}
+
+const {
+	title,
+	description = "An unofficial guide to Global MapleStory Classic World.",
+	currentPath,
+} = Astro.props;
+
+// One nav list, sourced here. Adding a section is a one-line edit.
+// Real routes get real hrefs; unbuilt sections keep '#' so we don't
+// hand out 404s during development.
+const navItems: NavItem[] = [
+	{ label: "Home", href: "/" },
+	{ label: "Jobs", href: "/jobs" },
+	{ label: "Leveling", href: "#" },
+	{ label: "Quests & PQs", href: "#" },
+	{ label: "Database", href: "#" },
+	{ label: "Tools", href: "#" },
+];
+---
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+	</head>
+
+	<body>
+		<div class="announcement">
+			<span>Unofficial Classic World Guide</span>
+			<span>{nextMilestoneHeadline}</span>
+		</div>
+
+		<header class="site-header page-width">
+			<a class="brand" href="/">
+				<span class="brand-icon"><MapleLeaf size={32} /></span>
+				<span>
+					<strong>Liven's Classic Maple Guide</strong>
+					<small>Adventure begins again</small>
+				</span>
+			</a>
+
+			<label class="search">
+				<span class="sr-only">Search the guide</span>
+				<input type="search" placeholder="Search guides, quests, items..." />
+			</label>
+		</header>
+
+		<nav class="navigation" aria-label="Primary navigation">
+			{navItems.map((item) => (
+				<a
+					href={item.href}
+					aria-current={item.href === currentPath ? "page" : undefined}
+				>
+					{item.label}
+				</a>
+			))}
+		</nav>
+
+		<main class="page-width">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<p>
+				Unofficial fan guide. MapleStory and related game material belong to NEXON.
+			</p>
+		</footer>
+	</body>
+</html>

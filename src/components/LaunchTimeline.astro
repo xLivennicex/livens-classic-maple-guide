@@ -1,0 +1,19 @@
+---
+import { launchDates } from "../data/launch";
+---
+
+<aside class="card launch-card" aria-label="Launch timeline">
+	<h2>Launch timeline</h2>
+	{launchDates.map((item) => (
+		<div class="data-row data-row--dated">
+			<strong>{item.date}</strong>
+			<span>{item.event}</span>
+		</div>
+	))}
+</aside>
+
+<style>
+	.launch-card h2 {
+		font-size: 1.15rem;
+	}
+</style>

@@ -1,0 +1,115 @@
+---
+import StatusBadge, { type AccuracyStatus } from "./StatusBadge.astro";
+
+// A ledger entry describes one piece of information the site relies on
+// and how confirmed it currently is. Source + archive URLs make the
+// citation checkable; `complete` flags milestones that have wrapped up.
+export interface LedgerEntry {
+	label: string;
+	status: AccuracyStatus;
+	note?: string;
+	sourceUrl?: string;
+	archiveUrl?: string;
+	complete?: boolean;
+}
+
+interface Props {
+	entries: LedgerEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<div class="accuracy-ledger">
+	{entries.map((entry) => (
+		<div class="data-row accuracy-ledger__row">
+			<div class="accuracy-ledger__label">
+				<span>{entry.label}</span>
+				{entry.complete && (
+					<span class="complete-chip" aria-label="Milestone complete">
+						Complete!
+					</span>
+				)}
+			</div>
+
+			<div class="accuracy-ledger__status">
+				<StatusBadge status={entry.status} />
+				{entry.note && <small class="note">{entry.note}</small>}
+				{(entry.sourceUrl || entry.archiveUrl) && (
+					<span class="source-links">
+						{entry.sourceUrl && (
+							<a href={entry.sourceUrl} target="_blank" rel="noopener noreferrer">
+								source
+							</a>
+						)}
+						{entry.sourceUrl && entry.archiveUrl && <span aria-hidden="true">|</span>}
+						{entry.archiveUrl && (
+							<a href={entry.archiveUrl} target="_blank" rel="noopener noreferrer">
+								archive
+							</a>
+						)}
+					</span>
+				)}
+			</div>
+		</div>
+	))}
+</div>
+
+<style>
+	.accuracy-ledger__row {
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.accuracy-ledger__label {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.accuracy-ledger__status {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+
+	.note {
+		color: #5d665d;
+	}
+
+	.complete-chip {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.15rem 0.5rem;
+		border-radius: 999px;
+		background: #46784b;
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: bold;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+	}
+
+	.source-links {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.8rem;
+	}
+
+	.source-links a {
+		color: #365c3a;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.source-links a:hover {
+		color: #46784b;
+	}
+
+	.source-links span {
+		color: #a8b3a9;
+	}
+</style>

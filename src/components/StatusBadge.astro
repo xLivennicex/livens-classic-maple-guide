@@ -1,0 +1,110 @@
+---
+// StatusBadge renders one of the site's accuracy states. These variants
+// come straight from the project brief so every guide can wear its
+// verification level on its sleeve.
+
+export type AccuracyStatus =
+	| "officially-confirmed"
+	| "closed-test"
+	| "founders-verified"
+	| "launch-verified"
+	| "community-reported"
+	| "needs-reverification";
+
+interface Props {
+	status: AccuracyStatus;
+	verifiedOn?: string; // ISO date or human-readable label
+	sources?: number; // optional count, e.g. "3 sources"
+}
+
+const { status, verifiedOn, sources } = Astro.props;
+
+// Central lookup: keep visual + label data next to the type so adding a
+// new status is a single-line change. DRY over sprinkling switch blocks.
+const META: Record<AccuracyStatus, { label: string; tone: string }> = {
+	"officially-confirmed": { label: "Officially Confirmed", tone: "confirmed" },
+	"closed-test": { label: "Closed-Test Information", tone: "provisional" },
+	"founders-verified": { label: "Founder's Access Verified", tone: "founder" },
+	"launch-verified": { label: "Launch Verified", tone: "launch" },
+	"community-reported": { label: "Community Reported", tone: "community" },
+	"needs-reverification": { label: "Needs Reverification", tone: "warning" },
+};
+
+const { label, tone } = META[status];
+---
+
+<span class={`status-badge status-badge--${tone}`}>
+	<span class="status-badge__dot" aria-hidden="true"></span>
+	<span class="status-badge__label">{label}</span>
+	{verifiedOn && (
+		<span class="status-badge__meta">- verified {verifiedOn}</span>
+	)}
+	{sources !== undefined && (
+		<span class="status-badge__meta">
+			- {sources} {sources === 1 ? "source" : "sources"}
+		</span>
+	)}
+</span>
+
+<style>
+	.status-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.4rem 0.7rem;
+		border-radius: 999px;
+		font-size: 0.78rem;
+		font-weight: bold;
+		letter-spacing: 0.03em;
+		border: 2px solid transparent;
+	}
+
+	.status-badge__dot {
+		width: 0.55rem;
+		height: 0.55rem;
+		border-radius: 50%;
+		background: currentColor;
+	}
+
+	.status-badge__meta {
+		font-weight: normal;
+		opacity: 0.85;
+	}
+
+	/* Tones - each maps to one accuracy state. */
+	.status-badge--confirmed {
+		background: #dcebd2;
+		color: #2f5c33;
+		border-color: #8caf73;
+	}
+
+	.status-badge--provisional {
+		background: #fdecc8;
+		color: #7a5312;
+		border-color: #d9b063;
+	}
+
+	.status-badge--founder {
+		background: #e2ddf6;
+		color: #453775;
+		border-color: #a89ed6;
+	}
+
+	.status-badge--launch {
+		background: #cfe8ea;
+		color: #1f5f66;
+		border-color: #6ab0b6;
+	}
+
+	.status-badge--community {
+		background: #f1e7d8;
+		color: #6b4c1f;
+		border-color: #c5a677;
+	}
+
+	.status-badge--warning {
+		background: #f8d8d0;
+		color: #8a2f1c;
+		border-color: #d97a63;
+	}
+</style>
