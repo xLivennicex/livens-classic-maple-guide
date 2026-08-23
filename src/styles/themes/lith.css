@@ -44,8 +44,11 @@
  * trees, and wooden docks. Cream scrim on top keeps card content
  * readable against the bright turquoise water. */
 
+/* !important is defensive: browsers with aggressive style caching
+ * were holding onto the pre-image version of this file, letting the
+ * base gradient win. The theme MUST beat the base regardless. */
 html[data-theme="lith"] body {
-	background-color: var(--bg-sky-top); /* fallback if image fails */
+	background-color: var(--bg-sky-top) !important;
 	background-image:
 		linear-gradient(
 			180deg,
@@ -53,11 +56,11 @@ html[data-theme="lith"] body {
 			rgba(255, 248, 236, 0.3) 45%,
 			rgba(255, 248, 236, 0.85) 100%
 		),
-		url("/images/lith-background.png");
-	background-size: cover, cover;
-	background-position: center top, center top;
-	background-repeat: no-repeat, no-repeat;
-	background-attachment: fixed, fixed;
+		url("/images/lith-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
 }
 
 /* Image already has real clouds, palm-tree canopies, and beach detail,

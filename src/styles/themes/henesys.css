@@ -68,8 +68,10 @@
  * cream scrim rides on top to keep body text and cards readable.
  * background-attachment: fixed gives a subtle parallax feel on scroll. */
 
+/* !important is defensive against browser style caching keeping the
+ * base gradient. Theme MUST win. */
 html[data-theme="henesys"] body {
-	background-color: var(--bg-sky-top); /* fallback if image fails */
+	background-color: var(--bg-sky-top) !important;
 	background-image:
 		linear-gradient(
 			180deg,
@@ -77,11 +79,11 @@ html[data-theme="henesys"] body {
 			rgba(255, 253, 246, 0.35) 45%,
 			rgba(244, 240, 223, 0.85) 100%
 		),
-		url("/images/henesys-background.png");
-	background-size: cover, cover;
-	background-position: center top, center top;
-	background-repeat: no-repeat, no-repeat;
-	background-attachment: fixed, fixed;
+		url("/images/henesys-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
 }
 
 /* Image already contains clouds + grass, so kill the CSS decorations
