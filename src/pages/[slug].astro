@@ -1,0 +1,62 @@
+---
+/**
+ * Dynamic guide route - the heart of Phase 3.
+ *
+ * This ONE file replaces the per-guide wrapper `.astro` files (previously
+ * citizenship.astro, crafting.astro). Any `.md` in the `guides` content
+ * collection becomes a page at `/{slug}` automatically. Adding a new
+ * guide is now a one-file drop-in: write markdown, get a page.
+ *
+ * Routing note: this is a dynamic root-level route (`[slug].astro`).
+ * Astro's routing rule is "static beats dynamic", so `index.astro`,
+ * `launch.astro`, `jobs.astro`, etc. still resolve to their static
+ * files. Only slugs that (a) don't have a static file AND (b) exist
+ * in the collection resolve here.
+ *
+ * The wrapper .astro files were 100+ lines of duplicated plumbing.
+ * This is ~30. The rest of the "work" moved to frontmatter, which is
+ * where it belongs.
+ */
+
+import { getCollection, render } from "astro:content";
+import GuideLayout from "../layouts/GuideLayout.astro";
+import BenefitGrid from "../components/BenefitGrid.astro";
+
+export async function getStaticPaths() {
+	const guides = await getCollection("guides");
+	return guides.map((guide) => ({
+		params: { slug: guide.id },
+		props: { guide },
+	}));
+}
+
+const { guide } = Astro.props;
+// Astro 5+ with the `glob` loader uses `render(entry)` rather than
+// the legacy `entry.render()` method. Same result, different call site.
+const { Content } = await render(guide);
+const fm = guide.data;
+---
+
+<GuideLayout
+	title={`${fm.title} - Liven's Classic Maple Guide`}
+	description={fm.description}
+	currentPath={`/${guide.id}`}
+	theme={fm.theme}
+	decorations={fm.decorations}
+	eyebrow={fm.eyebrow}
+	heading={fm.heading}
+	tagline={fm.tagline}
+	verificationStatus={fm.verificationStatus}
+	lastChecked={fm.lastUpdated}
+	sourceSlugs={fm.sourceSlugs}
+	verificationNote={fm.verificationNote}
+	toc={fm.toc}
+>
+	<article class="markdown-content">
+		<Content />
+	</article>
+
+	{fm.benefits && fm.benefits.length > 0 && (
+		<BenefitGrid categories={fm.benefits} />
+	)}
+</GuideLayout>

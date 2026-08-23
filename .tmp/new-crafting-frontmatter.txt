@@ -1,0 +1,41 @@
+---
+# ---------- Core metadata ----------
+title: "Crafting Guide"
+description: "A complete guide to professions, mastery, materials, recipes, catalysts, weekly crafting kits, and efficient progression in MapleStory Classic World."
+lastUpdated: "2026-08-23"
+tags:
+  - crafting
+  - professions
+  - equipment
+  - materials
+  - catalysts
+sourceBuild: "Closed Online Test 2"
+status: "COT2 - Provisional"
+
+# ---------- Layout ----------
+theme: "perion"
+decorations: false
+eyebrow: "Systems Guide"
+heading: "Crafting"
+tagline: "Six disciplines, 348 recipes, and one economy in the making. Learn where to farm, how to level Mastery, when to burn a Catalyst, and which crafts actually pay."
+
+# ---------- Verification ----------
+verificationStatus: "closed-test-info"
+verificationNote: "All numeric details in this guide were recorded from Closed Online Test 2. Recipe counts, Mastery requirements, meso costs, and catalyst behavior may change before or during launch. The 348-recipe figure and per-discipline breakdowns come from the COT2 client snapshot on NiaMeowDB."
+sourceSlugs:
+  - nexon-cot1-release-notes
+  - niameowdb-crafting
+
+# ---------- TOC ----------
+toc:
+  - { href: "#crafting-at-a-glance", label: "At a glance" }
+  - { href: "#the-six-crafting-disciplines", label: "Six disciplines" }
+  - { href: "#how-to-learn-a-crafting-discipline", label: "How to learn" }
+  - { href: "#the-crafting-workflow", label: "Workflow" }
+  - { href: "#crafting-mastery-and-character-level-gates", label: "Mastery & gates" }
+  - { href: "#profession-kits-your-weekly-mastery-boost", label: "Weekly Kits" }
+  - { href: "#the-four-crafting-catalysts", label: "Catalysts" }
+  - { href: "#which-discipline-should-you-level-first", label: "Which first?" }
+  - { href: "#crafting-efficiently", label: "Efficiency" }
+  - { href: "#frequently-asked-questions", label: "FAQ" }
+---

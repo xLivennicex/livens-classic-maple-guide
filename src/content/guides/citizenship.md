@@ -1,14 +1,66 @@
----
+﻿---
+# ---------- Core metadata ----------
 title: "Citizenship Guide"
-description: "How to join Henesys or Kerning City, earn contribution, advance through all ten citizenship grades, and unlock town rewards in MapleStory Classic World."
-status: "COT2 — Provisional"
-sourceBuild: "Closed Online Test 2"
-lastUpdated: "2026-08-22"
+description: "A complete guide to the new Classic World Citizenship system introduced in Closed Online Test 2. Covers Henesys and Kerning City progression, contribution, rewards, and progression traps."
+lastUpdated: "2026-08-23"
 tags:
   - citizenship
+  - systems
+  - contribution
   - henesys
   - kerning-city
-  - systems
+sourceBuild: "Closed Online Test 2"
+status: "COT2 - Provisional"
+
+# ---------- Layout ----------
+theme: "lith"
+decorations: false
+eyebrow: "Systems Guide"
+heading: "Citizenship"
+tagline: "A new Classic World system: pledge to Henesys or Kerning City at level 12, earn contribution, climb ten grades, and unlock town-specific gear and buffs."
+
+# ---------- Verification ----------
+verificationStatus: "closed-test-info"
+verificationNote: "All numeric details in this guide were recorded from Closed Online Test 2. Values may change before or during launch. Housing rules, exact contribution reset behavior, and some town-transfer fees were not fully confirmed in COT2."
+sourceSlugs:
+  - nexon-cot2-release-notes
+  - niameowdb-citizenship
+
+# ---------- TOC ----------
+toc:
+  - { href: "#citizenship-at-a-glance", label: "At a glance" }
+  - { href: "#how-to-unlock-citizenship", label: "Unlock" }
+  - { href: "#choosing-henesys-or-kerning-city", label: "Choose your town" }
+  - { href: "#how-contribution-works", label: "Contribution" }
+  - { href: "#all-ten-citizenship-grades", label: "All 10 grades" }
+  - { href: "#citizenship-shop-progression", label: "Shops" }
+  - { href: "#citizenship-story-quests", label: "Story quests" }
+  - { href: "#switching-towns", label: "Switching towns" }
+  - { href: "#confirmed-town-benefits", label: "Confirmed rewards" }
+  - { href: "#frequently-asked-questions", label: "FAQ" }
+
+# ---------- Confirmed rewards (rendered by BenefitGrid.astro) ----------
+benefits:
+  - heading: "Citizen of Honor earrings"
+    subtitle: "Town-specific equipment (Grade 10)"
+    icon: "earring"
+    items:
+      - town: "henesys"
+        name: "Henesys Earrings"
+        description: "Required level 57. 42 Magic Defense, +2% Critical Damage, +2 Avoidability. Five upgrade slots. Untradeable."
+      - town: "kerning"
+        name: "Kerning City Earrings"
+        description: "Required level 57. 42 Magic Defense, +2% Critical Damage, +2 Avoidability. Five upgrade slots. Untradeable."
+  - heading: "Resident chairs"
+    subtitle: "Town-specific setup items (Grade 2)"
+    icon: "chair"
+    items:
+      - town: "henesys"
+        name: "Henesys Resident's Chair"
+        description: "Restores 20 HP and 5 MP every 10 seconds while seated. 10,000 mesos. Untradeable. One per town."
+      - town: "kerning"
+        name: "Kerning City Resident's Chair"
+        description: "Restores 20 HP and 5 MP every 10 seconds while seated. 10,000 mesos. Untradeable. One per town."
 ---
 
 Citizenship is a new town-membership system created for MapleStory Classic World. Beginning at level 12, you can pledge yourself to either **Henesys** or **Kerning City**, help local residents through the community board, earn contribution, and advance through ten citizenship grades.
@@ -228,31 +280,31 @@ The following lists focus on the grade-locked inventory rather than ordinary sup
 
 | Grade | Notable unlocks |
 | --- | --- |
-| Base inventory | Supreme Sniper Potion — 600 mesos, +7 Accuracy for 15 minutes |
-| Visitor | Salad — 220 mesos; Henesys Resident's Chair — 10,000 mesos |
-| Helpful Stranger | Bronze Bow/Crossbow Arrows — 2 mesos each; Sharpness Potion — 750; Lesser Earring Critical Damage Scroll — 50,000 |
-| Recognized Guest | Pizza — 252 mesos |
-| Town Resident | Hamburger — 350; Lesser Topwear and Bottomwear DEF Scrolls — 25,000 each |
-| Trusted Neighbor | Mrs. Ming Ming's Stew — 480; Orange Juice — 540 |
-| Distinguished Citizen | Fat Sausage — 800; Lesser Overall Armor DEX and STR Scrolls — 35,000 each |
-| Town Patron | Unagi — 1,000 mesos |
-| Guardian of the Village | Grape Juice — 1,260; Lesser Gloves Attack and Magic Attack Scrolls — 50,000 each |
-| Citizen of Honor | Orange Mushroom Daydream — 500; Elixir — 3,000; Henesys Earrings |
+| Base inventory | Supreme Sniper Potion â€” 600 mesos, +7 Accuracy for 15 minutes |
+| Visitor | Salad â€” 220 mesos; Henesys Resident's Chair â€” 10,000 mesos |
+| Helpful Stranger | Bronze Bow/Crossbow Arrows â€” 2 mesos each; Sharpness Potion â€” 750; Lesser Earring Critical Damage Scroll â€” 50,000 |
+| Recognized Guest | Pizza â€” 252 mesos |
+| Town Resident | Hamburger â€” 350; Lesser Topwear and Bottomwear DEF Scrolls â€” 25,000 each |
+| Trusted Neighbor | Mrs. Ming Ming's Stew â€” 480; Orange Juice â€” 540 |
+| Distinguished Citizen | Fat Sausage â€” 800; Lesser Overall Armor DEX and STR Scrolls â€” 35,000 each |
+| Town Patron | Unagi â€” 1,000 mesos |
+| Guardian of the Village | Grape Juice â€” 1,260; Lesser Gloves Attack and Magic Attack Scrolls â€” 50,000 each |
+| Citizen of Honor | Orange Mushroom Daydream â€” 500; Elixir â€” 3,000; Henesys Earrings |
 
 ### Kerning City Civic Center
 
 | Grade | Notable unlocks |
 | --- | --- |
-| Base inventory | Supreme Dexterity Potion — 600 mesos, +7 Evasion for 15 minutes |
-| Visitor | Salad — 220 mesos; Kerning City Resident's Chair — 10,000 mesos |
-| Helpful Stranger | Destructive Potion — 750; Wolbi Throwing Stars — 1,000; Lesser Earring Evasion Scroll — 25,000 |
-| Recognized Guest | Pizza — 252 mesos |
-| Town Resident | Hamburger — 350; Lesser Topwear and Bottomwear DEF Scrolls — 25,000 each |
-| Trusted Neighbor | Andre's Seafood Soup — 480; Orange Juice — 540 |
-| Distinguished Citizen | Fat Sausage — 800; Lesser Overall Armor LUK and INT Scrolls — 35,000 each |
-| Town Patron | Unagi — 1,000 mesos |
-| Guardian of the Village | Grape Juice — 1,260; Lesser Gloves Attack and Magic Attack Scrolls — 50,000 each |
-| Citizen of Honor | Ribbon Pig Daydream — 500; Kerning City Earrings |
+| Base inventory | Supreme Dexterity Potion â€” 600 mesos, +7 Evasion for 15 minutes |
+| Visitor | Salad â€” 220 mesos; Kerning City Resident's Chair â€” 10,000 mesos |
+| Helpful Stranger | Destructive Potion â€” 750; Wolbi Throwing Stars â€” 1,000; Lesser Earring Evasion Scroll â€” 25,000 |
+| Recognized Guest | Pizza â€” 252 mesos |
+| Town Resident | Hamburger â€” 350; Lesser Topwear and Bottomwear DEF Scrolls â€” 25,000 each |
+| Trusted Neighbor | Andre's Seafood Soup â€” 480; Orange Juice â€” 540 |
+| Distinguished Citizen | Fat Sausage â€” 800; Lesser Overall Armor LUK and INT Scrolls â€” 35,000 each |
+| Town Patron | Unagi â€” 1,000 mesos |
+| Guardian of the Village | Grape Juice â€” 1,260; Lesser Gloves Attack and Magic Attack Scrolls â€” 50,000 each |
+| Citizen of Honor | Ribbon Pig Daydream â€” 500; Kerning City Earrings |
 
 All recorded civic scrolls had a 100% success rate. Their "Lesser" designation reflects their smaller bonuses, not a reduced success chance.
 
@@ -262,17 +314,17 @@ Citizenship also adds character-driven quests that expand the identity of each t
 
 ### Henesys
 
-**A Family Reunited — Level 17**
+**A Family Reunited â€” Level 17**
 
 This chain follows Bruce, Mrs. Ming Ming, and Ayan. Its COT2 quest records include Bruce's Dilemma, Mrs. Ming Ming's Advice, Bruce's Cooking Ingredients, A Father's Love for His Daughter, and The Best Dad.
 
-**After the Festival Ends — Level 27**
+**After the Festival Ends â€” Level 27**
 
 This chain explores Mrs. Ming Ming and Chief Stan's past. Its records include Mrs. Ming Ming's Concern, Chief Stan's Past, Chief Stan's Hammer, Memories of Youth, and Regained Vitality.
 
 ### Kerning City
 
-**Jake's Trauma — Level 17**
+**Jake's Trauma â€” Level 17**
 
 This chain begins with Jake's fear of Stirges and sends the player through a search for a cure. Its records include Stirge Phobia, Making the Medicine, The Final Ingredient for the Cure, Grandfather's Vitamin Gummy, and It's All in the Mind.
 
@@ -301,7 +353,7 @@ Before changing towns, consider:
 
 ## Recommended Progression Strategy
 
-### Levels 12–16
+### Levels 12â€“16
 
 - Unlock Citizenship immediately at level 12.
 - Choose a town based on your main stat and preferred buff.
@@ -309,14 +361,14 @@ Before changing towns, consider:
 - Begin the repeatable board quests.
 - Check the weekly request before selling ETC drops.
 
-### Levels 17–21
+### Levels 17â€“21
 
 - Reach Visitor as soon as your contribution allows.
 - Purchase the resident chair if you want the collectible.
 - Complete your town's level-17 story arc.
 - Continue the weekly even if your level temporarily blocks the next grade.
 
-### Levels 22–31
+### Levels 22â€“31
 
 - Helpful Stranger provides the first meaningful town-exclusive combat purchases.
 - Compare the cost of temporary buffs with the actual benefit to your class.
@@ -324,13 +376,13 @@ Before changing towns, consider:
 - Kerning citizens can obtain the critical-damage potion and Wolbi stars.
 - Henesys characters should complete the second story arc at level 27.
 
-### Levels 32–46
+### Levels 32â€“46
 
 - Town Resident unlocks VIP assignments; prioritize these when available.
 - Continue weekly donations for the largest contribution gains.
 - Reach Distinguished Citizen for the town-specific overall-armor stat scrolls.
 
-### Levels 47–57+
+### Levels 47â€“57+
 
 - Maintain weeklies rather than switching towns late in the progression.
 - Guardian of the Village unlocks both Gloves Attack and Magic Attack scrolls.

@@ -184,9 +184,9 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   WebP)
 
 **Next up:**
-- Phase 3 (Publishing platform: formal Astro content collections
-  + MDX so guides don't need per-page wrapper `.astro` files)
 - Second job guide (Magician) as another vertical slice
+- Additional system guides (drop-in .md files now that Phase 3 shipped)
+- Homepage discovery cards for the two system guides
 
 ---
 
@@ -211,3 +211,14 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   Crafting as sources. Extracted duplicated markdown-content
   CSS from per-page style blocks into global.css so every
   markdown-driven guide inherits the same visual identity.
+- **2026-08-22** - Phase 3 COMPLETE. Formal Astro content
+  collections (`src/content.config.ts`) with a rich schema:
+  layout/theme/verification/sources/toc/benefits all live in
+  frontmatter. New guides become a single .md drop-in, rendered
+  by `src/pages/[slug].astro`. Extracted the confirmed-benefits
+  section to a reusable `BenefitGrid.astro` component driven by
+  the frontmatter `benefits:` field. Retired the citizenship.astro
+  and crafting.astro wrapper files (~230 lines of plumbing gone).
+  Both existing guide URLs preserved via root-level dynamic route
+  (`/citizenship`, `/crafting` unchanged - Astro's routing rule
+  "static beats dynamic" leaves the other root pages alone).

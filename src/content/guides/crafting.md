@@ -1,8 +1,7 @@
----
+﻿---
+# ---------- Core metadata ----------
 title: "Crafting Guide"
 description: "A complete guide to professions, mastery, materials, recipes, catalysts, weekly crafting kits, and efficient progression in MapleStory Classic World."
-status: "COT2 — Provisional"
-sourceBuild: "Closed Online Test 2"
 lastUpdated: "2026-08-23"
 tags:
   - crafting
@@ -10,6 +9,35 @@ tags:
   - equipment
   - materials
   - catalysts
+sourceBuild: "Closed Online Test 2"
+status: "COT2 - Provisional"
+
+# ---------- Layout ----------
+theme: "perion"
+decorations: false
+eyebrow: "Systems Guide"
+heading: "Crafting"
+tagline: "Six disciplines, 348 recipes, and one economy in the making. Learn where to farm, how to level Mastery, when to burn a Catalyst, and which crafts actually pay."
+
+# ---------- Verification ----------
+verificationStatus: "closed-test-info"
+verificationNote: "All numeric details in this guide were recorded from Closed Online Test 2. Recipe counts, Mastery requirements, meso costs, and catalyst behavior may change before or during launch. The 348-recipe figure and per-discipline breakdowns come from the COT2 client snapshot on NiaMeowDB."
+sourceSlugs:
+  - nexon-cot1-release-notes
+  - niameowdb-crafting
+
+# ---------- TOC ----------
+toc:
+  - { href: "#crafting-at-a-glance", label: "At a glance" }
+  - { href: "#the-six-crafting-disciplines", label: "Six disciplines" }
+  - { href: "#how-to-learn-a-crafting-discipline", label: "How to learn" }
+  - { href: "#the-crafting-workflow", label: "Workflow" }
+  - { href: "#crafting-mastery-and-character-level-gates", label: "Mastery & gates" }
+  - { href: "#profession-kits-your-weekly-mastery-boost", label: "Weekly Kits" }
+  - { href: "#the-four-crafting-catalysts", label: "Catalysts" }
+  - { href: "#which-discipline-should-you-level-first", label: "Which first?" }
+  - { href: "#crafting-efficiently", label: "Efficiency" }
+  - { href: "#frequently-asked-questions", label: "FAQ" }
 ---
 
 Crafting is one of the largest original systems added to MapleStory Classic World. Instead of relying entirely on monster drops and NPC equipment shops, players can collect ordinary monster materials, process them into refined components, and combine those components with mesos to create weapons, armor, arrows, chairs, scrolls, and other useful items.
@@ -23,7 +51,7 @@ The system contains six crafting disciplines, each with its own master, recipes,
 | Feature | COT2 implementation |
 | --- | --- |
 | Number of disciplines | 6 |
-| Observed crafting levels | 1–10 |
+| Observed crafting levels | 1â€“10 |
 | Current recipe count | 348 |
 | Profession unlock quests | Available from level 10 |
 | Weekly helper quests | Available from level 15 after learning the discipline |
@@ -436,10 +464,10 @@ Against NPC values, the leading COT2 examples were:
 | Recipe | Discipline | Mastery | Recorded NPC-value result |
 | --- | --- | ---: | ---: |
 | Iron Knuckle | Smithing Level 8 | 160 | +1,576 mesos |
-| Mithril Arrows for Crossbows ×500 | Woodcrafting Level 10 | 30 | +1,170 mesos |
-| Adamantium Arrows for Bows ×500 | Woodcrafting Level 10 | 30 | +1,070 mesos |
-| Iron Arrows for Bows ×500 | Woodcrafting Level 7 | 21 | +880 mesos |
-| Iron Arrows for Crossbows ×500 | Woodcrafting Level 7 | 21 | +880 mesos |
+| Mithril Arrows for Crossbows Ã—500 | Woodcrafting Level 10 | 30 | +1,170 mesos |
+| Adamantium Arrows for Bows Ã—500 | Woodcrafting Level 10 | 30 | +1,070 mesos |
+| Iron Arrows for Bows Ã—500 | Woodcrafting Level 7 | 21 | +880 mesos |
+| Iron Arrows for Crossbows Ã—500 | Woodcrafting Level 7 | 21 | +880 mesos |
 
 These calculations assume farmed materials valued at their NPC sell-back amounts. They are not a launch-market profit guarantee.
 
@@ -459,7 +487,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 
 ## Recommended Crafting Progression
 
-### Character Levels 10–14
+### Character Levels 10â€“14
 
 - Complete the apprenticeship quests for the disciplines you intend to use.
 - Do not attempt to level every discipline aggressively at once.
@@ -467,7 +495,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Learn which intermediate materials appear across multiple recipes.
 - Favor low-cost processing crafts over expensive equipment you do not need.
 
-### Character Levels 15–24
+### Character Levels 15â€“24
 
 - Complete each learned profession's weekly helper quest.
 - Save the 10% Kit until you have a prepared crafting batch.
@@ -475,7 +503,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Consider selling scarce raw materials rather than consuming everything yourself.
 - Level supporting disciplines only when their intermediates reduce your total cost.
 
-### Character Levels 25–39
+### Character Levels 25â€“39
 
 - Complete the master-recognition quests once eligible.
 - Treat the first catalyst as a demonstration item, not a reason to gamble immediately.
@@ -483,9 +511,9 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Begin specializing in recipes with actual player demand.
 - Track leftover batches of Screws, Thread, ingots, gems, and processed materials.
 
-### Character Levels 40–50+
+### Character Levels 40â€“50+
 
-- Push important disciplines toward Levels 8–10.
+- Push important disciplines toward Levels 8â€“10.
 - Reserve rare catalysts and gems for desirable final products.
 - Use market prices rather than NPC values when evaluating profit.
 - Coordinate with other crafters to reduce cross-profession overhead.
@@ -630,4 +658,4 @@ Learn Crafting early, but do not try to master everything immediately. Choose on
 
 Keep common crafting drops until you understand their demand, complete the weekly Kit quests, watch the character-level gates, and treat catalysts as valuable risk-and-reward materials rather than ordinary recipe components. Most importantly, compare the full cost of a craft against both NPC equipment and the player market before committing scarce materials.
 
-Crafting is likely to become one of Classic World's defining economic systems. The best crafters will not simply be the players with the highest Mastery — they will be the players who understand material chains, batch sizes, market demand, and when an expensive recipe is not worth making.
+Crafting is likely to become one of Classic World's defining economic systems. The best crafters will not simply be the players with the highest Mastery â€” they will be the players who understand material chains, batch sizes, market demand, and when an expensive recipe is not worth making.
