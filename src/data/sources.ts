@@ -61,22 +61,50 @@ export const sources: ArchivedSource[] = [
 		],
 	},
 
-	// Placeholder entry - kept in place to model closed-test-info labeling.
-	// Populate originalUrl once the release notes link is confirmed, then
-	// fill in publishedOn and confirmedFacts.
+	// Official COT2 release notes - the authoritative source for what
+	// was tested during Closed Online Test 2, including the Citizenship
+	// system introduction. Values from COT2 are labeled provisional until
+	// verified against the live Classic World build.
 	{
 		slug: "nexon-cot2-release-notes",
 		title: "Closed Online Test 2 Release Notes",
 		publisher: "NEXON",
-		publishedOn: "URL pending",
+		publishedOn: "COT2 test window (2026)",
 		sourceType: "closed-test-info",
-		topics: ["Skills", "Systems", "Balance", "Testing"],
-		originalUrl: null,
+		topics: ["Citizenship", "Skills", "Systems", "Balance", "Testing"],
+		originalUrl:
+			"https://www.nexon.com/maplestory/news/general/43432/closed-online-test-2-release-notes",
 		checkedOn: "2026-08-22",
 		status: "current",
 		summary:
-			"Official patch notes from Classic World's second Closed Online Test. Describes the state of systems during testing; specific values may still change before Founder's Access.",
-		confirmedFacts: [],
+			"Official patch notes from Classic World's second Closed Online Test. Confirms the Citizenship system unlocks at level 12, describes town selection and progression, and lists other systems under test. Specific numeric values may still change before Founder's Access.",
+		confirmedFacts: [
+			"Citizenship system was introduced during COT2 and unlocks at level 12",
+			"Players choose between Henesys and Kerning City for citizenship",
+			"Only one active citizenship at a time",
+		],
+	},
+
+	// NiaMeowDB - community database that captured detailed COT2 data
+	// including per-grade shop inventories, quest records, and contribution
+	// values. Data reflects the test build and needs relaunch verification.
+	{
+		slug: "niameowdb-citizenship",
+		title: "NiaMeowDB - Citizenship System Database",
+		publisher: "NiaMeowDB",
+		publishedOn: "COT2 recording (2026)",
+		sourceType: "closed-test-info",
+		topics: ["Citizenship", "Henesys", "Kerning City", "Shops", "Quests"],
+		originalUrl: "https://meowdb.com/msclassic/citizenship",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Community-maintained database of Classic World COT2 data. Captured per-grade contribution requirements, shop inventories for both towns, story quest chains, and reward values. All figures should be treated as provisional until re-verified at launch.",
+		confirmedFacts: [
+			"Ten citizenship grades from Traveler (Grade 1) to Citizen of Honor (Grade 10) (COT2)",
+			"Grade unlocks combine character level AND contribution requirements (COT2)",
+			"Both towns have separate independent citizenship progression (COT2)",
+		],
 	},
 
 	// v83-era historical archives. Used as the baseline research layer

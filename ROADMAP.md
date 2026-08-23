@@ -180,13 +180,13 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
 
 **Blocked / awaiting input:**
 - BGM composer credits (need artist names for proper attribution)
-- COT2 release-notes URL (source entry is a stub)
 - WebP conversion of background images (needs `sharp` or user-provided
   WebP)
 
 **Next up:**
-- Phase 3 (Publishing platform: MDX content collections, so Magician/
-  Bowman/Thief guides become one-file drop-ins)
+- Phase 3 (Publishing platform: formal Astro content collections
+  + MDX so guides don't need per-page wrapper `.astro` files)
+- Second job guide (Magician) as another vertical slice
 
 ---
 
@@ -198,3 +198,10 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   `/jobs/warrior`. GuideLayout component reusable. Perion theme
   polished (colors, rock decorations, red cursor, BGM).
   Added `historical-archive` source type.
+- **2026-08-22** - Perion scenic background added; CSS `@layer`
+  used to guarantee theme backgrounds beat the base gradient.
+- **2026-08-22** - Citizenship guide live at `/citizenship`
+  (mini-preview of Phase 3: markdown-in-content-folder + wrapper
+  `.astro` that injects into GuideLayout). Filled in the real
+  Nexon COT2 release-notes URL. Added NiaMeowDB as a
+  closed-test-info source. Added Citizenship to primary nav.
