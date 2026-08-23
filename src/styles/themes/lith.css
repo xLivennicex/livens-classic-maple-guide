@@ -1,6 +1,7 @@
-/* Lith Harbor: coastal, driftwood and sails.
- * STUB palette - refine once we build a Lith-themed page.
- */
+/* Lith Harbor: coastal, driftwood and sails. Where new adventurers
+ * arrive from Maple Island - the gateway to the world. Used by the
+ * Citizenship guide (welcoming new-player content) and any future
+ * arrival/harbor-themed pages. */
 
 [data-theme="lith"] {
 	--bg-sky-top: #a8d8e8;
@@ -37,4 +38,33 @@
 	--accent-blossom-strong: #b8763a;
 
 	--shadow-panel: 0 10px 30px rgba(30, 74, 92, 0.2);
+}
+
+/* Scenic background: sunlit harbor with lighthouse, tall ship, palm
+ * trees, and wooden docks. Cream scrim on top keeps card content
+ * readable against the bright turquoise water. */
+
+html[data-theme="lith"] body {
+	background-color: var(--bg-sky-top); /* fallback if image fails */
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 248, 236, 0.3) 45%,
+			rgba(255, 248, 236, 0.85) 100%
+		),
+		url("/images/lith-background.png");
+	background-size: cover, cover;
+	background-position: center top, center top;
+	background-repeat: no-repeat, no-repeat;
+	background-attachment: fixed, fixed;
+}
+
+/* Image already has real clouds, palm-tree canopies, and beach detail,
+ * so the CSS decorations layer would just add noise. Kill it for Lith. */
+html[data-theme="lith"] body[data-theme-decorations="on"]::before,
+html[data-theme="lith"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
 }
