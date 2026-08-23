@@ -1,0 +1,50 @@
+---
+// Crafting page - imports the markdown guide as an Astro component
+// and wraps it in GuideLayout. Same pattern as citizenship.astro.
+// Themed to Perion because that town houses 2 of the 6 masters
+// (Silas Irons for Smithing, Mr. Thunder for Weaponcrafting) and the
+// scenic background literally shows workshop cliffs and weapon racks.
+
+import GuideLayout from "../layouts/GuideLayout.astro";
+import { Content, frontmatter } from "../content/guides/crafting.md";
+
+const toc = [
+	{ href: "#crafting-at-a-glance", label: "At a glance" },
+	{ href: "#the-six-crafting-disciplines", label: "Six disciplines" },
+	{ href: "#how-to-learn-a-crafting-discipline", label: "How to learn" },
+	{ href: "#the-crafting-workflow", label: "Workflow" },
+	{ href: "#crafting-mastery-and-character-level-gates", label: "Mastery & gates" },
+	{ href: "#profession-kits-your-weekly-mastery-boost", label: "Weekly Kits" },
+	{ href: "#the-four-crafting-catalysts", label: "Catalysts" },
+	{ href: "#which-discipline-should-you-level-first", label: "Which first?" },
+	{ href: "#crafting-efficiently", label: "Efficiency" },
+	{ href: "#frequently-asked-questions", label: "FAQ" },
+];
+
+const guideSources = [
+	"nexon-cot1-release-notes",
+	"niameowdb-crafting",
+];
+---
+
+<GuideLayout
+	title={`${frontmatter.title} - Liven's Classic Maple Guide`}
+	description={frontmatter.description}
+	currentPath="/crafting"
+	theme="perion"
+	decorations={false}
+	eyebrow="Systems Guide"
+	heading="Crafting"
+	tagline="Six disciplines, 348 recipes, and one economy in the making. Learn where to farm, how to level Mastery, when to burn a Catalyst, and which crafts actually pay."
+	verificationStatus="closed-test-info"
+	lastChecked={frontmatter.lastUpdated}
+	sourceSlugs={guideSources}
+	verificationNote="All numeric details in this guide were recorded from Closed Online Test 2. Recipe counts, Mastery requirements, meso costs, and catalyst behavior may change before or during launch. The 348-recipe figure and per-discipline breakdowns come from the COT2 client snapshot on NiaMeowDB."
+	toc={toc}
+>
+	<article class="markdown-content">
+		<Content />
+	</article>
+</GuideLayout>
+
+

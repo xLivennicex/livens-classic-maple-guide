@@ -85,6 +85,60 @@ export const sources: ArchivedSource[] = [
 		],
 	},
 
+	// Nexon COT1 release notes - the earlier test window that first
+	// introduced Crafting as a Classic World system. Distinct from the
+	// COT2 release notes; some systems (like Crafting Catalysts) got
+	// their names/mechanics changed between the two tests.
+	{
+		slug: "nexon-cot1-release-notes",
+		title: "Closed Online Test 1 Release Notes",
+		publisher: "NEXON",
+		publishedOn: "COT1 test window (2025-2026)",
+		sourceType: "closed-test-info",
+		topics: ["Crafting", "Systems", "Testing"],
+		originalUrl:
+			"https://www.nexon.com/maplestory/news/general/39217/closed-online-test-release-notes",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Official patch notes from Classic World's first Closed Online Test. Introduces the Crafting system across six disciplines. Some COT1 names and behaviors changed by COT2 (e.g. Equipment/Scroll Crafting Stimulator became distinct Catalyst items).",
+		confirmedFacts: [
+			"Crafting introduced as a Classic World system in COT1",
+			"Six crafting disciplines exist (Smithing, Weaponcrafting, Tailoring, Woodcrafting, Leatherworking, Arcforge)",
+		],
+	},
+
+	// NiaMeowDB Crafting hub - covers the recipe database, mastery/EXP
+	// table, efficiency analysis, and COT1->COT2 changelog. One aggregate
+	// entry rather than four near-duplicates; individual URLs cited inline
+	// in the guide text.
+	{
+		slug: "niameowdb-crafting",
+		title: "NiaMeowDB - Crafting System Database",
+		publisher: "NiaMeowDB",
+		publishedOn: "COT2 recording (2026)",
+		sourceType: "closed-test-info",
+		topics: [
+			"Crafting",
+			"Recipes",
+			"Mastery",
+			"Catalysts",
+			"Materials",
+			"Efficiency",
+		],
+		originalUrl: "https://meowdb.com/msclassic/crafting",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Community-maintained database of Classic World COT2 crafting data. Covers the full 348-recipe index, per-discipline recipe listings, the Mastery (crafting EXP) requirement table, NPC-value efficiency analysis, and the COT1-to-COT2 client changelog. Individual sub-pages (recipes, mastery table, efficiency analysis, changelog) are cited inline throughout the guide.",
+		confirmedFacts: [
+			"348 recipes recorded across 6 disciplines in COT2",
+			"Recipe counts per discipline: Smithing 68, Weaponcrafting 45, Tailoring 59, Woodcrafting 43, Leatherworking 89, Arcforge 44 (COT2)",
+			"Crafting capped at Level 10 in COT2 observations",
+			"Mastery is gated by character level thresholds at each crafting rank (COT2)",
+		],
+	},
+
 	// NiaMeowDB - community database that captured detailed COT2 data
 	// including per-grade shop inventories, quest records, and contribution
 	// values. Data reflects the test build and needs relaunch verification.

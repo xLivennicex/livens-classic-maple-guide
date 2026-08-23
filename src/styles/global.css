@@ -293,6 +293,154 @@ main.page-width {
 	text-underline-offset: 2px;
 }
 
+/* ==================== Markdown Content ====================
+ * Used by any page that renders imported .md files via <Content />.
+ * Wrap the <Content /> in <article class="markdown-content">, and
+ * this stylesheet handles headings, tables, lists, blockquotes, and
+ * code blocks consistently across every system/reference guide.
+ *
+ * Keeping this in global.css (rather than duplicating in each page's
+ * scoped <style>) means all markdown-driven guides share one visual
+ * identity. When Phase 3 (real content collections) ships, this
+ * stylesheet becomes even more valuable - the schema-driven pages
+ * inherit it for free. */
+
+.markdown-content {
+	background: var(--surface-card);
+	border: 2px solid var(--border-card);
+	border-radius: 1rem;
+	padding: 1.5rem 1.75rem;
+	line-height: 1.65;
+	color: var(--text-body);
+}
+
+.markdown-content h2 {
+	margin: 2rem 0 0.75rem;
+	padding-bottom: 0.4rem;
+	border-bottom: 2px solid var(--border-divider);
+	color: var(--text-heading);
+	font-size: 1.5rem;
+	scroll-margin-top: 1rem;
+}
+
+.markdown-content h2:first-child {
+	margin-top: 0;
+}
+
+.markdown-content h3 {
+	margin: 1.5rem 0 0.5rem;
+	color: var(--text-heading);
+	font-size: 1.15rem;
+}
+
+.markdown-content p {
+	margin: 0 0 0.85rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+	margin: 0 0 0.85rem;
+	padding-left: 1.5rem;
+}
+
+.markdown-content li {
+	margin-bottom: 0.3rem;
+}
+
+.markdown-content strong {
+	color: var(--text-heading);
+}
+
+.markdown-content a {
+	color: var(--accent-primary);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.markdown-content a:hover {
+	color: var(--accent-primary-strong);
+}
+
+/* Blockquotes used for advisories, tips, or COT2-caveat callouts. */
+.markdown-content blockquote {
+	margin: 1rem 0;
+	padding: 0.9rem 1.1rem;
+	border-left: 4px solid var(--accent-secondary-border);
+	background: var(--accent-secondary);
+	color: var(--accent-secondary-text);
+	border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.markdown-content blockquote p {
+	margin-bottom: 0.5rem;
+}
+
+.markdown-content blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+/* Tables: guides use wide multi-column tables (mastery grids, shop
+ * inventories, discipline comparisons). Horizontal scroll on mobile. */
+.markdown-content table {
+	display: block;
+	overflow-x: auto;
+	width: 100%;
+	margin: 1rem 0 1.25rem;
+	border-collapse: collapse;
+	font-size: 0.92rem;
+}
+
+.markdown-content thead {
+	background: var(--surface-nav);
+	color: var(--text-on-nav);
+}
+
+.markdown-content th {
+	padding: 0.55rem 0.75rem;
+	text-align: left;
+	font-weight: bold;
+	border: 1px solid var(--border-card-strong);
+	white-space: nowrap;
+}
+
+.markdown-content td {
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--border-card);
+	vertical-align: top;
+}
+
+.markdown-content tbody tr:nth-child(even) {
+	background: rgba(0, 0, 0, 0.03);
+}
+
+.markdown-content code {
+	padding: 0.1rem 0.35rem;
+	background: rgba(0, 0, 0, 0.06);
+	border-radius: 0.25rem;
+	font-size: 0.9em;
+}
+
+.markdown-content pre {
+	margin: 1rem 0;
+	padding: 1rem;
+	background: rgba(0, 0, 0, 0.05);
+	border-radius: 0.5rem;
+	overflow-x: auto;
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.markdown-content pre code {
+	padding: 0;
+	background: none;
+}
+
+.markdown-content hr {
+	margin: 2rem 0;
+	border: none;
+	border-top: 2px dashed var(--border-divider);
+}
+
 /* ---------- Accessibility ---------- */
 
 .sr-only {

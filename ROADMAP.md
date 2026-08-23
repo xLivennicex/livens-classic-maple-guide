@@ -205,3 +205,9 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   `.astro` that injects into GuideLayout). Filled in the real
   Nexon COT2 release-notes URL. Added NiaMeowDB as a
   closed-test-info source. Added Citizenship to primary nav.
+- **2026-08-22** - Crafting guide live at `/crafting`
+  (Perion-themed, 6 disciplines / 348 recipes / catalysts /
+  mastery gates). Added Nexon COT1 release notes and NiaMeowDB
+  Crafting as sources. Extracted duplicated markdown-content
+  CSS from per-page style blocks into global.css so every
+  markdown-driven guide inherits the same visual identity.
