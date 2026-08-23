@@ -1,0 +1,544 @@
+---
+/**
+ * Magician class guide. Second job vertical slice (Warrior was first).
+ *
+ * Mirrors warrior.astro's structure deliberately: same section order,
+ * same data-array pattern for skills + second jobs, same InfoCard +
+ * SourceBadge usage. When we build 3+ job guides and understand the
+ * real duplication, we migrate all four to a proper `jobs` content
+ * collection with skill/build schemas.
+ *
+ * All content is v83 baseline pending Classic World verification.
+ * Every claim is labeled and traceable to the sources listed below.
+ */
+
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import SourceBadge from "../../components/SourceBadge.astro";
+import InfoCard from "../../components/InfoCard.astro";
+
+const LAST_CHECKED = "2026-08-22";
+
+const toc = [
+	{ href: "#overview", label: "Overview" },
+	{ href: "#advancement", label: "How to advance" },
+	{ href: "#ap", label: "AP allocation" },
+	{ href: "#skills", label: "First job skills" },
+	{ href: "#training", label: "Training routes" },
+	{ href: "#equipment", label: "Equipment" },
+	{ href: "#second-job", label: "Second job branches" },
+	{ href: "#faq", label: "FAQ" },
+];
+
+const guideSources = [
+	"ayumilove-v83-magician",
+	"hiddenstreet-v83-database",
+];
+
+// First-job skill order below is the v83 consensus: Magic Guard first
+// (survival), then Improved Max MP Increase (pool), then Magic Claw
+// (main attack). Energy Bolt and Magic Armor are skipped or 1-point
+// utility because Magic Claw dominates on damage-per-MP.
+const firstJobSkills = [
+	{
+		name: "Improved MP Recovery",
+		type: "Passive",
+		maxLevel: "16 (v83)",
+		summary: "Faster natural MP regeneration over time.",
+		suggested: "1 point (prerequisite for other passives)",
+	},
+	{
+		name: "Improved Max MP Increase",
+		type: "Passive",
+		maxLevel: "10 (v83)",
+		summary: "Bonus MP gained per level-up. Compounds every level - the earlier you invest, the larger your endgame MP pool.",
+		suggested: "Max after Magic Guard (v83 baseline)",
+	},
+	{
+		name: "Magic Guard",
+		type: "Buff",
+		maxLevel: "20 (v83)",
+		summary: "Converts a percentage of damage taken into MP loss instead of HP. THE defining Magician survival skill - a maxed Magic Guard makes glass-cannon builds viable.",
+		suggested: "MAX FIRST (v83 baseline). Survival before damage.",
+	},
+	{
+		name: "Magic Armor",
+		type: "Buff",
+		maxLevel: "20 (v83)",
+		summary: "Temporary boost to Weapon Defense. Situational; Magic Guard does the heavy lifting for damage mitigation.",
+		suggested: "Skip early or 1-point utility",
+	},
+	{
+		name: "Energy Bolt",
+		type: "Attack",
+		maxLevel: "20 (v83)",
+		summary: "Single-hit ranged magic attack. Simple but Magic Claw does more damage per MP spent.",
+		suggested: "1 point (or skip) - Magic Claw is better DPS",
+	},
+	{
+		name: "Magic Claw",
+		type: "Attack",
+		maxLevel: "20 (v83)",
+		summary: "Two-hit ranged magic attack. Higher damage-per-cast than Energy Bolt and the workhorse skill for first-job Magicians.",
+		suggested: "Max after Improved Max MP Increase (v83 baseline)",
+	},
+];
+
+// Second-job branches. All three are viable long-term; the choice
+// shapes 40+ levels of play. F/P and I/L both progress toward damage
+// specialists via 3rd-job upgrades; Cleric progresses toward the
+// party-support role (Bishop at 4th job).
+const secondJobs = [
+	{
+		name: "F/P Wizard (Fire/Poison)",
+		element: "Fire and Poison",
+		summary: "Damage-over-time specialist. Poison Brace applies a DoT that ticks for 1 HP per second on bosses in v83 - a signature technique. Higher single-target output than I/L against fire-weak or poison-vulnerable enemies.",
+		bestFor: "Players who like DoT gameplay, want strong single-target burst, and enjoy elemental matchup planning",
+	},
+	{
+		name: "I/L Wizard (Ice/Lightning)",
+		element: "Ice and Lightning",
+		summary: "Crowd control and AoE. Cold Beam freezes enemies (interrupts attacks); Thunder Bolt is a multi-hit AoE that scales excellently against grouped mobs. Slightly lower single-target damage than F/P but stronger utility.",
+		bestFor: "Players who want to control fights, train on grouped mobs, and value freeze utility for party play",
+	},
+	{
+		name: "Cleric",
+		element: "Holy (with Heal utility)",
+		summary: "Support and undead specialist. Heal doubles as an attack against undead mobs (Zombie Mushrooms, Wraiths, etc.) - some of the best undead-map EXP in v83 came from Cleric AoE-healing. Progresses to Priest (buffs) and Bishop (full party support).",
+		bestFor: "Players who want to party constantly, don't mind slower solo damage, and appreciate that everyone loves the healer",
+	},
+];
+---
+
+<GuideLayout
+	title="Magician - Liven's Classic Maple Guide"
+	currentPath="/jobs"
+	theme="ellinia"
+	decorations={true}
+	eyebrow="Class Guide"
+	heading="Magician"
+	tagline="Low HP, high MP, ranged magical damage. The class that trades survival for power - until Magic Guard changes everything."
+	verificationStatus="historical-archive"
+	lastChecked={LAST_CHECKED}
+	sourceSlugs={guideSources}
+	verificationNote="Every claim here reflects v83-era baseline. Classic World values (particularly advancement level, INT requirement, and Magic Guard's damage-to-MP ratio) will be re-verified once Founder's Access begins on October 6."
+	toc={toc}
+>
+	<!-- ============================================================ -->
+	<section id="overview" class="guide-section">
+		<h2>Overview</h2>
+		<div class="card prose">
+			<p>
+				Magicians are Classic World's ranged magical archetype:
+				low HP, high MP, INT-based magical damage, and unique
+				survival mechanics that rewrite the "glass cannon" trope.
+				They trade the melee durability of Warriors and the
+				physical range of Bowmen for spells that hit hard,
+				scale with intelligence, and can be sustained by Mana
+				potions instead of Health.
+			</p>
+			<p>
+				The class has a distinctive learning curve. Levels 1
+				through 7 are the roughest in the game - Magicians
+				advance later than Warriors in some metrics and have
+				the lowest starting HP. But at level 8, first job
+				unlocks <strong>Magic Guard</strong>, and Magician
+				survivability suddenly becomes competitive with any
+				class in the game.
+			</p>
+
+			<div class="callout">
+				<strong>Best for:</strong> players who enjoy resource
+				management (MP is your health once Magic Guard is up),
+				want elemental variety, or plan to eventually specialize
+				into party support (Cleric branch).
+				<br />
+				<strong>Not ideal for:</strong> players who dislike
+				potion-heavy play early on, want melee combat feel
+				(Warrior), or want the highest possible mobility
+				(Thief).
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="advancement" class="guide-section">
+		<h2>How to become a Magician</h2>
+
+		<div class="card prose">
+			<p><strong>Requirements (v83 baseline):</strong></p>
+			<ul>
+				<li>Character level <strong>8</strong> (earlier than
+					the other three classes)</li>
+				<li>At least <strong>20 INT</strong></li>
+			</ul>
+
+			<p><strong>Where to go:</strong></p>
+			<ol>
+				<li>
+					From Lith Harbor (arrival point after Maple Island),
+					take the taxi or travel east to <strong>Ellinia</strong>,
+					the treetop city.
+				</li>
+				<li>
+					Enter the <em>Magic Library</em> at the top of the
+					tree and speak with <strong>Grendel the Really Old</strong>,
+					the Magician job instructor.
+				</li>
+				<li>
+					Accept the job change. In v83 this was a direct
+					conversation with no combat trial. Classic World
+					may reintroduce an advancement quest - see FAQ.
+				</li>
+			</ol>
+
+			<p>
+				After advancement you gain 1 SP and unlock the first
+				job skill set (listed below).
+			</p>
+
+			<div class="callout">
+				<strong>Timing note:</strong> Because Magicians can
+				advance at level 8 versus the level-10 requirement for
+				the other three classes, the early game feels shorter.
+				If Classic World keeps this rule, expect to be casting
+				spells while your Warrior friends are still throwing
+				Maple Island snails.
+				<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="ap" class="guide-section">
+		<h2>AP allocation</h2>
+
+		<div class="card prose">
+			<p>
+				<strong>The short version (v83 baseline):</strong> pour
+				points into INT every level. LUK only exists to keep
+				your magic hit rate acceptable.
+			</p>
+
+			<p><strong>Two schools of thought exist:</strong></p>
+			<ul>
+				<li>
+					<strong>Pure INT ("INT-only"):</strong> Every AP
+					into INT. Maximum magical damage; you will miss
+					more often on same-level or higher mobs, and hit
+					rate on bosses may suffer.
+				</li>
+				<li>
+					<strong>LUK = (character level - 3):</strong> Keep
+					LUK three below your level for reliable hit rate.
+					Slightly lower damage; noticeably more consistent,
+					especially against higher-level content.
+				</li>
+			</ul>
+
+			<p>
+				The LUK-level rule is the more forgiving choice for a
+				first character and the recommendation most v83 guides
+				made. Whether the magic hit-rate formula behaves this
+				way in Classic World is one of the values we will
+				verify at launch.
+			</p>
+
+			<div class="callout">
+				<strong>Do NOT invest in STR or DEX.</strong> Magicians
+				do not benefit from either. If a piece of equipment
+				requires STR or DEX to wear, it was not built for you.
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="skills" class="guide-section">
+		<h2>First job skills</h2>
+
+		<p class="section-lede">
+			First job gives you six skills. The recommended v83 order is:
+			<strong>1 point in Improved MP Recovery,</strong> then MAX
+			<strong>Magic Guard</strong> as fast as possible (survival
+			before damage), then max Improved Max MP Increase, then max
+			Magic Claw. Skip Energy Bolt (Magic Claw dominates it) and
+			leave Magic Armor at 1 point or skip entirely.
+		</p>
+
+		<div class="skill-table" role="table" aria-label="Magician first job skills">
+			<div class="skill-table__header" role="row">
+				<span role="columnheader">Skill</span>
+				<span role="columnheader">Type</span>
+				<span role="columnheader">Summary</span>
+				<span role="columnheader">Suggested investment</span>
+			</div>
+			{firstJobSkills.map((skill) => (
+				<div class="skill-table__row" role="row">
+					<div role="cell">
+						<strong>{skill.name}</strong>
+						<small>Max Level: {skill.maxLevel}</small>
+					</div>
+					<div role="cell">{skill.type}</div>
+					<div role="cell">{skill.summary}</div>
+					<div role="cell">{skill.suggested}</div>
+				</div>
+			))}
+		</div>
+
+		<InfoCard eyebrow="Why Magic Guard first?" heading="The Magician survival flip">
+			<p>
+				A first-job Magician without Magic Guard is genuinely
+				fragile - one mob hit can take 20-40% of your HP bar.
+				With Magic Guard active, that same hit deducts MP
+				instead. Since you already carry Mana potions to cast
+				spells, you effectively use MP potions as HP potions.
+			</p>
+			<p>
+				This is why max Magic Guard <em>immediately</em> is the
+				universal v83 recommendation. Everything else - MP pool,
+				damage - is optimization on top of the survival
+				foundation Magic Guard provides.
+			</p>
+		</InfoCard>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="training" class="guide-section">
+		<h2>Training routes (levels 1 - 30)</h2>
+
+		<p class="section-lede">
+			v83 baseline routes. Classic World map spawns and monster
+			levels may have shifted; verify at Founder's Access.
+		</p>
+
+		<div class="route-grid">
+			<div class="card route-card">
+				<h3>Levels 1 - 8 (Beginner)</h3>
+				<p><strong>Where:</strong> Maple Island</p>
+				<p><strong>What:</strong> Snails, Blue Snails, Red Snails</p>
+				<p>
+					Complete the Maple Island story quests, then take
+					the ship to Victoria Island. Reach 20 INT before
+					hitting Ellinia. Magicians can advance two levels
+					earlier than the other classes.
+				</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 8 - 15</h3>
+				<p><strong>Where:</strong> Ellinia trees or Henesys area</p>
+				<p><strong>What:</strong> Green Trixters (Ellinia), Snails, Orange Mushrooms (Henesys)</p>
+				<p>
+					Get comfortable with Magic Claw and Magic Guard
+					rotation here. Casting Magic Guard costs MP - budget
+					accordingly and refresh before it expires.
+				</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 15 - 25</h3>
+				<p><strong>Where:</strong> Ellinia dungeon (Wild Boars), Kerning City area (Ligators)</p>
+				<p><strong>What:</strong> Whichever has fewer competing players.</p>
+				<p>
+					Ellinia is the traditional Magician home, but the
+					Kerning tunnel offers better EXP-per-hour if you can
+					handle the melee-range mobs from ranged.
+				</p>
+			</div>
+
+			<div class="card route-card">
+				<h3>Levels 25 - 30</h3>
+				<p><strong>Where:</strong> Ant Tunnel (Zombie Mushrooms) or Henesys Hunting Ground (Ribbon Pigs, Green Mushrooms)</p>
+				<p><strong>What:</strong> Denser mobs, higher EXP-per-kill.</p>
+				<p>
+					Second job advancement quest becomes available at
+					level 30. If you plan to go Cleric, Zombie Mushroom
+					maps are especially productive because Heal will
+					become your primary attack against them.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="equipment" class="guide-section">
+		<h2>Equipment progression</h2>
+
+		<div class="card prose">
+			<p>
+				Magician gear is INT-focused: you want raw Magic ATT on
+				your weapon, and INT/MP bonuses with modest Magic Def
+				on everything else. Weapon Def matters far less than
+				it does for Warriors because Magic Guard shifts
+				incoming damage to MP.
+			</p>
+
+			<p><strong>Weapons:</strong></p>
+			<ul>
+				<li>
+					<strong>Wand:</strong> Lower base Magic ATT but
+					faster attack speed. Good for consistent damage
+					output.
+				</li>
+				<li>
+					<strong>Staff:</strong> Higher base Magic ATT,
+					slower attack speed. Slightly better for burst
+					damage and single-cast skills.
+				</li>
+			</ul>
+			<p>
+				Both are viable in v83. Staff is the more common pick
+				because Magic ATT compounds with your INT-heavy build,
+				but wands remain competitive.
+			</p>
+
+			<p><strong>Armor progression (v83 baseline):</strong></p>
+			<ul>
+				<li>
+					<strong>Level 1 - 10:</strong> Whatever the beginner
+					shops sell. Prioritize any INT or MP bonuses.
+				</li>
+				<li>
+					<strong>Level 10 - 20:</strong> Basic robes and
+					hats from Ellinia shops. Green robes and pointed
+					hats are the traditional Magician starter look.
+				</li>
+				<li>
+					<strong>Level 20 - 30:</strong> Overall robes with
+					INT bonuses. Yellow Umbrella is a level-25 weapon
+					with hidden utility (Magicians can equip it) that
+					some v83 guides recommended for its cost-to-power
+					ratio.
+				</li>
+				<li>
+					<strong>Approaching 30:</strong> Save mesos for the
+					second-job weapon matching the branch you have
+					chosen. Element-specific wands and staves become
+					available and are meaningful upgrades.
+				</li>
+			</ul>
+
+			<div class="callout">
+				<strong>Scroll safely.</strong> As with Warriors, ten
+				percent scrolls with big stat boosts destroy gear more
+				often than they help at this level range. Sixty and
+				hundred percent scrolls with INT or Magic ATT bonuses
+				are the beginner-friendly choices.
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="second-job" class="guide-section">
+		<h2>Second job branches (level 30)</h2>
+
+		<p class="section-lede">
+			At level 30 you choose one of three second-job paths. All
+			three are viable; the pick shapes the next 40+ levels of
+			gameplay and dictates which elements you specialize in.
+		</p>
+
+		<div class="branches-grid">
+			{secondJobs.map((job) => (
+				<article class="card branch-card">
+					<h3>{job.name}</h3>
+					<p class="branch-card__weapon">
+						<strong>Element:</strong> {job.element}
+					</p>
+					<p>{job.summary}</p>
+					<p class="branch-card__for">
+						<strong>Best for:</strong> {job.bestFor}
+					</p>
+				</article>
+			))}
+		</div>
+
+		<InfoCard eyebrow="Element matters" heading="Mob resistance is a real thing">
+			<p>
+				Unlike Warriors (physical damage against everything),
+				Magicians deal <em>elemental</em> damage. Every mob has
+				a resistance profile - some are weak to fire, others
+				resist ice, others are immune to both but weak to holy.
+			</p>
+			<p>
+				Your second-job branch commits you to two elements for
+				the rest of the game. F/P Wizards will steamroll
+				fire-weak mobs and struggle against fire-immune ones.
+				I/L Wizards freeze most fights but hit ice-resistant
+				mobs weakly. This is intentional design - not a
+				weakness, but something to factor into where you
+				train and party.
+			</p>
+		</InfoCard>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="faq" class="guide-section">
+		<h2>Frequently asked questions</h2>
+
+		<InfoCard eyebrow="FAQ" heading="Common Magician questions">
+			<dl class="faq">
+				<dt>Do I need to do a job advancement quest, or just talk?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> v83 was talk-only
+					with an INT requirement; some later versions added
+					a "prove yourself" trial. Whether Classic World
+					reintroduces the quest will be visible at Founder's
+					Access.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+
+				<dt>Is a pure-INT build viable at launch?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> In v83, pure INT
+					was the meta once players had scrolled equipment
+					with LUK bonuses to cover hit rate. Whether Classic
+					World preserves the same hit-rate formula and LUK
+					requirements determines whether it stays viable.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+
+				<dt>Why does everyone say max Magic Guard first?</dt>
+				<dd>
+					Because it converts damage taken into MP loss
+					instead of HP loss. Since Magicians already carry
+					MP potions, Magic Guard effectively lets you use
+					those MP potions as HP potions - trivially cheaper
+					than the White Potions Warriors chew through.
+					Without Magic Guard, first job Magicians die a lot.
+					<span class="inline-badge"><SourceBadge type="historical-archive" compact /></span>
+				</dd>
+
+				<dt>Which second job branch does the most damage?</dt>
+				<dd>
+					In v83 F/P Wizards had the highest single-target
+					sustained damage against fire-weak or poison-
+					vulnerable mobs. I/L Wizards had better AoE and
+					crowd control. Cleric was intentionally lower DPS
+					but essential to parties. Classic World may shift
+					these balance points.
+					<span class="inline-badge"><SourceBadge type="historical-archive" compact /></span>
+				</dd>
+
+				<dt>Should I go Cleric if I only plan to solo?</dt>
+				<dd>
+					Cleric can absolutely solo, especially against
+					undead mobs where Heal doubles as attack. But if
+					you never plan to party at all, F/P or I/L will
+					feel more powerful per fight. Cleric's real payoff
+					is being the person everyone wants in their party
+					- worth thinking about socially, not just mechanically.
+				</dd>
+
+				<dt>Can I re-spec if I regret my second-job choice?</dt>
+				<dd>
+					<em>Awaiting confirmation.</em> v83 had no free
+					re-spec; SP resets required specific event items or
+					cash-shop purchases. Whether Classic World allows a
+					launch-window re-spec (as some private servers did)
+					is unknown.
+					<span class="inline-badge"><SourceBadge type="awaiting-confirmation" compact /></span>
+				</dd>
+			</dl>
+		</InfoCard>
+	</section>
+</GuideLayout>

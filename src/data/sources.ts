@@ -185,6 +185,27 @@ export const sources: ArchivedSource[] = [
 	},
 
 	{
+		slug: "ayumilove-v83-magician",
+		title: "Ayumilove MapleStory Magician Guide (v83 era)",
+		publisher: "Ayumilove",
+		publishedOn: "v83 era (approximate)",
+		sourceType: "historical-archive",
+		topics: ["Magician", "Builds", "Skills", "AP allocation", "Magic Guard"],
+		originalUrl: "https://ayumilove.net/maplestory/",
+		checkedOn: "2026-08-22",
+		status: "current",
+		summary:
+			"Long-running fan reference from the v83 era. Used as the baseline for Magician playstyle, Magic Guard priority, and second-job branch guidance pending Classic World verification.",
+		confirmedFacts: [
+			"Magicians use INT as their primary damage stat (v83 baseline)",
+			"First job advancement requires level 8 and 20 INT (v83 baseline)",
+			"First job trainer is Grendel the Really Old in Ellinia (v83 baseline)",
+			"Second job branches are F/P Wizard, I/L Wizard, and Cleric (v83 baseline)",
+			"Magic Guard converts a portion of damage taken into MP loss (v83 baseline)",
+		],
+	},
+
+	{
 		slug: "hiddenstreet-v83-database",
 		title: "HiddenStreet.net Database (v83 era)",
 		publisher: "HiddenStreet",

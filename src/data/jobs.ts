@@ -28,7 +28,7 @@ export const jobs: Job[] = [
 		monogram: "M",
 		description:
 			"Early advancement, MP management, and elemental skill paths.",
-		href: null,
+		href: "/jobs/magician",
 	},
 	{
 		slug: "bowman",

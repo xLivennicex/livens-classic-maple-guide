@@ -184,9 +184,13 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   WebP)
 
 **Next up:**
-- Second job guide (Magician) as another vertical slice
+- Third job guide (Bowman or Thief) as another vertical slice
+- Migrate Warrior/Magician to a proper `jobs` content collection
+  once we have 3+ class guides and can see the real duplication
 - Additional system guides (drop-in .md files now that Phase 3 shipped)
 - Homepage discovery cards for the two system guides
+- Ellinia scenic background + BGM (theme is polished palette-wise
+  but has no scenic image or music yet)
 
 ---
 
@@ -211,6 +215,14 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   Crafting as sources. Extracted duplicated markdown-content
   CSS from per-page style blocks into global.css so every
   markdown-driven guide inherits the same visual identity.
+- **2026-08-22** - Magician class guide live at `/jobs/magician`.
+  Ellinia-themed (palette stub, no scenic bg or BGM yet).
+  Mirrors the Warrior guide's structure and depth so the two
+  class pages stay easy to compare. Added `ayumilove-v83-magician`
+  as a companion source. Activated Magician's link in the jobs
+  directory (was placeholder). Six first-job skills + three
+  second-job branches (F/P, I/L, Cleric) documented at v83
+  baseline with Classic World verification pending.
 - **2026-08-22** - Phase 3 COMPLETE. Formal Astro content
   collections (`src/content.config.ts`) with a rich schema:
   layout/theme/verification/sources/toc/benefits all live in
