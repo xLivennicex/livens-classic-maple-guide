@@ -188,7 +188,6 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
 - Migrate Warrior/Magician to a proper `jobs` content collection
   once we have 3+ class guides and can see the real duplication
 - Additional system guides (drop-in .md files now that Phase 3 shipped)
-- Homepage discovery cards for the two system guides
 - Ellinia scenic background + BGM (theme is polished palette-wise
   but has no scenic image or music yet)
 
@@ -215,6 +214,16 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   Crafting as sources. Extracted duplicated markdown-content
   CSS from per-page style blocks into global.css so every
   markdown-driven guide inherits the same visual identity.
+- **2026-08-22** - Homepage now discovers system guides. Added
+  a `SystemCard` component (sibling to JobCard) and a new
+  "Classic World systems" section on the homepage that reads
+  straight from the `guides` content collection at build time.
+  New system .md files auto-appear on the homepage - zero
+  discovery plumbing needed. Also fixed a latent Phase 3 bug:
+  the `verificationStatus` enum in `content.config.ts` had wrong
+  values (imported the AccuracyStatus enum by mistake instead of
+  SourceType). Corrected to match SourceType exactly with an
+  inline comment warning to keep the two in sync going forward.
 - **2026-08-22** - Magician class guide live at `/jobs/magician`.
   Ellinia-themed (palette stub, no scenic bg or BGM yet).
   Mirrors the Warrior guide's structure and depth so the two

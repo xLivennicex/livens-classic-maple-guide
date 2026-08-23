@@ -74,13 +74,17 @@ const guides = defineCollection({
 		tagline: z.string(),
 
 		// ------ Verification (accuracy-label system) ------
+		// These enum values MUST match `SourceType` in src/data/sources.ts.
+		// The GuideLayout renders this via <SourceBadge type={...} />, which
+		// only knows about SourceType's exact strings. If you add a value
+		// here, add it to SourceType too (and to SourceBadge's META map).
 		verificationStatus: z.enum([
-			"official-confirmed",
+			"official-announcement",
 			"closed-test-info",
-			"founders-verified",
 			"launch-verified",
 			"community-reported",
-			"needs-reverification",
+			"awaiting-confirmation",
+			"historical-archive",
 		]),
 		verificationNote: z.string().optional(),
 		sourceSlugs: z.array(z.string()).default([]),

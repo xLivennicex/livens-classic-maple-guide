@@ -1,40 +1,59 @@
 /* Ellinia: magician's forest canopy, mystical gold accents.
- * STUB palette - refine once we build the Magician guide.
+ *
+ * The town lives among enormous trees above a moss-and-fern floor.
+ * Palette leans on deep leaf greens for chrome, cream parchment for
+ * card surfaces, and warm gold plus blossom pink for accents (the
+ * gold echoing Grendel's robes, the blossom the tree-blossom hues
+ * scattered through the canopy).
  */
 
 [data-theme="ellinia"] {
-	--bg-sky-top: #a8d5c0;
-	--bg-ground: #d8e8d0;
-	--bg-cloud: #f0f8e8;
-	--bg-grass: #5a8a5a;
+	/* --- Backgrounds --- */
+	--bg-sky-top: #a8d5c0;         /* soft teal-green canopy sky */
+	--bg-ground: #d8e8d0;           /* light mossy ground */
+	--bg-cloud: #f0f8e8;             /* pale pollen wisp */
+	--bg-grass: #5a8a5a;             /* fern silhouette */
 
-	--surface-card: #f5fcf0;
-	--surface-nav: #3a7050;
-	--surface-nav-hover: #5a9070;
-	--surface-announcement: #1e4028;
+	/* --- Surfaces --- */
+	--surface-card: #f5fcf0;         /* cream-leaf parchment */
+	--surface-nav: #3a7050;          /* deep forest bark */
+	--surface-nav-hover: #5a9070;    /* fresh leaf hover */
+	--surface-announcement: #1e4028; /* darkest canopy */
 	--surface-hero-panel: rgba(245, 252, 240, 0.94);
 
+	/* --- Borders --- */
 	--border-card: #a8c890;
 	--border-card-strong: #5a8a5a;
 	--border-nav: #1e4028;
 	--border-hero: #5a8a5a;
 	--border-divider: #b8d0a8;
 
-	--text-body: #1a2e1a;
-	--text-heading: #1e4028;
+	/* --- Text --- */
+	--text-body: #1a2e1a;            /* deep forest ink */
+	--text-heading: #1e4028;         /* darkest canopy */
 	--text-muted: #4a6a4a;
 	--text-brand-tagline: #3a7050;
 	--text-on-nav: #f5fcf0;
 	--text-on-announcement: #f5fcf0;
 	--text-on-accent: #ffffff;
 
+	/* --- Accents --- */
 	--accent-primary: #3a7050;
 	--accent-primary-strong: #1e5030;
-	--accent-secondary: #f0d878;
+	--accent-secondary: #f0d878;         /* Grendel-robe gold */
 	--accent-secondary-border: #b89540;
 	--accent-secondary-text: #3a2e0a;
-	--accent-blossom: #d878b8;
+	--accent-blossom: #d878b8;           /* tree-blossom pink */
 	--accent-blossom-strong: #a54890;
 
+	/* --- Effects --- */
 	--shadow-panel: 0 10px 30px rgba(30, 64, 40, 0.2);
+
+	/* --- Cursors ---
+	 * Ellinia is the tree town, so the default cursor is a small
+	 * falling leaf - immediate thematic hit the moment the Magician
+	 * guide loads. Interactives use the green horizontal pointer to
+	 * stay in the forest palette. */
+	--cursor-default: url("/cursors/leaf.cur") 4 4, auto;
+	--cursor-pointer: url("/cursors/point_horizontal_green.cur") 4 4, pointer;
 }

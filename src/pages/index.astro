@@ -1,6 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import JobCard from "../components/JobCard.astro";
+import SystemCard from "../components/SystemCard.astro";
 import LaunchTimeline from "../components/LaunchTimeline.astro";
 import InfoCard from "../components/InfoCard.astro";
 import AccuracyLedger, { type LedgerEntry } from "../components/AccuracyLedger.astro";
@@ -8,6 +10,14 @@ import StatusBadge from "../components/StatusBadge.astro";
 import Countdown from "../components/Countdown.astro";
 import { jobs } from "../data/jobs";
 import { countdownTargets } from "../data/launch";
+
+// System guides come straight from the content collection so this
+// section auto-updates the moment a new .md is added. Sorted alpha
+// by heading for now - swap for `lastUpdated` desc if we want
+// recency-first later.
+const systemGuides = (await getCollection("guides")).sort((a, b) =>
+	a.data.heading.localeCompare(b.data.heading)
+);
 
 // The Nexon 'Ossyria Exploration Report' post is the primary
 // launch-timeline source. Archived via the Internet Archive so the
@@ -117,6 +127,34 @@ const prepChecklist = [
 		</div>
 	</section>
 
+	<!-- Systems section: surfaces every guide in the content collection.
+	     Grows automatically as new .md files ship. -->
+	{systemGuides.length > 0 && (
+		<section class="section" id="systems">
+			<div class="section-heading">
+				<div>
+					<span class="eyebrow">Systems guides</span>
+					<h2>Classic World systems</h2>
+				</div>
+				<span class="countdown-note">
+					{systemGuides.length} guide{systemGuides.length === 1 ? "" : "s"} - more shipping soon
+				</span>
+			</div>
+
+			<div class="system-grid">
+				{systemGuides.map((g) => (
+					<SystemCard
+						href={`/${g.id}`}
+						eyebrow={g.data.eyebrow}
+						heading={g.data.heading}
+						description={g.data.description}
+						verificationStatus={g.data.verificationStatus}
+					/>
+				))}
+			</div>
+		</section>
+	)}
+
 	<section class="guide-grid" id="prepare">
 		<InfoCard eyebrow="Start here" heading="Prepare for launch">
 			<ul>
@@ -181,6 +219,14 @@ const prepChecklist = [
 	.job-grid {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+
+	/* Systems section: same rhythm as job-grid but sized for cards with
+	 * more prose. Two per row on desktop, one on narrow screens. */
+	.system-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
 	}
 

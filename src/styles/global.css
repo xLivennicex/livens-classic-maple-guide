@@ -441,6 +441,185 @@ main.page-width {
 	border-top: 2px dashed var(--border-divider);
 }
 
+/* ==================== Guide Section Primitives ====================
+ * Shared by every job-guide .astro page (Warrior, Magician, Bowman,
+ * Thief, ...). Previously duplicated in each page's scoped <style>;
+ * hoisted here so a new job guide is just content, not plumbing.
+ *
+ * Markdown-driven guides render via `.markdown-content` above and
+ * don't need these classes - they're for hand-authored .astro guides
+ * that want a richer, structured layout (skill tables, route grids,
+ * FAQ definition lists) than plain markdown gives us.
+ */
+
+.guide-section {
+	scroll-margin-top: 1rem;
+}
+
+.guide-section > h2 {
+	margin-bottom: 0.75rem;
+}
+
+.section-lede {
+	max-width: 46rem;
+	margin-bottom: 1rem;
+	color: var(--text-muted);
+	line-height: 1.55;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+	margin: 0 0 0.85rem;
+	line-height: 1.65;
+}
+
+.prose p:last-child,
+.prose ul:last-child,
+.prose ol:last-child {
+	margin-bottom: 0;
+}
+
+.prose ul,
+.prose ol {
+	padding-left: 1.4rem;
+}
+
+.prose li {
+	margin-bottom: 0.35rem;
+}
+
+.callout {
+	margin-top: 1rem;
+	padding: 0.8rem 1rem;
+	border-radius: 0.5rem;
+	border-left: 4px solid var(--accent-secondary-border);
+	background: var(--accent-secondary);
+	color: var(--accent-secondary-text);
+	line-height: 1.55;
+}
+
+/* Skill table: four-column grid (Skill / Type / Summary / Suggested
+ * investment). Collapses to stacked rows on narrow screens. */
+.skill-table {
+	display: grid;
+	grid-template-columns: 1.2fr 0.7fr 2fr 1.3fr;
+	gap: 1px;
+	background: var(--border-card);
+	border: 2px solid var(--border-card);
+	border-radius: 0.75rem;
+	overflow: hidden;
+}
+
+.skill-table__header {
+	display: contents;
+	font-weight: bold;
+}
+
+.skill-table__header > span {
+	background: var(--surface-nav);
+	color: var(--text-on-nav);
+	padding: 0.6rem 0.75rem;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.skill-table__row {
+	display: contents;
+}
+
+.skill-table__row > div {
+	background: var(--surface-card);
+	padding: 0.75rem;
+	line-height: 1.5;
+	font-size: 0.92rem;
+}
+
+.skill-table__row strong {
+	display: block;
+	color: var(--text-heading);
+}
+
+.skill-table__row small {
+	display: block;
+	margin-top: 0.2rem;
+	color: var(--text-muted);
+	font-size: 0.75rem;
+}
+
+/* Training-route and second-job-branch card grids - identical shape,
+ * one rule handles both. */
+.route-grid,
+.branches-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+	gap: 1rem;
+}
+
+.route-card h3,
+.branch-card h3 {
+	margin: 0 0 0.5rem;
+	font-size: 1.1rem;
+}
+
+.route-card p,
+.branch-card p {
+	margin: 0 0 0.5rem;
+	line-height: 1.5;
+}
+
+.branch-card__weapon,
+.branch-card__for {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+}
+
+/* FAQ definition list rendered inside an InfoCard. */
+.faq {
+	margin: 0;
+}
+
+.faq dt {
+	margin-top: 0.9rem;
+	font-weight: bold;
+	color: var(--text-heading);
+}
+
+.faq dt:first-child {
+	margin-top: 0;
+}
+
+.faq dd {
+	margin: 0.4rem 0 0;
+	line-height: 1.55;
+}
+
+.inline-badge {
+	display: inline-block;
+	margin-left: 0.35rem;
+	vertical-align: middle;
+}
+
+@media (max-width: 720px) {
+	/* Collapse the skill table into stacked rows on mobile. */
+	.skill-table {
+		grid-template-columns: 1fr;
+	}
+
+	.skill-table__header {
+		display: none;
+	}
+
+	.skill-table__row > div {
+		border-bottom: 1px solid var(--border-divider);
+	}
+
+	.skill-table__row > div:first-child {
+		padding-top: 1rem;
+	}
+}
+
 /* ---------- Accessibility ---------- */
 
 .sr-only {
