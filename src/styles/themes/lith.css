@@ -9,11 +9,14 @@
 	--bg-cloud: #ffffff;
 	--bg-grass: #6ba8b8;
 
-	--surface-card: #fff8ec;
+	/* Softer, warmer cream so cards actually read as parchment against
+	 * the bright turquoise background image instead of blending into it
+	 * as near-white. */
+	--surface-card: #faf1d9;
 	--surface-nav: #4a7c95;
 	--surface-nav-hover: #6ba0b8;
 	--surface-announcement: #1e4a5c;
-	--surface-hero-panel: rgba(255, 248, 236, 0.94);
+	--surface-hero-panel: rgba(250, 241, 217, 0.94);
 
 	--border-card: #c9b58c;
 	--border-card-strong: #8b7550;
