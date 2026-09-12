@@ -1,0 +1,62 @@
+---
+/**
+ * /crafting - renders src/content/guides/crafting.md through
+ * GuideLayout. Sibling of /citizenship. Same pattern.
+ */
+
+import { getEntry, render } from "astro:content";
+import GuideLayout from "../layouts/GuideLayout.astro";
+import ItemRewardStrip from "../components/ItemRewardStrip.astro";
+import "../styles/markdown-body.css";
+
+// Sprint 60 addendum 3: strip re-added after fixing sprite source.
+// The picks below are the specific craftables the guide body
+// names (verified via grep of crafting.md). Sprites now come
+// from MeowDB (the CoT2 client dump extraction) rather than
+// maplestory.io's v83-GMS snapshot. Visually verified:
+// hammer+wrench+gears for Weaponcrafting Kit, actual wood-brown
+// Wooden Sword, grey Iron Knuckle instead of a mage glove.
+
+const entry = await getEntry("guides", "crafting");
+if (!entry) {
+	throw new Error("Missing content/guides/crafting.md");
+}
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<GuideLayout
+	title={`${d.title} - Liven's Classic Maple Guide`}
+	description={d.description}
+	currentPath="/crafting"
+	theme={d.theme}
+	decorations={d.decorations}
+	eyebrow={d.eyebrow}
+	heading={d.heading}
+	tagline={d.tagline}
+	verificationStatus={d.verificationStatus}
+	lastChecked={d.lastUpdated}
+	sourceSlugs={d.sourceSlugs}
+	toc={d.toc}
+	verificationNote={d.verificationNote}
+>
+	<ItemRewardStrip
+		title="Crafting kits + guide-referenced outputs"
+		lede="Weekly kits gate the whole system. The four weapons below are the specific craftables named in the guide - early Woodcrafting on the left, mid-tier Weaponcrafting on the right."
+		itemIds={[2002005, 2002006, 1402000, 1372000, 1082052, 1462001]}
+		notes={{
+			2002005: "Weekly - weapon crafting",
+			2002006: "Weekly - wood crafting",
+			1402000: "Woodcrafting - early sword",
+			1372000: "Woodcrafting - mage wand",
+			1082052: "Weaponcrafting - knuckle glove",
+			1462001: "Weaponcrafting - mid crossbow",
+		}}
+	/>
+
+	<article class="markdown-body">
+		<Content />
+	</article>
+</GuideLayout>
+
+

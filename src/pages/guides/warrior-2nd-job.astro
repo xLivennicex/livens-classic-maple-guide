@@ -1,0 +1,450 @@
+---
+/**
+ * /guides/warrior-2nd-job - Warrior 2nd job branches guide.
+ *
+ * SEO target: 'maplestory warrior 2nd job classic', 'MSCW fighter
+ * vs page vs spearman', 'maplestory classic sword or axe warrior',
+ * 'v83 warrior 2nd job build'. Returning-player intent focused on
+ * the 30->70 progression window.
+ *
+ * Verification posture: skill LISTS are canonical v83 (well-documented
+ * across hidden-street, mapleroyals wiki, sources cited in
+ * skill-changes.astro). 2nd-job kits have NOT been datamine-verified
+ * for CoT 2 yet (osmsdataexplorer.com is 1st-job focused). Numeric
+ * values are v83-baseline pending live verification during
+ * Founder's Access. This page inherits skill-changes.astro's
+ * verification stance.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Warrior 2nd Job Branches: Fighter, Page, Spearman - Liven's Classic Maple Guide"
+	description="You hit Level 30 and the Warrior instructor asks you to pick a branch: Fighter (Sword/Axe), Page (Sword/Blunt Weapon), or Spearman (Spear/Polearm). Full skill kits, build orders, weapon speed tradeoffs, and party-role identity for all three, framed against canonical v83 baseline."
+	currentPath="/guides"
+	theme="perion"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">2nd Job Branches</span>
+			<h1>Warrior: Fighter, Page, or Spearman?</h1>
+			<p class="lede">
+				At Level 30 you talk to the Warrior instructor in Perion and get
+				the branching quest. This is the biggest identity-defining
+				decision your Warrior makes: your entire weapon lineup, party
+				role, and 3rd-job path all lock the moment you accept. Here's
+				the full breakdown of all three branches, their skill kits,
+				build orders, and who wins at what.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Verification:</strong> skill LISTS below are canonical
+			v83 (broadly cross-referenced across hidden-street /
+			mapleroyals docs, and consistent with the CoT 2 first-job kits
+			datamine-verified in
+			<a href="/guides/skill-changes">Skill Changes Per Class</a>).
+			2nd-job kits have NOT been datamine-verified for CoT 2 yet -
+			skills and values assume v83 baseline until Founder's Access
+			(October 6) lets us confirm live. Nexon moved Power Knockback
+			from Bowman 2nd job to Bowman 1st job, so shuffles at this tier
+			are demonstrably possible.
+		</div>
+
+		<h2 id="summary">The three branches at a glance</h2>
+		<div class="guide-summary-grid">
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Fighter <span class="status-pill status-pill--new">DPS</span></h3>
+				<p>
+					<strong>Sword or Axe.</strong> The pure damage branch.
+					<em>Rage</em> is a party-wide weapon-attack buff that shows
+					up in every attacker's numbers - Fighters make good party
+					members even before their own damage matters. Becomes
+					Crusader at 70, Hero at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Page <span class="status-pill status-pill--rework">TANK/DEBUFF</span></h3>
+				<p>
+					<strong>Sword or Blunt Weapon.</strong> The oddball branch
+					- lower damage than Fighter, but <em>Threaten</em> lowers
+					enemy damage and <em>Power Guard</em> reflects hits.
+					Historically the least-picked; genuinely shines against
+					high-attack bosses. Becomes White Knight at 70, Paladin at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Spearman <span class="status-pill status-pill--new">SUPPORT</span></h3>
+				<p>
+					<strong>Spear or Polearm.</strong> The party-support
+					branch. <em>Hyper Body</em> multiplies party max HP/MP -
+					single most desired buff in the game post-70. Damage is
+					competitive with Fighter; Polearm gets AoE swings.
+					Becomes Dragon Knight at 70, Dark Knight at 120.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="the-decision">The decision, in one paragraph</h2>
+		<p>
+			If you want the highest personal damage and don't want to think
+			about it: <strong>Fighter</strong>. If you want to be the party's
+			buff-bot and don't mind lower solo damage until Hyper Body:
+			<strong>Spearman</strong>. If you specifically love tanking
+			bosses and want a rarer identity: <strong>Page</strong>. Every
+			branch is viable at endgame - none is "wrong" - but Spearman is
+			the most-invited to parties because Hyper Body is that good.
+		</p>
+
+		<hr />
+
+		<h2 id="fighter">Branch 1: Fighter</h2>
+		<p class="section-lede">
+			The Sword-or-Axe branch. Pure attacker identity. If you played
+			any physical class in any MMO ever, this feels like home.
+		</p>
+
+		<h3>Weapon choice: Sword vs Axe</h3>
+		<p>
+			Both branches of Fighter (Sword and Axe) share the same skills
+			with weapon-specific masteries and boosters. The real difference
+			is <strong>attack speed vs base damage</strong>:
+		</p>
+		<ul>
+			<li><strong>Sword</strong>: faster (Normal-4 speed on 1-handed,
+				Normal-5 on 2-handed). Smoother DPS, more Final Attack
+				proc chances per fight, better feel for grinding.</li>
+			<li><strong>Axe</strong>: slower (Slow-5 on 1-handed, Slow-6
+				on 2-handed) but higher base weapon damage and higher
+				mastery damage variance ceiling. Bigger crit swings.</li>
+		</ul>
+		<p>
+			<strong>Sword is the safe pick.</strong> Axe has flashier numbers
+			but the slower speed makes it harder to weave with Final Attack
+			procs, and 1-handed Sword + Shield (or Cape) is the "classic
+			Fighter" silhouette everyone recognizes. Pick Axe if you
+			specifically want the slow-crit playstyle.
+		</p>
+
+		<h3>Fighter skill kit (v83 baseline, 7 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Sword Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>+Sword mastery %, +accuracy. Damage floor gets closer to damage ceiling. Max this if you're going Sword.</td>
+					</tr>
+					<tr>
+						<td><strong>Axe Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Same as Sword Mastery but for Axes. Max this if you're going Axe.</td>
+					</tr>
+					<tr>
+						<td><strong>Sword Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed while active. Consumes MP. Uptime maintenance.</td>
+					</tr>
+					<tr>
+						<td><strong>Axe Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Axes.</td>
+					</tr>
+					<tr>
+						<td><strong>Final Attack (Sword/Axe)</strong></td>
+						<td>Passive proc</td>
+						<td>30</td>
+						<td>Chance to trigger a bonus swing after a basic attack. Damage% scales with skill level. One of the biggest DPS multipliers in the kit.</td>
+					</tr>
+					<tr>
+						<td><strong>Rage</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+Weapon Attack to party for a duration. Best 2nd-job attacker buff in the game. Every party wants it.</td>
+					</tr>
+					<tr>
+						<td><strong>Power Guard</strong></td>
+						<td>Buff</td>
+						<td>30</td>
+						<td>Reflects a % of physical damage taken back at the attacker. Deprioritized until utility maxing.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Fighter recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Sword Booster (or Axe Booster) - immediate DPS uptime. Then dump into your chosen Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max your Mastery (20 points). Max your Booster next (~5-8 points is fine for 2 attack speed at low level; full 20 for uptime).</li>
+			<li><strong>Levels 45-55</strong>: Max Final Attack (30 points). This is where your DPS actually spikes - proc chance + damage% both scale.</li>
+			<li><strong>Levels 55-65</strong>: Max Rage (20 points). Now you're a party attacker AND a party buffer.</li>
+			<li><strong>Levels 65-70</strong>: Power Guard filler until 70. Not a priority; feel free to save points for 3rd job if you'd rather.</li>
+		</ol>
+
+		<hr />
+
+		<h2 id="page">Branch 2: Page</h2>
+		<p class="section-lede">
+			The Sword-or-Blunt-Weapon branch. Same weapon options as Fighter
+			for Sword, but swaps Axe for BW (Blunt Weapon = maces, wands
+			with attack). Lower damage than Fighter; makes up for it with
+			debuff + reflection utility.
+		</p>
+
+		<h3>Weapon choice: Sword vs Blunt Weapon</h3>
+		<p>
+			Same speed profile as Fighter's Sword choice. BW is the
+			replacement for Axe: slower base speed, higher base damage,
+			same 1-handed/2-handed tradeoff. BW mastery caps slightly
+			differently in v83 (both around 60% mastery ceiling at Lv 20).
+		</p>
+		<p>
+			<strong>Sword is still the safe pick for Page.</strong> BW
+			shines on specific weapons like the Deputy Star (1H) or
+			Fusion Mace / Tobi (2H). If you're not chasing a specific
+			end-of-2nd-job weapon, go Sword.
+		</p>
+
+		<h3>Page skill kit (v83 baseline, 8 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Sword Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Same as Fighter's version. Max if Sword.</td>
+					</tr>
+					<tr>
+						<td><strong>BW Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Blunt Weapon mastery + accuracy. Max if BW.</td>
+					</tr>
+					<tr>
+						<td><strong>Sword Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Swords.</td>
+					</tr>
+					<tr>
+						<td><strong>BW Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Blunt Weapons.</td>
+					</tr>
+					<tr>
+						<td><strong>Final Attack (Sword/BW)</strong></td>
+						<td>Passive proc</td>
+						<td>30</td>
+						<td>Same bonus-swing mechanic as Fighter's Final Attack. Core DPS skill.</td>
+					</tr>
+					<tr>
+						<td><strong>Threaten</strong></td>
+						<td>Debuff</td>
+						<td>20</td>
+						<td>Lowers Weapon Attack + Weapon Defense of nearby enemies for a duration. Boss-fight utility. Signature Page skill.</td>
+					</tr>
+					<tr>
+						<td><strong>Power Guard</strong></td>
+						<td>Buff</td>
+						<td>30</td>
+						<td>Same as Fighter's version. On Page it's slightly more valuable because Page usually tanks in party comps.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Page recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Booster. Dump into your Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Mastery (20 points). Max Booster (20 points) if you want full uptime, or ~5-8 as filler.</li>
+			<li><strong>Levels 45-55</strong>: Max Final Attack (30 points). Same DPS reason as Fighter.</li>
+			<li><strong>Levels 55-60</strong>: Max Threaten (20 points). This is your signature utility - use it on every boss.</li>
+			<li><strong>Levels 60-70</strong>: Max Power Guard (30 points). Now you're the party's damage sponge. Note: Power Guard is more useful on Page than on Fighter/Spearman because Page routinely tanks Bosses.</li>
+		</ol>
+
+		<hr />
+
+		<h2 id="spearman">Branch 3: Spearman</h2>
+		<p class="section-lede">
+			The Spear-or-Polearm branch. Party-support identity. Lower solo
+			damage than Fighter, but Hyper Body at Lv 45 turns you into
+			the most-invited attacker in the game.
+		</p>
+
+		<h3>Weapon choice: Spear vs Polearm</h3>
+		<p>
+			The Spearman weapon choice is the most consequential in the
+			Warrior tree because it changes your <strong>attack animation
+			pattern</strong>:
+		</p>
+		<ul>
+			<li><strong>Spear</strong>: single-target thrust. Higher
+				per-hit damage. Better for boss fights where you're
+				facing one target.</li>
+			<li><strong>Polearm</strong>: horizontal AoE swing that
+				can hit 2+ mobs at once with basic attacks. Better for
+				grinding. Slightly lower per-hit damage than Spear.</li>
+		</ul>
+		<p>
+			<strong>Polearm is the standard pick.</strong> The AoE swing
+			just outpaces Spear at every grinding spot for the whole
+			2nd-job window. Save Spear for niche builds or boss-only
+			specialists.
+		</p>
+
+		<h3>Spearman skill kit (v83 baseline, 8 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Spear Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Spear mastery % + accuracy.</td>
+					</tr>
+					<tr>
+						<td><strong>Polearm Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Polearm mastery % + accuracy.</td>
+					</tr>
+					<tr>
+						<td><strong>Spear Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Spears.</td>
+					</tr>
+					<tr>
+						<td><strong>Polearm Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Polearms.</td>
+					</tr>
+					<tr>
+						<td><strong>Final Attack (Spear/Polearm)</strong></td>
+						<td>Passive proc</td>
+						<td>30</td>
+						<td>Same bonus-swing mechanic. Core DPS.</td>
+					</tr>
+					<tr>
+						<td><strong>Iron Wall</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+Weapon Def + Magic Def to party. Support buff, priority scales with party density.</td>
+					</tr>
+					<tr>
+						<td><strong>Hyper Body</strong></td>
+						<td>Party buff</td>
+						<td>30</td>
+						<td>Multiplies party members' Max HP and Max MP for a duration. THE Spearman skill. Every party wants it. Every boss run needs it.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Spearman recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Booster. Dump Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Mastery (20), then rush toward Hyper Body prereqs. Booster to ~5-8 for uptime.</li>
+			<li><strong>Level 45</strong>: <strong>Immediately start Hyper Body</strong>. This is where party invites open up. Even 1 point is life-changing for your party.</li>
+			<li><strong>Levels 45-55</strong>: Max Hyper Body (30 points). Nothing else in the game gives you this much party value at this level.</li>
+			<li><strong>Levels 55-65</strong>: Max Final Attack (30 points). Now your damage catches up.</li>
+			<li><strong>Levels 65-70</strong>: Max Iron Wall (20 points). Filler with real party value.</li>
+		</ol>
+		<p>
+			<strong>Note on Hyper Body:</strong> This is the single most
+			valuable 2nd-job party buff in the game. If you're playing
+			solo, Fighter/Page might feel stronger - but the moment you
+			start partying, you become irreplaceable. Nobody kicks the
+			Hyper Body user.
+		</p>
+
+		<hr />
+
+		<h2 id="progression">Common 2nd-job progression (30 to 70)</h2>
+
+		<h3>Where to grind</h3>
+		<ul>
+			<li><strong>Lv 30-40</strong>: Ligators + Cursed Eyes at Kerning
+				Swamp. Zombie Mushrooms + Wild Boars at Sleepywood Ant Tunnels.
+				Party quests: Kerning PQ (21-30) tail end, then Ludi PQ (35+).</li>
+			<li><strong>Lv 40-55</strong>: Copper Drakes + Drakes at
+				Sleepywood. Wraiths at Kerning subway. Ludi PQ full window.</li>
+			<li><strong>Lv 55-70</strong>: Fire Boars at Burning Land. Death
+				Teddies at Ludi. Ludi Maze PQ (55-70). Orbis PQ if it ships.</li>
+		</ul>
+
+		<h3>Gear buys at Lv 30</h3>
+		<p>
+			The single biggest damage jump for a fresh Warrior 2nd-job is
+			buying a <strong>level-appropriate weapon</strong>. Sword users
+			target the Zamadar (Lv 30 Sword) or Doombringer (Lv 43 Sword).
+			Axe users target Fusion Axe (Lv 40) or Steel Battle Axe (Lv 32).
+			Polearm users target Fusion Halberd (Lv 40) or the classic
+			Sky Ski (Lv 43). Prices fluctuate; always check the FM before
+			committing.
+		</p>
+		<p>
+			Armor priority: <strong>overall (armor covering top + bottom)</strong>
+			over separates for the level bracket, then scrolls (10% white
+			scrolls are the cheap sweet spot for 2nd job gear). Cape and
+			shoulder are luxury; skip until Lv 50+.
+		</p>
+
+		<h3>What to expect at 3rd job (70)</h3>
+		<ul>
+			<li><strong>Fighter -&gt; Crusader</strong>: Combo Attack
+				stacking mechanic, big AoE Panic/Coma finishers.</li>
+			<li><strong>Page -&gt; White Knight</strong>: Elemental
+				charge attacks (Fire/Ice/Lightning) that inflict status
+				effects. Highly technical, extremely rewarding.</li>
+			<li><strong>Spearman -&gt; Dragon Knight</strong>: Dragon
+				Roar (huge AoE at HP cost), Sacrifice (self-buff
+				damage bomb). Hyper Body still your calling card.</li>
+		</ul>
+
+		<h2 id="related">Related reading</h2>
+		<ul>
+			<li><a href="/jobs/warrior">Warrior 1st Job Guide</a> - if you're not there yet</li>
+			<li><a href="/guides/skill-changes">Skill Changes: v83 vs CoT 2</a> - Warrior gained Precise Strikes at 1st job</li>
+			<li><a href="/guides/party-exp">Party EXP &amp; Grinding</a> - your PQ/party progression from 30 to 70</li>
+			<li><a href="/guides/exp-then-vs-now">EXP: Then vs Now</a> - datamine-verified mob EXP for grinding spots</li>
+		</ul>
+	</article>
+</BaseLayout>
+
+

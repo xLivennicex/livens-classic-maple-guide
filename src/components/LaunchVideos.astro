@@ -1,0 +1,147 @@
+---
+/**
+ * <LaunchVideos>
+ *
+ * Embeds the two current Nexon official launch-window YouTube videos
+ * as a two-column grid. Uses youtube-nocookie.com (extended privacy
+ * mode) + loading="lazy" so the iframes are cheap on page load and
+ * don't set tracking cookies until interaction.
+ *
+ * Data lives in the module top-level VIDEOS array. Swap or add
+ * entries by editing that list - the grid auto-lays-out.
+ *
+ * Verified 2026-09-05 via web scrape of youtube.com/@MapleStory.
+ * Both videos are on the official MapleStory channel; both link
+ * back to the Founder's Package sale.
+ */
+
+interface LaunchVideo {
+	id: string;         // 11-char YouTube video ID
+	title: string;
+	published: string;  // human-readable date
+	blurb: string;
+}
+
+const VIDEOS: LaunchVideo[] = [
+	{
+		id: "bkIcl0OwXpw",
+		title: "The Adventure Begins Soon",
+		published: "September 4, 2026",
+		blurb: "91-second launch-window trailer confirming the October 21 grand launch and pointing at the Founder's Package pre-sale.",
+	},
+	{
+		id: "aUJpMVFtzEY",
+		title: "Kerning City's Dark Lord Awakens",
+		published: "September 2, 2026",
+		blurb: "5-minute in-world story trailer - Kerning City's disappearances draw the Dark Lord into the mystery. Part of the launch-hype campaign.",
+	},
+];
+---
+
+<section class="launch-videos section" id="launch-videos" aria-labelledby="launch-videos-heading">
+	<div class="section-heading">
+		<div>
+			<span class="eyebrow">Watch the trailers</span>
+			<h2 id="launch-videos-heading">The latest from Nexon</h2>
+			<p class="lede">
+				Official Classic World launch videos from the
+				<a href="https://youtube.com/@MapleStory" target="_blank" rel="noopener">@MapleStory YouTube channel</a>.
+				Both go straight to the source - we just embed them here so you don't have to leave the guide.
+			</p>
+		</div>
+	</div>
+
+	<div class="video-grid">
+		{VIDEOS.map((v) => (
+			<article class="video-card">
+				<div class="video-card__frame">
+					<iframe
+						src={`https://www.youtube-nocookie.com/embed/${v.id}?rel=0`}
+						title={`YouTube: ${v.title}`}
+						loading="lazy"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen
+					></iframe>
+				</div>
+				<h3 class="video-card__title">{v.title}</h3>
+				<p class="video-card__meta">Nexon &middot; {v.published}</p>
+				<p class="video-card__blurb">{v.blurb}</p>
+			</article>
+		))}
+	</div>
+</section>
+
+<style>
+	.launch-videos {
+		margin: 2rem 0;
+	}
+
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-primary, #b8460e);
+		margin-bottom: 0.25rem;
+	}
+
+	.section-heading .lede {
+		max-width: 42rem;
+		margin: 0.35rem 0 0;
+		color: var(--text-secondary, #4a3a1a);
+	}
+
+	.video-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+		gap: 1.25rem;
+		margin-top: 1.25rem;
+	}
+
+	.video-card {
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card, #d9c9a0);
+		border-radius: 10px;
+		padding: 1rem;
+	}
+
+	/* 16:9 aspect ratio wrapper so the iframe reflows on mobile
+	   without forcing a fixed height. `aspect-ratio` is widely
+	   supported now (Safari 15+, everything else earlier). */
+	.video-card__frame {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		border-radius: 6px;
+		overflow: hidden;
+		background: #000;
+	}
+
+	.video-card__frame iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	.video-card__title {
+		font-size: 1.1rem;
+		margin: 0.75rem 0 0.15rem;
+		color: var(--text-primary, #2a1e00);
+	}
+
+	.video-card__meta {
+		font-size: 0.75rem;
+		color: var(--text-muted, #7a6b4a);
+		margin: 0 0 0.5rem;
+	}
+
+	.video-card__blurb {
+		font-size: 0.9rem;
+		line-height: 1.5;
+		margin: 0;
+		color: var(--text-secondary, #4a3a1a);
+	}
+</style>

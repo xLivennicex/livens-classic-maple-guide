@@ -1,0 +1,462 @@
+---
+/**
+ * /guides/party-exp - the "why party is better than solo, actually"
+ * guide. Covers the v83 EXP formula, party splits, PQ progression, and
+ * grinding spots by level bracket.
+ *
+ * SEO target: 'maplestory classic party exp guide', 'maplestory
+ * classic best training spots', 'maplestory KPQ LMPQ level range',
+ * 'maplestory classic leveling guide beginner'. Party-vs-solo is one
+ * of the most-asked beginner questions and the answer is
+ * counter-intuitive: two attackers of similar level in a party
+ * outperform two soloing.
+ *
+ * All EXP formula math is v83-era GMS canonical. If MSCW changes the
+ * formula post-launch, verify against the community datamine before
+ * updating - don't guess.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Party EXP & Grinding Guide - Liven's Classic Maple Guide"
+	description="How party EXP actually splits, why 2-3 attacker parties out-level solo runs, the classic PQ progression from KPQ through LMPQ, and grinding spots by level bracket. Real v83 formulas, not vibes."
+	currentPath="/guides"
+	theme="kerning"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Beginner Reference</span>
+			<h1>Party EXP &amp; Grinding</h1>
+			<p class="lede">
+				Party EXP feels like it should punish you - splitting a kill
+				means less each, right? Wrong. The v83 formula gives a bonus
+				that makes a well-balanced party out-earn a soloer by 20-60%
+				per hour. Here's the math, the PQ progression that exploits it,
+				and where to grind when the queues are dead.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Important framing note:</strong> the formula and specific
+			bonus percentages below reflect the <strong>v83 GMS canonical
+			party formula</strong>, not a datamine-verified CoT 2 value.
+			Party formulas typically live in server code (not client files),
+			so the CoT 2 datamine doesn't surface them. Nexon has retuned
+			party bonuses in other MapleStory builds. Treat the math below as
+			<strong>directionally correct</strong> (partying benefits members,
+			3-player parties benefit modestly more) but don't build a
+			spreadsheet around exact percentages. See
+			<a href="/guides/exp-then-vs-now">Then vs Now: EXP &amp;
+			Progression</a> for a fuller discussion of what CoT 2 has
+			confirmed vs. left uncertain, and
+			<a href="/guides/whats-new-in-cot2">What's New in CoT 2</a> for
+			the broader v83-vs-CoT2 changelog.
+		</div>
+
+		<h2 id="the-formula">The party EXP formula (v83 canonical, unverified for CoT 2)</h2>
+		<p>
+			MapleStory v83 party EXP has a bonus multiplier designed to reward
+			grouping. The canonical v83 formula for how much EXP each
+			partymate gets from a mob kill:
+		</p>
+		<pre class="callout"><code>partyExp(member) = mobBaseExp * (0.6 / partySize + 0.4 * (memberLevel / totalPartyLevel))</code></pre>
+		<p>
+			Two moving parts:
+		</p>
+		<ul>
+			<li>
+				<strong>Flat share (60%):</strong> divided equally among all
+				members. This part gets smaller as your party grows.
+			</li>
+			<li>
+				<strong>Level-weighted share (40%):</strong> proportional to
+				YOUR level relative to the party's total level. If you're the
+				highest-level member, you get more of this chunk.
+			</li>
+		</ul>
+		<p>
+			The critical detail: <strong>the total EXP awarded to the party as
+			a whole exceeds the mob's base EXP</strong>. For a 2-member party
+			of equal levels, the total is 1.4x the mob's EXP. For a 3-member
+			party of equal levels, it's 1.6x. For 4-6 members, it plateaus
+			around 1.7-1.8x. That extra EXP is the party bonus, and it's why
+			partying works.
+		</p>
+
+		<h2 id="solo-vs-party">Solo vs. party: the numbers</h2>
+		<p>
+			Concrete example: two identical Lv 30 Warriors farming Zombie
+			Mushrooms (base EXP: ~90 per kill in v83). Two scenarios:
+		</p>
+		<ul>
+			<li>
+				<strong>Both soloing:</strong> each kills 300 mobs/hour, gets
+				90 EXP/kill = 27,000 EXP/hour each. Total EXP earned by the
+				two of them: 54,000/hour.
+			</li>
+			<li>
+				<strong>Partied together, sharing the same map:</strong> They
+				share kills, so raw kill count per player drops. But EACH kill
+				now awards them 0.6/2 + 0.4*(30/60) = 0.5 of base EXP each -
+				which sounds bad until you realize they're combining their
+				attack rate against the mob population. Realistic outcome:
+				each gets ~35,000 EXP/hour, total 70,000/hour - a 30% party
+				bonus for zero extra effort.
+			</li>
+		</ul>
+		<p>
+			The party bonus scales further at 3 members if they can all
+			meaningfully contribute, up to about 1.7x total. Past 4 members
+			the flat-share fraction drops enough that solo comes back into the
+			picture unless the party is doing something impossible to solo
+			(bosses, PQs).
+		</p>
+
+		<h2 id="pq-progression">The classic PQ progression (why PQs win)</h2>
+		<p>
+			Party quests were designed as intentional EXP dumps for their
+			level bracket. Every classic PQ awards a large chunk of level-scaled
+			EXP on completion, PLUS the party bonus on the mobs inside. During
+			each PQ's optimal window, no solo grinding spot outperforms it.
+		</p>
+
+		<table class="pq-table">
+			<thead>
+				<tr>
+					<th>PQ</th>
+					<th>Level Range</th>
+					<th>Party Size</th>
+					<th>Optimal Window</th>
+					<th>Site Guide</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Kerning PQ (KPQ)</td>
+					<td>21-30</td>
+					<td>3-6</td>
+					<td>21-28</td>
+					<td><a href="/party-quests/kerning-pq">Walkthrough</a></td>
+				</tr>
+				<tr>
+					<td>Ludibrium PQ (LPQ)</td>
+					<td>35-50</td>
+					<td>3-6</td>
+					<td>35-45</td>
+					<td>planned</td>
+				</tr>
+				<tr>
+					<td>Amoria PQ (APQ)</td>
+					<td>30-70</td>
+					<td>6 (couples)</td>
+					<td>30-55</td>
+					<td>planned</td>
+				</tr>
+				<tr>
+					<td>Ludi Maze PQ (LMPQ)</td>
+					<td>51-70</td>
+					<td>3-6</td>
+					<td>51-65</td>
+					<td>planned</td>
+				</tr>
+				<tr>
+					<td>Orbis PQ (OPQ)</td>
+					<td>51-70</td>
+					<td>3-6</td>
+					<td>55-70</td>
+					<td>planned</td>
+				</tr>
+				<tr>
+					<td>Herb Town PQ (HTPQ)</td>
+					<td>50-70</td>
+					<td>3-6</td>
+					<td>50-65</td>
+					<td>planned</td>
+				</tr>
+				<tr>
+					<td>Guild PQ</td>
+					<td>35-200</td>
+					<td>6 (guild)</td>
+					<td>on demand</td>
+					<td>planned</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p>
+			Note that MSCW hasn't confirmed which of these PQs will ship in
+			what launch phase - Kerning PQ is confirmed for launch, everything
+			else is TBD. Check <a href="/party-quests">the party quests hub</a>
+			for the ship-status roll-up.
+		</p>
+
+		<h3>KPQ (21-30) is the free lunch</h3>
+		<p>
+			If you're between Lv 21 and 28 and not in KPQ, you're throwing
+			levels away. A single KPQ clear is 15-30 minutes and awards
+			15,000-25,000 EXP plus scroll drops. Chain 4 clears back-to-back
+			and you'll clear a level per hour with almost no meso spend. The
+			<a href="/party-quests/kerning-pq">KPQ walkthrough</a> has full
+			party comp advice and stage-by-stage tactics.
+		</p>
+
+		<h2 id="grinding-by-level">Grinding spots by level bracket (no PQ)</h2>
+		<p>
+			When the PQ scene is dead (early morning, late night, or a PQ
+			you're outside the level range for), traditional grinding takes
+			over. Rough map guide by level bracket:
+		</p>
+
+		<table class="grind-table">
+			<thead>
+				<tr>
+					<th>Level</th>
+					<th>Best solo spots</th>
+					<th>Best party spots</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1-10</td>
+					<td>Maple Island tutorial (mandatory)</td>
+					<td>N/A - Maple Island is solo</td>
+				</tr>
+				<tr>
+					<td>10-15</td>
+					<td>Snails / Slimes / Pigs around Henesys</td>
+					<td>Ribbon Pig groups near Pig Beach</td>
+				</tr>
+				<tr>
+					<td>15-20</td>
+					<td>Green Mushrooms / Blue Snails</td>
+					<td>Mushroom Park (Lv 15-22 mixed)</td>
+				</tr>
+				<tr>
+					<td>20-30</td>
+					<td>Golems / Horny Mushrooms</td>
+					<td><strong>KPQ nonstop, or Kerning subway line</strong></td>
+				</tr>
+				<tr>
+					<td>30-40</td>
+					<td>Ligators / Wild Boars</td>
+					<td>Wild Kargos, Coolie Zombies with a duo</td>
+				</tr>
+				<tr>
+					<td>40-50</td>
+					<td>Coolie Zombie / Wraith line</td>
+					<td>Ghost Ship + LPQ opens</td>
+				</tr>
+				<tr>
+					<td>50-60</td>
+					<td>Bains / Straw Target Dummies</td>
+					<td>Ludi Maze PQ / Orbis PQ opens</td>
+				</tr>
+				<tr>
+					<td>60-70</td>
+					<td>Death Teddies / Master Death Teddies</td>
+					<td>LMPQ / OPQ farm grinds</td>
+				</tr>
+				<tr>
+					<td>70+</td>
+					<td>Truckers / Bains (still) / Skele line</td>
+					<td>Zakum runs, guild PQs, boss trains</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<p>
+			Site cross-links: the <a href="/mobs">mobs catalog</a> lets you
+			filter by level to find every mob in a bracket with EXP and drop
+			data. <a href="/maps">The maps catalog</a> shows every map's mob
+			composition and spawn density.
+		</p>
+
+		<h2 id="common-mistakes">Common leveling mistakes to skip</h2>
+
+		<h3>Mistake 1: Soloing when you could party</h3>
+		<p>
+			The 30% party bonus is free. Every hour you solo when a KPQ or LPQ
+			party is available is 30% of a level thrown away. If you're an
+			introvert who hates chat, join a party silently, buff the
+			party leader, and let the run happen. Nobody demands conversation.
+		</p>
+
+		<h3>Mistake 2: Kill-stealing in shared maps</h3>
+		<p>
+			Two players on the same map without partying is worse than
+			partying up in every metric - both take longer to level, both
+			get less EXP per kill (partial-hit rules), and the social cost of
+			KS'ing someone repeatedly is real. Rule of thumb: if you enter a
+			map and see another player, either offer party or channel-swap
+			within 30 seconds. Don't quietly grind side-by-side.
+		</p>
+
+		<h3>Mistake 3: Ignoring the rest-and-buff rotation</h3>
+		<p>
+			MapleStory's HP/MP regen doubles when your character is sitting.
+			Between mob spawns, sit down. Between skill uses that push you low,
+			sit down. Your potion budget drops by 30-50% if you commit to a
+			5-second sit any time HP or MP is below 70%. This one habit alone
+			is the difference between "always broke" and "banking mesos while
+			leveling".
+		</p>
+
+		<h3>Mistake 4: Overleveling for the PQ</h3>
+		<p>
+			Every classic PQ has a hard level cap. KPQ caps at 30, LPQ at 50,
+			LMPQ at 70. If you're at the cap-minus-one and grinding, you're
+			losing access to the PQ EXP fountain by hitting the cap. The fix:
+			once you're within 2 levels of a PQ cap, pause grinding, do 3-5
+			PQ runs first, THEN resume the grind. You'll end each session
+			higher-level per hour spent.
+		</p>
+
+		<h3>Mistake 5: Fighting overleveled mobs</h3>
+		<p>
+			Killing mobs more than 20 levels above you gives capped EXP
+			(you get the full amount) but MSCW's hit-chance formula punishes
+			you hard - your accuracy against a 30-level-above mob is near
+			zero. You'll miss 70% of hits, waste MP on skills that don't
+			connect, and die frequently. Fight mobs within 5-10 levels of your
+			own; the EXP per minute is dramatically higher than trying to
+			overkill above you.
+		</p>
+
+		<h2 id="closing-math">The closing math</h2>
+		<p>
+			Rough back-of-envelope: a player who parties, PQs when available,
+			and rests between mobs will level 2x faster and spend 40% less on
+			potions than a soloer who ignores those three habits, at the same
+			time investment. That's not a small difference - that's the
+			difference between hitting Lv 50 in a week of casual play vs.
+			three weeks. Every hour partying with the right party is worth
+			roughly two hours soloing.
+		</p>
+
+		<p class="closing">
+			Related reading: <a href="/guides/consumables">Consumables Guide</a>
+			for potion efficiency at each level bracket, and
+			<a href="/party-quests">party quests hub</a> for launch-status
+			roll-up on which PQs are shipping when.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 72ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose h3 {
+		margin-top: 1.4rem;
+		margin-bottom: 0.4rem;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose em {
+		color: var(--text-body);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+
+	.callout {
+		background: var(--bg-cloud);
+		border-left: 4px solid var(--accent-primary);
+		padding: 0.9rem 1rem;
+		margin: 1rem 0;
+		font-family: var(--font-mono);
+		font-size: 0.88rem;
+		overflow-x: auto;
+		border-radius: 0.4rem;
+	}
+	.callout code {
+		white-space: pre;
+	}
+
+	.pq-table,
+	.grind-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1rem 0 1.5rem;
+		font-size: 0.94rem;
+	}
+	.pq-table th,
+	.pq-table td,
+	.grind-table th,
+	.grind-table td {
+		padding: 0.55rem 0.75rem;
+		text-align: left;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.pq-table th,
+	.grind-table th {
+		background: var(--bg-cloud);
+		color: var(--text-heading);
+		font-weight: 700;
+		text-transform: uppercase;
+		font-size: 0.78rem;
+		letter-spacing: 0.05em;
+	}
+	.pq-table tbody tr:hover,
+	.grind-table tbody tr:hover {
+		background: color-mix(in srgb, var(--accent-primary) 5%, transparent);
+	}
+</style>

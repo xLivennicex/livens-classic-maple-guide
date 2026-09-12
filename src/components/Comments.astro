@@ -1,0 +1,122 @@
+---
+/**
+ * <Comments /> - reusable Giscus-backed comment thread for blog posts.
+ *
+ * Uses the config in `src/config/giscus.ts`. When Giscus is disabled
+ * (default until Liven configures the GitHub side - see the setup
+ * comment in giscus.ts), this component renders a friendly "comments
+ * coming soon" placeholder instead of a broken widget.
+ *
+ * Usage:
+ *   <Comments />              -- render on every blog post
+ *   <Comments term="custom" /> -- override the mapping term
+ *                                (defaults to pathname per GISCUS_CONFIG.mapping)
+ *
+ * Design note: Giscus loads a client-side <script> that injects an
+ * <iframe> from giscus.app. That means no comments during SSG build
+ * (Astro just emits the script tag). This is fine for our static
+ * hosting - the script fires on the client after page load.
+ */
+
+import { GISCUS_CONFIG } from "../config/giscus";
+
+interface Props {
+	// Override the mapping term (rarely needed - defaults to pathname).
+	term?: string;
+	// Hide the "Comments" heading (useful if the parent page already
+	// has one).
+	hideHeading?: boolean;
+}
+
+const { term, hideHeading = false } = Astro.props;
+
+const showWidget = GISCUS_CONFIG.enabled;
+---
+
+<section class="comments" aria-labelledby="comments-heading">
+	{!hideHeading && (
+		<h2 id="comments-heading" class="comments__heading">
+			Comments &amp; discussion
+		</h2>
+	)}
+
+	{showWidget ? (
+		<div class="comments__widget">
+			<script
+				src="https://giscus.app/client.js"
+				data-repo={GISCUS_CONFIG.repo}
+				data-repo-id={GISCUS_CONFIG.repoId}
+				data-category={GISCUS_CONFIG.category}
+				data-category-id={GISCUS_CONFIG.categoryId}
+				data-mapping={GISCUS_CONFIG.mapping}
+				data-term={term}
+				data-strict={GISCUS_CONFIG.strict}
+				data-reactions-enabled={GISCUS_CONFIG.reactionsEnabled}
+				data-emit-metadata={GISCUS_CONFIG.emitMetadata}
+				data-input-position={GISCUS_CONFIG.inputPosition}
+				data-theme={GISCUS_CONFIG.theme}
+				data-lang={GISCUS_CONFIG.lang}
+				data-loading={GISCUS_CONFIG.loading}
+				crossorigin="anonymous"
+				async
+			></script>
+		</div>
+	) : (
+		<div class="comments__placeholder">
+			<p class="comments__placeholder-headline">
+				Comments coming soon
+			</p>
+			<p class="comments__placeholder-body">
+				Comment threads for blog posts are wired up but not yet
+				live. Discussion will run via GitHub Discussions
+				(Giscus) once the repo config is complete. In the
+				meantime, reach out on the community channels linked in
+				the site footer.
+			</p>
+		</div>
+	)}
+</section>
+
+<style>
+	.comments {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 2px solid var(--border-card);
+	}
+
+	.comments__heading {
+		font-size: 1.35rem;
+		color: var(--text-heading);
+		margin: 0 0 1rem;
+		letter-spacing: 0.01em;
+	}
+
+	.comments__widget {
+		min-height: 200px;
+	}
+
+	.comments__placeholder {
+		background: var(--bg-cloud);
+		border: 1px dashed var(--border-card);
+		border-radius: 0.55rem;
+		padding: 1.25rem 1.4rem;
+		text-align: center;
+	}
+
+	.comments__placeholder-headline {
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: var(--text-heading);
+		margin: 0 0 0.5rem;
+	}
+
+	.comments__placeholder-body {
+		font-size: 0.92rem;
+		color: var(--text-body);
+		line-height: 1.55;
+		margin: 0;
+		max-width: 56ch;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>

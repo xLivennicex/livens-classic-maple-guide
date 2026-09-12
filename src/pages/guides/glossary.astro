@@ -1,0 +1,370 @@
+---
+/**
+ * /guides/glossary - the highest-SEO-value page on the site. Every
+ * new player Googles "what does WATK mean maplestory" or similar.
+ * Owning that vocabulary is owning top-of-funnel traffic.
+ *
+ * Data lives in src/data/glossary.ts. Page renders:
+ *   - a live filter input (client-side, matches term + aliases + definition)
+ *   - an A-Z jump strip (only letters with terms are active)
+ *   - alphabetical sections with per-term cards
+ *   - category chips per term for at-a-glance context
+ *   - links to deeper site pages via linkTo
+ *
+ * Zero external deps. Filter is vanilla JS scoped to this page.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+	sortedTerms,
+	termsByLetter,
+	activeLetters,
+	CATEGORY_META,
+	slugifyTerm,
+} from "../../data/glossary";
+
+const totalTerms = sortedTerms.length;
+const categoryCounts = sortedTerms.reduce(
+	(acc, t) => {
+		acc[t.category] = (acc[t.category] ?? 0) + 1;
+		return acc;
+	},
+	{} as Record<string, number>,
+);
+---
+
+<BaseLayout
+	title="Glossary - Liven's Classic Maple Guide"
+	description={`${totalTerms} MapleStory Classic terms explained. WATK, HB, KPQ, HP washing, Chaos Scroll, Meso Explosion - the complete v83 vocabulary reference.`}
+	currentPath="/guides"
+	theme="henesys"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference</span>
+			<h1>Glossary</h1>
+			<p class="lede">
+				{totalTerms} terms from MapleStory Classic vocabulary. If someone
+				dropped an acronym in Free Market chat and you're not sure what
+				it means, start here. Every entry cross-links to relevant deeper
+				pages when we have them.
+			</p>
+		</div>
+	</section>
+
+	<div class="filter-bar">
+		<input
+			type="search"
+			id="glossary-filter"
+			placeholder="Filter terms (matches name, aliases, and definition)..."
+			autocomplete="off"
+			aria-label="Filter glossary terms"
+		/>
+		<span class="filter-count" id="filter-count">{totalTerms} terms</span>
+	</div>
+
+	<nav class="letter-nav" aria-label="Jump to letter">
+		{"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((L) => {
+			const active = activeLetters.includes(L);
+			return active ? (
+				<a class="letter-nav__pill" href={`#letter-${L}`}>{L}</a>
+			) : (
+				<span class="letter-nav__pill letter-nav__pill--inactive">{L}</span>
+			);
+		})}
+	</nav>
+
+	<div class="glossary" id="glossary-root">
+		{activeLetters.map((L) => (
+			<section class="letter-block" id={`letter-${L}`} data-letter={L}>
+				<h2 class="letter-heading">{L}</h2>
+				<div class="terms">
+					{termsByLetter[L]!.map((t) => {
+						const catMeta = CATEGORY_META[t.category];
+						const searchBlob = [t.term, ...(t.aliases ?? []), t.definition, catMeta.label]
+							.join(" | ")
+							.toLowerCase();
+						return (
+							<article
+								class="term"
+								id={slugifyTerm(t.term)}
+								data-search={searchBlob}
+							>
+								<div class="term__head">
+									<h3 class="term__name">{t.term}</h3>
+									<span
+										class="term__category"
+										style={`--cat: ${catMeta.accent}`}
+									>
+										{catMeta.label}
+									</span>
+								</div>
+								{t.aliases && t.aliases.length > 0 && (
+									<p class="term__aliases">
+										<span class="term__aliases-label">Also:</span>
+										{t.aliases.join(" · ")}
+									</p>
+								)}
+								<p class="term__def">{t.definition}</p>
+								{t.linkTo && (
+									<a class="term__link" href={t.linkTo}>
+										Full page -&gt;
+									</a>
+								)}
+							</article>
+						);
+					})}
+				</div>
+			</section>
+		))}
+		<p class="glossary__empty" id="glossary-empty" hidden>
+			No terms match that filter. Try a shorter query, or
+			<button type="button" id="glossary-reset" class="glossary__reset-btn">
+				reset the filter
+			</button>.
+		</p>
+	</div>
+</BaseLayout>
+
+<script>
+	// Client-side glossary filter. Fully progressive: page ships
+	// server-rendered and readable without JS; filter simply becomes
+	// inert. All terms carry a data-search blob (name + aliases +
+	// definition + category label, lowercased) so a single indexOf
+	// check handles the match.
+
+	function initGlossaryFilter() {
+		const input = document.getElementById("glossary-filter") as HTMLInputElement | null;
+		const root = document.getElementById("glossary-root");
+		const count = document.getElementById("filter-count");
+		const empty = document.getElementById("glossary-empty");
+		const reset = document.getElementById("glossary-reset");
+		if (!input || !root || !count || !empty || !reset) return;
+		if (input.dataset.init === "1") return;
+		input.dataset.init = "1";
+
+		const terms = Array.from(root.querySelectorAll<HTMLElement>("[data-search]"));
+		const letterBlocks = Array.from(root.querySelectorAll<HTMLElement>(".letter-block"));
+		const totalTerms = terms.length;
+
+		function apply(query: string) {
+			const q = query.trim().toLowerCase();
+			let visible = 0;
+			if (!q) {
+				terms.forEach((t) => (t.hidden = false));
+				letterBlocks.forEach((b) => (b.hidden = false));
+				visible = totalTerms;
+			} else {
+				terms.forEach((t) => {
+					const match = (t.dataset.search ?? "").includes(q);
+					t.hidden = !match;
+					if (match) visible++;
+				});
+				// Hide any letter block with zero visible terms
+				letterBlocks.forEach((block) => {
+					const anyVisible = Array.from(
+						block.querySelectorAll<HTMLElement>("[data-search]"),
+					).some((t) => !t.hidden);
+					block.hidden = !anyVisible;
+				});
+			}
+			count!.textContent = q
+				? `${visible} of ${totalTerms} terms`
+				: `${totalTerms} terms`;
+			empty!.hidden = visible !== 0;
+		}
+
+		input.addEventListener("input", () => apply(input.value));
+		reset.addEventListener("click", () => {
+			input.value = "";
+			apply("");
+			input.focus();
+		});
+	}
+
+	initGlossaryFilter();
+	document.addEventListener("astro:page-load", initGlossaryFilter);
+</script>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 1.5rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+	}
+
+	.filter-bar {
+		display: flex;
+		gap: 0.7rem;
+		align-items: center;
+		margin: 1rem 0;
+		padding: 0.6rem 0.9rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	#glossary-filter {
+		flex: 1;
+		padding: 0.55rem 0.8rem;
+		font-family: inherit;
+		font-size: 0.95rem;
+		background: var(--surface-card);
+		color: var(--text-body);
+		border: 1px solid var(--border-card);
+		border-radius: 0.35rem;
+	}
+	#glossary-filter:focus {
+		outline: none;
+		border-color: var(--accent-primary);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 22%, transparent);
+	}
+	.filter-count {
+		font-size: 0.86rem;
+		color: var(--text-muted);
+		white-space: nowrap;
+	}
+
+	.letter-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+		margin: 0.8rem 0 1.5rem;
+	}
+	.letter-nav__pill {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-decoration: none;
+		color: var(--accent-primary);
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.35rem;
+		transition: background 0.12s ease, color 0.12s ease;
+	}
+	.letter-nav__pill:hover {
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+	}
+	.letter-nav__pill--inactive {
+		color: var(--text-muted);
+		opacity: 0.35;
+		pointer-events: none;
+	}
+
+	.letter-block {
+		margin-bottom: 2rem;
+	}
+	.letter-heading {
+		font-size: 1.6rem;
+		color: var(--text-heading);
+		margin: 0 0 0.7rem;
+		padding-bottom: 0.3rem;
+		border-bottom: 2px solid var(--accent-primary);
+	}
+
+	.terms {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 0.7rem;
+	}
+
+	.term {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		padding: 0.8rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+		scroll-margin-top: 5rem;
+	}
+	/* Class selectors beat the UA [hidden] {display:none} rule
+	 * on specificity, so explicitly restore hidden behavior for
+	 * filtered terms and empty letter blocks. .term[hidden] has
+	 * higher specificity than .term via the attribute selector. */
+	.term[hidden],
+	.letter-block[hidden] {
+		display: none;
+	}
+	.term__head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.6rem;
+	}
+	.term__name {
+		margin: 0;
+		font-size: 1.05rem;
+		color: var(--text-heading);
+	}
+	.term__category {
+		font-size: 0.66rem;
+		font-weight: 700;
+		padding: 0.12rem 0.45rem;
+		color: var(--text-on-accent);
+		background: var(--cat, var(--accent-primary));
+		border-radius: 999px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		white-space: nowrap;
+	}
+	.term__aliases {
+		margin: 0;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+	}
+	.term__aliases-label {
+		font-weight: 700;
+		margin-right: 0.3rem;
+	}
+	.term__def {
+		margin: 0;
+		font-size: 0.92rem;
+		color: var(--text-body);
+		line-height: 1.45;
+	}
+	.term__link {
+		margin-top: 0.2rem;
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: var(--accent-primary);
+		text-decoration: none;
+	}
+	.term__link:hover {
+		text-decoration: underline;
+	}
+
+	.glossary__empty {
+		text-align: center;
+		padding: 2rem 1rem;
+		color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+	.glossary__reset-btn {
+		background: none;
+		border: none;
+		font: inherit;
+		color: var(--accent-primary);
+		cursor: pointer;
+		text-decoration: underline;
+		padding: 0;
+	}
+</style>

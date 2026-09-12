@@ -1,0 +1,718 @@
+---
+/**
+ * QuestLayout - renders one quest reference page from a `quests`
+ * collection entry.
+ *
+ * Design principle: chain-aware. Quests almost never exist in
+ * isolation - they sit inside multi-step chains. The layout puts
+ * chain position ("Step 2 of 4 in The Warrior's Next Journey") in
+ * the hero so readers immediately understand where this quest fits
+ * in the larger arc.
+ *
+ * Empty sections (missing rewards, missing chain info, missing
+ * prerequisites) render nothing rather than "N/A" placeholders -
+ * same discipline as ItemLayout.
+ */
+
+import { getCollection } from "astro:content";
+import BaseLayout, { type SiteTheme } from "./BaseLayout.astro";
+import SourceBadge from "../components/SourceBadge.astro";
+import SourceCard from "../components/SourceCard.astro";
+import VerificationNotice from "../components/VerificationNotice.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import { getSource, type SourceType } from "../data/sources";
+import { itemIconUrl, npcSpriteUrl } from "../lib/maplestory-cdn";
+import npcDossiers from "../data/db/npcs.json";
+// npcId in .md frontmatter is our internal ID (like 1 for Heena);
+// resolve to WZ ID for sprite rendering. Silent hidden-sprite
+// fallback if the NPC isn't in the WZ mapping cache.
+const npcWzById = new Map(npcDossiers.map((n) => [n.id, n.wzId]));
+import questRefs from "../data/db/quest-refs.json";
+import questDossiers from "../data/db/quests.json";
+
+interface Reward {
+	type: string;
+	label: string;
+	details?: string;
+	itemSlug?: string;
+	itemId?: number;
+}
+
+interface Props {
+	// ==== Identity ====
+	questId: string;
+	name: string;
+	category: string;
+	tagline: string;
+
+	// ==== Requirements ====
+	levelMin: number;
+	classReq?: string;
+	prerequisiteQuest?: string;
+
+	// ==== NPC ====
+	npcName: string;
+	npcLocation: string;
+	npcId?: number;
+
+	// ==== Chain ====
+	chainName?: string;
+	chainStep?: number;
+	chainLength?: number;
+	nextQuest?: string;
+
+	// ==== Content ====
+	description: string;  // HTML allowed
+	rewards: Reward[];
+	editorial: string;    // HTML allowed
+	callout?: string;     // HTML allowed
+
+	// ==== Cross-links ====
+	relatedGuides: string[];
+
+	// ==== Verification ====
+	verificationStatus: SourceType;
+	verificationNote?: string;
+	sourceSlugs: string[];
+
+	// ==== Layout ====
+	theme?: SiteTheme;
+	lastUpdated: string;
+}
+
+const {
+	questId,
+	name,
+	category,
+	tagline,
+	levelMin,
+	classReq,
+	prerequisiteQuest,
+	npcName,
+	npcLocation,
+	npcId,
+	chainName,
+	chainStep,
+	chainLength,
+	nextQuest,
+	description,
+	rewards,
+	editorial,
+	callout,
+	relatedGuides,
+	verificationStatus,
+	verificationNote,
+	sourceSlugs,
+	theme = "henesys",
+	lastUpdated,
+} = Astro.props;
+
+// For each reward with an itemSlug, look up the matching item so we
+// can render a mini sprite-badge instead of plain text. Missing items
+// silently fall back to text (the item just isn't in our collection
+// yet - shipping a broken link would be worse).
+const allItems = await getCollection("items");
+const itemBySlug = new Map(allItems.map((i) => [i.id, i.data]));
+// Same-collection lookup for chain-nav label resolution below.
+const allEditorialQuests = await getCollection("quests");
+
+// Resolve which sprite (if any) to show for a reward. Precedence:
+// 1. If itemSlug present AND matches a collection item -> that item's WZ ID.
+// 2. If reward.itemId present -> that ID directly (no collection page needed).
+// 3. Otherwise no sprite.
+// Kept as a helper so the template stays readable and the fallback
+// chain is documented in one place, not scattered across JSX.
+function resolveRewardIcon(reward: Reward): string | undefined {
+	if (reward.itemSlug) {
+		const item = itemBySlug.get(reward.itemSlug);
+		if (item) return itemIconUrl(item.wzId);
+	}
+	if (reward.itemId) return itemIconUrl(reward.itemId);
+	return undefined;
+}
+
+// Category label: "advancement" -> "Advancement", "citizenship" -> "Citizenship"
+const categoryLabel = category[0].toUpperCase() + category.slice(1);
+
+// Cross-referenced starting maps for this quest, derived from the
+// map dossier's questsHere index (quest.npc_name -> npc_id -> map).
+// Quests whose giver NPC name doesn't resolve in lookups.npc_names
+// simply won't appear here - that's OK, we render nothing rather
+// than a broken 'unknown map' placeholder.
+const startingMaps = (questRefs as Record<string, { maps: Array<{ mapId: number; mapName: string; region: string; kind: string }> }>)[questId]?.maps ?? [];
+
+// Chain-in-hero string, e.g. "Step 1 of 4 - The Warrior's Next Journey".
+// Only rendered if we actually know the chain info.
+const chainSubtitle = chainName && chainStep && chainLength
+	? `Step ${chainStep} of ${chainLength} - ${chainName}`
+	: chainName
+		? chainName
+		: null;
+
+// Resolve source slugs into rich cards for the footer.
+const questSources = sourceSlugs.map((slug) => getSource(slug));
+
+// Resolve a friendly display label + valid-target check for a
+// chain-nav slug. Handles three input shapes:
+//   - editorial slug ("bringing-mirror-to-heena") -> collection lookup
+//   - numeric quest ID ("10107") -> dossier lookup
+//   - unknown slug -> hidden entirely (no more broken link buttons)
+// Returns null when the target doesn't exist, so the caller can
+// short-circuit rendering. Keeps the ugly raw-slug fallback out of
+// the UI - readers get "Bringing a Mirror to Heena", not
+// "bringing-mirror-to-heena".
+const editorialQuestBySlug = new Map(
+	allEditorialQuests.map((q) => [q.id, q.data.name]),
+);
+const dossierQuestById = new Map(
+	questDossiers.map((q) => [q.id, q.name]),
+);
+function resolveChainTarget(raw: string | undefined): { href: string; label: string } | null {
+	if (!raw) return null;
+	// Editorial slug match?
+	const editorialName = editorialQuestBySlug.get(raw);
+	if (editorialName) return { href: `/quests/${raw}`, label: editorialName };
+	// Numeric ID match?
+	const dossierName = dossierQuestById.get(raw);
+	if (dossierName) return { href: `/quests/${raw}`, label: dossierName };
+	// Nothing found - hide the button so we never ship a 404 link.
+	return null;
+}
+const prevTarget = resolveChainTarget(prerequisiteQuest);
+const nextTarget = resolveChainTarget(nextQuest);
+
+// Sections we hide when empty.
+const hasChainNav = prevTarget || nextTarget;
+---
+
+<BaseLayout
+	title={`${name} - Liven's Classic Maple Guide`}
+	description={tagline}
+	currentPath="/quests"
+	theme={theme}
+>
+	<header class="quest-hero">
+	{npcId && npcSpriteUrl(npcWzById.get(npcId), npcName) && (
+		<div class="quest-hero__npc">
+			<img
+				src={npcSpriteUrl(npcWzById.get(npcId), npcName)}
+				alt={`${npcName} sprite`}
+				loading="eager"
+				decoding="async"
+				onerror="this.style.visibility='hidden'"
+			/>
+			<small class="quest-hero__npc-caption">{npcName}</small>
+		</div>
+	)}
+		<div class="quest-hero__meta">
+			<span class="eyebrow">{categoryLabel} quest - ID {questId}</span>
+			<h1>{name}</h1>
+			<p class="quest-hero__tagline">{tagline}</p>
+			{chainSubtitle && (
+				<p class="quest-hero__chain">{chainSubtitle}</p>
+			)}
+			<div class="quest-hero__badges">
+				<SourceBadge type={verificationStatus} />
+				<LastUpdated date={lastUpdated} />
+			</div>
+		</div>
+	</header>
+
+	<VerificationNotice
+		type={verificationStatus}
+		checkedOn={lastUpdated}
+		sourceSlugs={sourceSlugs}
+		note={verificationNote}
+	/>
+
+	<section class="quest-section">
+		<h2 class="section-panel-title">At a glance</h2>
+		<dl class="stat-grid">
+			<dt>Quest giver</dt><dd>{npcName} ({npcLocation})</dd>
+			{startingMaps.length > 0 && (
+				<>
+					<dt>Starts at</dt>
+					<dd>
+						{startingMaps.map((m, i) => (
+							<>
+								{i > 0 && ", "}
+								<a href={`/maps/${m.mapId}`} class="stat-grid__maplink">
+									{m.mapName}
+								</a>
+							</>
+						))}
+					</dd>
+				</>
+			)}
+			<dt>Minimum level</dt><dd>{levelMin}</dd>
+			{classReq && (
+				<><dt>Class requirement</dt><dd>{classReq}</dd></>
+			)}
+			{chainStep && chainLength && (
+				<>
+					<dt>Chain position</dt>
+					<dd>Step {chainStep} of {chainLength}</dd>
+				</>
+			)}
+		</dl>
+	</section>
+
+	<section class="quest-section">
+		<h2 class="section-panel-title">In-game text</h2>
+		<div class="quest-description" set:html={description} />
+	</section>
+
+	{rewards.length > 0 && (
+		<section class="quest-section">
+			<h2 class="section-panel-title">Rewards</h2>
+			<ul class="reward-list">
+				{rewards.map((reward) => {
+					const linkedItem = reward.itemSlug ? itemBySlug.get(reward.itemSlug) : undefined;
+					const iconSrc = resolveRewardIcon(reward);
+					return (
+						<li class="reward-list__item">
+							<span class={`reward-badge reward-badge--${reward.type}`}>
+								{reward.type.toUpperCase()}
+							</span>
+							<div class="reward-body">
+								{linkedItem ? (
+									<a class="reward-item-link" href={`/items/${reward.itemSlug}`}>
+										{iconSrc && (
+											<img
+												class="reward-item-link__icon"
+												src={iconSrc}
+												alt=""
+												width="28"
+												height="28"
+												loading="lazy"
+											/>
+										)}
+										<span>
+											<strong>{reward.label}</strong>
+											<small class="reward-item-link__tagline">{linkedItem.tagline}</small>
+										</span>
+									</a>
+								) : iconSrc ? (
+									<span class="reward-item-plain">
+										<img
+											class="reward-item-link__icon"
+											src={iconSrc}
+											alt=""
+											width="28"
+											height="28"
+											loading="lazy"
+										/>
+										<strong>{reward.label}</strong>
+									</span>
+								) : (
+									<strong>{reward.label}</strong>
+								)}
+								{reward.details && (
+									<small>{reward.details}</small>
+								)}
+							</div>
+						</li>
+					);
+				})}
+			</ul>
+		</section>
+	)}
+
+	<section class="quest-section quest-editorial">
+		<h2 class="section-panel-title">Liven's take</h2>
+		<div set:html={editorial} />
+		{callout && (
+			<aside class="quest-callout" set:html={callout} />
+		)}
+	</section>
+
+	{hasChainNav && (
+		<section class="quest-section">
+			<h2 class="section-panel-title">Chain navigation</h2>
+			<div class="chain-nav">
+				{prevTarget && (
+					<a class="chain-nav__link chain-nav__link--prev" href={prevTarget.href}>
+						<span class="chain-nav__label">Previous step</span>
+						<strong>{prevTarget.label}</strong>
+					</a>
+				)}
+				{nextTarget && (
+					<a class="chain-nav__link chain-nav__link--next" href={nextTarget.href}>
+						<span class="chain-nav__label">Next step</span>
+						<strong>{nextTarget.label}</strong>
+					</a>
+				)}
+			</div>
+		</section>
+	)}
+
+	{relatedGuides.length > 0 && (
+		<section class="quest-section">
+			<h2 class="section-panel-title">Related guides</h2>
+			<ul class="related-guides">
+				{relatedGuides.map((href) => (
+					<li><a href={href}>{href}</a></li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	<section id="sources" class="quest-section">
+		<h2 class="section-panel-title">Sources</h2>
+		<ul class="quest-sources">
+			{questSources.map((source) => (
+				<li><SourceCard source={source} /></li>
+			))}
+		</ul>
+	</section>
+
+	<footer class="quest-footer">
+		<LastUpdated date={lastUpdated} label="Entry last reviewed" />
+	</footer>
+</BaseLayout>
+
+<style>
+	.quest-hero {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		padding: 1.75rem 2rem;
+		background: var(--surface-hero-panel);
+		border: 3px solid var(--border-hero);
+		border-radius: 1.25rem;
+		box-shadow: var(--shadow-panel);
+	}
+
+	/* NPC sprite panel: fixed square on the left, sprite scaled to
+	 * fit, with the NPC name captioned below. Empty caption if
+	 * we're missing the name (defensive - shouldn't happen since
+	 * the field is required, but templates change). */
+	.quest-hero__npc {
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.35rem;
+		width: 120px;
+	}
+
+	.quest-hero__npc img {
+		width: 96px;
+		height: 96px;
+		object-fit: contain;
+		padding: 0.5rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		/* MapleStory NPC sprites are pixel art - keep them crisp. */
+		image-rendering: pixelated;
+	}
+
+	.quest-hero__npc-caption {
+		font-size: 0.78rem;
+		font-weight: bold;
+		text-align: center;
+		color: var(--accent-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		line-height: 1.2;
+	}
+
+	.quest-hero__meta {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.quest-hero h1 {
+		margin: 0.4rem 0 0.6rem;
+	}
+
+	.quest-hero__tagline {
+		max-width: 46rem;
+		margin: 0 0 0.75rem;
+		line-height: 1.55;
+		font-size: 1.05rem;
+	}
+
+	.quest-hero__chain {
+		display: inline-block;
+		margin: 0 0 0.9rem;
+		padding: 0.35rem 0.8rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 999px;
+		font-size: 0.85rem;
+		font-weight: bold;
+		color: var(--accent-primary);
+	}
+
+	.quest-hero__badges {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.quest-section {
+		margin-top: 2rem;
+	}
+
+	.quest-section h2 {
+		margin-bottom: 0.9rem;
+	}
+
+	.stat-grid {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		column-gap: 1.25rem;
+		row-gap: 0.5rem;
+		margin: 0;
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.stat-grid dt {
+		font-weight: bold;
+		color: var(--accent-primary);
+	}
+
+	.stat-grid dd {
+		margin: 0;
+	}
+	.stat-grid__maplink {
+		color: var(--accent-primary);
+		text-decoration: none;
+		font-weight: 500;
+	}
+	.stat-grid__maplink:hover { text-decoration: underline; }
+
+	.quest-description {
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		font-style: italic;
+		line-height: 1.65;
+		white-space: pre-line;   /* preserve multi-line datamine text */
+	}
+
+	.reward-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.reward-list__item {
+		display: flex;
+		gap: 0.85rem;
+		padding: 0.75rem 1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.reward-badge {
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 4.2rem;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.4rem;
+		font-size: 0.78rem;
+		font-weight: bold;
+		letter-spacing: 0.06em;
+		background: var(--accent-primary);
+		color: var(--accent-primary-text);
+	}
+
+	/* Per-type reward badge colors when the theme provides them.
+	 * Falls back to --accent-primary if the variable isn't defined. */
+	.reward-badge--exp {
+		background: var(--accent-secondary, var(--accent-primary));
+	}
+
+	.reward-body {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.reward-body small {
+		display: block;
+		margin-top: 0.2rem;
+		color: var(--text-muted);
+		font-size: 0.85rem;
+	}
+
+	/* Item-linked reward: sprite + name + tagline in a clickable row.
+	 * The sprite anchors the eye so scan-reading a reward list is
+	 * literally faster than reading text labels. */
+	.reward-item-link {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.reward-item-link:hover strong {
+		text-decoration: underline;
+	}
+
+	.reward-item-link__icon {
+		flex: 0 0 auto;
+		padding: 2px;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.3rem;
+		image-rendering: pixelated;
+	}
+
+	/* Same visual as reward-item-link but non-clickable - used for
+	 * item rewards that we have a sprite for but no item page. */
+	.reward-item-plain {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.reward-item-link__tagline {
+		display: block;
+		margin-top: 0.15rem;
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		font-style: italic;
+	}
+
+	/* Editorial section gets its own card surface so "Liven's take"
+	 * prose remains readable against the themed page background
+	 * image. Padding matches .stat-grid / .reward-list__item so
+	 * every content section has a consistent card silhouette. */
+	.quest-editorial {
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.quest-editorial :global(p) {
+		line-height: 1.65;
+		margin-bottom: 0.9rem;
+	}
+
+	.quest-editorial :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.quest-callout {
+		margin-top: 1rem;
+		padding: 0.9rem 1.1rem;
+		background: var(--accent-secondary);
+		color: var(--accent-secondary-text);
+		border-left: 4px solid var(--accent-secondary-border);
+		border-radius: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.chain-nav {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.75rem;
+	}
+
+	.chain-nav__link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.85rem 1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 120ms ease, border-color 120ms ease;
+	}
+
+	.chain-nav__link:hover {
+		transform: translateY(-2px);
+		border-color: var(--border-card-strong);
+	}
+
+	.chain-nav__link--next {
+		text-align: right;
+	}
+
+	.chain-nav__label {
+		font-size: 0.75rem;
+		font-weight: bold;
+		color: var(--accent-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.related-guides {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.related-guides a {
+		display: inline-block;
+		padding: 0.4rem 0.8rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.5rem;
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+
+	.related-guides a:hover {
+		background: var(--surface-nav-hover);
+		color: var(--text-on-nav);
+	}
+
+	.quest-sources {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.quest-footer {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--border-divider);
+	}
+
+	@media (max-width: 640px) {
+		.quest-hero {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.stat-grid {
+			grid-template-columns: 1fr;
+			row-gap: 0.25rem;
+		}
+
+		.stat-grid dt {
+			margin-top: 0.5rem;
+		}
+
+		.chain-nav {
+			grid-template-columns: 1fr;
+		}
+
+		.chain-nav__link--next {
+			text-align: left;
+		}
+	}
+</style>

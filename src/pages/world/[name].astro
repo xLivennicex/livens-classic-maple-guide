@@ -1,0 +1,201 @@
+---
+/**
+ * /world/[name] - one WorldMap.img entry (usually a continent
+ * zoom-in like Maple Island or Victoria Island).
+ *
+ * Uses the shared WorldMapView component so behavior matches the
+ * top-level /world page exactly.
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WorldMapView from "../../components/WorldMapView.astro";
+import worldMaps from "../../data/db/worldmaps.json";
+import mapDossiers from "../../data/db/maps.json";
+import { themeForLocation } from "../../lib/region-theme";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return Object.keys(worldMaps).map((name) => ({
+		params: { name },
+		props: { name },
+	}));
+};
+
+const { name } = Astro.props;
+const wm = worldMaps[name as keyof typeof worldMaps];
+
+// Pretty display name: prefer whatever the parent WorldMap uses as
+// its `toolTip` for this entry (e.g. "Maple Island"), else fall
+// back to the raw internal name. Search across all worldmaps -
+// most sub-regions are only referenced once.
+let displayName = name;
+for (const parent of Object.values(worldMaps)) {
+	const link = parent.links?.find((l) => l.linksTo === name);
+	if (link?.toolTip) {
+		displayName = link.toolTip;
+		break;
+	}
+}
+
+const dossierMapNames = new Map(mapDossiers.map((d) => [d.id, d.name]));
+const dossierMapLevels = new Map(
+	mapDossiers
+		.filter((d) => d.mobLevelRange)
+		.map((d) => [d.id, d.mobLevelRange!]),
+);
+
+const fmtLevel = (r?: { min: number; max: number } | null) => {
+	if (!r) return null;
+	return r.min === r.max ? `Lv ${r.min}` : `Lv ${r.min}-${r.max}`;
+};
+
+// All linked pins, sorted by min-level (then name) so the card list
+// reads as a natural leveling progression through the region.
+const linkedPins = wm.maps
+	.filter((p) => p.dossierMapId != null)
+	.map((p) => ({
+		id: p.dossierMapId!,
+		name: p.description ?? dossierMapNames.get(p.dossierMapId!) ?? `Map ${p.dossierMapId}`,
+		mapCount: p.mapNumbers.length,
+		levelRange: dossierMapLevels.get(p.dossierMapId!) ?? null,
+		levelStr: fmtLevel(dossierMapLevels.get(p.dossierMapId!)),
+	}))
+	.sort((a, b) => {
+		// Maps without level data sink to the bottom so the numbered
+		// bracket appears as a clean ascending column at a glance.
+		const aMin = a.levelRange?.min ?? 9999;
+		const bMin = b.levelRange?.min ?? 9999;
+		return aMin - bMin || a.name.localeCompare(b.name);
+	});
+
+// Subregion navigation. Nested worldmaps like Victoria Island might
+// have their own sub-worldmap for El Nath dungeons etc.
+const subRegions = (wm.links ?? []).map((l) => ({
+	name: l.toolTip ?? l.linksTo,
+	slug: l.linksTo,
+	pinCount: worldMaps[l.linksTo as keyof typeof worldMaps]?.maps?.filter((p) => p.dossierMapId != null).length ?? 0,
+}));
+---
+
+<BaseLayout
+	title={`${displayName} - World Map - Liven's Classic Maple Guide`}
+	description={`${displayName} zoom of the MapleStory Classic World map. Click any pin to jump to the full map dossier.`}
+	currentPath="/world"
+	theme={themeForLocation([displayName, name])}
+>
+	<nav class="crumbs">
+		<a href="/world">&larr; World Map</a>
+		<span class="crumbs__sep">&middot;</span>
+		<span>{displayName}</span>
+	</nav>
+
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference catalog</span>
+			<h1>{displayName}</h1>
+			<p class="lede">
+				{linkedPins.length} documented pin{linkedPins.length === 1 ? "" : "s"}
+				on this regional map.
+				{subRegions.length > 0 && (
+					<>
+						{" "}Nested worldmaps: {subRegions.map((r, i) => (
+							<>
+								<a href={`/world/${r.slug}`}>{r.name}</a>{i < subRegions.length - 1 ? ", " : ""}
+							</>
+						))}.
+					</>
+				)}
+			</p>
+		</div>
+	</section>
+
+	<WorldMapView wm={wm} dossierMapNames={dossierMapNames} dossierMapLevels={dossierMapLevels} />
+
+	{linkedPins.length > 0 && (
+		<section class="section">
+			<h2>Documented locations <span class="count">({linkedPins.length})</span></h2>
+			<div class="pin-list">
+				{linkedPins.map((p) => (
+					<a class="pin-card" href={`/maps/${p.id}`}>
+						<div class="pin-card__header">
+							<span class="pin-card__name">{p.name}</span>
+							{p.levelStr && <span class="pin-card__lvl">{p.levelStr}</span>}
+						</div>
+						<span class="pin-card__meta">
+							Map {p.id}
+							{p.mapCount > 1 ? ` · ${p.mapCount} maps in cluster` : ""}
+						</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+</BaseLayout>
+
+<style>
+	/* Breadcrumbs sit directly on the theme's scenic background
+	   (no card wrapper here yet), so we need a text-shadow halo
+	   to guarantee legibility against light-blue sky imagery.
+	   WCAG contrast preserved without adding a boxed chip. */
+	.crumbs {
+		font-size: 0.85rem; color: var(--text-body); margin-bottom: 1rem;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.7);
+	}
+	.crumbs a { color: var(--accent-primary); text-decoration: none; font-weight: 500; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; opacity: 0.6; }
+
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: var(--accent-primary);
+	}
+	h1 { margin: 0.3rem 0 0.5rem; }
+	.lede {
+		max-width: 48rem; line-height: 1.6;
+		color: var(--text-body); margin: 0 0 1.5rem;
+	}
+	.lede a { color: var(--accent-primary); }
+
+	.section { margin: 2rem 0; }
+	.section h2 { margin: 0 0 0.8rem; font-size: 1.3rem; }
+	.count { font-weight: normal; color: var(--text-muted); font-size: 0.85rem; }
+
+	.pin-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 0.5rem;
+	}
+	.pin-card {
+		display: flex; flex-direction: column;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease;
+	}
+	.pin-card:hover {
+		transform: translateY(-1px);
+		border-color: var(--accent-primary);
+		background: var(--bg-cloud);
+	}
+	.pin-card__header {
+		display: flex; align-items: baseline; justify-content: space-between;
+		gap: 0.5rem;
+	}
+	.pin-card__name {
+		font-weight: 500; color: var(--accent-primary); font-size: 0.9rem;
+	}
+	.pin-card__lvl {
+		font-family: monospace; font-size: 0.75rem; font-weight: bold;
+		color: #b25c00;
+		background: #fff2df; padding: 0.1rem 0.4rem;
+		border-radius: 999px; flex-shrink: 0;
+	}
+	.pin-card__meta {
+		font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;
+		font-family: monospace;
+	}
+</style>

@@ -1,0 +1,253 @@
+---
+/**
+ * /hall-of-fame - curated legendary MapleStory items from bygone
+ * eras + our collective wishlist for what should return in Classic
+ * World.
+ *
+ * Not a datamine surface - this is human-editorial content sourced
+ * from src/data/hallOfFame.ts. Add items there; the page groups
+ * them by wishlist tier automatically.
+ */
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HallOfFameCard from "../components/HallOfFameCard.astro";
+import {
+	hallOfFameItems,
+	itemsByTier,
+	victoriaIslandLegacyItems,
+	WISHLIST_META,
+	type WishlistTier,
+} from "../data/hallOfFame";
+
+const TIER_ORDER: WishlistTier[] = ["confirmed", "expected", "hoped", "dreamed"];
+const viTies = victoriaIslandLegacyItems();
+
+// Little at-a-glance summary so readers see the shape of the roster
+// before scrolling. Update as items are added/retiered in the data file.
+const totalCount = hallOfFameItems.length;
+const tierCounts = Object.fromEntries(
+	TIER_ORDER.map((t) => [t, itemsByTier(t).length]),
+) as Record<WishlistTier, number>;
+---
+
+<BaseLayout
+	title="Hall of Fame - Liven's Classic Maple Guide"
+	description="Curated legendary MapleStory event items from years past, plus our wishlist for what should return in Classic World. Frozen Tuna, Maple Flag, Pumpkin Basket, and more."
+	currentPath="/hall-of-fame"
+	theme="henesys"
+	decorations={true}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Legacy Showcase</span>
+			<h1>Hall of Fame</h1>
+			<p class="lede">
+				{totalCount} legendary event items from MapleStory's history, sorted
+				by how likely they are to reappear in Classic World. Frozen Tuna is
+				already confirmed (it ships with the Snail Founder's Package); the
+				rest range from near-guaranteed seasonal returns to fond long-shot
+				dreams.
+			</p>
+		</div>
+	</section>
+
+	<div class="tier-summary">
+		{TIER_ORDER.map((t) => (
+			<a class="tier-summary__pill" href={`#tier-${t}`} style={`--pill: ${WISHLIST_META[t].accent}`}>
+				<strong>{tierCounts[t]}</strong>
+				<span>{WISHLIST_META[t].label}</span>
+			</a>
+		))}
+	</div>
+
+	<section class="disclaimer">
+		<strong>Not a promise, a wishlist.</strong> Nexon has not announced
+		what event items will appear in Classic World. This page organizes
+		community favorites with our best-guess probability of return. When
+		Nexon confirms items, they get retiered to <em>Confirmed</em> with
+		a citation.
+	</section>
+
+	{TIER_ORDER.map((tier) => {
+		const items = itemsByTier(tier);
+		if (items.length === 0) return null;
+		const meta = WISHLIST_META[tier];
+		return (
+			<section id={`tier-${tier}`} class="tier-section">
+				<header class="tier-section__head" style={`--tier-accent: ${meta.accent}`}>
+					<h2>{meta.label}</h2>
+					<span class="tier-section__count">{items.length} item{items.length === 1 ? "" : "s"}</span>
+					<p>{meta.description}</p>
+				</header>
+				<div class="card-grid">
+					{items.map((item) => <HallOfFameCard item={item} theme="henesys" />)}
+				</div>
+			</section>
+		);
+	})}
+
+	{viTies.length > 0 && (
+		<section id="victoria-island" class="tier-section tier-section--vi">
+			<header class="tier-section__head" style="--tier-accent: #46784b">
+				<h2>Victoria Island connections</h2>
+				<span class="tier-section__count">{viTies.length} item{viTies.length === 1 ? "" : "s"}</span>
+				<p>
+					Items in the Hall of Fame that have a specific Victoria Island tie
+					- events staged in Henesys / Kerning / Ellinia / Perion, or
+					memories rooted in the mainland's earliest days.
+				</p>
+			</header>
+			<div class="card-grid">
+				{viTies.map((item) => <HallOfFameCard item={item} theme="henesys" />)}
+			</div>
+		</section>
+	)}
+
+	<section class="submit-cta">
+		<h2>Missing a favorite?</h2>
+		<p>
+			The Hall of Fame is community-curated - a MapleStory memory library,
+			basically. If we're missing your favorite iconic item, open an issue
+			or PR against <code>src/data/hallOfFame.ts</code>. Include the WZ ID
+			(searchable via <a href="https://maplestory.io/api/GMS/83/item?searchFor=" target="_blank" rel="noopener">maplestory.io</a>),
+			the event/year it came from, and a short blurb on why it matters.
+		</p>
+	</section>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		margin: 1rem 0 1.5rem;
+	}
+
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.25rem;
+	}
+
+	.lede {
+		max-width: 44rem;
+		line-height: 1.6;
+		color: var(--text-secondary);
+	}
+
+	.tier-summary {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		margin: 1.5rem 0;
+	}
+
+	.tier-summary__pill {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: #fff;
+		border: 2px solid var(--pill, #ccc);
+		border-radius: 999px;
+		text-decoration: none;
+		color: inherit;
+		transition: background 0.15s, transform 0.1s;
+	}
+
+	.tier-summary__pill:hover {
+		background: var(--pill, #eee);
+		color: #fff;
+		transform: translateY(-1px);
+	}
+
+	.tier-summary__pill strong {
+		font-size: 1.2rem;
+		color: var(--pill);
+	}
+
+	.tier-summary__pill:hover strong {
+		color: #fff;
+	}
+
+	.tier-summary__pill span {
+		font-size: 0.85rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.disclaimer {
+		background: #fff6e0;
+		border-left: 4px solid var(--accent-primary, #b8460e);
+		padding: 1rem 1.25rem;
+		margin: 1.5rem 0;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.tier-section {
+		margin: 2.5rem 0;
+	}
+
+	.tier-section__head {
+		border-left: 4px solid var(--tier-accent, #b8460e);
+		padding-left: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.tier-section__head h2 {
+		font-size: 1.6rem;
+		margin: 0;
+		display: inline-block;
+		color: var(--tier-accent, inherit);
+	}
+
+	.tier-section__count {
+		font-size: 0.85rem;
+		color: var(--text-muted, #7a6b4a);
+		margin-left: 0.75rem;
+	}
+
+	.tier-section__head p {
+		margin: 0.25rem 0 0;
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+	}
+
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+		gap: 1rem;
+	}
+
+	.submit-cta {
+		margin: 3rem 0 1rem;
+		padding: 1.5rem;
+		background: #f6efd8;
+		border-radius: 10px;
+		border: 1px dashed #b77a2d;
+	}
+
+	.submit-cta h2 {
+		margin: 0 0 0.5rem;
+		font-size: 1.3rem;
+	}
+
+	.submit-cta p {
+		margin: 0;
+		font-size: 0.95rem;
+		line-height: 1.55;
+		color: #4a3a1a;
+	}
+
+	.submit-cta code {
+		background: #fff;
+		padding: 0.1rem 0.35rem;
+		border-radius: 3px;
+		border: 1px solid #d9c9a0;
+		font-size: 0.85em;
+	}
+</style>

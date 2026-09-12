@@ -1,40 +1,102 @@
-/* Sleepywood: deep forest, misty, muted.
- * STUB palette - refine once we build a Sleepywood-themed page.
+/* Sleepywood: misty ancient forest, hidden dungeons, mushroom
+ * lantern-light.
+ *
+ * The palette is tuned to the Whispering Willow Path scenic
+ * background: deep blue-teal atmospheric mist, dark moss surfaces,
+ * warm yellow lantern glow, and pops of mushroom purple/pink. Cards
+ * are dark (like Kerning) so they sink into the low-light forest
+ * floor rather than floating as bright rectangles.
  */
 
 [data-theme="sleepywood"] {
-	--bg-sky-top: #4a5a4a;
-	--bg-ground: #3a3020;
-	--bg-cloud: #6a7a68;
-	--bg-grass: #2a3a20;
+	/* --- Backgrounds --- */
+	--bg-sky-top: #2a3540;           /* misty forest twilight */
+	--bg-ground: #1a2028;            /* darkest forest floor */
+	--bg-cloud: #3a4a55;             /* pale fog */
+	--bg-grass: #1e2a1e;             /* fern-shadow silhouette */
 
-	--surface-card: #4a4030;
-	--surface-nav: #3a5030;
-	--surface-nav-hover: #5a7048;
-	--surface-announcement: #1e2818;
-	--surface-hero-panel: rgba(74, 64, 48, 0.92);
+	/* --- Surfaces --- */
+	--surface-card: #2a3a35;         /* aged mossy wood in shadow */
+	--surface-nav: #3a5040;          /* deep forest bark */
+	--surface-nav-hover: #5a7050;    /* fresh moss hover */
+	--surface-announcement: #1a2820; /* darkest hollow */
+	--surface-hero-panel: rgba(42, 58, 53, 0.92);
 
-	--border-card: #6a5a40;
-	--border-card-strong: #8a7a58;
-	--border-nav: #1e2818;
-	--border-hero: #5a7048;
-	--border-divider: #5a4838;
+	/* --- Borders --- */
+	--border-card: #4a6050;
+	--border-card-strong: #5a7050;
+	--border-nav: #1a2820;
+	--border-hero: #5a7050;
+	--border-divider: #3a4a3f;
 
-	--text-body: #d8d0b8;
-	--text-heading: #f0e8c8;
-	--text-muted: #a89880;
-	--text-brand-tagline: #b8a880;
-	--text-on-nav: #f0e8c8;
-	--text-on-announcement: #f0e8c8;
-	--text-on-accent: #f0e8c8;
+	/* --- Text --- */
+	--text-body: #d0e0d0;            /* soft mint on dark cards */
+	--text-heading: #e8f0e0;         /* brighter for headings */
+	--text-muted: #98a898;
+	--text-brand-tagline: #b8d0b0;
+	--text-on-nav: #f0f8e8;
+	--text-on-announcement: #f0f8e8;
+	--text-on-accent: #2a1e08;       /* dark plum on warm gold accent */
 
-	--accent-primary: #7a8a5a;
-	--accent-primary-strong: #5a7048;
-	--accent-secondary: #a88855;
-	--accent-secondary-border: #6a5030;
-	--accent-secondary-text: #f0e8c8;
-	--accent-blossom: #b87858;
-	--accent-blossom-strong: #8a5030;
+	/* --- Accents ---
+	 * Primary is a subtle mossy green (matches foliage in image).
+	 * Secondary is lantern-gold (the warm window lights + hanging
+	 * lanterns) - pops nicely against the dark cards for callouts.
+	 * Blossom is mushroom-pink for the purple mushroom flair. */
+	--accent-primary: #7a9070;             /* subtle moss */
+	--accent-primary-strong: #5a7050;      /* deeper moss */
+	--accent-secondary: #e8b968;           /* warm lantern gold */
+	--accent-secondary-border: #a88530;
+	--accent-secondary-text: #2a1e08;      /* dark plum on gold */
+	--accent-blossom: #b878a8;             /* mushroom pink */
+	--accent-blossom-strong: #8a5088;
 
+	/* --- Effects --- */
 	--shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+	/* --- Cursors ---
+	 * Sleepywood is the mystery/exploration town - hidden dungeons,
+	 * dim paths, ancient shrines. Default uses the diagonal green
+	 * pointer (subtle, fits the forest palette without competing
+	 * with Ellinia's leaf cursor). Interactives use the shovel
+	 * cursor to hint at "digging into the content" - fits the
+	 * whole "buried secrets in the woods" vibe. */
+	--cursor-default: url("/cursors/point.cur") 4 4, auto;
+	--cursor-pointer: url("/cursors/point_diagonal_green.cur") 4 4, pointer;
+}
+
+/* Sleepywood uses a scenic Whispering Willow Path background: dark
+ * blue-teal misty forest, massive old-growth trees with hanging
+ * vines, wooden rope-bridge path leading to a stone dungeon archway,
+ * a moss-covered treehouse with warm window lights, glowing
+ * lanterns, small blue waterfall pond, purple mushrooms scattered
+ * along the path. Dark scrim on the bottom matches the surface-card
+ * color so cards sink into the shadowy forest floor. */
+
+/* !important is defensive against browser style caching keeping the
+ * base gradient. Theme MUST win. Same pattern as perion.css. */
+html[data-theme="sleepywood"] body {
+	background-color: var(--bg-sky-top) !important;
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(26, 32, 40, 0) 0%,
+			rgba(42, 58, 53, 0.35) 45%,
+			rgba(42, 58, 53, 0.85) 100%
+		),
+		url("/images/sleepywood-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
+}
+
+/* The scenic image already has plenty of hanging vines, glowing
+ * lanterns, and lush undergrowth - CSS decoration overlays would
+ * just be visual noise. Kill them for Sleepywood. */
+html[data-theme="sleepywood"] body[data-theme-decorations="on"]::before,
+html[data-theme="sleepywood"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
 }

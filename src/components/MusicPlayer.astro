@@ -79,7 +79,12 @@ const audioMapJson = JSON.stringify(themeAudio);
 
 		function setUiState(playing: boolean) {
 			button!.setAttribute("aria-pressed", playing ? "true" : "false");
-			button!.title = playing ? `Music: ${track!.title}` : "Music: off";
+			// Tooltip includes the resolved track title even while muted
+			// so screen readers announce what's queued before activation.
+			// Visible label stays concise ("Music off" vs. the title).
+			button!.title = playing
+				? `Now playing: ${track!.title} (click to pause)`
+				: `Play "${track!.title}"`;
 			if (iconMuted) iconMuted.hidden = playing;
 			if (iconPlaying) iconPlaying.hidden = !playing;
 			if (label) label.textContent = playing ? track!.title : "Music off";
@@ -176,9 +181,27 @@ const audioMapJson = JSON.stringify(themeAudio);
 		white-space: nowrap;
 	}
 
+	/* Mobile: shrink to a compact icon-only circle. Also see the
+	   global rule in global.css that adds bottom padding to <main>
+	   on narrow viewports so the widget doesn't overlap page content. */
 	@media (max-width: 500px) {
+		.music-player {
+			right: 0.75rem;
+			bottom: 0.75rem;
+		}
 		.music-player__label {
 			display: none;
+		}
+		.music-player__button {
+			padding: 0;
+			width: 44px;
+			height: 44px;
+			justify-content: center;
+			/* Slight transparency so if it DOES sit near content, the
+			   content isn't completely blocked visually. */
+			background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+			backdrop-filter: blur(4px);
+			-webkit-backdrop-filter: blur(4px);
 		}
 	}
 </style>

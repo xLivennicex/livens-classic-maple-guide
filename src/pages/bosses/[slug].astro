@@ -1,0 +1,324 @@
+---
+/**
+ * /bosses/[slug] - editorial boss dossier.
+ *
+ * Complements /mobs/[id] with the "why do I care about this boss"
+ * layer: TL;DR, access instructions, strategy notes, threat rating,
+ * recommended level band. Combat stats + drops + spawn maps are the
+ * same underlying data as the mob page - the boss page reuses them
+ * so a reader who lands here from the world-map doesn't need to
+ * click twice to see what drops. A cross-link at the bottom sends
+ * curious readers to the raw dossier if they want the full mob
+ * page context (quest cross-refs, MeowDB link).
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Sprite from "../../components/Sprite.astro";
+import { allBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
+import { mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import { themeForLocation } from "../../lib/region-theme";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return allBosses.map((b) => ({
+		params: { slug: b.slug },
+		props: { slug: b.slug },
+	}));
+};
+
+const { slug } = Astro.props;
+const boss = getBossBySlug(slug);
+if (!boss) throw new Error(`Boss slug not found: ${slug}`);
+
+const { mob, narrative, role, recommendedLevelMin, recommendedLevelMax } = boss;
+const threat = threatMeta(narrative.threat);
+
+// Theme resolution priority:
+//   1. Explicit manifest override (needed for bosses with no spawn
+//      map like Crimson Balrog, or hidden-street bosses whose map
+//      names don't include a recognizable town substring like
+//      Jr. Balrog's "Cursed Sanctuary").
+//   2. Auto-detect from spawn map names + primary region (works
+//      for most bosses whose spawn map name includes "Henesys",
+//      "Perion", etc.).
+const spawnNames = (mob.mapsSpawnedOn ?? []).map((s) => s.mapName);
+const primaryRegion = mob.mapsSpawnedOn?.[0]?.region ?? "Victoria Island";
+const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegion);
+---
+
+<BaseLayout
+	title={`${mob.name} - Bosses - Liven's Classic Maple Guide`}
+	description={`${mob.name} (Lv ${mob.stats?.level}, ${mob.stats?.maxHP?.toLocaleString()} HP) - ${role}. Access, strategy, drops, recommended level ${recommendedLevelMin}-${recommendedLevelMax}.`}
+	theme={pageTheme}
+>
+	<nav class="crumbs">
+		<a href="/bosses">← Bosses</a>
+		<span class="crumbs__sep">·</span>
+		<span>{mob.name}</span>
+	</nav>
+
+	<header class="hero">
+		<div class="hero__icon">
+			<Sprite
+				srcs={mobSpriteSrcs(mob.id, mob.wzId)}
+				alt={`${mob.name} sprite`}
+				loading="eager"
+				placeholder={themePlaceholderUrl(pageTheme)}
+			/>
+		</div>
+		<div class="hero__title">
+			<h1>{mob.name}</h1>
+			<p class="hero__role">{role}</p>
+			<div class="hero__badges">
+				<span class="badge badge--lvl">Lv. {mob.stats?.level ?? "?"}</span>
+				<span class="badge">{mob.stats?.maxHP?.toLocaleString() ?? "?"} HP</span>
+				<span class="badge">{mob.stats?.exp?.toLocaleString() ?? "?"} EXP</span>
+				<span class="badge badge--range">
+					Recommended Lv. {recommendedLevelMin}–{recommendedLevelMax}
+				</span>
+				<span class={`badge ${threat.cls}`}>{threat.label}</span>
+			</div>
+		</div>
+	</header>
+
+	{narrative.tldr && (
+		<section class="section section--editorial">
+			<h2>The short version</h2>
+			<p class="editorial">{narrative.tldr}</p>
+		</section>
+	)}
+
+	{narrative.access && (
+		<section class="section section--editorial">
+			<h2>How to find them</h2>
+			<p class="editorial">{narrative.access}</p>
+		</section>
+	)}
+
+	{mob.stats && (
+		<section class="section">
+			<h2>Combat stats</h2>
+			<div class="stat-grid">
+				<div class="stat"><span class="stat__label">Level</span><span class="stat__val">{mob.stats.level ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Max HP</span><span class="stat__val">{mob.stats.maxHP?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Max MP</span><span class="stat__val">{mob.stats.maxMP?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat stat--exp"><span class="stat__label">EXP</span><span class="stat__val">{mob.stats.exp?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Phys. ATK</span><span class="stat__val">{mob.stats.physicalDamage ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Phys. DEF</span><span class="stat__val">{mob.stats.physicalDefense ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Mag. ATK</span><span class="stat__val">{mob.stats.magicDamage ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Mag. DEF</span><span class="stat__val">{mob.stats.magicDefense ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Accuracy</span><span class="stat__val">{mob.stats.accuracy ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Evasion</span><span class="stat__val">{mob.stats.evasion ?? "?"}</span></div>
+			</div>
+			{(mob.stats.isUndead || mob.stats.isBodyAttack) && (
+				<p class="tag-line">
+					{mob.stats.isUndead && <span class="badge">Undead - Holy damage bonus</span>}
+					{mob.stats.isBodyAttack && <span class="badge">Body attack - contact damage</span>}
+				</p>
+			)}
+		</section>
+	)}
+
+	{narrative.strategy && (
+		<section class="section section--editorial">
+			<h2>Strategy notes</h2>
+			<p class="editorial">{narrative.strategy}</p>
+		</section>
+	)}
+
+	{mob.mapsSpawnedOn && mob.mapsSpawnedOn.length > 0 && (
+		<section class="section">
+			<h2>Spawn locations <span class="count">({mob.mapsSpawnedOn.length})</span></h2>
+			<div class="map-grid">
+				{mob.mapsSpawnedOn.map((m) => (
+					<a class={`map-chip map-chip--${m.kind}`} href={`/maps/${m.mapId}`}>
+						<span class="map-chip__name">{m.mapName}</span>
+						<span class="map-chip__meta">
+							{m.region}{m.count > 1 ? ` · x${m.count} spawns` : ""}
+						</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	{mob.drops && mob.drops.length > 0 && (
+		<section class="section">
+			<h2>Drops <span class="count">({mob.drops.length})</span></h2>
+			<p class="muted-note">
+				Community-sourced from <a href="https://meowdb.com/msclassic" target="_blank" rel="noopener">MeowDB</a>.
+				Higher scores = more confirmed sightings.
+			</p>
+			<div class="drop-table">
+				{mob.drops.map((drop) => (
+					<a
+						class="drop-row"
+						href={`/items/${drop.itemId}`}
+					>
+						<img
+							class="drop-row__icon"
+							src={itemIconUrl(drop.itemId)}
+							alt=""
+							loading="lazy"
+							onerror="this.style.visibility='hidden'"
+						/>
+						<span class="drop-row__name">{drop.itemName}</span>
+						<span class="drop-row__type">
+							{drop.itemType}{drop.itemSubtype ? ` / ${drop.itemSubtype}` : ""}
+						</span>
+						<span class={`drop-row__score drop-row__score--${drop.score >= 5 ? "high" : drop.score >= 2 ? "med" : "low"}`}>
+							{drop.score > 0 ? `+${drop.score}` : drop.score}
+						</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	<section class="section section--tail">
+		<a class="tail-link" href={`/mobs/${mob.id}`}>
+			View full mob dossier ({mob.name} on /mobs) →
+		</a>
+		<p class="muted-note">
+			Raw dossier includes quest cross-references and the full
+			MeowDB drop-score table for grinding decisions.
+		</p>
+	</section>
+</BaseLayout>
+
+<style>
+	/* All colors reference theme tokens (--text-*, --surface-*, --border-*)
+	   defined per theme in the global palette, so cards stay readable on
+	   both light (henesys) and dark (sleepywood) backgrounds. Never
+	   hardcode a hex color for text or background inside a themed page -
+	   that was the bug QA-kitten caught on the Crimson Balrog page. */
+
+	.crumbs {
+		display: inline-block;
+		font-size: 0.85rem;
+		margin-bottom: 1rem;
+		padding: 0.3rem 0.7rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 999px;
+		color: var(--text-body);
+	}
+	.crumbs a { color: var(--accent-primary); text-decoration: none; font-weight: 600; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+
+	.hero {
+		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;
+		align-items: center; padding: 1.5rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem; margin-bottom: 1.5rem;
+	}
+	.hero__icon {
+		width: 96px; height: 96px;
+		display: flex; align-items: center; justify-content: center;
+		background: var(--bg-cloud); border-radius: 0.5rem;
+		image-rendering: pixelated;
+	}
+	.hero__icon :global(img) {
+		max-width: 88px; max-height: 88px; image-rendering: pixelated;
+	}
+	.hero__title h1 { margin: 0 0 0.15rem; font-size: 2rem; color: var(--text-heading); }
+	.hero__role {
+		margin: 0 0 0.6rem; font-style: italic; color: var(--text-muted);
+		font-size: 0.95rem;
+	}
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+	.badge {
+		display: inline-block; padding: 0.25rem 0.65rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--bg-cloud); color: var(--text-body);
+		border-radius: 999px;
+	}
+	.badge--lvl { background: #d1e0e7; color: #2e4a5d; font-family: monospace; }
+	.badge--range { background: #e8dcc0; color: #5c4423; }
+	/* Threat badges use fixed contrast-safe palettes because they need to
+	   read the same across all themes - "high threat" is red regardless
+	   of whether the region is Henesys or Sleepywood. */
+	.threat--low       { background: #d4edda; color: #155724; }
+	.threat--moderate  { background: #fff3cd; color: #856404; }
+	.threat--high      { background: #f8d7da; color: #721c24; }
+	.threat--extreme   { background: #2b0d0f; color: #ffd7d9; }
+	.threat--unknown   { background: var(--bg-cloud); color: var(--text-body); }
+
+	.section {
+		margin: 1.5rem 0;
+		padding: 1.2rem 1.4rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.6rem;
+	}
+	.section h2 { margin: 0 0 0.7rem; font-size: 1.3rem; color: var(--text-heading); }
+	.section h2 .count { font-size: 0.8em; color: var(--text-muted); font-weight: normal; }
+
+	.section--editorial .editorial {
+		margin: 0; font-size: 1rem; line-height: 1.6; color: var(--text-body);
+		max-width: 70ch;
+	}
+
+	.stat-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+		gap: 0.5rem;
+	}
+	.stat {
+		display: flex; flex-direction: column;
+		padding: 0.5rem 0.7rem;
+		background: var(--bg-cloud); border-radius: 0.4rem;
+	}
+	.stat__label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+	.stat__val { font-size: 1.1rem; font-weight: 600; font-family: monospace; color: var(--text-heading); }
+	.stat--exp .stat__val { color: var(--accent-primary); }
+	.tag-line { margin: 0.7rem 0 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+	.muted-note { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 0.7rem; }
+	.muted-note a { color: inherit; text-decoration: underline; }
+
+	.map-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+	.map-chip {
+		display: inline-flex; flex-direction: column;
+		padding: 0.5rem 0.8rem;
+		background: var(--bg-cloud); border: 1px solid var(--border-card);
+		border-radius: 0.4rem; text-decoration: none;
+		transition: transform 0.12s ease, border-color 0.12s ease;
+	}
+	.map-chip:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.map-chip__name { font-weight: 600; color: var(--text-heading); font-size: 0.9rem; }
+	.map-chip__meta { font-size: 0.75rem; color: var(--text-muted); }
+
+	.drop-table { display: flex; flex-direction: column; gap: 0.25rem; }
+	.drop-row {
+		display: grid;
+		grid-template-columns: 32px 1fr auto auto;
+		gap: 0.6rem;
+		align-items: center;
+		padding: 0.35rem 0.6rem;
+		background: var(--bg-cloud);
+		border-radius: 0.35rem;
+		text-decoration: none; color: var(--text-body);
+		font-size: 0.9rem;
+		transition: background 0.12s ease;
+	}
+	.drop-row:hover { background: var(--surface-nav-hover); }
+	.drop-row__icon { width: 32px; height: 32px; image-rendering: pixelated; }
+	.drop-row__name { color: var(--text-heading); font-weight: 500; }
+	.drop-row__type { color: var(--text-muted); font-size: 0.8rem; }
+	.drop-row__score { font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; }
+	.drop-row__score--high { background: #d4edda; color: #155724; }
+	.drop-row__score--med  { background: #fff3cd; color: #856404; }
+	.drop-row__score--low  { background: var(--bg-cloud); color: var(--text-muted); }
+
+	.section--tail { text-align: center; }
+	.tail-link {
+		display: inline-block; padding: 0.6rem 1.2rem;
+		background: var(--accent-primary); color: var(--text-on-accent);
+		text-decoration: none; border-radius: 0.5rem;
+		font-weight: 600;
+	}
+	.tail-link:hover { opacity: 0.9; }
+</style>

@@ -1,0 +1,335 @@
+---
+/**
+ * WorldMapView - renders one WorldMap.img entry as an interactive
+ * pixel-art hotspot map. Used by /world (top-level) and
+ * /world/[name] (sub-regions) so both routes share one rendering
+ * body (DRY).
+ *
+ * Prop shape matches `src/data/db/worldmaps.json[name]`:
+ *   - image, width, height, originX, originY
+ *   - links[]  = subregion navigation overlays (nested worldmaps)
+ *   - maps[]   = pin spots; each has an optional dossierMapId
+ *                (null when the pin's WZ ID didn't resolve to a
+ *                map we've indexed)
+ *
+ * Coordinate math: MapleStory world-map spot coords are in a
+ * cartesian space centered around baseImage.origin. Pixel position
+ * on the image = originX+spotX, originY+spotY. We convert to
+ * percentages so the hotspot grid scales with the responsive image.
+ */
+
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+	wm: {
+		name: string;
+		image: string;
+		width: number;
+		height: number;
+		originX: number;
+		originY: number;
+		links: Array<{
+			toolTip: string | null;
+			linksTo: string;
+			image: string;
+			width: number;
+			height: number;
+			originX: number;
+			originY: number;
+		}>;
+		maps: Array<{
+			title: string | null;
+			description: string | null;
+			spotX: number;
+			spotY: number;
+			mapNumbers: number[];
+			dossierMapId: number | null;
+		}>;
+	};
+	// Optional catalog of dossier maps so we can render names in the
+	// pin list below the map instead of raw IDs.
+	dossierMapNames?: Map<number, string>;
+	// Optional catalog of level ranges so pin tooltips can show
+	// "Lv 8-15" instead of just the map name. Mirrors the
+	// mobLevelRange field on map dossiers.
+	dossierMapLevels?: Map<number, { min: number; max: number }>;
+}
+
+const { wm, dossierMapNames, dossierMapLevels } = Astro.props;
+
+// Render "Lv N" (single-level maps) or "Lv N-M" (range) or "" (no data).
+const fmtLevel = (r?: { min: number; max: number } | null) => {
+	if (!r) return "";
+	return r.min === r.max ? `Lv ${r.min}` : `Lv ${r.min}-${r.max}`;
+};
+
+// Convert world coord -> pixel percentage. Percentages keep hotspots
+// aligned as the image scales down on mobile.
+const toPct = (worldX: number, worldY: number) => ({
+	left: ((wm.originX + worldX) / wm.width) * 100,
+	top: ((wm.originY + worldY) / wm.height) * 100,
+});
+
+// Split pins into "linked" (clickable, dossier exists) vs "unlinked"
+// (still positioned + tooltip visible, but not clickable). Renders
+// both classes so the map matches the game visually even when the
+// dossier is incomplete.
+const linkedPins = wm.maps.filter((p) => p.dossierMapId != null);
+const unlinkedPins = wm.maps.filter((p) => p.dossierMapId == null);
+---
+
+<div class="wmv">
+	<div
+		class="wmv__stage"
+		style={`aspect-ratio: ${wm.width} / ${wm.height};`}
+	>
+		<img
+			class="wmv__bg"
+			src={wm.image}
+			alt={`${wm.name} background`}
+			width={wm.width}
+			height={wm.height}
+		/>
+
+		{/* Subregion link overlays - the stylized region labels like
+		    "MAPLE ISLAND" that navigate to sub-worldmaps. Positioned
+		    via top-left corner (origin) plus the natural image size. */}
+		{wm.links.map((link) => {
+			const pos = toPct(link.originX, link.originY);
+			// Link overlay images are positioned by their TOP-LEFT
+			// corner in world coords; other spots (map pins) use
+			// their CENTER. Different Nexon conventions per entity
+			// type - we normalize below.
+			const widthPct = (link.width / wm.width) * 100;
+			const heightPct = (link.height / wm.height) * 100;
+			return (
+				<a
+					class="wmv__link"
+					href={`/world/${link.linksTo}`}
+					style={`left: ${pos.left}%; top: ${pos.top}%; width: ${widthPct}%; height: ${heightPct}%;`}
+					title={link.toolTip ?? link.linksTo}
+				>
+					<img src={link.image} alt={link.toolTip ?? ""} />
+				</a>
+			);
+		})}
+
+		{/* Map pins - clickable dots at spot coords. Linked pins are
+		    accent-colored + pulsing so the eye is drawn to them;
+		    unlinked pins are muted + non-interactive. */}
+		{linkedPins.map((pin) => {
+			const pos = toPct(pin.spotX, pin.spotY);
+			const displayName = pin.description ?? dossierMapNames?.get(pin.dossierMapId!) ?? `Map ${pin.dossierMapId}`;
+			const levelStr = fmtLevel(dossierMapLevels?.get(pin.dossierMapId!));
+			// Compose native title attr (browser tooltip on non-hover
+			// devices like touchscreens) with name + level range.
+			const nativeTitle = levelStr ? `${displayName} · ${levelStr}` : displayName;
+			return (
+				<a
+					class="wmv__pin wmv__pin--linked"
+					href={`/maps/${pin.dossierMapId}`}
+					style={`left: ${pos.left}%; top: ${pos.top}%;`}
+					title={nativeTitle}
+				>
+					<span class="wmv__pin-dot"></span>
+					<span class="wmv__pin-label">
+						{displayName}
+						{levelStr && <span class="wmv__pin-level"> · {levelStr}</span>}
+					</span>
+				</a>
+			);
+		})}
+		{unlinkedPins.map((pin) => {
+			const pos = toPct(pin.spotX, pin.spotY);
+			return (
+				<span
+					class="wmv__pin wmv__pin--unlinked"
+					style={`left: ${pos.left}%; top: ${pos.top}%;`}
+					title={pin.description ?? `${pin.mapNumbers.length} map${pin.mapNumbers.length === 1 ? "" : "s"} (not documented yet)`}
+				>
+					<span class="wmv__pin-dot"></span>
+				</span>
+			);
+		})}
+	</div>
+
+	<p class="wmv__caption">
+		<strong>{linkedPins.length}</strong> pin{linkedPins.length === 1 ? "" : "s"} link to documented maps.
+		{unlinkedPins.length > 0 && (
+			<>
+				{" "}<span class="wmv__muted">
+					{unlinkedPins.length} more pin{unlinkedPins.length === 1 ? "" : "s"}
+					{" "}point at maps we haven't documented yet (shown as gray dots).
+				</span>
+			</>
+		)}
+		{wm.links.length > 0 && (
+			<>
+				{" "}Click the region labels to zoom into sub-maps.
+			</>
+		)}
+	</p>
+</div>
+
+<style>
+	.wmv {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+	.wmv__stage {
+		position: relative;
+		width: 100%;
+		background: #0a0f1a;
+		border: 2px solid var(--border-card);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+	.wmv__bg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		image-rendering: pixelated;
+	}
+
+	/* Subregion link overlays (the fancy region labels). The <img>
+	   inside is presentational only - the anchor is the hitbox.
+	   Set `cursor: pointer` explicitly (some browsers won't infer
+	   it from an anchor with position:absolute + img child) and
+	   render an outlined ring on hover so the user SEES the
+	   clickable rectangle before clicking. Solves the "where does
+	   this label actually take me?" confusion. */
+	.wmv__link {
+		position: absolute;
+		display: block;
+		text-decoration: none;
+		cursor: pointer;
+		border-radius: 6px;
+		transition: filter 120ms ease, transform 120ms ease,
+			background-color 120ms ease, box-shadow 120ms ease;
+	}
+	.wmv__link img {
+		display: block;
+		width: 100%; height: 100%;
+		image-rendering: pixelated;
+		object-fit: contain;
+		/* Let the anchor take pointer events; img must not swallow them. */
+		pointer-events: none;
+	}
+	.wmv__link:hover,
+	.wmv__link:focus-visible {
+		background: rgba(255, 210, 100, 0.12);
+		box-shadow: 0 0 0 2px rgba(255, 210, 100, 0.9),
+			0 0 12px rgba(255, 210, 100, 0.5);
+		filter: drop-shadow(0 0 6px rgba(255, 210, 100, 0.9));
+		transform: scale(1.02);
+		z-index: 3;
+		outline: none;
+	}
+
+	/* Pin: absolutely positioned at the spot coord, translated -50%
+	   so the DOT is centered on the coordinate. Anchor gets a big
+	   TRANSPARENT hit-target (~44px, WCAG touch-friendly) so the
+	   cursor doesn't need surgical precision. The dot stays small
+	   (14px) but the clickable area is 3x bigger.
+	   Label pops on hover via `.wmv__pin:hover .wmv__pin-label`. */
+	.wmv__pin {
+		position: absolute;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-decoration: none;
+		color: inherit;
+		z-index: 2;
+		/* This padding IS the invisible hitbox. Kept transparent so
+		   the map background shows through; content-box sizing keeps
+		   the dot itself at its intended 14px. */
+		padding: 15px;
+		box-sizing: content-box;
+	}
+	.wmv__pin--linked {
+		cursor: pointer;
+	}
+	.wmv__pin-dot {
+		display: block;
+		width: 14px; height: 14px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0,0,0,0.5);
+		transition: transform 100ms ease, box-shadow 100ms ease;
+	}
+	.wmv__pin--linked .wmv__pin-dot {
+		background: #ffb347;
+		animation: wmv-pulse 2.2s ease-in-out infinite;
+	}
+	.wmv__pin--unlinked .wmv__pin-dot {
+		background: rgba(160, 160, 160, 0.7);
+		border-color: rgba(255, 255, 255, 0.6);
+		width: 10px; height: 10px;
+	}
+	.wmv__pin-label {
+		display: none;
+		position: absolute;
+		/* Position relative to the DOT, not the padded anchor - offset
+		   accounts for the 15px pad + tiny gap. */
+		top: calc(100% - 15px + 6px);
+		padding: 0.25rem 0.55rem;
+		background: rgba(20, 24, 34, 0.95);
+		color: #fff;
+		font-size: 0.78rem;
+		font-weight: bold;
+		white-space: nowrap;
+		border-radius: 0.25rem;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+		pointer-events: none;
+	}
+	.wmv__pin-level {
+		font-weight: normal;
+		color: #ffb347;
+		font-family: monospace;
+	}
+	/* Both hover AND focus-visible reveal the label so keyboard
+	   users get the same affordance as mouse users. */
+	.wmv__pin--linked:hover,
+	.wmv__pin--linked:focus-visible {
+		z-index: 4;
+		outline: none;
+	}
+	.wmv__pin--linked:hover .wmv__pin-label,
+	.wmv__pin--linked:focus-visible .wmv__pin-label {
+		display: block;
+	}
+	.wmv__pin--linked:hover .wmv__pin-dot,
+	.wmv__pin--linked:focus-visible .wmv__pin-dot {
+		/* KILL the pulse (not just pause it) so our declared transform
+		   wins - CSS animated properties otherwise override matching
+		   static declarations regardless of specificity. The dot pops
+		   to a larger, brighter state and HOLDS steady while the
+		   cursor is nearby. */
+		animation: none;
+		transform: scale(1.5);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5),
+			0 0 0 3px rgba(255, 210, 100, 0.6),
+			0 0 14px rgba(255, 210, 100, 0.9);
+	}
+
+	@keyframes wmv-pulse {
+		0%, 100% { transform: scale(1); }
+		50% { transform: scale(1.15); }
+	}
+	/* Respect prefers-reduced-motion: no pulse, no scaling on hover. */
+	@media (prefers-reduced-motion: reduce) {
+		.wmv__pin--linked .wmv__pin-dot { animation: none; }
+		.wmv__pin--linked:hover .wmv__pin-dot { transform: none; }
+		.wmv__link { transition: none; }
+	}
+
+	.wmv__caption {
+		margin: 0.8rem 0 0;
+		font-size: 0.85rem;
+		color: var(--text-body);
+		text-align: center;
+	}
+	.wmv__muted { color: var(--text-muted); }
+</style>

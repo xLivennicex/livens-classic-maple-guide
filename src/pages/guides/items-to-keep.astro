@@ -1,0 +1,334 @@
+---
+/**
+ * /guides/items-to-keep - the "please don't sell that" guide.
+ *
+ * SEO target: 'maplestory classic never sell', 'what items to keep
+ * maplestory beginner', 'maplestory quest items I sold', 'maplestory
+ * classic etc items guide'. This is a beginner-panic query - a new
+ * player just NPC'd 30 Leaves for pocket change and now Fully Bloomed
+ * Bluebell wants 20 of them for a chair recipe. Google-arriving on
+ * this page should immediately answer "how do I know before selling?"
+ *
+ * Structure: five categories of never-sell items, each with an
+ * ItemRewardStrip showing the concrete sprites + names + why. The
+ * items are pulled from real quest-demand counts in items.json
+ * (see the audit query in ROADMAP Sprint 61 for the source SQL).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ItemRewardStrip from "../../components/ItemRewardStrip.astro";
+---
+
+<BaseLayout
+	title="Items You Should Never Sell - Liven's Classic Maple Guide"
+	description="The quest-required ETC items, unique story rewards, and rare event drops new MapleStory Classic players sell for pocket change and regret 20 levels later. Concrete item list with sprites and why-not-to-sell reasons."
+	currentPath="/guides"
+	theme="perion"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Beginner Reference</span>
+			<h1>Items You Should Never Sell</h1>
+			<p class="lede">
+				Every returning MapleStory Classic player has the same story: they
+				NPC'd a stack of Leaves for 15 mesos each at Lv 10, then hit Lv 25,
+				talked to an NPC, and learned that same stack was worth a scroll
+				drop, an EXP quest chain, or a piece of crafted gear worth ten times
+				more. This guide is the "how do I know before I sell?" answer.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<h2 id="the-fundamental-rule">The fundamental rule</h2>
+		<p>
+			<strong>If an ETC item has a specific name and a sprite that isn't a
+			generic pile of coins, keep at least 30 of it until Lv 40.</strong>
+			Generic drops (Ores, generic Slime Bubbles used for meso value only)
+			are fine to sell. Named ETC items with distinct sprites almost always
+			back a quest, a crafting recipe, or a collect-100-turnin somewhere.
+		</p>
+		<p>
+			The reason: quest EXP scales with the level of the mob it came from.
+			A 20-Leaf turn-in you complete at Lv 12 gives massive EXP; the same
+			turn-in at Lv 35 is trivial. Selling ETC drops early is throwing away
+			the best EXP conversion in the game.
+		</p>
+
+		<h2 id="category-a-etc-quest-turnins">
+			Category A: ETC drops with hidden quest demand
+		</h2>
+		<p>
+			These are the top offenders - unassuming ETC items that back FOUR OR
+			MORE separate quests each. New players see the low NPC sell price,
+			right-click, and lose thousands of EXP worth of turn-ins. The
+			datamine numbers below (quest count per item) come straight from
+			<code>items.json</code>.
+		</p>
+
+		<ItemRewardStrip
+			title="The seven-quest MVPs"
+			lede="Each of these ETC drops is required by 5 or more separate quests. Keep 30-50 of each stockpiled from your first drop through Lv 40 at minimum."
+			itemIds={[4000011, 4000009, 4000013, 4000033, 4000016, 4000019, 4000031]}
+			notes={{
+				4000011: "needed by 7 quests",
+				4000009: "needed by 6 quests",
+				4000013: "needed by 6 quests",
+				4000033: "needed by 6 quests",
+				4000016: "needed by 5 quests",
+				4000019: "needed by 5 quests",
+				4000031: "needed by 5 quests",
+			}}
+		/>
+
+		<ItemRewardStrip
+			title="High-demand secondary drops (4 quests each)"
+			lede="Slightly lower quest count but the same rule: don't sell until you've cleared every quest in the origin region. Charm of the Undead in particular gates several story quests around Sleepywood."
+			itemIds={[4000039, 4000020, 4000036, 4000017, 4000018, 4000032, 4000028, 4000034]}
+			notes={{
+				4000039: "5 quests",
+				4000020: "4 quests, Undead line",
+				4000036: "4 quests, Drakes+Sleepywood",
+				4000017: "4 quests, Stirges",
+				4000018: "4 quests, Jr. Necki",
+				4000032: "4 quests, beach quests",
+				4000028: "4 quests, Ghost Ship line",
+				4000034: "4 quests, Cold Eye Sleepywood",
+			}}
+		/>
+
+		<h3>How to check if an ETC drop backs a quest</h3>
+		<p>
+			Every item on this site has an auto-generated detail page. Any drop's
+			"Required by quests" section will list every quest that needs it,
+			with quest levels and regions. Two workflows:
+		</p>
+		<ul>
+			<li>
+				<strong>Reactive:</strong> right-click any ETC drop in your
+				inventory, click the item name, then look it up at
+				<a href="/items">the items catalog</a>. The detail page lists
+				every quest that demands it.
+			</li>
+			<li>
+				<strong>Proactive:</strong> when you enter a new region, glance
+				at <a href="/quests">the quests catalog</a>, filter by that
+				region, and mentally note the ETC drops each quest wants. Then
+				you know to bank them from the first mob.
+			</li>
+		</ul>
+
+		<h2 id="category-b-story-quest-uniques">
+			Category B: Story-quest unique rewards
+		</h2>
+		<p>
+			Items given by a specific one-time story quest are usually harder to
+			re-obtain than any drop. Some are outright impossible to get twice.
+			Read the flavor text before selling - if it references a specific
+			NPC or event, it's probably a keepsake with meaning down the line.
+		</p>
+
+		<ItemRewardStrip
+			title="Notable one-time earrings"
+			lede="Given by early-game quest chains. Even if the stats look mediocre now, they slot into intermediate/greater scrolls later that require the base earring. Bank them, don't NPC them."
+			itemIds={[1032002, 1032012, 1032013, 1032015, 1032021, 1032022]}
+			notes={{
+				1032002: "Weighted - early quest reward",
+				1032012: "Pansy - Ellinia line",
+				1032013: "Skull - Kerning line",
+				1032015: "Leaf - Henesys line",
+				1032021: "Henesys Citizenship exclusive",
+				1032022: "Kerning Citizenship exclusive",
+			}}
+		/>
+
+		<p>
+			The earrings above are especially dangerous because Classic World
+			introduced a whole earring scroll ecosystem in Closed Online Test 2
+			(Intermediate + Greater STR/DEX/INT/LUK scrolls). Those scrolls need
+			a base earring to slot onto. Selling any early earring means
+			potentially having to grind or PQ to reacquire the base for
+			scrolling later.
+		</p>
+
+		<h2 id="category-c-scrolls">
+			Category C: Scrolls, all of them
+		</h2>
+		<p>
+			If it starts with "Scroll for" and ends with a percentage or
+			"Chaos" - keep it. Even the 10% ones. Even the ones for slots you
+			don't have gear in yet. Scrolls have meso floors in the auction
+			house that make them almost always more valuable to sell there than
+			to NPC, and specific scrolls (White Scroll, Chaos Scroll, 60%
+			Overall DEX, 60% Glove ATT) hold value for the entire lifetime of
+			the server.
+		</p>
+		<ul>
+			<li>
+				<strong>NPC sell prices for scrolls are laughably low</strong> -
+				usually 100-500 mesos, sometimes single-digit thousands for
+				high-tier scrolls that trade for tens of millions in the AH.
+			</li>
+			<li>
+				<strong>Even "useless" scrolls have a market.</strong> A 10%
+				Overall DEX 60 that fails 90% of the time is still worth
+				thousands to a Warrior with a rare pristine Green Bandana who
+				needs the +2 DEX. Someone will always want it.
+			</li>
+			<li>
+				<strong>Chaos Scrolls and White Scrolls are basically currency</strong> -
+				bank every single one. Even one at Lv 30 becomes meaningful.
+			</li>
+		</ul>
+
+		<h2 id="category-d-event-and-limited">
+			Category D: Event drops and coupons
+		</h2>
+		<p>
+			Anything with a name that doesn't match the current season or
+			mentions a holiday you're not currently in the middle of - keep it.
+			Classic World's event calendar rotates, and event-exclusive items
+			(Frozen Tuna, Pumpkin Basket, Present Box, Snowman Piece) become
+			completely unavailable outside their windows. Some legacy event
+			items rose 100x in value on GMS old servers when the events came
+			back or the items were needed for later crafting recipes.
+		</p>
+		<p>
+			Rule of thumb: if a drop has a Christmas tree, a jack-o-lantern, an
+			egg, a heart, or a distinctly seasonal color palette, don't sell it
+			until you've verified via <a href="/items">the items catalog</a>
+			that it isn't gated behind an event you're not currently in.
+		</p>
+
+		<h2 id="category-e-class-gated-gear">
+			Category E: Class-gated gear from other jobs
+		</h2>
+		<p>
+			If you're a Warrior and you loot a Wand, it's tempting to NPC it for
+			meso. Don't. Wands and Staves are always in demand from new Mages,
+			and even a plain unwashed Wand can trade for 20-50k early on. Same
+			for Claws (Thieves), Bows (Bowmen), and off-class Overalls.
+		</p>
+		<p>
+			Two safe places to route off-class drops instead of NPC'ing:
+		</p>
+		<ul>
+			<li>
+				<strong>Give it to a partymate</strong> - if you're PQing or
+				grinding with a mixed party, offer off-class drops as loot ties.
+				Builds reputation for the long tail.
+			</li>
+			<li>
+				<strong>Store in a mule</strong> - all Classic World characters
+				share meso storage but not gear storage. Create a Lv 1 mule in
+				the town of the class you loot for, park the gear there, sell
+				via the Auction House / whisper trades when the market's up.
+			</li>
+		</ul>
+
+		<h2 id="the-cheat-sheet">The cheat sheet</h2>
+		<p>Before hitting the NPC sell button, run this five-question filter:</p>
+		<ol>
+			<li>Does this item have a specific proper name (not generic)?</li>
+			<li>Is this item in a category that starts with "Etc" or "Setup"?</li>
+			<li>Is my level under 40?</li>
+			<li>Have I ever seen this item's name in a quest dialog?</li>
+			<li>
+				When I look it up in
+				<a href="/items">the items catalog</a>, does it have any entries
+				in "Required by quests" or "Used as material"?
+			</li>
+		</ol>
+		<p>
+			Two or more "yes" answers - bank it. All five - definitely bank it
+			and add a mental note to check the catalog properly when you're
+			back in town. The mesos you'd earn NPC'ing 30 Leaves at 15 mesos
+			each is 450 - the equivalent of one Red Potion. The EXP you'd get
+			from the 7 quests those Leaves back is enough to move a Lv 12
+			character to Lv 14.
+		</p>
+
+		<p class="closing">
+			Next up: read <a href="/guides/consumables">the Consumables Guide</a>
+			for the flip side - what you SHOULD be buying instead of hoarding
+			meso, and where the potion market breaks efficiency below Lv 30.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 72ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose h3 {
+		margin-top: 1.4rem;
+		margin-bottom: 0.4rem;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose code {
+		font-family: var(--font-mono);
+		font-size: 0.88em;
+		background: var(--bg-cloud);
+		padding: 0.1em 0.35em;
+		border-radius: 0.25rem;
+		border: 1px solid var(--border-card);
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+</style>

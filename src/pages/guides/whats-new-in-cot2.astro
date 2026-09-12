@@ -1,0 +1,398 @@
+---
+/**
+ * /guides/whats-new-in-cot2 - the anchor "here's what's actually
+ * different from v83" reference piece.
+ *
+ * SEO target: 'maplestory classic worlds new content', 'MSCW vs
+ * v83 differences', 'maplestory classic worlds what changed',
+ * 'MSCW forgotten hollow'. High-intent returning-player query.
+ *
+ * The framing thesis: v83 GMS is not the spec. MSCW is v83-INSPIRED
+ * but Nexon has visibly reshuffled content, added new zones, added
+ * new systems (Citizenship, Crafting), and tuned numbers we don't
+ * yet know the full extent of. Every guide on the site now cross-
+ * links back here so returning players know what to un-remember.
+ *
+ * Data source: everything called "CoT 2-only" below is derived from
+ * cross-referencing the datamine (items.json, maps.json, quests.json)
+ * against v83 GMS content lists on Hidden Street / OldSchool wikis.
+ * Maps without wzIds are v83-absent by definition (wzId comes from
+ * maplestory.io v83 GMS asset db).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="What's New in Classic World (CoT 2 vs v83) - Liven's Classic Maple Guide"
+	description="MapleStory Classic World is not straight-up v83 GMS. Nexon added Forgotten Hollow, the Citizenship system, Crafting, Physical Fitness Test jump quests, plus reworked skills and shifted mob/quest EXP. This is the honest returning-player rundown of what's actually different."
+	currentPath="/guides"
+	theme="lith"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">CoT 2 vs v83 Reality Check</span>
+			<h1>What's New in Classic World</h1>
+			<p class="lede">
+				Every returning player Googles "MapleStory Classic is like v83
+				right?" and gets a vibes-based "kinda?" back. Here's the honest
+				answer: Nexon added <strong>entire new zones</strong> (Forgotten
+				Hollow), <strong>two brand-new systems</strong> (Citizenship,
+				Crafting), rewrote at least <strong>one first-job skill list</strong>
+				(Bowman), and shifted mob/quest EXP values across the board. The
+				v83 wiki is a starting point, not a spec.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Framing note:</strong> everything below is verified against
+			the Closed Online Test 2 client datamine (via ohmi69's
+			<a href="https://osmsdataexplorer.com" rel="external nofollow">osmsdataexplorer.com</a>
+			and MeowDB's asset dumps). Some numbers may shift again before
+			launch. When Founder's Access opens October 6 we'll validate
+			live-server behavior and note the diffs on each system's page.
+		</div>
+
+		<h2 id="new-zones">New zones that don't exist in v83</h2>
+		<p>
+			The datamine surfaces 78 named maps that have no v83-GMS wzId
+			(the identifier maplestory.io uses to serve v83 assets). These
+			are the CoT 2 exclusives, broken down by region:
+		</p>
+
+		<h3>Forgotten Hollow (Victoria Island) - 40+ new maps</h3>
+		<p>
+			The biggest single addition: a whole new region below Victoria
+			Island with its own NPC cast (Arthur, Bianca, Raymond, Oak, Flint,
+			Roxy, Scarlett, Weston, Silas Irons, Luma, Zelya), its own mob
+			composition, and its own quest chains. Includes:
+		</p>
+		<ul>
+			<li>
+				<strong>Forgotten Hollow proper</strong>, <strong>Marr's
+				Forest</strong>, <strong>Niora Hospital</strong>, and multiple
+				"Forgotten Entrance" corridors linking back to Victoria.
+			</li>
+			<li>
+				<strong>Perilous Descent I-III</strong>, <strong>Bygone
+				Days</strong>, <strong>The Faded Canopy</strong>,
+				<strong>Decayed Tunnel I-III</strong>, and <strong>The Valley of
+				Death</strong> - dungeon-style progression maps.
+			</li>
+			<li>
+				<strong>Fully Bloomed Bluebell</strong> and
+				<strong>Bluebell Bud</strong> as NPCs (yes, the flowers are
+				characters), tied into an early Forgotten Hollow quest line.
+			</li>
+		</ul>
+
+		<h3>Physical Fitness Test - the new event JQ system</h3>
+		<p>
+			17 CoT 2-only maps make up an entire jump-quest event system with
+			difficulty tiers (Easy, Normal, and three numbered Levels).
+			Includes a Waiting Room, per-level rooms ("Up and Up", "Coconut
+			Season"), and Bianca as the gating NPC. This looks like Nexon's
+			take on the classic OMOK-style event rotation, permanent instead
+			of seasonal.
+		</p>
+
+		<h3>Henesys Town Hall + civic buildings</h3>
+		<p>
+			The Citizenship system introduced a physical <strong>Town Hall</strong>
+			in Henesys (and presumably Kerning City) that houses citizenship
+			registration, contribution turn-ins, and shop rotations. This
+			building doesn't exist in v83 at all - see the
+			<a href="/citizenship">Citizenship guide</a> for how the whole
+			system works.
+		</p>
+
+		<h3>Other structural additions</h3>
+		<ul>
+			<li>
+				<strong>Guild Head Quarters &lt;Hall of Fame&gt;</strong> in
+				Orbis - dedicated guild-showcase map, brand new.
+			</li>
+			<li>
+				<strong>Orbis Ticketing Booth</strong> - reworked ticketing
+				interface for the ship travel network.
+			</li>
+			<li>
+				<strong>Reworked Maple Island entry maps</strong> - "Mushroom
+				Town - West Entrance", "East Entrance to Mushroom Town", "A
+				Split Road", "Snail Hunting Ground I" all show up as CoT 2-only
+				renames/expansions of the tutorial flow.
+			</li>
+			<li>
+				<strong>Free Market instances 1-N</strong> - the FM channel
+				splits work differently in CoT 2 (details TBD until we're on
+				live servers to see the actual queue behavior).
+			</li>
+		</ul>
+
+		<h2 id="new-systems">Two brand-new systems layered on top</h2>
+
+		<h3>Citizenship (Henesys or Kerning City)</h3>
+		<p>
+			<strong>Not a v83 system at all.</strong> At Lv 12, you pick a
+			town allegiance, earn contribution via daily quests and events,
+			and climb 10 grades to unlock town-exclusive gear, chairs, and
+			cosmetic access. Kicks off the region-locked shop meta and
+			introduces "resident vs traveler" NPC dialogue paths.
+		</p>
+		<p>
+			Full breakdown in <a href="/citizenship">the Citizenship guide</a> -
+			cover story quests, grade thresholds, and switching-cost math.
+		</p>
+
+		<h3>Crafting</h3>
+		<p>
+			<strong>Also not a v83 system.</strong> Weaponcrafting +
+			Woodcrafting kits let you assemble gear from datamined ETC drops
+			and materials. Ties into the "never sell ETC" beginner advice
+			hard - if you sold your Leaves at Lv 12, you can't craft the Lv
+			15 gloves at Lv 18.
+		</p>
+		<p>
+			Full breakdown in <a href="/crafting">the Crafting guide</a> -
+			all recipes, material sources, and cost math.
+		</p>
+
+		<h2 id="skill-reworks">First-job skill changes</h2>
+		<p>
+			CoT 2 keeps most v83 first-job skill kits intact but there are
+			confirmed changes on two classes. Full details in
+			<a href="/guides/skill-changes">the Skill Changes guide</a>.
+			Summary:
+		</p>
+		<ul>
+			<li>
+				<strong>Warrior:</strong> gained a new 6th passive skill
+				<em>Precise Strikes</em> (accuracy + crit rate). Other 5
+				skills unchanged.
+			</li>
+			<li>
+				<strong>Bowman:</strong> lost <em>Blessing of Amazon</em>
+				(the classic v83 party attack buff), gained <em>Power
+				Knockback</em> (crowd-control AoE that always crits).
+				Significant build re-think for returners.
+			</li>
+			<li>
+				<strong>Magician + Thief:</strong> all six first-job skills
+				match the v83 baseline exactly. No changes. (Datamine calls
+				Thief "Rogue" internally, but the visible class name is
+				unchanged.)
+			</li>
+		</ul>
+
+		<h2 id="exp-shifts">EXP curve shifts</h2>
+		<p>
+			Both mob EXP and quest EXP values in the datamine differ from
+			commonly-cited v83 numbers, though the shifts are inconsistent
+			(some go up, some down, some stay the same). This is the least
+			settled area right now - we know the numbers are different but we
+			don't have a confirmed pattern.
+		</p>
+		<p>
+			Full analysis in <a href="/guides/exp-then-vs-now">Then vs Now:
+			EXP & Progression</a> - includes concrete mob EXP examples
+			pulled directly from the datamine.
+		</p>
+
+		<h2 id="what-hasnt-changed">What HASN'T changed (that you can still trust)</h2>
+		<p>
+			Not everything in v83 muscle memory is worth un-learning. Verified
+			<strong>identical to v83</strong> in the CoT 2 datamine:
+		</p>
+		<ul>
+			<li>
+				<strong>Class advancement flow:</strong> Beginner &rarr; job
+				at 8/10, 2nd job at 30, 3rd job at 70, 4th job at 120. Same
+				NPCs (Dances with Balrog, Grendel, Athena Pierce, Dark Lord)
+				in the same towns.
+			</li>
+			<li>
+				<strong>Base stat mechanics:</strong> STR/DEX/INT/LUK all
+				work the same. HP/MP AP allocation, HP/MP washing mechanics,
+				equipment stat scaling all unchanged.
+			</li>
+			<li>
+				<strong>Item categories + IDs:</strong> Every v83 item ID
+				that carried over kept its ID. Red Potion is still 2000000.
+				Chaos Scroll is still Chaos Scroll. Set bonuses still exist.
+			</li>
+			<li>
+				<strong>Quest flow archetype:</strong> Talk-to-NPC &rarr;
+				collect-N-of-X &rarr; return-for-EXP-and-mesos. Structure
+				identical; the specific quest numbers just shifted.
+			</li>
+			<li>
+				<strong>Magician + Thief first-job kits:</strong> as noted
+				above, no changes for these two classes.
+			</li>
+		</ul>
+
+		<h2 id="what-we-dont-yet-know">What we don't yet know</h2>
+		<p>
+			Honest gaps in current knowledge (all should resolve during
+			Founder's Access starting October 6):
+		</p>
+		<ul>
+			<li>
+				<strong>Exact party EXP formula.</strong> The v83 formula was
+				<code>0.6/partySize + 0.4*(memberLv/totalLv)</code> - our
+				<a href="/guides/party-exp">Party EXP guide</a> uses it as a
+				working assumption, but we haven't confirmed CoT 2 uses the
+				same math. Nexon may have retuned the party bonus curve.
+			</li>
+			<li>
+				<strong>Which classic PQs actually ship at launch.</strong>
+				Kerning PQ is confirmed. Ludibrium PQ, Amoria PQ, Ludi Maze,
+				Orbis PQ, Herb Town PQ, Guild PQ - all TBD until we're on
+				live servers to check the NPC roster.
+			</li>
+			<li>
+				<strong>2nd + 3rd job skill kits.</strong> Datamine has the
+				skill files but we've only surfaced the 1st-job changes so
+				far. 2nd job class-splits (Fighter/Page/Spearman etc.) and
+				beyond will need a second pass.
+			</li>
+			<li>
+				<strong>End-game boss lists.</strong> Zakum, Horntail, Pink
+				Bean - which are in at launch, which have been retuned, and
+				which are new/different. Total blank slate right now.
+			</li>
+			<li>
+				<strong>Meso drop rates + mob EXP live-server values.</strong>
+				Datamine gives us <em>declared</em> values but Nexon's live
+				tuning multipliers (event bonuses, base rate changes) aren't
+				in the client files.
+			</li>
+		</ul>
+
+		<h2 id="reading-order">Suggested reading order for returners</h2>
+		<ol>
+			<li>
+				This page, first - get the "what's actually different"
+				overview under your belt.
+			</li>
+			<li>
+				<a href="/guides/skill-changes">Skill Changes Per Class</a> -
+				before you commit to a class based on v83 memory, check what
+				changed in the kit.
+			</li>
+			<li>
+				<a href="/guides/exp-then-vs-now">Then vs Now: EXP &
+				Progression</a> - understand which of your grinding-spot
+				memories still apply.
+			</li>
+			<li>
+				<a href="/citizenship">Citizenship</a> and
+				<a href="/crafting">Crafting</a> - the two new systems that
+				have zero v83 analog and gate serious progression.
+			</li>
+			<li>
+				<a href="/guides/getting-started">Getting Started</a> - our
+				beginner-flow walkthrough, adjusted for CoT 2 realities.
+			</li>
+		</ol>
+
+		<p class="closing">
+			This page is a living document. As Founder's Access reveals
+			live-server tuning that differs from the CoT 2 datamine, the
+			deltas get logged here first, then propagated to the affected
+			guides. Bookmark it if you're returning from an old GMS
+			character - it'll save you a class-rerolling reset.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 72ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose h3 {
+		margin-top: 1.4rem;
+		margin-bottom: 0.4rem;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose code {
+		font-family: var(--font-mono);
+		font-size: 0.88em;
+		background: var(--bg-cloud);
+		padding: 0.1em 0.35em;
+		border-radius: 0.25rem;
+		border: 1px solid var(--border-card);
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+
+	.callout {
+		margin: 1.2rem 0;
+		padding: 0.9rem 1.1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border-card);
+		background: var(--bg-cloud);
+		border-left: 4px solid var(--accent-primary);
+	}
+	.callout--framing {
+		font-size: 0.94rem;
+	}
+</style>

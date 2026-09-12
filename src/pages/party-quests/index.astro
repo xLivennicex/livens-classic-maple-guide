@@ -1,0 +1,265 @@
+---
+/**
+ * /party-quests - landing page for interactive PQ walkthroughs.
+ *
+ * Replaces the previous empty-state placeholder now that KPQ has a
+ * real walkthrough shipped. Grows by appending to `walkthroughs`
+ * below - status "planned" renders a muted card so readers see
+ * what's coming without misleading them into thinking a route exists.
+ *
+ * The old .md-driven party-quest content-collection filter has been
+ * dropped from this page; if we ever have both narrative .md guides
+ * AND interactive walkthroughs, they can co-exist in separate
+ * sections. YAGNI until then.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { KPQ_META } from "../../data/party-quests/kerning-pq";
+import { mobSpriteSrcs } from "../../lib/maplestory-cdn";
+import Sprite from "../../components/Sprite.astro";
+
+interface Walkthrough {
+	slug: string;
+	name: string;
+	shortName: string;
+	town: string;
+	levelRange: string;
+	partySize: string;
+	tagline: string;
+	status: "shipped" | "planned";
+	// Optional hero mob shown on the card. Provide BOTH the small
+	// internal datamine id AND the maplestory.io WZ id so <Sprite>
+	// can build its fallback chain (maplestory.io first, meowdb
+	// second, hidden on total failure).
+	heroMobId?: number;
+	heroMobWzId?: number;
+	heroMobName?: string;
+}
+
+const walkthroughs: Walkthrough[] = [
+	{
+		slug: "kerning-pq",
+		name: KPQ_META.name,
+		shortName: KPQ_META.shortName,
+		town: KPQ_META.town,
+		levelRange: `${KPQ_META.levelMin}-${KPQ_META.levelMax}`,
+		partySize: `${KPQ_META.partySizeMin}-${KPQ_META.partySize}`,
+		tagline: KPQ_META.tagline,
+		status: "shipped",
+		// King Slime is in our datamine (id 800003, wzId 9300003).
+		heroMobId: 800003,
+		heroMobWzId: 9300003,
+		heroMobName: "King Slime",
+	},
+	{
+		slug: "ludibrium-pq",
+		name: "Ludibrium Party Quest",
+		shortName: "LPQ",
+		town: "Ludibrium",
+		levelRange: "35-50",
+		partySize: "6",
+		tagline: "The clock tower's 8-stage marathon. Book Mark Legend of the fifth stage.",
+		status: "planned",
+		// Alishar not in CoT2 datamine yet. Sprite omitted; card
+		// gets text-only treatment until Ludibrium ships.
+		heroMobName: "Alishar",
+	},
+	{
+		slug: "henesys-pq",
+		name: "Henesys Party Quest",
+		shortName: "HPQ",
+		town: "Henesys",
+		levelRange: "40-50",
+		partySize: "3-6",
+		tagline: "Kappa Fields under attack. Feed the Moon Bunny, out-farm the Onions, out-run the timer.",
+		status: "planned",
+		// Moon Bunny not in CoT2 datamine either. Card renders
+		// without a hero sprite.
+		heroMobName: "Moon Bunny",
+	},
+	{
+		slug: "mu-lung-dojo",
+		name: "Mu Lung Dojo",
+		shortName: "Dojo",
+		town: "Mu Lung",
+		levelRange: "any",
+		partySize: "1",
+		tagline: "Solo boss rush. Belt rewards from bronze to master.",
+		status: "planned",
+	},
+];
+
+const shipped = walkthroughs.filter((w) => w.status === "shipped");
+const planned = walkthroughs.filter((w) => w.status === "planned");
+---
+
+<BaseLayout
+	title="Party Quest Walkthroughs - Liven's Classic Maple Guide"
+	description="Interactive Classic Maple party quest walkthroughs: KPQ, LPQ, Mu Lung Dojo. Stage-by-stage strategy, party comps, reward tables, LFG shout templates."
+	currentPath="/party-quests"
+	theme="kerning"
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<a href="/">Home</a>
+		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
+		<span aria-current="page">Party Quests</span>
+	</nav>
+
+	<header class="section-heading">
+		<span class="eyebrow">Walkthrough catalog</span>
+		<h1>Party Quest Walkthroughs</h1>
+		<p class="lede">
+			Interactive, per-stage guides to Classic Maple's iconic party
+			quests. Every walkthrough is grounded in the datamine (NPCs,
+			mobs, quest IDs) and includes an in-browser progress tracker,
+			party comp suggestions, and copy-paste LFG shouts.
+		</p>
+	</header>
+
+	<section aria-labelledby="shipped-heading">
+		<h2 id="shipped-heading" class="section-title">Available now</h2>
+		<div class="pq-grid">
+			{shipped.map((w) => (
+				<a class="pq-card pq-card--shipped" href={`/party-quests/${w.slug}`}>
+					<div class="pq-card__badge">Available</div>
+					{w.heroMobId && (
+						<div class="pq-card__hero">
+							<Sprite
+								srcs={mobSpriteSrcs(w.heroMobId, w.heroMobWzId)}
+								alt={`${w.heroMobName ?? "boss"} sprite`}
+							/>
+							{w.heroMobName && <small>{w.heroMobName}</small>}
+						</div>
+					)}
+					<h3>{w.name}</h3>
+					<p class="pq-card__tag">{w.tagline}</p>
+					<dl class="pq-card__stats">
+						<div><dt>Location</dt><dd>{w.town}</dd></div>
+						<div><dt>Level</dt><dd>{w.levelRange}</dd></div>
+						<div><dt>Party</dt><dd>{w.partySize}</dd></div>
+					</dl>
+					<span class="pq-card__cta">Read walkthrough &rarr;</span>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<section aria-labelledby="planned-heading">
+		<h2 id="planned-heading" class="section-title">Planned</h2>
+		<p class="section-lede">
+			Walkthroughs we know we want to write. Availability depends on
+			the Classic World launch content and whether these PQs make
+			it into Chapter Two.
+		</p>
+		<div class="pq-grid">
+			{planned.map((w) => (
+				<article class="pq-card pq-card--planned" aria-disabled="true">
+					<div class="pq-card__badge pq-card__badge--planned">Planned</div>
+					{w.heroMobId && (
+						<div class="pq-card__hero">
+							<Sprite
+								srcs={mobSpriteSrcs(w.heroMobId, w.heroMobWzId)}
+								alt={`${w.heroMobName ?? "boss"} sprite`}
+							/>
+							{w.heroMobName && <small>{w.heroMobName}</small>}
+						</div>
+					)}
+					<h3>{w.name}</h3>
+					<p class="pq-card__tag">{w.tagline}</p>
+					<dl class="pq-card__stats">
+						<div><dt>Location</dt><dd>{w.town}</dd></div>
+						<div><dt>Level</dt><dd>{w.levelRange}</dd></div>
+						<div><dt>Party</dt><dd>{w.partySize}</dd></div>
+					</dl>
+				</article>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.crumbs { margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-secondary); }
+	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: 700;
+		letter-spacing: 0.08em; text-transform: uppercase;
+		color: var(--accent-primary);
+	}
+	h1 { font-size: 2.2rem; margin: 0.3rem 0 0.5rem; color: var(--accent-primary); }
+	.lede { max-width: 44rem; line-height: 1.6; color: var(--text-secondary); }
+	.section-title {
+		font-size: 1.35rem; margin: 0 0 0.4rem;
+		color: var(--accent-primary);
+		border-left: 4px solid var(--accent-primary);
+		padding-left: 0.75rem;
+	}
+	.section-lede { color: var(--text-secondary); margin: 0 0 1rem; max-width: 44rem; line-height: 1.55; }
+	section { margin: 2rem 0; }
+
+	.pq-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 0.9rem;
+	}
+	.pq-card {
+		position: relative;
+		display: flex; flex-direction: column;
+		padding: 1rem 1.25rem;
+		background: var(--surface-card); border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 10px;
+		text-decoration: none; color: inherit;
+		transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+	}
+	.pq-card--shipped:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+	}
+	.pq-card--planned {
+		opacity: 0.7;
+		border-left-color: var(--text-muted);
+	}
+	.pq-card__badge {
+		position: absolute; top: 0.75rem; right: 0.75rem;
+		font-size: 0.78rem; font-weight: 700;
+		text-transform: uppercase; letter-spacing: 0.05em;
+		padding: 0.2rem 0.55rem; border-radius: 999px;
+		background: var(--accent-primary); color: #fff;
+	}
+	.pq-card__badge--planned { background: var(--text-muted); }
+	.pq-card h3 { margin: 0 0 0.3rem; font-size: 1.15rem; color: var(--accent-primary); }
+	.pq-card__tag { font-style: italic; margin: 0 0 0.75rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.4; }
+	.pq-card__stats {
+		display: grid; grid-template-columns: 1fr 1fr 1fr;
+		gap: 0.5rem; margin: 0 0 0.75rem;
+	}
+	.pq-card__stats div { display: flex; flex-direction: column; }
+	.pq-card__stats dt { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+	.pq-card__stats dd { margin: 0.1rem 0 0; font-weight: 600; color: var(--accent-primary); }
+	.pq-card__cta { margin-top: auto; font-weight: 700; color: var(--accent-primary); }
+	.pq-card__hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.2rem;
+		margin: -0.25rem 0 0.6rem;
+		padding: 0.55rem;
+		background: linear-gradient(180deg,
+			color-mix(in srgb, var(--accent-primary) 12%, transparent),
+			transparent);
+		border-radius: 0.5rem;
+	}
+	.pq-card__hero img {
+		max-height: 96px;
+		max-width: 100%;
+		object-fit: contain;
+		image-rendering: pixelated;
+	}
+	.pq-card__hero small {
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+</style>

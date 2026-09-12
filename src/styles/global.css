@@ -24,6 +24,19 @@
 @import "./themes/ellinia.css" layer(themes);
 @import "./themes/sleepywood.css" layer(themes);
 
+/* Sprint 65: shared design token for "content card" treatment used
+   by long-form article bodies (.prose in guides, .post--card in
+   blog posts). Soft, theme-tinted glow + subtle drop for depth
+   without a hard shadow. color-mix pulls --accent-primary from
+   whichever theme is active, so ONE token themes automatically.
+   Kept at :root level (not per-theme) because the theming already
+   flows through via --accent-primary. */
+:root {
+	--shadow-content-card:
+		0 4px 28px color-mix(in srgb, var(--accent-primary) 11%, transparent),
+		0 1px 4px color-mix(in srgb, black 8%, transparent);
+}
+
 *,
 *::before,
 *::after {
@@ -104,6 +117,16 @@ main.page-width {
 	margin-block: 2rem;
 }
 
+/* Sprint 66 mobile fix: reserve space at the bottom of every page so
+   the fixed music-player widget (bottom-right, 44x44 on mobile) doesn't
+   overlap tail content on narrow viewports. Only kicks in below 500px
+   because that's where the widget switches to icon-only compact mode. */
+@media (max-width: 500px) {
+	main.page-width {
+		padding-bottom: 3.5rem;
+	}
+}
+
 /* ---------- Announcement + header + nav ---------- */
 
 .announcement {
@@ -150,11 +173,27 @@ main.page-width {
 .brand strong {
 	font-size: 1.25rem;
 	color: var(--text-heading);
+	/* Themes like Henesys and Ellinia use a full scenic backdrop
+	 * (foliage, water, cliffs) that sits behind the header and can
+	 * chew up dark-green wordmarks in the top-left. A dual-layer
+	 * text-shadow gives a tight opaque halo (crisp letter edges)
+	 * plus a soft outer glow (background-agnostic contrast) so the
+	 * wordmark reads over ANY theme without darkening the base color.
+	 * Overrideable per-theme via --brand-halo if we ever want a dark
+	 * halo for a night-time theme. */
+	text-shadow: var(--brand-halo,
+		0 1px 0 rgba(255, 255, 255, 0.75),
+		0 0 4px rgba(255, 255, 255, 0.55),
+		0 0 10px rgba(255, 255, 255, 0.35));
 }
 
 .brand small {
 	margin-top: 0.15rem;
 	color: var(--text-brand-tagline);
+	/* Same halo strategy for the tagline. */
+	text-shadow: var(--brand-halo,
+		0 1px 0 rgba(255, 255, 255, 0.75),
+		0 0 4px rgba(255, 255, 255, 0.5));
 }
 
 .search {
@@ -467,6 +506,41 @@ main.page-width {
 	line-height: 1.55;
 }
 
+/* Sprint 65: card container for `.prose`. Long-form guide bodies
+   were rendering directly on themed backgrounds (Perion desert,
+   Kerning cityscape, etc.) with no backdrop, making body copy
+   painfully hard to read against the busy backdrop art. Matches
+   the visual language of `.post--card` (blog posts) and
+   `.section-heading` (page hero panels) so the whole site reads
+   as one design system.
+
+   Uses color-mix on --surface-card so ONE rule works across every
+   theme. backdrop-filter is progressive enhancement - browsers
+   without support still get the 94%-opacity background, which is
+   most of the readability win. Theme-tinted box-shadow provides
+   soft separation from the backdrop art.
+
+   .prose is used ONLY in /pages/guides/*.astro (verified via
+   findstr Sprint 65). If a future page needs the typography
+   without the card, split this rule then. */
+.prose {
+	padding: 1.6rem 1.85rem;
+	margin-bottom: 1.5rem;
+	background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+	backdrop-filter: blur(8px) saturate(1.05);
+	-webkit-backdrop-filter: blur(8px) saturate(1.05);
+	border: 1px solid var(--border-card);
+	border-radius: 0.75rem;
+	box-shadow: var(--shadow-content-card);
+}
+
+@media (max-width: 640px) {
+	.prose {
+		padding: 1.15rem 1.1rem;
+		border-radius: 0.55rem;
+	}
+}
+
 .prose p,
 .prose ul,
 .prose ol {
@@ -497,6 +571,143 @@ main.page-width {
 	background: var(--accent-secondary);
 	color: var(--accent-secondary-text);
 	line-height: 1.55;
+}
+
+/* ==================== Editorial guide primitives ====================
+ * Sprint 68: shared design primitives for the "editorial" family of
+ * guides (skill-changes, 2nd-job branch guides, and future
+ * class-decision content). These primitives were duplicated between
+ * skill-changes.astro and warrior-2nd-job.astro; hoisted here so new
+ * guides inherit for free.
+ *
+ * Namespacing rules:
+ * - .guide-summary-* is prefixed to avoid collision with generic
+ *   .summary or .card classes used elsewhere.
+ * - .status-pill is distinct from the global .badge/eyebrow (which
+ *   is uppercase-tinted-text-only). Status pills have a border +
+ *   pill background because they're categorical labels ("NEW",
+ *   "REWORK", "UNCHANGED") not just typographic emphasis.
+ * - .skill-list is distinct from the existing grid-based .skill-table
+ *   used by 1st-job JobGuideLayout - .skill-list wraps a real <table>
+ *   element for simpler dense skill catalogs.
+ */
+
+.guide-summary-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1rem;
+	margin: 1.2rem 0 1.5rem;
+}
+.guide-summary-card {
+	background: var(--bg-cloud);
+	border: 1px solid var(--border-card);
+	border-left: 4px solid var(--accent-primary);
+	border-radius: 0.55rem;
+	padding: 1rem 1.15rem;
+}
+.guide-summary-card h3 {
+	margin: 0 0 0.5rem;
+	font-size: 1.05rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+.guide-summary-card p {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--text-body);
+}
+.guide-summary-card--changed {
+	border-left-color: var(--accent-primary);
+}
+.guide-summary-card--same {
+	border-left-color: var(--text-muted);
+}
+
+.status-pill {
+	font-size: 0.78rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	padding: 0.15rem 0.5rem;
+	border-radius: 999px;
+	background: var(--bg-cloud);
+	color: var(--text-heading);
+	border: 1px solid var(--border-card);
+}
+.status-pill--new { color: #158a4d; border-color: #158a4d; }
+.status-pill--rework { color: #b8730e; border-color: #b8730e; }
+.status-pill--same { color: var(--text-muted); }
+
+.callout--framing {
+	background: color-mix(in srgb, var(--accent-primary) 8%, var(--bg-cloud));
+	border: 1px solid var(--border-card);
+	border-left: 4px solid var(--accent-primary);
+	border-radius: 0.5rem;
+	padding: 0.85rem 1.1rem;
+	margin-bottom: 1.5rem;
+	font-size: 0.94rem;
+	line-height: 1.55;
+}
+.callout--framing strong {
+	color: var(--accent-primary);
+}
+
+.skill-list-wrap {
+	overflow-x: auto;
+	border-radius: 0.55rem;
+	border: 1px solid var(--border-card);
+	margin: 0.75rem 0 1rem;
+}
+.skill-list {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 640px;
+	font-size: 0.92rem;
+}
+.skill-list th,
+.skill-list td {
+	padding: 0.55rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--border-card);
+	vertical-align: top;
+}
+.skill-list th {
+	background: var(--bg-cloud);
+	font-weight: 700;
+	color: var(--text-heading);
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+.skill-list tr:last-child td {
+	border-bottom: none;
+}
+.skill-list td:nth-child(2),
+.skill-list td:nth-child(3) {
+	white-space: nowrap;
+	font-family: var(--font-mono, monospace);
+	font-size: 0.86rem;
+}
+
+.section-lede {
+	font-style: italic;
+	color: var(--text-muted);
+	margin: 0 0 1rem;
+	max-width: 46rem;
+	line-height: 1.55;
+}
+
+.prose hr {
+	margin: 2rem 0;
+	border: none;
+	border-top: 2px dashed var(--border-card);
+}
+.prose h3 {
+	margin: 1.2rem 0 0.6rem;
+	color: var(--accent-primary);
 }
 
 /* Skill table: four-column grid (Skill / Type / Summary / Suggested
@@ -548,6 +759,31 @@ main.page-width {
 	font-size: 0.75rem;
 }
 
+/* Skill icon (optional per row) - flex-lays out with the skill
+ * name text. Pixel art needs `image-rendering: pixelated` so it
+ * doesn't blur when the browser scales the 32px source up. */
+.skill-name-cell {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+}
+
+.skill-icon {
+	flex: 0 0 auto;
+	width: 32px;
+	height: 32px;
+	padding: 2px;
+	background: var(--surface-card);
+	border: 1px solid var(--border-card);
+	border-radius: 0.35rem;
+	image-rendering: pixelated;
+}
+
+.skill-name-cell__text {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
 /* Training-route and second-job-branch card grids - identical shape,
  * one rule handles both. */
 .route-grid,
@@ -573,6 +809,172 @@ main.page-width {
 .branch-card__for {
 	font-size: 0.9rem;
 	color: var(--text-muted);
+}
+
+/* ==================== Expandable second-job branch cards ==================== */
+
+/* Using native <details>/<summary> for zero-JS progressive disclosure.
+ * The summary carries the whole visible card content when collapsed;
+ * the sibling div renders as the expanded panel below. */
+.branch-card--expandable {
+	padding: 0;                              /* summary handles its own padding */
+	cursor: pointer;
+}
+
+.branch-card--expandable[open] {
+	cursor: default;
+}
+
+.branch-card__summary {
+	display: block;
+	padding: 1rem 1.25rem;
+	list-style: none;                        /* hide default disclosure triangle */
+	cursor: pointer;
+}
+
+/* Kill webkit's default marker too. */
+.branch-card__summary::-webkit-details-marker {
+	display: none;
+}
+
+.branch-card__expand-hint {
+	display: inline-block;
+	margin-top: 0.35rem;
+	padding: 0.25rem 0.55rem;
+	background: var(--surface-nav);
+	color: var(--text-on-nav);
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.branch-card--expandable[open] .branch-card__expand-hint {
+	/* Once open, the hint would just be repetitive noise. */
+	display: none;
+}
+
+.branch-card__skills {
+	padding: 0 1.25rem 1.1rem;
+	border-top: 1px dashed var(--border-card);
+	margin-top: 0.3rem;
+}
+
+.branch-card__skills-heading {
+	margin: 1rem 0 0.6rem;
+	font-size: 0.78rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--accent-primary);
+}
+
+.branch-preview-skills {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	gap: 0.55rem;
+}
+
+.branch-preview-skills__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+	padding: 0.5rem 0.65rem;
+	background: var(--surface-card);
+	border: 1px solid var(--border-card);
+	border-radius: 0.5rem;
+}
+
+.branch-preview-skills__icon {
+	flex: 0 0 auto;
+	padding: 2px;
+	background: var(--surface-nav);
+	border-radius: 0.3rem;
+	image-rendering: pixelated;
+}
+
+.branch-preview-skills__body {
+	flex: 1 1 auto;
+	min-width: 0;
+	line-height: 1.45;
+	font-size: 0.92rem;
+}
+
+.branch-preview-skills__body strong {
+	display: block;
+	margin-bottom: 0.15rem;
+}
+
+/* ==================== Class identity-at-a-glance card ==================== */
+
+/* Scan-readable summary that sits above the overview paragraphs.
+ * Two-column grid (label + value) on desktop; collapses to single
+ * column on mobile. Uses --accent-primary borders so each theme
+ * (Perion/Ellinia/Henesys/Kerning) gets a matching outline
+ * without any per-theme override needed. */
+.identity-card {
+	margin: 0 0 1.25rem;
+	padding: 1.1rem 1.4rem;
+	background: var(--surface-card);
+	border: 2px solid var(--accent-primary);
+	border-radius: 0.9rem;
+	box-shadow: var(--shadow-panel);
+}
+
+.identity-card__heading {
+	margin: 0 0 0.85rem;
+	font-size: 0.78rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--accent-primary);
+}
+
+.identity-card__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.7rem 1.2rem;
+	margin: 0;
+}
+
+.identity-card__row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+/* Rows marked `--wide` span both columns - used for the play-style
+ * summary which is a longer sentence and shouldn't get cramped. */
+.identity-card__row--wide {
+	grid-column: 1 / -1;
+}
+
+.identity-card__row dt {
+	font-size: 0.78rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--accent-primary);
+}
+
+.identity-card__row dd {
+	margin: 0;
+	line-height: 1.4;
+	font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+	.identity-card__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.identity-card__row--wide {
+		grid-column: auto;
+	}
 }
 
 /* FAQ definition list rendered inside an InfoCard. */
@@ -634,6 +1036,93 @@ main.page-width {
 	border: 0;
 }
 
+/* ==================== Panel-wrapped section headings ==================== */
+
+/* .section-heading is the shared 'page hero' or 'mid-page section
+ * heading' pattern used across /quests, /items, /mobs, /jobs,
+ * homepage, and anywhere else. Before this rule shipped, the h1/h2
+ * inside was plain text with no background - unreadable against
+ * themed background art. Now it's a proper panel: surface card +
+ * accent border + soft shadow, auto-themed via existing vars.
+ *
+ * Works for BOTH <h1> hero uses (jobs directory, /items, /quests,
+ * /mobs) AND <h2> mid-page uses (homepage 'Class guides' /
+ * 'System guides' bands). Same treatment, different heading size.
+ *
+ * Prior scoped-in-page duplicates in /quests, /items, /mobs were
+ * removed after this rule shipped so we have one source of truth.
+ * Zen of Python: 'there should be one obvious way to do it.' */
+.section-heading {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+	padding: 1.3rem 1.6rem;
+	background: var(--surface-card);
+	border: 2px solid var(--accent-primary);
+	border-radius: 0.9rem;
+	box-shadow: var(--shadow-panel);
+}
+
+.section-heading > div > h1,
+.section-heading > div > h2 {
+	margin: 0.3rem 0 0.5rem;
+}
+
+.section-heading > div > p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 800px) {
+	.section-heading {
+		align-items: stretch;
+		flex-direction: column;
+	}
+}
+
+/* .section-panel-title is a lighter subheader treatment for mid-page
+ * <h2>s that aren't inside a full .section-heading structure (e.g.
+ * the launch page's 'Launch timeline', 'Founder's Package',
+ * 'Grand Launch', 'Mark of Beta', etc. section titles).
+ *
+ * Uses the same left-rail accent as .tier-header in /quests so
+ * they read as siblings in the design system. */
+.section-panel-title {
+	display: inline-block;
+	margin: 0 0 0.75rem;
+	padding: 0.55rem 1rem;
+	background: var(--surface-card);
+	border: 1px solid var(--border-card);
+	border-left: 5px solid var(--accent-primary);
+	border-radius: 0.55rem;
+	font-size: 1.35rem;
+	color: var(--text-heading, inherit);
+}
+
+/* .section-panel-subtitle - even lighter treatment for h3-level
+ * sub-groupings under a .section-panel-title (e.g. 'Timeline
+ * questions', 'Feature questions', 'Founder's Package questions'
+ * inside the launch page's 'Not yet announced' section, or any
+ * other grouped h3 category labels that were floating unwrapped
+ * before). Uses a dashed left rail to visually distinguish it
+ * from the solid rail on .section-panel-title without competing
+ * for attention. */
+.section-panel-subtitle {
+	display: inline-block;
+	margin: 1.25rem 0 0.6rem;
+	padding: 0.35rem 0.75rem;
+	background: var(--surface-card);
+	border: 1px solid var(--border-card);
+	border-left: 3px dashed var(--accent-primary);
+	border-radius: 0.4rem;
+	font-size: 0.9rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--accent-primary);
+}
+
 /* ---------- Responsive tweaks that touch layout primitives ---------- */
 
 @media (max-width: 800px) {
@@ -653,3 +1142,47 @@ main.page-width {
 		flex-direction: column;
 	}
 }
+
+
+/* ===== Skill-builds CTA (Sprint 53) =========================
+ * Rendered at bottom of the Skills section on job guide pages
+ * when a matching skill-builds JSON exists for the class. Styled
+ * as a big cta card so it reads as a natural next-step link, not
+ * a footer note. Theme-aware colors only (Sprint 52 lesson).
+ */
+.builds-cta {
+	display: block;
+	margin-top: 1.5rem;
+	padding: 1.1rem 1.4rem;
+	background: var(--surface-card);
+	border: 2px solid var(--accent-primary);
+	border-radius: 0.6rem;
+	text-decoration: none;
+	color: var(--text-body);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.builds-cta:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+.builds-cta__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+.builds-cta__eyebrow {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--accent-primary);
+	font-weight: 700;
+}
+.builds-cta__heading {
+	font-size: 1.15rem;
+	color: var(--text-heading);
+}
+.builds-cta__sub {
+	font-size: 0.88rem;
+	color: var(--text-muted);
+}
+

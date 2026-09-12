@@ -1,0 +1,293 @@
+---
+/**
+ * <FoundersPackagesCard>
+ *
+ * Reusable tier-comparison + Buy Now CTA for the three Nexon-published
+ * Founder's Package tiers. Drops into /launch (as the founders section)
+ * and the homepage hero (as a launch-window highlight). All copy and
+ * pricing is sourced from src/data/launch.ts, which cites the two
+ * official Nexon announcements it was pulled from.
+ *
+ * The tiers render as a 3-column responsive grid; each card lists ONLY
+ * what's new vs. the tier below (readers can see incremental value at
+ * a glance rather than scrolling through duplicated bullet lists).
+ *
+ * Props:
+ *   compact - if true, drop the tagline paragraphs and per-tier
+ *             "what's new" bullets, showing just the name + price +
+ *             single Buy Now button. Used on homepage where vertical
+ *             space is precious.
+ */
+
+import { foundersPackages, foundersPackageBuyUrl } from "../data/launch";
+import FoundersCountdown from "./FoundersCountdown.astro";
+
+interface Props {
+	compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+
+// Format like "$29.99" - Intl.NumberFormat gives us Locale-aware
+// currency symbols for future EUR/GBP toggles if we ever add them.
+function fmtUSD(n: number): string {
+	return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+}
+---
+
+<section class="founders-card">
+	<header class="founders-card__head">
+		<div>
+			<span class="eyebrow">Founder's Packages · On Sale Now</span>
+			<h2 class="founders-card__title">
+				{compact ? "Pre-order Classic World" : "Pick your Founder's Package"}
+			</h2>
+			{!compact && (
+				<p class="founders-card__lede">
+					Three tiers, one purchase per account per platform. Cosmetics only -
+					no stat advantages. All progress made during Founder's Access carries
+					into Grand Launch on October 21.
+				</p>
+			)}
+		</div>
+		<FoundersCountdown />
+	</header>
+
+	<div class="tier-grid">
+		{foundersPackages.map((tier) => (
+			<article class:list={["tier", `tier--${tier.slug}`, tier.badge && `tier--${tier.badge}`]}>
+				{tier.badge === "best-value" && <span class="tier__badge">Best Value</span>}
+				{tier.badge === "starter" && <span class="tier__badge tier__badge--starter">Starter</span>}
+				<h3 class="tier__name">{tier.name}</h3>
+				<div class="tier__price">{fmtUSD(tier.priceUSD)}</div>
+				<div class="tier__meta">
+					{tier.foundersAccess ? (
+						<span class="tier__pill tier__pill--access">
+							Play from Oct 6
+						</span>
+					) : (
+						<span class="tier__pill">
+							Play from Oct 21
+						</span>
+					)}
+					{tier.steamAvailable && (
+						<span class="tier__pill tier__pill--steam">On Steam</span>
+					)}
+				</div>
+				{!compact && (
+					<>
+						<p class="tier__tagline">{tier.tagline}</p>
+						<ul class="tier__list">
+							{tier.newInTier.map((line) => <li>{line}</li>)}
+						</ul>
+					</>
+				)}
+				<a
+					class="tier__buy"
+					href={foundersPackageBuyUrl}
+					target="_blank"
+					rel="noopener sponsored"
+				>
+					Buy on Nexon.com →
+				</a>
+			</article>
+		))}
+	</div>
+
+	<p class="founders-card__foot">
+		Pricing and package contents pulled from Nexon's
+		<a href={foundersPackageBuyUrl} target="_blank" rel="noopener">
+			official Founder's Packages page
+		</a>
+		on September 5, 2026. Steam sells only the Zakum tier. Upgrade
+		paths (Snail → Orange Mushroom, etc.) are available on the
+		Nexon webstore before the October 14 deadline.
+	</p>
+</section>
+
+<style>
+	.founders-card {
+		background: linear-gradient(135deg, #fff7e6 0%, #fdefd8 100%);
+		border: 2px solid var(--accent-secondary-border, #b77a2d);
+		border-radius: 14px;
+		padding: 1.5rem;
+		margin: 1.5rem 0;
+	}
+
+	.founders-card__head {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1.5rem;
+	}
+
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.25rem;
+	}
+
+	.founders-card__title {
+		font-size: 1.7rem;
+		margin: 0 0 0.5rem 0;
+		color: var(--text-primary, #2a1e00);
+	}
+
+	.founders-card__lede {
+		margin: 0.25rem 0 0;
+		max-width: 42rem;
+		color: var(--text-secondary, #5a4a2a);
+		line-height: 1.5;
+	}
+
+	.tier-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1rem;
+	}
+
+	.tier {
+		position: relative;
+		background: #fffdf7;
+		border: 2px solid #d9c9a0;
+		border-radius: 10px;
+		padding: 1.25rem 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.tier--best-value {
+		border-color: var(--accent-primary, #b8460e);
+		box-shadow: 0 4px 12px rgba(184, 70, 14, 0.15);
+		transform: translateY(-4px);
+	}
+
+	.tier__badge {
+		position: absolute;
+		top: -12px;
+		right: 1rem;
+		background: var(--accent-primary, #b8460e);
+		color: #fff;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+	}
+
+	.tier__badge--starter {
+		background: #8a8a8a;
+	}
+
+	.tier__name {
+		font-size: 1.25rem;
+		margin: 0;
+		color: #2a1e00;
+	}
+
+	.tier__price {
+		font-size: 2rem;
+		font-weight: 800;
+		color: var(--accent-primary, #b8460e);
+		line-height: 1;
+	}
+
+	.tier__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin: 0.25rem 0 0.5rem;
+	}
+
+	.tier__pill {
+		font-size: 0.78rem;
+		font-weight: 600;
+		padding: 0.15rem 0.5rem;
+		border-radius: 999px;
+		background: #f0e8d0;
+		color: #5a4a2a;
+	}
+
+	.tier__pill--access {
+		background: #d0e7d5;
+		color: #2e5d31;
+	}
+
+	.tier__pill--steam {
+		background: #1b2838;
+		color: #66c0f4;
+	}
+
+	.tier__tagline {
+		font-size: 0.9rem;
+		color: #5a4a2a;
+		font-style: italic;
+		margin: 0.25rem 0 0.5rem;
+	}
+
+	.tier__list {
+		list-style: none;
+		padding: 0;
+		margin: 0.25rem 0 1rem;
+		font-size: 0.88rem;
+		line-height: 1.4;
+		flex: 1;
+	}
+
+	.tier__list li {
+		padding-left: 1rem;
+		margin-bottom: 0.35rem;
+		position: relative;
+	}
+
+	.tier__list li::before {
+		content: "+";
+		position: absolute;
+		left: 0;
+		color: var(--accent-primary, #b8460e);
+		font-weight: 700;
+	}
+
+	.tier__buy {
+		display: block;
+		text-align: center;
+		background: var(--accent-primary, #b8460e);
+		color: #fff;
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.7rem 1rem;
+		border-radius: 6px;
+		margin-top: auto;
+		transition: background 0.15s;
+	}
+
+	.tier__buy:hover {
+		background: var(--accent-primary-strong, #8b2f0a);
+	}
+
+	.founders-card__foot {
+		font-size: 0.8rem;
+		color: #6a5a3a;
+		margin-top: 1.25rem;
+		margin-bottom: 0;
+		line-height: 1.5;
+	}
+
+	.founders-card__foot a {
+		color: var(--accent-primary, #b8460e);
+	}
+
+	@media (max-width: 640px) {
+		.tier--best-value {
+			transform: none;
+		}
+	}
+</style>

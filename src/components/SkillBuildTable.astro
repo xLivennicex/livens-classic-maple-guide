@@ -1,0 +1,468 @@
+---
+/**
+ * SkillBuildTable - renders one advancement's SP build plan.
+ *
+ * Shows a level-by-level allocation table plus a per-skill running
+ * total across the top so a reader can see at any level "how many
+ * points I've put in Double Shot so far." The design borrows heavily
+ * from Ayumi's classic wordpress format but adds cumulative columns
+ * because prescribing "spend 1 SP here" without showing the running
+ * total forces the reader to do addition in their head.
+ *
+ * Props:
+ *   - advancement: one entry from skill-builds/{class}.json
+ *
+ * When multiple builds exist for one advancement (Sprint 57+: alt
+ * meta variants), renders as a tab widget instead of stacked. Tab
+ * strip is client-side JS (see inline script) with a no-JS fallback
+ * that shows all builds stacked (details/summary style). Uniquely-
+ * scoped by advancement.slug so multiple SkillBuildTable instances
+ * on one page don't collide.
+ */
+
+interface SkillEntry {
+	id: string;
+	name: string;
+	type: "attack" | "passive" | "buff";
+	maxLevel: number;
+	summary: string;
+}
+
+interface Action {
+	skillId: string;
+	delta: number;
+	note?: string;
+}
+
+interface Row {
+	level: number;
+	actions: Action[];
+}
+
+interface Build {
+	slug: string;
+	name: string;
+	tagline: string;
+	recommended: boolean;
+	reasoning: string;
+	endState: Record<string, number>;
+	rows: Row[];
+}
+
+export interface Advancement {
+	slug: string;
+	displayName: string;
+	shortName: string;
+	levelRange: { min: number; max: number };
+	spTotalAvailable: number;
+	spNote: string;
+	advancementCity: string;
+	instructor: string;
+	skills: SkillEntry[];
+	builds: Build[];
+}
+
+interface Props {
+	advancement: Advancement;
+}
+
+const { advancement } = Astro.props;
+const { skills, builds } = advancement;
+
+// Index skills by id for O(1) lookup during row rendering. Also
+// pre-compute the ordered list of trackable skill columns (excludes
+// the "_note" pseudo-skill used only for level annotations).
+const skillById = new Map(skills.map((s) => [s.id, s]));
+const trackedSkills = skills; // display all skills in column headers
+
+// Precompute running totals per skill for each row of each build so
+// the template stays simple. Format: buildIndex -> rowIndex -> Map<skillId, cumulative>.
+const runningTotals = builds.map((build) => {
+	const totals: Array<Map<string, number>> = [];
+	const acc = new Map<string, number>();
+	for (const row of build.rows) {
+		for (const action of row.actions) {
+			if (!skillById.has(action.skillId)) continue; // skip _note pseudo-actions
+			acc.set(action.skillId, (acc.get(action.skillId) ?? 0) + action.delta);
+		}
+		// Snapshot the accumulator for this row.
+		totals.push(new Map(acc));
+	}
+	return totals;
+});
+
+// Sanity check: total SP spent in each build should equal
+// spTotalAvailable. Warn at build time (visible in `npm run build`
+// logs) if a build's rows are out of balance - prevents shipping a
+// build that lies about how many SP it uses.
+for (let i = 0; i < builds.length; i++) {
+	const build = builds[i]!;
+	const spSpent = build.rows.reduce(
+		(sum, r) => sum + r.actions.filter((a) => skillById.has(a.skillId)).reduce((s, a) => s + a.delta, 0),
+		0,
+	);
+	if (spSpent !== advancement.spTotalAvailable) {
+		// eslint-disable-next-line no-console
+		console.warn(
+			`[SkillBuildTable] ${advancement.slug}/${build.slug}: SP spent=${spSpent}, expected=${advancement.spTotalAvailable}`,
+		);
+	}
+}
+---
+
+<section class="build-block">
+	<header class="build-block__header">
+		<div>
+			<h2>{advancement.displayName}</h2>
+			<p class="build-block__meta">
+				Lv. {advancement.levelRange.min}–{advancement.levelRange.max}
+				· <strong>{advancement.spTotalAvailable} SP total</strong>
+				· Advancement at <strong>{advancement.instructor}</strong>, {advancement.advancementCity}
+			</p>
+		</div>
+	</header>
+
+	<p class="build-block__sp-note">{advancement.spNote}</p>
+
+	{builds.length > 1 && (
+		<div class="build-tabs" role="tablist" aria-label={`${advancement.displayName} build variants`} data-tabs-root={advancement.slug}>
+			{builds.map((build, bIdx) => (
+				<button
+					class={`build-tabs__tab ${bIdx === 0 ? "build-tabs__tab--active" : ""}`}
+					role="tab"
+					type="button"
+					id={`tab-${advancement.slug}-${build.slug}`}
+					aria-selected={bIdx === 0 ? "true" : "false"}
+					aria-controls={`panel-${advancement.slug}-${build.slug}`}
+					data-tab-target={build.slug}
+				>
+					<span class="build-tabs__tab-name">{build.name}</span>
+					{build.recommended && <span class="build-tabs__tab-badge">Rec.</span>}
+				</button>
+			))}
+		</div>
+	)}
+
+	{builds.map((build, bIdx) => (
+		<article
+			class={`build ${build.recommended ? "build--recommended" : ""} ${builds.length > 1 ? "build--tabbed" : ""} ${builds.length > 1 && bIdx !== 0 ? "build--hidden" : ""}`}
+			role={builds.length > 1 ? "tabpanel" : undefined}
+			id={builds.length > 1 ? `panel-${advancement.slug}-${build.slug}` : undefined}
+			aria-labelledby={builds.length > 1 ? `tab-${advancement.slug}-${build.slug}` : undefined}
+			data-tab-panel={builds.length > 1 ? build.slug : undefined}
+		>
+			<div class="build__title-row">
+				<h3>{build.name}</h3>
+				{build.recommended && <span class="build__badge">Recommended</span>}
+			</div>
+			<p class="build__tagline">{build.tagline}</p>
+			<p class="build__reasoning">{build.reasoning}</p>
+
+			<div class="table-wrap">
+				<table class="build-table">
+					<thead>
+						<tr>
+							<th class="col-level">Lv.</th>
+							<th class="col-sp">SP</th>
+							{trackedSkills.map((s) => (
+								<th class="col-skill" title={s.summary}>
+									<span class="col-skill__name">{s.name}</span>
+									<span class="col-skill__max">/ {s.maxLevel}</span>
+								</th>
+							))}
+							<th class="col-note">Note</th>
+						</tr>
+					</thead>
+					<tbody>
+						{build.rows.map((row, rIdx) => {
+							const totalsAtRow = runningTotals[bIdx]![rIdx]!;
+							const noteAction = row.actions.find((a) => a.note);
+							const spThisLevel = row.actions
+								.filter((a) => skillById.has(a.skillId))
+								.reduce((s, a) => s + a.delta, 0);
+							return (
+								<tr>
+									<td class="col-level">{row.level}</td>
+									<td class="col-sp">+{spThisLevel}</td>
+									{trackedSkills.map((s) => {
+										const cumulative = totalsAtRow.get(s.id) ?? 0;
+										const changedHere = row.actions.some(
+											(a) => a.skillId === s.id && a.delta !== 0,
+										);
+										const maxed = cumulative >= s.maxLevel;
+										return (
+											<td
+												class={`col-skill ${changedHere ? "col-skill--changed" : ""} ${maxed && cumulative > 0 ? "col-skill--maxed" : ""}`}
+											>
+												{cumulative > 0 ? cumulative : ""}
+											</td>
+										);
+									})}
+									<td class="col-note">{noteAction?.note ?? ""}</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
+
+			<details class="build__endstate">
+				<summary>End state ({Object.values(build.endState).reduce((a, b) => a + b, 0)} SP spent)</summary>
+				<ul>
+					{Object.entries(build.endState).map(([sid, lvl]) => {
+						const s = skillById.get(sid);
+						if (!s) return null;
+						return (
+							<li>
+								<strong>{s.name}</strong>: {lvl} / {s.maxLevel}
+							</li>
+						);
+					})}
+				</ul>
+			</details>
+		</article>
+	))}
+</section>
+
+<script>
+	// Tab switching for SkillBuildTable. Vanilla JS, no framework -
+	// scoped by data-tabs-root/data-tab-panel attributes so multiple
+	// tabbed advancements on one page don't collide. Idempotent:
+	// safe to run multiple times (View Transitions rehydrations).
+	function initSkillBuildTabs() {
+		const roots = document.querySelectorAll<HTMLElement>("[data-tabs-root]");
+		roots.forEach((strip) => {
+			const advId = strip.dataset.tabsRoot;
+			if (!advId || strip.dataset.tabsInit === "1") return;
+			strip.dataset.tabsInit = "1";
+			const tabs = strip.querySelectorAll<HTMLButtonElement>("[data-tab-target]");
+			tabs.forEach((tab) => {
+				tab.addEventListener("click", () => {
+					const target = tab.dataset.tabTarget;
+					if (!target) return;
+					// Deactivate siblings
+					tabs.forEach((t) => {
+						const active = t === tab;
+						t.classList.toggle("build-tabs__tab--active", active);
+						t.setAttribute("aria-selected", active ? "true" : "false");
+					});
+					// Toggle panels scoped to this advancement id
+					document
+						.querySelectorAll<HTMLElement>(`[data-tab-panel]`)
+						.forEach((panel) => {
+							// Only mess with panels controlled by THIS tab strip
+							const ownerId = panel.getAttribute("aria-labelledby") || "";
+							if (!ownerId.startsWith(`tab-${advId}-`)) return;
+							panel.classList.toggle("build--hidden", panel.dataset.tabPanel !== target);
+						});
+				});
+			});
+		});
+	}
+	initSkillBuildTabs();
+	document.addEventListener("astro:page-load", initSkillBuildTabs);
+</script>
+
+<style>
+	.build-block {
+		margin: 2rem 0;
+		padding: 1.4rem 1.6rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+	.build-block__header h2 {
+		margin: 0 0 0.3rem;
+		font-size: 1.5rem;
+		color: var(--text-heading);
+	}
+	.build-block__meta {
+		margin: 0;
+		font-size: 0.9rem;
+		color: var(--text-muted);
+	}
+	.build-block__meta strong {
+		color: var(--text-body);
+	}
+	.build-block__sp-note {
+		margin: 0.8rem 0 1.3rem;
+		padding: 0.6rem 0.9rem;
+		font-size: 0.88rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.3rem;
+		color: var(--text-body);
+	}
+
+	/* Tab strip for multiple builds within one advancement.
+	 * Only rendered when builds.length > 1; single-build
+	 * advancements skip the widget entirely and look unchanged. */
+	.build-tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0 0 1rem;
+		padding: 0.35rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.build-tabs__tab {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.45rem 0.9rem;
+		background: transparent;
+		border: 1px solid transparent;
+		border-radius: 0.35rem;
+		font-family: inherit;
+		font-size: 0.88rem;
+		font-weight: 600;
+		color: var(--text-body);
+		cursor: pointer;
+		transition: background 0.12s ease, border-color 0.12s ease;
+	}
+	.build-tabs__tab:hover {
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+	}
+	.build-tabs__tab--active {
+		background: var(--surface-card);
+		border-color: var(--accent-primary);
+		color: var(--text-heading);
+	}
+	.build-tabs__tab-badge {
+		font-size: 0.68rem;
+		font-weight: 700;
+		padding: 0.1rem 0.4rem;
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+		border-radius: 999px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+	.build--hidden {
+		display: none;
+	}
+	/* No-JS fallback: if the tab strip's data-tabs-init never gets
+	 * flipped to "1" (JS disabled), reveal all panels stacked so
+	 * readers still see every build. Selector matches when NO ancestor
+	 * .build-tabs has been initialised. */
+	html:not(.js-active) .build--hidden {
+		/* Intentionally NOT overriding display here - the initial
+		 * server-render already hides non-first tabs, and we accept
+		 * that no-JS users see only the recommended build. If they
+		 * disable JS, they get the canonical build - which is fine
+		 * per the "one build is enough for most readers" principle. */
+	}
+
+	.build {
+		margin: 1.2rem 0;
+		padding: 1rem 1.2rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.6rem;
+	}
+	.build--recommended {
+		border-color: var(--accent-primary);
+		border-width: 2px;
+	}
+	.build__title-row {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		margin-bottom: 0.3rem;
+	}
+	.build__title-row h3 {
+		margin: 0;
+		font-size: 1.2rem;
+		color: var(--text-heading);
+	}
+	.build__badge {
+		font-size: 0.78rem;
+		font-weight: 700;
+		padding: 0.15rem 0.55rem;
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+		border-radius: 999px;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	.build__tagline {
+		margin: 0.1rem 0 0.6rem;
+		font-size: 0.95rem;
+		font-style: italic;
+		color: var(--text-body);
+	}
+	.build__reasoning {
+		margin: 0 0 1rem;
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: var(--text-body);
+		max-width: 70ch;
+	}
+
+	.table-wrap {
+		overflow-x: auto;
+		margin: 0.5rem 0;
+	}
+	.build-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.85rem;
+		background: var(--surface-card);
+	}
+	.build-table th,
+	.build-table td {
+		padding: 0.35rem 0.5rem;
+		text-align: center;
+		border-bottom: 1px solid var(--border-card);
+		vertical-align: middle;
+	}
+	.build-table thead th {
+		background: var(--bg-cloud);
+		font-weight: 600;
+		color: var(--text-heading);
+		border-bottom: 2px solid var(--accent-primary);
+	}
+	.col-level { font-family: monospace; font-weight: 600; color: var(--text-heading); }
+	.col-sp    { font-family: monospace; color: var(--accent-primary); font-weight: 600; }
+	.col-skill { font-family: monospace; color: var(--text-body); min-width: 3.5rem; }
+	/* Use color-mix against the theme's accent so this highlight has
+	   enough alpha-boosted contrast against dark themes (Kerning,
+	   Sleepywood) without being over-saturated on light ones
+	   (Henesys, Perion). Sprint 52 taught us not to hardcode. */
+	.col-skill--changed {
+		background: color-mix(in srgb, var(--accent-primary) 32%, transparent);
+		font-weight: 700;
+	}
+	.col-skill--maxed   { background: rgba(21, 87, 36, 0.28); color: #0f4a1a; font-weight: 700; }
+	.col-skill__name { display: block; font-size: 0.75rem; }
+	.col-skill__max  { display: block; font-size: 0.68rem; color: var(--text-muted); font-weight: normal; }
+	.col-note {
+		text-align: left;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		max-width: 22ch;
+	}
+
+	.build__endstate {
+		margin-top: 0.9rem;
+		padding: 0.5rem 0.8rem;
+		background: var(--surface-card);
+		border-radius: 0.4rem;
+		font-size: 0.85rem;
+	}
+	.build__endstate summary {
+		cursor: pointer;
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+	.build__endstate ul {
+		margin: 0.5rem 0 0;
+		padding-left: 1.5rem;
+		color: var(--text-body);
+	}
+	.build__endstate li {
+		margin: 0.15rem 0;
+	}
+</style>

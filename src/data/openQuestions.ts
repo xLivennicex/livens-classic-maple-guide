@@ -29,20 +29,11 @@ export const openQuestions: OpenQuestion[] = [
 			"October 21 is confirmed as the official launch date, but the time of day servers open has not been announced.",
 		expectedFrom: "Nexon pre-launch announcement",
 	},
-	{
-		question: "What are the Founder's Package tiers, pricing, and contents?",
-		category: "Founder's Access",
-		detail:
-			"The Ossyria Exploration Report confirmed Founder's Packages exist and go on sale September 2, but did not list tiers, prices, or included items.",
-		expectedFrom: "Nexon Founder's Package reveal",
-	},
-	{
-		question: "Does Founder's Access progression carry into official launch?",
-		category: "Founder's Access",
-		detail:
-			"Whether characters, items, and progression from Founder's Access (October 6-20) persist through the October 21 official launch has not been explicitly stated.",
-		expectedFrom: "Nexon Founder's Access FAQ",
-	},
+	// RESOLVED 2026-09-02 - tier / pricing / contents revealed in
+	// "Founder's Packages Now On Sale" (nexon-founders-packages-on-sale).
+	// RESOLVED 2026-09-02 - Nexon explicitly confirmed progression
+	// carryover in the same announcement.
+	// Kept as comments for archaeology; delete when this file gets big.
 	{
 		question: "What are the exact Mark of Beta requirements and rewards?",
 		category: "Mark of Beta",

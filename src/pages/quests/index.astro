@@ -1,0 +1,429 @@
+---
+/**
+ * /quests - directory of all NON-party-quest entries, grouped by
+ * LEVEL TIER so a new player sees exactly what's available at
+ * their current level without hunting through category headers.
+ *
+ * Level tiers match the natural progression breakpoints in Classic
+ * MapleStory:
+ *   1-10   Maple Island tutorial + first steps to Victoria
+ *   11-20  First-job settlement
+ *   21-30  Approach to 2nd-job (Warrior 2nd-job trials happen at 30)
+ *   31-40  Early 2nd-job
+ *   41-50  Mid 2nd-job (Forgotten Hollow arc completes at 50)
+ *   51-60  Late 2nd-job / approaching Ossyria
+ *   61+    Endgame
+ *
+ * Category still visible on each card as a colored badge so the
+ * Tutorial / Story / Advancement / Citizenship distinction stays
+ * scannable while the primary axis is level.
+ *
+ * Party quests live at /party-quests (same collection, filtered).
+ */
+
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import questDossiers from "../../data/db/quests.json";
+
+// Level-tier definitions. Half-open ranges [lo, hi). Order matters -
+// this drives section render order.
+const LEVEL_TIERS = [
+	{ id: "1-10", label: "Levels 1-10", lede: "Maple Island tutorial + arrival at Victoria Island. Everything a fresh character encounters.", lo: 1, hi: 11 },
+	{ id: "11-20", label: "Levels 11-20", lede: "First-job settlement quests. You've picked Warrior / Magician / Bowman / Thief and are learning the town where you live.", lo: 11, hi: 21 },
+	{ id: "21-30", label: "Levels 21-30", lede: "Mid-first-job. Longer chains, first named items, and the run-up to second-job advancement at 30.", lo: 21, hi: 31 },
+	{ id: "31-40", label: "Levels 31-40", lede: "Early second-job. Real stat scrolls start appearing, Forgotten Hollow opens at 39.", lo: 31, hi: 41 },
+	{ id: "41-50", label: "Levels 41-50", lede: "Mid second-job. Hero's Gladius, Bronze Crusader Helm, Icarus Cape, and the Forgotten Hollow finale at 50.", lo: 41, hi: 51 },
+	{ id: "51-60", label: "Levels 51-60", lede: "Late second-job. Ossyria continent chains begin. Master Sgt Fox's military arc gates access.", lo: 51, hi: 61 },
+	{ id: "61+", label: "Levels 61+", lede: "Endgame content. El Nath, Aqua Road (when available), and third-job trial preparation.", lo: 61, hi: 999 },
+] as const;
+
+// Category badge colors + short labels for the inline pill.
+const CATEGORY_META: Record<string, { label: string; color: string }> = {
+	tutorial: { label: "Tutorial", color: "#7cc4a0" },
+	story: { label: "Story", color: "#7a99d6" },
+	advancement: { label: "Advancement", color: "#d67a99" },
+	area: { label: "Area", color: "#c4a07c" },
+	crafting: { label: "Crafting", color: "#d6b47a" },
+	citizenship: { label: "Citizenship", color: "#a07cc4" },
+	"unique-reward": { label: "Unique reward", color: "#d69f7a" },
+	seasonal: { label: "Seasonal", color: "#d67a7a" },
+	other: { label: "Other", color: "#999" },
+	// Dossier-only quests get a muted grey tag so editorial ones
+	// visually lead. Signals "auto-generated stub" without hiding
+	// the entry from search/discovery.
+	datamined: { label: "Datamined", color: "#8a8a8a" },
+};
+
+// Merge editorial + dossier quests into a single unified list so
+// every one of the 322 datamined quests is discoverable, not just
+// the 90 with hand-authored MDX pages. Both variants link to
+// /quests/{id} - the [id] route already handles both editorial
+// slugs and numeric dossier IDs (dual-path pattern from round 19).
+const allEditorial = await getCollection("quests");
+const nonPqEditorial = allEditorial.filter((q) => q.data.category !== "party-quest");
+const editorialQuestIds = new Set(nonPqEditorial.map((e) => e.data.questId));
+
+// Normalize both sources to a common card-shape so the render loop
+// stays simple. Editorial cards get their rich fields; dossier-only
+// cards fall back to datamine values + a "Datamined" pseudo-category.
+type Card = {
+	href: string;
+	name: string;
+	levelMin: number;
+	category: string;
+	npcName: string;
+	npcLocation: string;
+	tagline: string | null;
+	classReq: string | null;
+	isEditorial: boolean;
+};
+
+const editorialCards: Card[] = nonPqEditorial.map((q) => ({
+	href: `/quests/${q.id}`,
+	name: q.data.name,
+	levelMin: q.data.levelMin,
+	category: q.data.category,
+	npcName: q.data.npcName,
+	npcLocation: q.data.npcLocation,
+	tagline: q.data.tagline,
+	classReq: q.data.classReq ?? null,
+	isEditorial: true,
+}));
+
+const dossierOnlyCards: Card[] = questDossiers
+	.filter((d) => !editorialQuestIds.has(d.id))
+	.map((d) => ({
+		href: `/quests/${d.id}`,
+		name: d.name,
+		levelMin: d.levelMin ?? 0,
+		category: "datamined",
+		npcName: d.npcName ?? "Unknown giver",
+		npcLocation: d.startingMaps?.[0]?.mapName ?? d.region ?? "—",
+		tagline: null,
+		classReq: null,
+		isEditorial: false,
+	}));
+
+// Editorial first within each tier so the richest cards lead the
+// eye. Both lists are already level-ordered.
+const cards: Card[] = [...editorialCards, ...dossierOnlyCards].sort(
+	(a, b) => a.levelMin - b.levelMin,
+);
+
+const buckets = LEVEL_TIERS.map((tier) => ({
+	...tier,
+	entries: cards.filter(
+		(c) => c.levelMin >= tier.lo && c.levelMin < tier.hi,
+	),
+	editorialCount: cards.filter(
+		(c) => c.isEditorial && c.levelMin >= tier.lo && c.levelMin < tier.hi,
+	).length,
+})).filter((b) => b.entries.length > 0);
+
+const totalCount = cards.length;
+const editorialTotal = editorialCards.length;
+---
+
+<BaseLayout
+	title="Quests - Liven's Classic Maple Guide"
+	description="Every quest in MapleStory Classic World, grouped by level tier. Find exactly what's available at your current level."
+	currentPath="/quests"
+	theme="henesys"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference database</span>
+			<h1>Quests</h1>
+			<p class="lede">
+				{totalCount} quests grouped by level tier - <strong>{editorialTotal}</strong> with
+				hand-authored editorial write-ups, the rest as datamined
+				stubs (still clickable, still show giver + level + region,
+				just without the story context yet). Every entry cross-
+				verifies against the CoT 2 datamine at
+				<a href="https://osmsdataexplorer.com" target="_blank" rel="noopener">osmsdataexplorer.com</a>.
+				<a href="/party-quests">Looking for Party Quests?</a>
+			</p>
+		</div>
+		<StatusBadge status="closed-test" verifiedOn="pre-launch" />
+	</section>
+
+	{/* Jump-to-tier nav for quick scanning */}
+	<nav class="tier-nav">
+		<span class="tier-nav__label">Jump to:</span>
+		{buckets.map((b) => (
+			<a href={`#tier-${b.id}`} class="tier-nav__chip">
+				{b.label} <span class="tier-nav__count">({b.entries.length})</span>
+			</a>
+		))}
+	</nav>
+
+	{buckets.length > 0 && (
+		<div class="expand-controls">
+			<button type="button" class="expand-btn" data-action="expand-all">
+				Expand all
+			</button>
+			<button type="button" class="expand-btn" data-action="collapse-all">
+				Collapse all
+			</button>
+		</div>
+	)}
+
+	{buckets.length === 0 ? (
+		<p class="empty">
+			No quests in the collection yet. Drop a .md file into
+			<code>src/content/quests/</code> to seed the first one.
+		</p>
+	) : (
+		buckets.map((bucket) => (
+			<details class="tier-section" id={`tier-${bucket.id}`} open>
+				<summary class="tier-header">
+					<span class="tier-header__chevron" aria-hidden="true">›</span>
+					<h2>{bucket.label}</h2>
+					<span class="tier-count">
+						{bucket.entries.length} quests
+						{bucket.editorialCount > 0 && bucket.editorialCount < bucket.entries.length && (
+							<span class="tier-count__editorial"> · {bucket.editorialCount} editorial</span>
+						)}
+					</span>
+				</summary>
+				<p class="tier-lede">{bucket.lede}</p>
+				<div class="quest-grid">
+					{bucket.entries.map((quest) => {
+						const meta = CATEGORY_META[quest.category] ?? CATEGORY_META.other;
+						return (
+							<a
+								class:list={["quest-card", !quest.isEditorial && "quest-card--datamined"]}
+								href={quest.href}
+							>
+								<div class="quest-card__topline">
+									<span class="quest-card__level">L{quest.levelMin}+</span>
+									<span
+										class="quest-card__cat"
+										style={`background:${meta.color}`}
+									>
+										{meta.label}
+									</span>
+									{quest.classReq && quest.classReq !== "Any" && (
+										<span class="quest-card__job">{quest.classReq}</span>
+									)}
+								</div>
+								<h3>{quest.name}</h3>
+								<p class="quest-card__npc">
+									{quest.npcName} · {quest.npcLocation}
+								</p>
+								{quest.tagline ? (
+									<p class="quest-card__tagline">{quest.tagline}</p>
+								) : (
+									<p class="quest-card__tagline quest-card__tagline--stub">
+										No editorial write-up yet. Click through for the datamined
+										giver / rewards / chain info.
+									</p>
+								)}
+							</a>
+						);
+					})}
+				</div>
+			</details>
+		))
+	)}
+
+	<script is:inline>
+		(function () {
+			// Expand-all / collapse-all controls. Native <details>
+			// handles per-section toggling for free; this just adds
+			// global convenience.
+			document.addEventListener("click", (e) => {
+				const btn = e.target.closest(".expand-btn");
+				if (!btn) return;
+				const open = btn.dataset.action === "expand-all";
+				document.querySelectorAll(".tier-section").forEach((d) => {
+					d.open = open;
+				});
+			});
+		})();
+	</script>
+</BaseLayout>
+
+<style>
+	/* .section-heading panel treatment lives in global.css so every
+	   page-hero across the site stays visually consistent. Only
+	   page-local overrides go here (currently: none). */
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: var(--accent-primary);
+	}
+	.lede {
+		max-width: 46rem; margin-top: 0.5rem; line-height: 1.6;
+		color: var(--text-body);
+	}
+	.lede a { font-weight: bold; }
+
+	.tier-nav {
+		display: flex; flex-wrap: wrap; align-items: center;
+		gap: 0.5rem; margin: 1rem 0 1.5rem;
+		padding: 0.8rem 1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		position: sticky; top: 0; z-index: 5;
+	}
+	.tier-nav__label {
+		font-size: 0.85rem; font-weight: bold;
+		color: var(--text-muted); margin-right: 0.3rem;
+	}
+	.tier-nav__chip {
+		padding: 0.3rem 0.7rem;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px; text-decoration: none;
+		font-size: 0.8rem; font-weight: 500;
+		transition: background 120ms ease, color 120ms ease;
+	}
+	.tier-nav__chip:hover {
+		background: var(--accent-primary); color: white;
+	}
+	.tier-nav__count {
+		opacity: 0.75; font-weight: normal;
+	}
+
+	.empty {
+		padding: 2rem; background: var(--surface-card);
+		border: 2px dashed var(--border-card); border-radius: 0.75rem;
+		text-align: center; color: var(--text-muted);
+	}
+	.empty code {
+		padding: 0.15rem 0.4rem; background: var(--surface-nav);
+		color: var(--text-on-nav); border-radius: 0.25rem; font-size: 0.9em;
+	}
+
+	.tier-section {
+		margin-top: 2.5rem;
+		scroll-margin-top: 5rem;  /* account for sticky nav on jump */
+	}
+	/* Expand-all / Collapse-all pill buttons - live above the tier list. */
+	.expand-controls {
+		display: flex; gap: 0.5rem;
+		margin-bottom: 1rem;
+	}
+	.expand-btn {
+		padding: 0.4rem 0.8rem;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border: 1px solid var(--border-card);
+		border-radius: 999px;
+		font-size: 0.8rem; font-weight: bold;
+		cursor: pointer;
+		transition: background 120ms ease, color 120ms ease;
+	}
+	.expand-btn:hover {
+		background: var(--accent-primary); color: white;
+	}
+
+	/* Tier subheader is now a <summary> element (inside <details>).
+	   Native disclosure widget = zero JS toggle. Custom chevron
+	   rotates on [open] state via CSS. */
+	.tier-section > .tier-header {
+		display: flex; align-items: baseline; gap: 0.8rem;
+		margin-bottom: 0.5rem;
+		padding: 0.75rem 1.1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 5px solid var(--accent-primary);
+		border-radius: 0.55rem;
+		cursor: pointer;
+		list-style: none;
+		transition: background 120ms ease;
+	}
+	.tier-section > .tier-header::-webkit-details-marker {
+		display: none;
+	}
+	.tier-section > .tier-header:hover {
+		background: var(--bg-cloud);
+	}
+	.tier-header__chevron {
+		display: inline-block;
+		font-size: 1.3rem; line-height: 1;
+		color: var(--accent-primary);
+		transition: transform 150ms ease;
+	}
+	.tier-section[open] .tier-header__chevron {
+		transform: rotate(90deg);
+	}
+	.tier-header h2 {
+		margin: 0; font-size: 1.35rem;
+	}
+	.tier-count {
+		margin-left: auto;
+		font-size: 0.85rem; color: var(--text-muted);
+		font-weight: 500;
+	}
+	.tier-lede {
+		max-width: 46rem; margin: 0 0 1rem;
+		line-height: 1.55; color: var(--text-muted); font-size: 0.95rem;
+	}
+
+	.quest-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 0.9rem;
+	}
+
+	.quest-card {
+		display: block; padding: 1rem 1.1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card); border-radius: 0.75rem;
+		text-decoration: none; color: inherit;
+		transition: transform 120ms ease, border-color 120ms ease;
+	}
+	.quest-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--border-card-strong);
+	}
+	/* Dossier-only cards look subtly quieter (dashed border, faint
+	   background) so editorial cards visually lead the eye. Still
+	   clickable, still hoverable - just clearly marked as stubs. */
+	.quest-card--datamined {
+		border-style: dashed;
+		background: linear-gradient(
+			to bottom,
+			var(--surface-card) 0%,
+			var(--bg-cloud) 100%
+		);
+	}
+	.quest-card__tagline--stub {
+		font-style: italic; color: var(--text-muted); font-size: 0.8rem;
+	}
+	.tier-count__editorial {
+		font-style: italic; opacity: 0.85;
+	}
+	.quest-card__topline {
+		display: flex; flex-wrap: wrap; gap: 0.4rem;
+		margin-bottom: 0.5rem;
+	}
+	.quest-card__level {
+		padding: 0.2rem 0.55rem; font-size: 0.78rem; font-weight: bold;
+		background: var(--bg-cloud); color: var(--text-muted);
+		border-radius: 999px; font-family: monospace;
+	}
+	.quest-card__cat {
+		padding: 0.2rem 0.55rem; font-size: 0.78rem; font-weight: bold;
+		color: white; border-radius: 999px;
+		text-transform: uppercase; letter-spacing: 0.03em;
+	}
+	.quest-card__job {
+		padding: 0.2rem 0.55rem; font-size: 0.78rem; font-weight: bold;
+		background: var(--accent-primary); color: white;
+		border-radius: 999px;
+	}
+	.quest-card h3 {
+		margin: 0 0 0.3rem; font-size: 1.05rem; line-height: 1.3;
+	}
+	.quest-card__npc {
+		margin: 0 0 0.35rem; font-size: 0.8rem;
+		color: var(--text-muted); font-style: italic;
+	}
+	.quest-card__tagline {
+		margin: 0; font-size: 0.85rem; line-height: 1.45;
+		color: var(--text-body);
+	}
+</style>

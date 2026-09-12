@@ -1,0 +1,65 @@
+---
+/**
+ * /citizenship - renders src/content/guides/citizenship.md through
+ * GuideLayout. Sprint 60: was a nav placeholder pointing at a 404;
+ * now it actually serves the extensive Citizenship guide that had
+ * been written but never wired up.
+ *
+ * Same pattern as /crafting - both are single-file guide entries in
+ * the `guides` content collection. If a third systems guide gets
+ * added later, refactor to a [slug].astro under /guides/systems/
+ * or similar. YAGNI for now.
+ */
+
+import { getEntry, render } from "astro:content";
+import GuideLayout from "../layouts/GuideLayout.astro";
+import ItemRewardStrip from "../components/ItemRewardStrip.astro";
+import "../styles/markdown-body.css";
+
+// Sprint 60 addendum 3: strip re-added after fixing sprite source.
+// See ItemRewardStrip.astro's top comment - it now pulls from
+// MeowDB (source-of-truth) instead of the misleading
+// maplestory.io fallback. Sprites are visually verified against
+// the CoT2 datamine.
+
+const entry = await getEntry("guides", "citizenship");
+if (!entry) {
+	throw new Error("Missing content/guides/citizenship.md");
+}
+const { Content } = await render(entry);
+const d = entry.data;
+---
+
+<GuideLayout
+	title={`${d.title} - Liven's Classic Maple Guide`}
+	description={d.description}
+	currentPath="/citizenship"
+	theme={d.theme}
+	decorations={d.decorations}
+	eyebrow={d.eyebrow}
+	heading={d.heading}
+	tagline={d.tagline}
+	verificationStatus={d.verificationStatus}
+	lastChecked={d.lastUpdated}
+	sourceSlugs={d.sourceSlugs}
+	toc={d.toc}
+	verificationNote={d.verificationNote}
+>
+	<ItemRewardStrip
+		title="Citizenship reward items"
+		lede="The two town-exclusive earrings and the resident chairs. See the guide for how contribution grade gates each purchase."
+		itemIds={[1032021, 1032022, 3010009, 3010010]}
+		notes={{
+			1032021: "Henesys reward",
+			1032022: "Kerning City reward",
+			3010009: "10,000 mesos",
+			3010010: "10,000 mesos",
+		}}
+	/>
+
+	<article class="markdown-body">
+		<Content />
+	</article>
+</GuideLayout>
+
+

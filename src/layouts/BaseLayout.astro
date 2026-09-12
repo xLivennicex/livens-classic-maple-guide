@@ -2,12 +2,8 @@
 import "../styles/global.css";
 import MapleLeaf from "../components/MapleLeaf.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
+import PrimaryNav from "../components/PrimaryNav.astro";
 import { nextMilestoneHeadline } from "../data/launch";
-
-interface NavItem {
-	label: string;
-	href: string;
-}
 
 // Which visual theme to apply. Defaults to Henesys (the site's home
 // palette). See src/styles/themes/*.css for the full set.
@@ -31,7 +27,24 @@ interface Props {
 	// grass strip, etc). On for immersive pages like the homepage; off
 	// for reference-heavy pages where they'd fight with content.
 	decorations?: boolean;
+	// Absolute or root-relative URL for the social-share preview
+	// image. When omitted, we auto-select the themed regional
+	// background so every page ships a proper og:image without the
+	// caller having to think about it.
+	image?: string;
 }
+
+// Theme -> preview image mapping. All existing themes have a matching
+// 1672x941 background in /public/images so link previews look native
+// to whichever region the page belongs to.
+const THEME_IMAGE: Record<SiteTheme, string> = {
+	henesys: "/images/henesys-background.png",
+	kerning: "/images/kerning-background.png",
+	perion: "/images/perion-background.png",
+	lith: "/images/lith-background.png",
+	ellinia: "/images/ellinia-background.png",
+	sleepywood: "/images/sleepywood-background.png",
+};
 
 const {
 	title,
@@ -39,22 +52,29 @@ const {
 	currentPath,
 	theme = "henesys",
 	decorations = false,
+	image,
 } = Astro.props;
 
-// One nav list, sourced here. Adding a section is a one-line edit.
-// Real routes get real hrefs; unbuilt sections keep '#' so we don't
-// hand out 404s during development.
-const navItems: NavItem[] = [
-	{ label: "Home", href: "/" },
-	{ label: "Launch", href: "/launch" },
-	{ label: "Jobs", href: "/jobs" },
-	{ label: "Citizenship", href: "/citizenship" },
-	{ label: "Crafting", href: "/crafting" },
-	{ label: "Leveling", href: "#" },
-	{ label: "Quests & PQs", href: "#" },
-	{ label: "Database", href: "#" },
-	{ label: "Tools", href: "#" },
-];
+// Resolve the social image. Prefer explicit prop; fall back to theme
+// default. Convert root-relative paths to absolute URLs so scrapers
+// (Discord, Twitter) never have to guess the origin.
+const rawImage = image ?? THEME_IMAGE[theme];
+const socialImage = Astro.site
+	? new URL(rawImage, Astro.site).href
+	: rawImage;
+
+// Canonical URL for this specific page. Built from `Astro.site` in
+// astro.config.mjs + the current pathname. When `site` is unset
+// (never happens in this project post-deploy-prep, but handled for
+// safety) we skip the canonical tag rather than emit a broken one.
+const canonicalUrl = Astro.site
+	? new URL(Astro.url.pathname, Astro.site).href
+	: null;
+
+// Nav structure moved to src/components/PrimaryNav.astro during
+// Sprint 64 - the flat 17-item row got unusably crowded, so it's
+// now a 7-item grouped-dropdown nav. Adding a section = one entry
+// in PrimaryNav.astro's NAV_STRUCTURE array.
 ---
 
 <html lang="en" data-theme={theme}>
@@ -63,6 +83,25 @@ const navItems: NavItem[] = [
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/png" href="/images/maple-leaf.png" />
+		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+		<!-- Open Graph: better link-preview cards when the site is
+		     shared in Discord, Twitter, etc. Zero cost, high polish. -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+		<meta property="og:site_name" content="Liven's Classic Maple Guide" />
+		<meta property="og:image" content={socialImage} />
+		<meta property="og:image:width" content="1672" />
+		<meta property="og:image:height" content="941" />
+		<!-- summary_large_image beats summary now that every page has
+		     a real 1672x941 preview instead of just a favicon. -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content={socialImage} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
 		<title>{title}</title>
 	</head>
 
@@ -81,24 +120,24 @@ const navItems: NavItem[] = [
 				</span>
 			</a>
 
-			<label class="search">
-				<span class="sr-only">Search the guide</span>
-				<input type="search" placeholder="Search guides, quests, items..." />
-			</label>
+			<form class="search" action="/search" method="get" role="search">
+				<label class="sr-only" for="site-search-input">
+					Search every page: items, mobs, quests, maps, guides
+				</label>
+				<input
+					id="site-search-input"
+					name="q"
+					type="search"
+					placeholder="Search items, maps, NPCs..."
+					title="Full-text search across every page on the site. Type an item / mob / quest / map / NPC name and hit Enter."
+					autocomplete="off"
+				/>
+			</form>
 		</header>
 
-		<nav class="navigation" aria-label="Primary navigation">
-			{navItems.map((item) => (
-				<a
-					href={item.href}
-					aria-current={item.href === currentPath ? "page" : undefined}
-				>
-					{item.label}
-				</a>
-			))}
-		</nav>
+		<PrimaryNav currentPath={currentPath ?? ""} />
 
-		<main class="page-width">
+		<main class="page-width" data-pagefind-body>
 			<slot />
 		</main>
 

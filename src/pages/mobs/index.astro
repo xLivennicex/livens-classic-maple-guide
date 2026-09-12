@@ -1,0 +1,323 @@
+---
+/**
+ * /mobs - the mob catalog.
+ *
+ * 195 mobs indexed from lookups.mob_names + any additional mobs
+ * referenced by quest requirements. Filterable, sortable table.
+ *
+ * Data sources (all cross-referenced by the build script):
+ *   - osmsdataexplorer.com: roster + quest cross-refs
+ *   - maplestory.io       : Mob.wz stats (level/HP/EXP)
+ *   - MeowDB              : community drop tables + sprites
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import indexData from "../../data/db/index.json";
+import generatedAt from "../../data/db/generated-at.json";
+import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import Sprite from "../../components/Sprite.astro";
+
+const { mobs } = indexData;
+mobs.sort((a, b) => a.id - b.id);
+
+const withQuests = mobs.filter((m) => m.questCount > 0).length;
+const withStats = mobs.filter((m) => m.level != null).length;
+const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
+---
+
+<BaseLayout
+	title="Mobs - Liven's Classic Maple Guide"
+	description="Catalog of every mob in the MapleStory Classic World datamine - names, quest cross-references, sprites."
+	currentPath="/mobs"
+	theme="sleepywood"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference catalog</span>
+			<h1>Mobs</h1>
+			<p class="lede">
+				{mobs.length} mobs indexed from the CoT 2 client datamine.
+				<strong>{withStats}</strong> have full combat stats mirrored from
+				maplestory.io's Mob.wz (level, HP, MP, EXP, attack, defense).
+				<strong>{withQuests}</strong> are referenced by quest requirements.
+				Type to search, click any header to sort, click any row for the
+				full dossier including drop tables and spawn locations.
+			</p>
+			<p class="build-meta">
+				Catalog regenerated <strong>{buildDate}</strong>.
+				Rerun <code>npm run db</code> to refresh.
+			</p>
+		</div>
+		<StatusBadge status="closed-test" verifiedOn="pre-launch" />
+	</section>
+
+	<div class="controls">
+		<label class="search-label">
+			<span>Search</span>
+			<input
+				id="mob-search"
+				type="search"
+				placeholder="Mob name or ID..."
+				autocomplete="off"
+			/>
+		</label>
+		<div class="filter-chips">
+			<button class="chip chip--active" data-filter="all">All ({mobs.length})</button>
+			<button class="chip" data-filter="quest">Quest-required ({withQuests})</button>
+			<button class="chip" data-filter="stats">Stat-verified ({withStats})</button>
+		</div>
+	</div>
+
+	<div class="result-count" id="result-count">
+		Showing all {mobs.length} mobs
+	</div>
+
+	<div class="mob-table-wrap">
+		<table class="mob-table">
+			<thead>
+				<tr>
+					<th>Sprite</th>
+					<th class="sortable" data-sort="id" data-type="num">ID<span class="sort-arrow"></span></th>
+					<th class="sortable" data-sort="name" data-type="str">Name<span class="sort-arrow"></span></th>
+					<th class="sortable col-num" data-sort="level" data-type="num">Lv<span class="sort-arrow"></span></th>
+					<th class="sortable col-num" data-sort="hp" data-type="num">HP<span class="sort-arrow"></span></th>
+					<th class="sortable col-num" data-sort="exp" data-type="num">EXP<span class="sort-arrow"></span></th>
+					<th class="sortable col-num" data-sort="drops" data-type="num">Drops<span class="sort-arrow"></span></th>
+					<th class="sortable col-num" data-sort="quests" data-type="num">Quests<span class="sort-arrow"></span></th>
+				</tr>
+			</thead>
+			<tbody id="mob-tbody">
+				{mobs.map((mob) => (
+					<tr
+						class="mob-row"
+						data-name={mob.name.toLowerCase()}
+						data-id={mob.id}
+						data-level={mob.level ?? ""}
+						data-hp={mob.maxHP ?? ""}
+						data-exp={mob.exp ?? ""}
+						data-drops={mob.dropCount ?? 0}
+						data-quests={mob.questCount ?? 0}
+						data-quest={mob.questCount > 0 ? "1" : "0"}
+						data-stats={mob.level != null ? "1" : "0"}
+					>
+						<td class="col-icon">
+							<Sprite
+								srcs={mobSpriteSrcs(mob.id, mob.wzId)}
+								alt=""
+								height="40"
+								placeholder={themePlaceholderUrl("sleepywood")}
+							/>
+						</td>
+						<td class="col-id">
+							<a href={`/mobs/${mob.id}`}>{mob.id}</a>
+						</td>
+						<td class="col-name">
+							<a href={`/mobs/${mob.id}`}>{mob.name}</a>
+						</td>
+						<td class="col-num">{mob.level ?? "-"}</td>
+						<td class="col-num">{mob.maxHP != null ? mob.maxHP.toLocaleString() : "-"}</td>
+						<td class="col-num">{mob.exp != null ? mob.exp.toLocaleString() : "-"}</td>
+						<td class="col-num">{mob.dropCount > 0 ? mob.dropCount : "-"}</td>
+						<td class="col-num">{mob.questCount > 0 ? mob.questCount : "-"}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+
+	<script is:inline>
+		(function () {
+			const search = document.getElementById("mob-search");
+			const tbody = document.getElementById("mob-tbody");
+			const chips = document.querySelector(".filter-chips");
+			const resultCount = document.getElementById("result-count");
+			const rows = Array.from(tbody.querySelectorAll(".mob-row"));
+			const sortableHeaders = document.querySelectorAll("th.sortable");
+
+			let activeFilter = "all";
+			let searchTerm = "";
+			let sortKey = "id";
+			let sortDir = 1; // 1 = ascending, -1 = descending
+
+			function applyFilters() {
+				let visible = 0;
+				for (const row of rows) {
+					const matchesSearch =
+						!searchTerm ||
+						row.dataset.name.includes(searchTerm) ||
+						row.dataset.id.includes(searchTerm);
+					const matchesFilter =
+						activeFilter === "all" ||
+						(activeFilter === "quest" && row.dataset.quest === "1") ||
+						(activeFilter === "stats" && row.dataset.stats === "1");
+					const show = matchesSearch && matchesFilter;
+					row.style.display = show ? "" : "none";
+					if (show) visible++;
+				}
+				resultCount.textContent = `Showing ${visible} of ${rows.length} mobs`;
+			}
+
+			// Sort by clicking a header. Numeric sorts push "" values
+			// (missing data) to the END regardless of direction, so a
+			// user sorting by HP doesn't have to scroll past 20 blank
+			// rows to reach the first real number.
+			function applySort() {
+				const type = sortableHeaders.length
+					? document.querySelector(`th[data-sort="${sortKey}"]`)?.dataset.type
+					: "str";
+				const sorted = rows.slice().sort((a, b) => {
+					const av = a.dataset[sortKey] ?? "";
+					const bv = b.dataset[sortKey] ?? "";
+					const aMissing = av === "";
+					const bMissing = bv === "";
+					if (aMissing && bMissing) return 0;
+					if (aMissing) return 1;   // missing sinks
+					if (bMissing) return -1;
+					if (type === "num") {
+						return (Number(av) - Number(bv)) * sortDir;
+					}
+					return av.localeCompare(bv) * sortDir;
+				});
+				// Re-attach in sorted order. Efficient: appendChild moves
+				// existing nodes without reallocation.
+				for (const row of sorted) tbody.appendChild(row);
+
+				// Update visual arrows.
+				for (const th of sortableHeaders) {
+					const arrow = th.querySelector(".sort-arrow");
+					if (th.dataset.sort === sortKey) {
+						arrow.textContent = sortDir === 1 ? " ▲" : " ▼";
+						th.classList.add("sort-active");
+					} else {
+						arrow.textContent = "";
+						th.classList.remove("sort-active");
+					}
+				}
+			}
+
+			search.addEventListener("input", (e) => {
+				searchTerm = e.target.value.toLowerCase().trim();
+				applyFilters();
+			});
+			chips.addEventListener("click", (e) => {
+				const chip = e.target.closest(".chip");
+				if (!chip) return;
+				activeFilter = chip.dataset.filter;
+				chips.querySelectorAll(".chip").forEach((c) =>
+					c.classList.remove("chip--active"),
+				);
+				chip.classList.add("chip--active");
+				applyFilters();
+			});
+			for (const th of sortableHeaders) {
+				th.addEventListener("click", () => {
+					const newKey = th.dataset.sort;
+					if (newKey === sortKey) {
+						sortDir *= -1;  // toggle direction on same column
+					} else {
+						sortKey = newKey;
+						// Numeric columns default to descending (biggest
+						// HP first is more useful than smallest first);
+						// string columns default to ascending A->Z.
+						sortDir = th.dataset.type === "num" ? -1 : 1;
+					}
+					applySort();
+				});
+			}
+
+			// Initial sort by ID ascending so the arrow appears on load.
+			applySort();
+		})();
+	</script>
+</BaseLayout>
+
+<style>
+	/* .section-heading panel treatment lives in global.css - shared
+	   across every top-level catalog page. */
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: var(--accent-primary);
+	}
+	h1 { margin: 0.3rem 0 0.5rem; }
+	.lede {
+		max-width: 48rem; line-height: 1.6;
+		color: var(--text-body); margin: 0;
+	}
+	.build-meta {
+		margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-muted);
+	}
+	.build-meta code {
+		padding: 0.1rem 0.4rem; background: var(--surface-nav);
+		color: var(--text-on-nav); border-radius: 0.25rem; font-size: 0.9em;
+	}
+
+	.controls {
+		display: flex; flex-direction: column; gap: 0.8rem;
+		margin-bottom: 1rem; padding: 1rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+	.search-label {
+		display: flex; flex-direction: column; gap: 0.3rem;
+		font-size: 0.85rem; font-weight: bold;
+	}
+	.search-label input {
+		padding: 0.5rem 0.75rem; border: 1px solid var(--border-card);
+		border-radius: 0.4rem; font-size: 1rem; background: var(--bg-cloud);
+	}
+	.filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.chip {
+		padding: 0.35rem 0.7rem; font-size: 0.8rem;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border: 1px solid var(--border-card); border-radius: 999px;
+		cursor: pointer; transition: background 120ms ease;
+	}
+	.chip:hover { background: var(--accent-primary); color: white; }
+	.chip--active {
+		background: var(--accent-primary); color: white;
+		border-color: var(--accent-primary);
+	}
+
+	.result-count { margin: 0.5rem 0 0.8rem; font-size: 0.85rem; color: var(--text-muted); }
+
+	.mob-table-wrap { overflow-x: auto; }
+	.mob-table {
+		width: 100%; border-collapse: collapse;
+		background: var(--surface-card); border-radius: 0.75rem; overflow: hidden;
+	}
+	.mob-table th, .mob-table td {
+		padding: 0.5rem 0.75rem; text-align: left;
+		border-bottom: 1px solid var(--border-card); font-size: 0.85rem;
+	}
+	.mob-table th {
+		background: var(--surface-nav); color: var(--text-on-nav);
+		font-weight: bold; font-size: 0.75rem; text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	/* Sortable headers get a cursor + subtle hover to signal
+	   interactivity. `sort-active` is applied by JS to whichever
+	   column is currently the sort key. */
+	.mob-table th.sortable {
+		cursor: pointer; user-select: none;
+		transition: background 100ms ease;
+	}
+	.mob-table th.sortable:hover { background: var(--accent-primary); }
+	.mob-table th.sort-active { background: var(--accent-primary); }
+	.sort-arrow {
+		display: inline-block; font-size: 0.7em;
+		margin-left: 0.15em; color: rgba(255, 255, 255, 0.85);
+	}
+	.mob-row:hover { background: var(--bg-cloud); }
+	.col-icon { width: 48px; text-align: center; }
+	.col-icon img { image-rendering: pixelated; max-height: 40px; }
+	.col-id { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
+	.col-id a, .col-name a { text-decoration: none; color: var(--accent-primary); }
+	.col-id a:hover, .col-name a:hover { text-decoration: underline; }
+	.col-num {
+		font-family: monospace; font-size: 0.85rem;
+		text-align: right; white-space: nowrap;
+	}
+	th.col-num { text-align: right; }
+</style>

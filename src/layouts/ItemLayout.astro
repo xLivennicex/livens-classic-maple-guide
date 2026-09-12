@@ -1,0 +1,524 @@
+---
+/**
+ * ItemLayout - renders one item reference page from a `items`
+ * collection entry.
+ *
+ * Design principle: image-forward. The sprite lives in the hero
+ * next to the name so the page never feels like a wall of text.
+ * Stats compress into a compact key/value grid; editorial prose
+ * gets its own breathing room; cross-links live at the bottom
+ * with source cards after.
+ *
+ * The sprite URL is built via the maplestory-cdn helper so that
+ * pivoting away from maplestory.io (self-hosted, alternate CDN)
+ * is a one-file change in src/lib/maplestory-cdn.ts.
+ */
+
+import BaseLayout, { type SiteTheme } from "./BaseLayout.astro";
+import SourceBadge from "../components/SourceBadge.astro";
+import SourceCard from "../components/SourceCard.astro";
+import VerificationNotice from "../components/VerificationNotice.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import { getSource, type SourceType } from "../data/sources";
+import { itemIconUrl, itemIconRawUrl } from "../lib/maplestory-cdn";
+
+interface StatReq {
+	str?: number;
+	dex?: number;
+	int?: number;
+	luk?: number;
+}
+
+interface CombatStats {
+	attack?: number;
+	magicAttack?: number;
+	defense?: number;
+	magicDefense?: number;
+	accuracy?: number;
+	avoidability?: number;
+	critical?: number;
+	speed?: number;
+	jump?: number;
+}
+
+interface BonusStats {
+	str?: number;
+	dex?: number;
+	int?: number;
+	luk?: number;
+	hp?: number;
+	mp?: number;
+}
+
+interface AwardingQuest {
+	slug: string;
+	name: string;
+}
+
+interface Props {
+	// ==== Identity ====
+	name: string;
+	wzId: number;
+	category: string;
+	subcategory?: string;
+	tagline: string;
+
+	// ==== Requirements ====
+	levelReq?: number;
+	jobReq?: string;
+	statReq?: StatReq;
+
+	// ==== Stats ====
+	combat?: CombatStats;
+	bonus?: BonusStats;
+	slots?: number;
+	attackSpeed?: string;
+
+	// ==== Economy ====
+	mesos?: number;
+	droppedBy: string[];
+	soldBy: string[];
+
+	// ==== Editorial ====
+	editorial: string;      // HTML allowed
+	callout?: string;       // HTML allowed
+
+	// ==== Cross-links ====
+	relatedGuides: string[];
+	// Reverse cross-link: quests whose reward table awards this item.
+	// Computed at build time in src/pages/items/[item].astro; empty
+	// array is a legitimate value ("no quest awards this item").
+	awardingQuests: AwardingQuest[];
+
+	// ==== Verification ====
+	verificationStatus: SourceType;
+	verificationNote?: string;
+	sourceSlugs: string[];
+
+	// ==== Layout ====
+	theme?: SiteTheme;
+	lastUpdated: string;
+}
+
+const {
+	name,
+	wzId,
+	category,
+	subcategory,
+	tagline,
+	levelReq,
+	jobReq,
+	statReq,
+	combat,
+	bonus,
+	slots,
+	attackSpeed,
+	mesos,
+	droppedBy,
+	soldBy,
+	editorial,
+	callout,
+	relatedGuides,
+	awardingQuests,
+	verificationStatus,
+	verificationNote,
+	sourceSlugs,
+	theme = "henesys",
+	lastUpdated,
+} = Astro.props;
+
+const iconSmall = itemIconUrl(wzId);
+const iconLarge = itemIconRawUrl(wzId);
+
+// Resolve source slugs into rich cards for the footer.
+const itemSources = sourceSlugs.map((slug) => getSource(slug));
+
+// Category label formatting: "weapon" -> "Weapon", "etc" -> "Etc."
+const categoryLabel = category === "etc"
+	? "Etc."
+	: category[0].toUpperCase() + category.slice(1);
+
+// Which stat sections have content? Used to hide empty blocks
+// cleanly rather than rendering "0" placeholders.
+const hasCombat = combat && Object.values(combat).some((v) => v !== undefined);
+const hasBonus = bonus && Object.values(bonus).some((v) => v !== undefined);
+const hasStatReq = statReq && Object.values(statReq).some((v) => v !== undefined);
+const hasRequirements = levelReq !== undefined || jobReq !== undefined || hasStatReq;
+const hasEconomy = mesos !== undefined || droppedBy.length > 0 || soldBy.length > 0;
+---
+
+<BaseLayout
+	title={`${name} - Liven's Classic Maple Guide`}
+	description={tagline}
+	currentPath="/items"
+	theme={theme}
+>
+	<header class="item-hero">
+		<div class="item-hero__sprite">
+			<img
+				src={iconLarge}
+				srcset={`${iconSmall} 1x, ${iconLarge} 2x`}
+				alt={`${name} sprite`}
+				width="64"
+				height="64"
+				loading="eager"
+			/>
+		</div>
+		<div class="item-hero__meta">
+			<span class="eyebrow">
+				{categoryLabel}{subcategory ? ` - ${subcategory}` : ""}
+			</span>
+			<h1>{name}</h1>
+			<p class="item-hero__tagline">{tagline}</p>
+			<div class="item-hero__badges">
+				<SourceBadge type={verificationStatus} />
+				<LastUpdated date={lastUpdated} />
+			</div>
+		</div>
+	</header>
+
+	<VerificationNotice
+		type={verificationStatus}
+		checkedOn={lastUpdated}
+		sourceSlugs={sourceSlugs}
+		note={verificationNote}
+	/>
+
+	{hasRequirements && (
+		<section class="item-section">
+			<h2>Requirements</h2>
+			<dl class="stat-grid">
+				{levelReq !== undefined && (
+					<><dt>Level</dt><dd>{levelReq}</dd></>
+				)}
+				{jobReq && (
+					<><dt>Job</dt><dd>{jobReq}</dd></>
+				)}
+				{statReq?.str !== undefined && (
+					<><dt>STR</dt><dd>{statReq.str}</dd></>
+				)}
+				{statReq?.dex !== undefined && (
+					<><dt>DEX</dt><dd>{statReq.dex}</dd></>
+				)}
+				{statReq?.int !== undefined && (
+					<><dt>INT</dt><dd>{statReq.int}</dd></>
+				)}
+				{statReq?.luk !== undefined && (
+					<><dt>LUK</dt><dd>{statReq.luk}</dd></>
+				)}
+			</dl>
+		</section>
+	)}
+
+	{(hasCombat || hasBonus || slots !== undefined || attackSpeed) && (
+		<section class="item-section">
+			<h2>Stats</h2>
+			<dl class="stat-grid">
+				{combat?.attack !== undefined && (
+					<><dt>Attack</dt><dd>{combat.attack}</dd></>
+				)}
+				{combat?.magicAttack !== undefined && (
+					<><dt>Magic Attack</dt><dd>{combat.magicAttack}</dd></>
+				)}
+				{combat?.defense !== undefined && (
+					<><dt>Weapon Def.</dt><dd>{combat.defense}</dd></>
+				)}
+				{combat?.magicDefense !== undefined && (
+					<><dt>Magic Def.</dt><dd>{combat.magicDefense}</dd></>
+				)}
+				{combat?.accuracy !== undefined && (
+					<><dt>Accuracy</dt><dd>{combat.accuracy}</dd></>
+				)}
+				{combat?.avoidability !== undefined && (
+					<><dt>Avoidability</dt><dd>{combat.avoidability}</dd></>
+				)}
+				{combat?.critical !== undefined && (
+					<><dt>Critical Rate</dt><dd>{combat.critical}</dd></>
+				)}
+				{combat?.speed !== undefined && (
+					<><dt>Speed</dt><dd>{combat.speed}</dd></>
+				)}
+				{combat?.jump !== undefined && (
+					<><dt>Jump</dt><dd>{combat.jump}</dd></>
+				)}
+				{attackSpeed && (
+					<><dt>Attack Speed</dt><dd>{attackSpeed}</dd></>
+				)}
+				{bonus?.str !== undefined && (
+					<><dt>+STR</dt><dd>{bonus.str}</dd></>
+				)}
+				{bonus?.dex !== undefined && (
+					<><dt>+DEX</dt><dd>{bonus.dex}</dd></>
+				)}
+				{bonus?.int !== undefined && (
+					<><dt>+INT</dt><dd>{bonus.int}</dd></>
+				)}
+				{bonus?.luk !== undefined && (
+					<><dt>+LUK</dt><dd>{bonus.luk}</dd></>
+				)}
+				{bonus?.hp !== undefined && (
+					<><dt>+HP</dt><dd>{bonus.hp}</dd></>
+				)}
+				{bonus?.mp !== undefined && (
+					<><dt>+MP</dt><dd>{bonus.mp}</dd></>
+				)}
+				{slots !== undefined && (
+					<><dt>Upgrade Slots</dt><dd>{slots}</dd></>
+				)}
+			</dl>
+		</section>
+	)}
+
+	<section class="item-section item-editorial">
+		<h2>Liven's take</h2>
+		<div set:html={editorial} />
+		{callout && (
+			<aside class="item-callout" set:html={callout} />
+		)}
+	</section>
+
+	{hasEconomy && (
+		<section class="item-section">
+			<h2>Where it comes from</h2>
+			<dl class="stat-grid">
+				{mesos !== undefined && (
+					<><dt>NPC sell price</dt><dd>{mesos.toLocaleString()} mesos</dd></>
+				)}
+				{droppedBy.length > 0 && (
+					<>
+						<dt>Dropped by</dt>
+						<dd class="stat-list">
+							{droppedBy.join(", ")}
+							<span class="stat-list__note">
+								(monster pages coming - Phase 4b)
+							</span>
+						</dd>
+					</>
+				)}
+				{soldBy.length > 0 && (
+					<>
+						<dt>Sold by</dt>
+						<dd class="stat-list">
+							{soldBy.join(", ")}
+							<span class="stat-list__note">
+								(NPC pages coming - Phase 4c)
+							</span>
+						</dd>
+					</>
+				)}
+			</dl>
+		</section>
+	)}
+
+	{awardingQuests.length > 0 && (
+		<section class="item-section">
+			<h2>Awarded by</h2>
+			<ul class="related-guides">
+				{awardingQuests.map((q) => (
+					<li><a href={`/quests/${q.slug}`}>{q.name}</a></li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	{relatedGuides.length > 0 && (
+		<section class="item-section">
+			<h2>Mentioned in</h2>
+			<ul class="related-guides">
+				{relatedGuides.map((href) => (
+					<li><a href={href}>{href}</a></li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	<section id="sources" class="item-section">
+		<h2>Sources</h2>
+		<ul class="item-sources">
+			{itemSources.map((source) => (
+				<li><SourceCard source={source} /></li>
+			))}
+		</ul>
+	</section>
+
+	<footer class="item-footer">
+		<LastUpdated date={lastUpdated} label="Entry last reviewed" />
+	</footer>
+</BaseLayout>
+
+<style>
+	.item-hero {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		padding: 1.75rem 2rem;
+		background: var(--surface-hero-panel);
+		border: 3px solid var(--border-hero);
+		border-radius: 1.25rem;
+		box-shadow: var(--shadow-panel);
+	}
+
+	.item-hero__sprite {
+		flex: 0 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 96px;
+		height: 96px;
+		padding: 0.75rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		/* MapleStory sprites are pixel art - preserve the crispness. */
+		image-rendering: pixelated;
+	}
+
+	.item-hero__sprite img {
+		max-width: 100%;
+		max-height: 100%;
+		display: block;
+	}
+
+	.item-hero__meta {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.item-hero__meta h1 {
+		margin: 0.3rem 0 0.5rem;
+	}
+
+	.item-hero__tagline {
+		max-width: 42rem;
+		margin: 0 0 0.9rem;
+		line-height: 1.55;
+	}
+
+	.item-hero__badges {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.item-section {
+		margin-top: 2rem;
+	}
+
+	.item-section h2 {
+		margin-bottom: 0.9rem;
+	}
+
+	.stat-grid {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		column-gap: 1.25rem;
+		row-gap: 0.5rem;
+		margin: 0;
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.stat-grid dt {
+		font-weight: bold;
+		color: var(--accent-primary);
+	}
+
+	.stat-grid dd {
+		margin: 0;
+	}
+
+	.stat-list__note {
+		display: block;
+		margin-top: 0.25rem;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		font-style: italic;
+	}
+
+	/* Card surface for the "Liven's take" section so prose stays
+	 * readable against the themed page background image. Matches
+	 * .stat-grid / .reward-list card silhouette across layouts. */
+	.item-editorial {
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+
+	.item-editorial :global(p) {
+		line-height: 1.65;
+		margin-bottom: 0.9rem;
+	}
+
+	.item-editorial :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.item-callout {
+		margin-top: 1rem;
+		padding: 0.9rem 1.1rem;
+		background: var(--accent-secondary);
+		color: var(--accent-secondary-text);
+		border-left: 4px solid var(--accent-secondary-border);
+		border-radius: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.related-guides {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.related-guides a {
+		display: inline-block;
+		padding: 0.4rem 0.8rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.5rem;
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+
+	.related-guides a:hover {
+		background: var(--surface-nav-hover);
+		color: var(--text-on-nav);
+	}
+
+	.item-sources {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.item-footer {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--border-divider);
+	}
+
+	@media (max-width: 640px) {
+		.item-hero {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+		}
+
+		.stat-grid {
+			grid-template-columns: 1fr;
+			row-gap: 0.25rem;
+		}
+
+		.stat-grid dt {
+			margin-top: 0.5rem;
+		}
+	}
+</style>

@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # scratch / one-off scripts (never commit)
 .tmp/
+tmp-icons/
+
+# Wrangler cache
+.wrangler/
+

@@ -1,0 +1,13 @@
+# Liven's Classic Maple Guide - crawl policy.
+#
+# We're an unofficial fan reference. Everything on the site is
+# public-facing and safe to index; there are no /admin, /api, or
+# member-only paths. Blocking anything would only reduce reach.
+
+User-agent: *
+Allow: /
+
+# When we ship a sitemap (via @astrojs/sitemap), it'll live at /sitemap-index.xml.
+# The line below is harmless today (search engines ignore missing sitemap files)
+# and immediately useful the moment we add the integration.
+Sitemap: https://livens-classic-maple-guide.pages.dev/sitemap-index.xml

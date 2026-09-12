@@ -1,0 +1,158 @@
+---
+/**
+ * <FoundersCountdown>
+ *
+ * Ticking countdown to the Founder's Package sale end
+ * (11:59 PM PDT, October 14, 2026). Client-side JS updates the
+ * digits once per second. When the target has passed, the whole
+ * widget swaps to a "Sale ended" message so we can leave it in
+ * templates without curating.
+ *
+ * Zero dependencies. The JS is a ~30-line inline block; the digits
+ * are rendered server-side with the current at-build value, so the
+ * initial paint is meaningful even before hydration.
+ */
+
+import { countdownTargets } from "../data/launch";
+
+const target = countdownTargets.packageSaleEnds;
+const targetMs = new Date(target.iso).getTime();
+const nowMs = Date.now();
+const diffMs = targetMs - nowMs;
+
+// Same math as the client-side interval so SSR + first-tick are stable.
+function decompose(ms: number) {
+	if (ms <= 0) return { d: 0, h: 0, m: 0, s: 0, expired: true };
+	const s = Math.floor(ms / 1000) % 60;
+	const m = Math.floor(ms / 60000) % 60;
+	const h = Math.floor(ms / 3600000) % 24;
+	const d = Math.floor(ms / 86400000);
+	return { d, h, m, s, expired: false };
+}
+const initial = decompose(diffMs);
+---
+
+<div class="founders-countdown" data-target={target.iso}>
+	{initial.expired ? (
+		<div class="founders-countdown__ended">
+			<strong>Founder's Package sale has ended.</strong>
+			<p>Grand Launch opens to all players on October 21.</p>
+		</div>
+	) : (
+		<>
+			<span class="founders-countdown__label">Sale ends in</span>
+			<div class="founders-countdown__digits">
+				<span><em data-unit="d">{initial.d}</em>d</span>
+				<span><em data-unit="h">{initial.h.toString().padStart(2, "0")}</em>h</span>
+				<span><em data-unit="m">{initial.m.toString().padStart(2, "0")}</em>m</span>
+				<span><em data-unit="s">{initial.s.toString().padStart(2, "0")}</em>s</span>
+			</div>
+			<span class="founders-countdown__sublabel">{target.sublabel}</span>
+		</>
+	)}
+</div>
+
+<script>
+	// Vanilla client-side ticker. Finds every .founders-countdown on
+	// the page and updates it once per second. Multiple instances
+	// share the same interval so we don't stack timers if the
+	// component appears twice (homepage + launch page).
+	(function () {
+		const nodes = document.querySelectorAll<HTMLElement>(".founders-countdown[data-target]");
+		if (nodes.length === 0) return;
+
+		function tick() {
+			const now = Date.now();
+			for (const node of nodes) {
+				const target = new Date(node.dataset.target!).getTime();
+				const diff = target - now;
+				if (diff <= 0) {
+					// Replace guts with an "ended" message so refresh isn't
+					// required. Match the SSR-side markup exactly.
+					node.innerHTML =
+						'<div class="founders-countdown__ended">' +
+						'<strong>Founder\'s Package sale has ended.</strong>' +
+						'<p>Grand Launch opens to all players on October 21.</p>' +
+						'</div>';
+					continue;
+				}
+				const s = Math.floor(diff / 1000) % 60;
+				const m = Math.floor(diff / 60000) % 60;
+				const h = Math.floor(diff / 3600000) % 24;
+				const d = Math.floor(diff / 86400000);
+				const set = (unit: string, v: number, pad = 2) => {
+					const el = node.querySelector<HTMLElement>(`[data-unit="${unit}"]`);
+					if (el) el.textContent = pad === 0 ? String(v) : v.toString().padStart(pad, "0");
+				};
+				set("d", d, 0);
+				set("h", h);
+				set("m", m);
+				set("s", s);
+			}
+		}
+		setInterval(tick, 1000);
+	})();
+</script>
+
+<style>
+	.founders-countdown {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.25rem;
+		background: rgba(255, 255, 255, 0.6);
+		border: 1px solid var(--accent-secondary-border, #b77a2d);
+		border-radius: 8px;
+		padding: 0.7rem 1rem;
+		min-width: 12rem;
+	}
+
+	.founders-countdown__label {
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--accent-primary, #b8460e);
+	}
+
+	.founders-countdown__digits {
+		display: flex;
+		gap: 0.5rem;
+		font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: #2a1e00;
+	}
+
+	.founders-countdown__digits em {
+		font-style: normal;
+		color: var(--accent-primary, #b8460e);
+	}
+
+	.founders-countdown__digits span {
+		font-size: 0.75rem;
+		color: #5a4a2a;
+		text-transform: uppercase;
+	}
+
+	.founders-countdown__sublabel {
+		font-size: 0.78rem;
+		color: #6a5a3a;
+	}
+
+	.founders-countdown__ended {
+		text-align: center;
+	}
+
+	.founders-countdown__ended strong {
+		display: block;
+		color: var(--accent-primary, #b8460e);
+		font-size: 0.95rem;
+	}
+
+	.founders-countdown__ended p {
+		font-size: 0.8rem;
+		color: #5a4a2a;
+		margin: 0.25rem 0 0;
+	}
+</style>

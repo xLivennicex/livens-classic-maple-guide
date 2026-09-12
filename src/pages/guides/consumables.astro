@@ -1,0 +1,342 @@
+---
+/**
+ * /guides/consumables - the "which potion when" guide.
+ *
+ * SEO target: 'maplestory classic potion guide', 'best potions
+ * maplestory beginner', 'maplestory classic elixir vs power elixir',
+ * 'maplestory potion efficiency'. Beginners routinely overspend on
+ * potions because they assume "bigger number = better" - reality is
+ * mesos-per-HP degrades sharply above White Potion tier, so Red
+ * Potion spam remains competitive well into Lv 40.
+ *
+ * All potion HP/MP values and NPC prices below come directly from
+ * items.json (spec.hp / spec.mp / npcSellPrice fields). Numbers are
+ * v83-era MSCW; verify against a shop in-game if a value looks off.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ItemRewardStrip from "../../components/ItemRewardStrip.astro";
+---
+
+<BaseLayout
+	title="Consumables Guide - Liven's Classic Maple Guide"
+	description="HP potions, MP potions, elixirs, buff foods, and status cures for MapleStory Classic. Real mesos-per-HP math from the datamine, when to switch tiers, and the potion overspending trap that eats new-player wallets."
+	currentPath="/guides"
+	theme="ellinia"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Beginner Reference</span>
+			<h1>Consumables Guide</h1>
+			<p class="lede">
+				Which potion at which level, why bigger-number-potions are usually
+				worse per meso, and the elixir tier that quietly saves 60% of your
+				potion budget past Lv 50. All HP/MP/price numbers below are pulled
+				straight from the CoT 2 datamine.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<h2 id="tldr">The 10-second TL;DR</h2>
+		<ul>
+			<li><strong>Lv 1-15:</strong> Apples + Red Potions. Don't buy anything fancier.</li>
+			<li><strong>Lv 15-30:</strong> Red Potions still, plus Blue Potions once you have skills that cost MP.</li>
+			<li><strong>Lv 30-50:</strong> Orange Potions for HP, Pure Water for MP. Bank Elixirs from drops.</li>
+			<li><strong>Lv 50-70:</strong> White Potions for HP, Sunrise/Sunset Dew for MP, Power Elixir as emergency.</li>
+			<li><strong>Lv 70+:</strong> Power Elixirs as bosses, otherwise mesos-per-heal cliff kicks in and White + Sunset Dew is still fine.</li>
+		</ul>
+		<p>
+			Full math + why, below.
+		</p>
+
+		<h2 id="hp-progression">HP potion progression, with actual mesos-per-HP</h2>
+		<p>
+			Every HP potion has a fixed heal value and a fixed NPC buy price
+			(NPCs sell at 1x, buy back at ~40%). The efficiency metric that
+			matters is <strong>mesos-per-HP-restored</strong>. Higher-tier
+			potions <em>heal more per press</em>, but the meso cost climbs
+			faster than the heal amount does. That's why an Lv 60 Warrior who
+			mainlines White Potions burns 3x more meso than one who alternates
+			Orange Potions with Sunrise Dew.
+		</p>
+
+		<ItemRewardStrip
+			title="The HP potion ladder"
+			lede="Sorted low to high. Note that Apple (Lv 1-8) and Red Potion (Lv 8+) are tied for best mesos-per-HP in the whole game at 20 HP/meso. It gets worse from there."
+			itemIds={[2010001, 2000000, 2000001, 2000002]}
+			notes={{
+				2010001: "40 HP / 2 mesos (20 HP/meso)",
+				2000000: "100 HP / 5 mesos (20 HP/meso)",
+				2000001: "250 HP / 15 mesos (16.7 HP/meso)",
+				2000002: "500 HP / 35 mesos (14.3 HP/meso)",
+			}}
+		/>
+
+		<h3>Why Red Potion never really dies</h3>
+		<p>
+			Red Potion stays at the exact same efficiency as the very first
+			Apple you ever bought - 20 HP per meso. Orange loses 17% efficiency.
+			White loses 29%. If you die when a big pot press was going to save
+			you, you spent 1000+ mesos on a death. If you spam Red Potions
+			twice as often, you're spending the same 1000 mesos across two
+			presses and get the same net HP with a much fatter safety margin.
+		</p>
+		<p>
+			The <em>only</em> reason to upgrade is when your max HP outgrows the
+			pot value - a Lv 40 Warrior with 3000 max HP is losing efficiency
+			on Red Potions because they overheal-cap. But most non-Warriors
+			don't cross that threshold until Lv 45+.
+		</p>
+
+		<h2 id="mp-progression">MP potion progression</h2>
+		<p>
+			MP potions don't have an Apple-tier freebie, so the ladder starts
+			at Green Apple (30 MP for 3 mesos = 10 MP/meso) and gradually
+			erodes from there. Mages and MP-hungry classes will get the most
+			benefit from the tier changes because they're pressing pot buttons
+			literally between every mob.
+		</p>
+
+		<ItemRewardStrip
+			title="The MP potion ladder"
+			lede="Blue Potion stays the workhorse until Lv 30ish for most classes. Pure Water is the mid-game Mage's best friend at 800 MP a press. Sunset Dew is the highest per-press mid-game MP restore."
+			itemIds={[2000003, 2020009, 2022000, 2020016, 2020017]}
+			notes={{
+				2000003: "200 MP / 22 mesos (9.1 MP/meso)",
+				2020009: "450 MP / 54 mesos (8.3 MP/meso, Orange Juice)",
+				2022000: "800 MP / 112 mesos (7.1 MP/meso)",
+				2020016: "2000 MP / 300 mesos (6.7 MP/meso, Sunrise Dew)",
+				2020017: "2500 MP / 375 mesos (6.7 MP/meso, Sunset Dew)",
+			}}
+		/>
+
+		<h2 id="elixir-tier">The elixir tier: percent-based full heals</h2>
+		<p>
+			Elixirs are a completely different mechanic than the mesos-per-HP
+			potions above - they restore a <strong>percentage of your
+			maximum</strong>, not a fixed number. That makes them
+			progressively better as your max HP/MP scale up, and turns them
+			into full-heal buttons at high levels.
+		</p>
+
+		<ItemRewardStrip
+			title="The elixir stack"
+			lede="Don't buy these from NPCs at the listed prices - farm them from mob drops and hoard for boss fights. Power Elixir is basically 'oh no' insurance in a boss run."
+			itemIds={[2000004, 2000006, 2000005]}
+			notes={{
+				2000004: "35% HP + 35% MP (Elixir)",
+				2000006: "50% MP (Mana Elixir)",
+				2000005: "100% HP + 100% MP (Power Elixir)",
+			}}
+		/>
+
+		<p>
+			<strong>The Power Elixir rule:</strong> never NPC-buy them. NPC
+			price is 2500 mesos, but they routinely drop from mid-tier mobs
+			(Zombie Lupins, Selkies, various Sleepywood mobs). Bank every drop
+			for boss runs where 1500 mesos for a full heal + full MP could be
+			the difference between clear and wipe.
+		</p>
+
+		<h2 id="dual-recovery">Dual HP/MP items: the hidden meta</h2>
+		<p>
+			A handful of items restore both HP and MP simultaneously. These are
+			mathematically better than pressing an HP potion AND an MP potion
+			separately, provided you actually need both. The two headliners:
+		</p>
+
+		<ItemRewardStrip
+			title="Dual HP/MP restores"
+			lede="Cake is the newbie hidden gem (100 HP + 100 MP for 15 mesos). Mrs. Ming Ming's Stew and Andre's Seafood Soup are mid-game dual pots that beat pressing two separate potions on cost per action."
+			itemIds={[2020002, 2020018, 2020019]}
+			notes={{
+				2020002: "100 HP + 100 MP / 15 mesos (Cake)",
+				2020018: "300 HP + 300 MP / 48 mesos (Stew)",
+				2020019: "300 HP + 300 MP / 48 mesos (Seafood Soup)",
+			}}
+		/>
+
+		<p>
+			Cake in particular is <em>strictly better</em> than Blue Potion
+			from Lv 8-25: you get 100 MP AND 100 HP for 15 mesos, versus 200 MP
+			alone for 22 mesos. If you're taking any damage while grinding,
+			cake wins on every press.
+		</p>
+
+		<h2 id="buff-foods">Buff foods: temporary stat sticks</h2>
+		<p>
+			Some consumables aren't recoveries at all - they grant a temporary
+			buff. The classic example is Warrior Potion, which gives +10 WATK
+			for 10 minutes. That's a small permanent damage upgrade during a
+			farming run, and stacks with your class buffs.
+		</p>
+		<ul>
+			<li>
+				<strong>Warrior Potion (id 2002000):</strong> +10 WATK for 10
+				minutes. Cheap enough to run continuously during long grinding
+				sessions. Doesn't stack with other WATK potions - refresh, don't
+				overlap.
+			</li>
+			<li>
+				<strong>Magician / Bowman / Thief Potions:</strong> equivalent
+				buffs for other classes if they exist in the current build.
+				Check <a href="/items">the items catalog</a> and search
+				"Potion" to see all class buffs available in the datamine.
+			</li>
+			<li>
+				<strong>Selective / All-cure potions:</strong> cure a status
+				debuff (curse, seal, weakness, poison). Bank a stack of 20 in
+				every character's inventory. Some Sleepywood mobs and
+				mini-bosses inflict statuses that will otherwise force you to
+				sit through them for minutes.
+			</li>
+		</ul>
+
+		<h2 id="pet-auto-pot">Pet auto-pot: the quality-of-life spend</h2>
+		<p>
+			If you have a pet (or plan to buy one), configure it to auto-feed
+			HP/MP potions when either drops below a threshold. Setup takes 60
+			seconds and pays for itself the first time you accidentally
+			tab-away during a Ludibrium PQ. Two rules of thumb:
+		</p>
+		<ul>
+			<li>
+				<strong>HP threshold: 60%.</strong> Lower than 40% and you'll
+				die to a big hit before the pot fires. Higher than 70% and you
+				waste potions on chip damage that would've regenerated with
+				MapleStory's HP recovery skill.
+			</li>
+			<li>
+				<strong>MP threshold: 40%.</strong> Most skills cost 10-25 MP
+				per cast; you'll never come close to zero if the pot fires at
+				40%. Set it lower for tighter budgets.
+			</li>
+			<li>
+				<strong>Feed the pet frequently.</strong> Pet closeness drops
+				when hunger hits zero, and unfed pets stop auto-potting. Buy
+				pet food in bulk any time you visit town.
+			</li>
+		</ul>
+
+		<h2 id="where-to-buy">Where to actually buy potions</h2>
+		<p>
+			Town potion NPCs charge MSRP. Better sources:
+		</p>
+		<ul>
+			<li>
+				<strong>Kerning City potion shop</strong> stocks the widest
+				early-game range at standard prices. Fine default.
+			</li>
+			<li>
+				<strong>Perion potion shop</strong> is the Warrior potion
+				stopover - stock Warrior Potion here before every long grind.
+			</li>
+			<li>
+				<strong>Auction House</strong> often has bulk 100-stacks of
+				Red/Orange Potions from players clearing storage, at 10-30%
+				below NPC price. Worth a scan before every town restock.
+			</li>
+			<li>
+				<strong>Quest turn-ins</strong> - some quests reward stacks of
+				potions directly. Any time a quest reward looks like "10 White
+				Potions", that's 350 mesos of instant value.
+			</li>
+		</ul>
+
+		<h2 id="the-overspending-trap">The overspending trap in one paragraph</h2>
+		<p>
+			The single biggest new-player wallet leak: buying White Potions at
+			Lv 20 because they heal a bigger number. At Lv 20 you have ~800
+			max HP; a White Potion overheals for 500 - you're paying 35 mesos
+			for the same effective heal as a 5-meso Red Potion, five times the
+			cost. Multiply by 200 pots per grind session and you've spent 6000
+			mesos on nothing. The rule: <strong>keep your potion heal value
+			at or below your max HP such that at least 60% of the heal actually
+			restores HP.</strong> Under that rule, most players stay on Red
+			Potions until Lv 35, Orange until Lv 55, and only touch White
+			after that.
+		</p>
+
+		<p class="closing">
+			Related reading: <a href="/guides/items-to-keep">Items You Should
+			Never Sell</a> covers the quest-turn-in ETC drops you want to bank
+			(most give potions as rewards), and <a href="/guides/party-exp">
+			Party EXP &amp; Grinding</a> covers how party leveling changes your
+			potion budget (spoiler: party attackers spend way less on pots than
+			solo).
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 72ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose h3 {
+		margin-top: 1.4rem;
+		margin-bottom: 0.4rem;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose em {
+		color: var(--text-body);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+</style>

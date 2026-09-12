@@ -1,0 +1,616 @@
+---
+/**
+ * <HomeCarousel> - rotating hero carousel for the home page.
+ *
+ * Replaces the static two-video LaunchVideos grid during Sprint 64.
+ * Pulls three slide types automatically:
+ *   1. Featured blog post (most recent from `blog` collection with
+ *      featured=true, capped at 2 to keep the deck fresh)
+ *   2. Curated launch videos (still hardcoded here - YouTube IDs
+ *      don't come from datamine)
+ *   3. Optional "update" cards for site news / roadmap milestones
+ *
+ * Behavior:
+ *   - Single-slide viewport with prev/next arrow controls + dot
+ *     pagination underneath.
+ *   - Auto-rotate every 7 seconds. Pauses on hover, keyboard focus
+ *     within the carousel, and when `prefers-reduced-motion` is set.
+ *   - Full keyboard support: tab into any control, arrow-left/right
+ *     to nav slides, space/enter to activate the CTA link.
+ *   - Slide changes announce via aria-live for screen readers.
+ *   - YouTube iframes lazy-load (privacy-mode nocookie domain) and
+ *     stay embedded across slide changes so play state persists.
+ *
+ * If more than one slide type is common enough long-term, consider
+ * refactoring to accept slides as a prop and letting index.astro own
+ * the data assembly. YAGNI for now (single caller).
+ */
+
+import { getCollection } from "astro:content";
+
+// ---------- Slide type definitions ----------
+
+interface VideoSlide {
+	kind: "video";
+	youtubeId: string;
+	title: string;
+	meta: string;
+	blurb: string;
+	ctaHref?: string;
+	ctaLabel?: string;
+}
+
+interface BlogSlide {
+	kind: "blog";
+	href: string;
+	title: string;
+	meta: string;
+	blurb: string;
+	category: string;
+	tags: string[];
+}
+
+interface UpdateSlide {
+	kind: "update";
+	title: string;
+	meta: string;
+	blurb: string;
+	ctaHref: string;
+	ctaLabel: string;
+	accent?: string;
+}
+
+type Slide = VideoSlide | BlogSlide | UpdateSlide;
+
+// ---------- Assemble slides ----------
+
+// Videos: same two entries the old LaunchVideos had, plus room to
+// grow. Edit this array to add/rotate video slides.
+const videoSlides: VideoSlide[] = [
+	{
+		kind: "video",
+		youtubeId: "bkIcl0OwXpw",
+		title: "The Adventure Begins Soon",
+		meta: "Nexon official trailer - September 4, 2026",
+		blurb: "91-second launch-window trailer confirming the October 21 grand launch and pointing at the Founder's Package pre-sale.",
+	},
+	{
+		kind: "video",
+		youtubeId: "aUJpMVFtzEY",
+		title: "Kerning City's Dark Lord Awakens",
+		meta: "Nexon official trailer - September 2, 2026",
+		blurb: "5-minute in-world story trailer - Kerning City's disappearances draw the Dark Lord into the mystery. Part of the launch-hype campaign.",
+	},
+];
+
+// Blog: featured posts, newest first, cap to 2 so the deck stays
+// fresh (older featured posts naturally roll off).
+const featuredPosts = (await getCollection("blog"))
+	.filter((p) => p.data.featured)
+	.sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt))
+	.slice(0, 2);
+
+function formatDate(iso: string): string {
+	return new Date(iso).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+		timeZone: "UTC",
+	});
+}
+
+const blogSlides: BlogSlide[] = featuredPosts.map((p) => ({
+	kind: "blog",
+	href: `/blog/${p.id}`,
+	title: p.data.title,
+	meta: `${p.data.category.toUpperCase()} - ${formatDate(p.data.publishedAt)}`,
+	blurb: p.data.excerpt ?? p.data.description,
+	category: p.data.category,
+	tags: p.data.tags,
+}));
+
+// Update slides: manual entries for site news / roadmap moments.
+// Empty by default - add entries when there's real news to surface.
+const updateSlides: UpdateSlide[] = [];
+
+// Final deck ordering: blog first (recency matters), then videos,
+// then updates. If either bucket is empty it just gets skipped.
+const slides: Slide[] = [...blogSlides, ...videoSlides, ...updateSlides];
+
+const totalSlides = slides.length;
+---
+
+<section
+	class="home-carousel"
+	aria-roledescription="carousel"
+	aria-label="Featured updates and launch videos"
+>
+	<div class="home-carousel__heading">
+		<span class="eyebrow">What's new</span>
+		<h2 class="home-carousel__title">Latest updates &amp; trailers</h2>
+		<p class="home-carousel__lede">
+			Rotating deck of the newest editorial posts, official Nexon
+			trailers, and site announcements. Auto-advances every 7 seconds -
+			hover or tab into it to pause.
+		</p>
+	</div>
+
+	{totalSlides === 0 ? (
+		<div class="home-carousel__empty">
+			<p>No updates to show yet. Check back after launch.</p>
+		</div>
+	) : (
+		<div class="home-carousel__frame" data-carousel data-total={totalSlides}>
+			<div class="home-carousel__viewport" aria-live="polite">
+				{slides.map((slide, idx) => (
+					<article
+						class:list={[
+							"home-carousel__slide",
+							`home-carousel__slide--${slide.kind}`,
+							{ "home-carousel__slide--active": idx === 0 },
+						]}
+						data-slide-index={idx}
+						role="group"
+						aria-roledescription="slide"
+						aria-label={`Slide ${idx + 1} of ${totalSlides}: ${slide.title}`}
+						aria-hidden={idx === 0 ? "false" : "true"}
+					>
+						{slide.kind === "video" && (
+							<div class="home-carousel__video">
+								<iframe
+									src={`https://www.youtube-nocookie.com/embed/${slide.youtubeId}?rel=0`}
+									title={`YouTube: ${slide.title}`}
+									loading="lazy"
+									referrerpolicy="strict-origin-when-cross-origin"
+									allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									allowfullscreen
+								></iframe>
+							</div>
+						)}
+						<div class="home-carousel__body">
+							{slide.kind === "blog" && (
+								<span class={`home-carousel__badge home-carousel__badge--${slide.category}`}>
+									{slide.category}
+								</span>
+							)}
+							{slide.kind === "update" && (
+								<span class="home-carousel__badge home-carousel__badge--update">
+									Update
+								</span>
+							)}
+							<h3 class="home-carousel__slide-title">{slide.title}</h3>
+							<p class="home-carousel__meta">{slide.meta}</p>
+							<p class="home-carousel__blurb">{slide.blurb}</p>
+							{slide.kind === "blog" && slide.tags.length > 0 && (
+								<div class="home-carousel__tags">
+									{slide.tags.slice(0, 4).map((t) => (
+										<span class="home-carousel__tag">#{t}</span>
+									))}
+								</div>
+							)}
+							{(slide.kind === "blog" || (slide.kind === "video" && slide.ctaHref) || slide.kind === "update") && (
+								<a
+									class="home-carousel__cta"
+									href={slide.kind === "blog" ? slide.href : (slide as VideoSlide | UpdateSlide).ctaHref!}
+								>
+									{slide.kind === "blog"
+										? "Read the post"
+										: (slide as VideoSlide | UpdateSlide).ctaLabel ?? "Learn more"}{" "}
+									&rarr;
+								</a>
+							)}
+						</div>
+					</article>
+				))}
+			</div>
+
+			{totalSlides > 1 && (
+				<>
+					<button
+						class="home-carousel__nav home-carousel__nav--prev"
+						type="button"
+						data-carousel-prev
+						aria-label="Previous slide"
+					>
+						&#10094;
+					</button>
+					<button
+						class="home-carousel__nav home-carousel__nav--next"
+						type="button"
+						data-carousel-next
+						aria-label="Next slide"
+					>
+						&#10095;
+					</button>
+
+					<div class="home-carousel__dots" role="tablist" aria-label="Slide selector">
+						{slides.map((_, idx) => (
+							<button
+								class:list={[
+									"home-carousel__dot",
+									{ "home-carousel__dot--active": idx === 0 },
+								]}
+								type="button"
+								data-carousel-dot={idx}
+								role="tab"
+								aria-selected={idx === 0 ? "true" : "false"}
+								aria-label={`Go to slide ${idx + 1}`}
+							></button>
+						))}
+					</div>
+				</>
+			)}
+		</div>
+	)}
+</section>
+
+<script>
+	/**
+	 * Home carousel interactivity. One instance per page (there's
+	 * only ever one carousel on the home page).
+	 */
+	(() => {
+		const root = document.querySelector<HTMLElement>("[data-carousel]");
+		if (!root) return;
+
+		const total = Number(root.dataset.total ?? 0);
+		if (total <= 1) return;
+
+		const slides = Array.from(
+			root.querySelectorAll<HTMLElement>(".home-carousel__slide"),
+		);
+		const dots = Array.from(
+			root.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"),
+		);
+		const prevBtn = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+		const nextBtn = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
+
+		const AUTO_ADVANCE_MS = 7000;
+		let currentIndex = 0;
+		let timer: number | null = null;
+
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+
+		function goTo(nextIndex: number): void {
+			const target = ((nextIndex % total) + total) % total;
+			slides.forEach((s, i) => {
+				const active = i === target;
+				s.classList.toggle("home-carousel__slide--active", active);
+				s.setAttribute("aria-hidden", active ? "false" : "true");
+			});
+			dots.forEach((d, i) => {
+				const active = i === target;
+				d.classList.toggle("home-carousel__dot--active", active);
+				d.setAttribute("aria-selected", active ? "true" : "false");
+			});
+			currentIndex = target;
+		}
+
+		function start(): void {
+			if (prefersReducedMotion) return;
+			stop();
+			timer = window.setInterval(() => goTo(currentIndex + 1), AUTO_ADVANCE_MS);
+		}
+
+		function stop(): void {
+			if (timer !== null) {
+				window.clearInterval(timer);
+				timer = null;
+			}
+		}
+
+		prevBtn?.addEventListener("click", () => {
+			goTo(currentIndex - 1);
+			start();
+		});
+		nextBtn?.addEventListener("click", () => {
+			goTo(currentIndex + 1);
+			start();
+		});
+		dots.forEach((dot, idx) => {
+			dot.addEventListener("click", () => {
+				goTo(idx);
+				start();
+			});
+		});
+
+		// Arrow keys work when focus is anywhere inside the carousel.
+		root.addEventListener("keydown", (e) => {
+			if (e.key === "ArrowLeft") {
+				e.preventDefault();
+				goTo(currentIndex - 1);
+				start();
+			} else if (e.key === "ArrowRight") {
+				e.preventDefault();
+				goTo(currentIndex + 1);
+				start();
+			}
+		});
+
+		// Pause auto-rotate on hover or when focus is inside.
+		root.addEventListener("mouseenter", stop);
+		root.addEventListener("mouseleave", start);
+		root.addEventListener("focusin", stop);
+		root.addEventListener("focusout", start);
+
+		start();
+	})();
+</script>
+
+<style>
+	.home-carousel {
+		margin: 2rem 0;
+	}
+
+	.home-carousel__heading {
+		margin-bottom: 1.1rem;
+	}
+
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.25rem;
+	}
+
+	.home-carousel__title {
+		margin: 0.15rem 0 0.4rem;
+		font-size: 1.65rem;
+		color: var(--text-heading);
+		/* Subtle text-shadow gives the heading edge separation from the
+		   home-page sky backdrop where the section can land on the
+		   light-blue gradient. Cheap contrast boost without changing
+		   the color palette. */
+		text-shadow: 0 1px 2px color-mix(in srgb, white 60%, transparent);
+	}
+
+	.home-carousel__lede {
+		max-width: 44rem;
+		margin: 0;
+		color: var(--text-secondary, var(--text-body));
+		font-size: 0.98rem;
+		line-height: 1.5;
+	}
+
+	.home-carousel__empty {
+		padding: 2rem;
+		text-align: center;
+		background: var(--bg-cloud);
+		border: 1px dashed var(--border-card);
+		border-radius: 0.6rem;
+		color: var(--text-muted);
+	}
+
+	.home-carousel__frame {
+		position: relative;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.75rem;
+		padding: 1rem 1rem 3rem;
+		overflow: hidden;
+		box-shadow:
+			0 4px 22px color-mix(in srgb, var(--accent-primary) 10%, transparent),
+			0 1px 3px color-mix(in srgb, black 6%, transparent);
+	}
+
+	/* Viewport is a fixed area; slides absolute-position within it so
+	   the frame doesn't jump height when a video slide alternates
+	   with a text-only slide. Min-height keeps the shortest slide
+	   from making the frame collapse. */
+	.home-carousel__viewport {
+		position: relative;
+		min-height: 360px;
+	}
+
+	.home-carousel__slide {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1rem;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.35s ease;
+	}
+
+	/* Video slides layout: iframe on the left, body on the right on
+	   wide screens; stacked on narrow. */
+	.home-carousel__slide--video {
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	}
+
+	.home-carousel__slide--active {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.home-carousel__video {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		background: #000;
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+	.home-carousel__video iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	.home-carousel__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		padding: 0.25rem;
+	}
+
+	.home-carousel__badge {
+		align-self: flex-start;
+		font-size: 0.78rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 0.18rem 0.55rem;
+		border-radius: 999px;
+		background: var(--bg-cloud);
+		color: var(--text-heading);
+	}
+	.home-carousel__badge--news { color: #2662c9; }
+	.home-carousel__badge--opinion { color: #b8730e; }
+	.home-carousel__badge--changelog { color: #158a4d; }
+	.home-carousel__badge--community { color: #7d3fb8; }
+	.home-carousel__badge--update { color: var(--accent-primary); }
+
+	.home-carousel__slide-title {
+		margin: 0;
+		font-size: 1.4rem;
+		line-height: 1.25;
+		color: var(--text-heading);
+	}
+
+	.home-carousel__meta {
+		margin: 0;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.home-carousel__blurb {
+		margin: 0.25rem 0 0;
+		font-size: 0.95rem;
+		line-height: 1.55;
+		color: var(--text-body);
+	}
+
+	.home-carousel__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-top: 0.15rem;
+	}
+	.home-carousel__tag {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		font-family: var(--font-mono);
+	}
+
+	.home-carousel__cta {
+		margin-top: auto;
+		align-self: flex-start;
+		font-weight: 700;
+		color: var(--accent-primary);
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+	.home-carousel__cta:hover,
+	.home-carousel__cta:focus-visible {
+		text-decoration: underline;
+	}
+
+	/* Prev/next nav buttons. Positioned absolute over the viewport.
+	   Sized generously for touch targets (44x44 minimum). */
+	.home-carousel__nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		border: 1px solid var(--border-card);
+		background: color-mix(in srgb, var(--surface-card) 88%, transparent);
+		color: var(--text-heading);
+		font-size: 1rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 3;
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+		transition: background 0.15s, transform 0.15s;
+	}
+	.home-carousel__nav:hover,
+	.home-carousel__nav:focus-visible {
+		background: var(--accent-primary);
+		color: var(--text-on-accent, white);
+		outline: none;
+	}
+	.home-carousel__nav--prev { left: 0.5rem; }
+	.home-carousel__nav--next { right: 0.5rem; }
+
+	.home-carousel__dots {
+		position: absolute;
+		bottom: 0.85rem;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 0.5rem;
+		z-index: 3;
+	}
+	/* WCAG tap target: 44x44 hit area with a smaller visible dot via
+	   background-clip. Padding gives the hit surface; the visible
+	   circle is drawn by a background-color'd inner box (created via
+	   the `content-box` clip so padding stays transparent). */
+	.home-carousel__dot {
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background: var(--border-card);
+		background-clip: content-box;
+		padding: 15px; /* 44 - 15*2 = 14px visible dot */
+		border: none;
+		cursor: pointer;
+		transition: background-color 0.15s, transform 0.15s;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.home-carousel__dot:hover,
+	.home-carousel__dot:focus-visible {
+		background-color: color-mix(in srgb, var(--accent-primary) 60%, var(--border-card));
+		outline: none;
+	}
+	.home-carousel__dot--active {
+		background-color: var(--accent-primary);
+	}
+
+	/* Narrow screens: stack video + body vertically, shrink the min-height
+	   since the vertical layout naturally needs more room anyway. */
+	@media (max-width: 780px) {
+		.home-carousel__slide--video {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: auto auto;
+			gap: 0.75rem;
+		}
+
+		.home-carousel__viewport {
+			min-height: 480px;
+		}
+
+		.home-carousel__slide-title {
+			font-size: 1.2rem;
+		}
+	}
+
+	/* Very narrow (mobile phones): hide prev/next arrows entirely -
+	   they were overlapping slide text at <480px. Rely on dot pagination
+	   (bumped to 44x44 tap targets above) + auto-advance for navigation.
+	   Extra bottom padding on the frame so the dot row doesn't crowd
+	   the last line of slide text. */
+	@media (max-width: 480px) {
+		.home-carousel__nav {
+			display: none;
+		}
+		.home-carousel__frame {
+			padding-bottom: 3.5rem;
+		}
+		.home-carousel__dots {
+			bottom: 0.5rem;
+		}
+	}
+</style>

@@ -1,0 +1,777 @@
+---
+/**
+ * /world/victoria-island/{town} - per-town editorial dossier.
+ *
+ * One page per entry in `victoriaTowns`. Joins the curated
+ * VictoriaTown data against the live datamine for a deep
+ * region-specific view: full NPC roster, all quests grouped by
+ * level band, every nearby hunting map, town interiors, and
+ * direct exits.
+ *
+ * Theming inherits from BaseLayout via the town's `theme` prop -
+ * every accent, gradient, and background pattern shifts to the
+ * region's palette automatically.
+ */
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Sprite from "../../../components/Sprite.astro";
+import { victoriaTowns } from "../../../data/victoria-island";
+import mapDossiers from "../../../data/db/maps.json";
+import npcDossiers from "../../../data/db/npcs.json";
+import questDossiers from "../../../data/db/quests.json";
+import mobDossiers from "../../../data/db/mobs.json";
+import {
+	mapThumbnailSrcs,
+	mobSpriteSrcs,
+	npcSpriteUrl,
+	npcSpriteSrcs,
+	themePlaceholderUrl,
+} from "../../../lib/maplestory-cdn";
+import {
+	getTownAreaMaps,
+	bucketTownMaps,
+	getTownNpcs,
+	getTownQuests,
+	groupQuestsByBand,
+	resolveExits,
+} from "../../../lib/town-area";
+
+// ==================== Static paths ====================
+export async function getStaticPaths() {
+	return victoriaTowns.map((town) => ({
+		params: { town: town.slug },
+		props: { town },
+	}));
+}
+
+const { town } = Astro.props;
+const townDossier = mapDossiers.find((m) => m.id === town.mapId);
+if (!townDossier) {
+	throw new Error(`victoria-island/${town.slug}: town map ${town.mapId} not found in maps.json`);
+}
+
+// ==================== Data joins ====================
+const areaMaps = getTownAreaMaps(town.mapId, mapDossiers);
+const { interiors, hunts, other } = bucketTownMaps(areaMaps, town.mapId);
+const townNpcs = getTownNpcs(townDossier, npcDossiers);
+const allQuests = getTownQuests(townNpcs, questDossiers);
+const questBands = groupQuestsByBand(allQuests);
+const exits = resolveExits(townDossier, mapDossiers);
+
+// Adjacent towns (siblings in victoriaTowns) - used for the
+// "continue exploring" strip so readers can hop between dossiers
+// without going back to the deep-dive index.
+const townIdx = victoriaTowns.findIndex((t) => t.slug === town.slug);
+const prevTown = townIdx > 0 ? victoriaTowns[townIdx - 1] : null;
+const nextTown = townIdx < victoriaTowns.length - 1 ? victoriaTowns[townIdx + 1] : null;
+
+// Quick lookups for hunt-map mob previews
+const mobById = new Map(mobDossiers.map((m) => [m.id, m]));
+
+// Stats bar values
+const stats = {
+	npcs: townNpcs.length,
+	quests: allQuests.length,
+	hunts: hunts.length,
+	interiors: interiors.length,
+	exits: exits.length,
+};
+---
+
+<BaseLayout
+	title={`${town.name} - Victoria Island Dossier - Liven's Classic Maple Guide`}
+	description={`The complete ${town.name} guide: ${stats.npcs} NPCs, ${stats.quests} quests, ${stats.hunts} nearby hunting grounds. Level ${town.levelRange[0]}-${town.levelRange[1]}. ${town.tagline}`}
+	currentPath="/world"
+	theme={town.theme}
+	decorations={true}
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<a href="/world">World Map</a>
+		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
+		<a href="/world/victoria-island">Victoria Island</a>
+		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
+		<span aria-current="page">{town.name}</span>
+	</nav>
+
+	<!-- ============================================================ -->
+	<header class="town-hero">
+		<div class="town-hero__body">
+			<div class="town-hero__title-row">
+				<h1>{town.name}</h1>
+				{town.classTag && (
+					<span class="town-hero__class-tag">{town.classTag} class town</span>
+				)}
+				<span class="town-hero__lv-tag">
+					Lv {town.levelRange[0]}-{town.levelRange[1]}
+				</span>
+			</div>
+			<p class="town-hero__tagline">{town.tagline}</p>
+			<p class="town-hero__blurb">{town.blurb}</p>
+		</div>
+		<div class="town-hero__minimap">
+			<Sprite
+				srcs={mapThumbnailSrcs(townDossier.id, townDossier.wzId)}
+				alt={`${town.name} minimap`}
+				placeholder={themePlaceholderUrl(town.theme)}
+				loading="eager"
+			/>
+			<a class="town-hero__minimap-link" href={`/maps/${townDossier.id}`}>
+				Full map dossier &rarr;
+			</a>
+		</div>
+	</header>
+
+	<!-- ============================================================ -->
+	<div class="stats-bar">
+		<div class="stat"><strong>{stats.npcs}</strong><span>NPCs</span></div>
+		<div class="stat"><strong>{stats.quests}</strong><span>quests</span></div>
+		<div class="stat"><strong>{stats.hunts}</strong><span>hunting maps</span></div>
+		<div class="stat"><strong>{stats.interiors}</strong><span>interiors</span></div>
+		<div class="stat"><strong>{stats.exits}</strong><span>direct exits</span></div>
+	</div>
+
+	<!-- ============================================================ -->
+	{town.featuredContent && (
+		<a class="featured-content" href={town.featuredContent.href}>
+			<span class="featured-content__eyebrow">{town.featuredContent.label}</span>
+			<h2 class="featured-content__title">{town.featuredContent.title}</h2>
+			<p class="featured-content__blurb">{town.featuredContent.blurb}</p>
+			<span class="featured-content__cta">{town.featuredContent.cta} &rarr;</span>
+		</a>
+	)}
+
+	<!-- ============================================================ -->
+	<section class="landmarks-callout">
+		<h2 class="section-title">Landmarks in town</h2>
+		<ul class="landmark-list">
+			{town.landmarks.map((l) => <li>{l}</li>)}
+		</ul>
+	</section>
+
+	{/* ============================================================ */}
+	{/* Sprint 69: Lore section - 2-4 paragraphs of world/character   */}
+	{/* flavor from the town's `lore` field. Skipped entirely if the  */}
+	{/* town has no lore entry (typescript-optional field). Rendered  */}
+	{/* as `.town-lore` prose panel to match the site's editorial    */}
+	{/* visual language.                                              */}
+	{town.lore && town.lore.length > 0 && (
+		<section class="town-lore" aria-labelledby="lore-heading">
+			<h2 class="section-title" id="lore-heading">
+				Lore &amp; history of {town.name}
+			</h2>
+			<div class="town-lore__body">
+				{town.lore.map((p) => <p>{p}</p>)}
+			</div>
+		</section>
+	)}
+
+	{/* ============================================================ */}
+	{/* Sprint 69: Things-to-do activities. Each activity has a       */}
+	{/* category tag that drives its accent color. Grid layout stacks */}
+	{/* to single column below 640px.                                 */}
+	{town.activities && town.activities.length > 0 && (
+		<section class="town-activities" aria-labelledby="activities-heading">
+			<h2 class="section-title" id="activities-heading">
+				Things to do in {town.name}
+			</h2>
+			<p class="section-lede">
+				Curated by category. These sit alongside the auto-generated
+				quest and hunting lists below - think of them as the
+				&ldquo;insider tips&rdquo; version.
+			</p>
+			<div class="activity-grid">
+				{town.activities.map((a) => (
+					<div class={`activity-card activity-card--${a.category}`}>
+						<div class="activity-card__cat">{a.category}</div>
+						<h3 class="activity-card__title">{a.title}</h3>
+						<p class="activity-card__desc">{a.description}</p>
+					</div>
+				))}
+			</div>
+		</section>
+	)}
+
+	<!-- ============================================================ -->
+	<section aria-labelledby="npc-heading">
+		<h2 class="section-title" id="npc-heading">
+			Full NPC roster ({townNpcs.length})
+		</h2>
+		<p class="section-lede">
+			Everyone stationed on the main town map. Click any name for the full NPC dossier - questlines, other maps they appear on, source data.
+		</p>
+		<div class="npc-grid">
+			{townNpcs.length === 0 && (
+				<p class="empty">This town's dossier doesn't include a stationed NPC list yet.</p>
+			)}
+			{townNpcs.map((n) => {
+				const nQuests = n.questsGiven?.length ?? 0;
+				const nMaps = n.mapsInhabited?.length ?? 0;
+				return (
+					<a class="npc-card" href={`/npcs/${n.id}`}>
+						<div class="npc-card__sprite">
+							<Sprite
+								srcs={npcSpriteSrcs(n.wzId, n.name)}
+								alt=""
+								placeholder={themePlaceholderUrl(town.theme)}
+							/>
+						</div>
+						<div class="npc-card__body">
+							<strong>{n.name}</strong>
+							<span class="npc-card__meta">
+								{nQuests} quest{nQuests === 1 ? "" : "s"} &middot; {nMaps} map{nMaps === 1 ? "" : "s"}
+							</span>
+						</div>
+					</a>
+				);
+			})}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section aria-labelledby="quest-heading">
+		<h2 class="section-title" id="quest-heading">
+			Every quest that starts here ({allQuests.length})
+		</h2>
+		<p class="section-lede">
+			Grouped by level requirement. These are quests given by NPCs
+			stationed in {town.name} - the "what should I do while I'm here?"
+			list. Some point at mobs far outside town; that's normal.
+		</p>
+		{questBands.length === 0 ? (
+			<p class="empty">No quests originate from this town's stationed NPCs.</p>
+		) : (
+			<div class="quest-bands">
+				{questBands.map((band) => (
+					<div class="quest-band">
+						<h3 class="quest-band__title">Level {band.band}</h3>
+						<ul class="quest-band__list">
+							{band.quests.map((q) => (
+								<li class="quest-band__item">
+									<a href={`/quests/${q.id}`}>{q.name}</a>
+									<span class="quest-band__giver">
+										{q.npcName ?? "-"}
+										{q.levelMin != null && <> &middot; Lv {q.levelMin}+</>}
+									</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+		)}
+	</section>
+
+	<!-- ============================================================ -->
+	<section aria-labelledby="hunt-heading">
+		<h2 class="section-title" id="hunt-heading">
+			Hunting grounds nearby ({hunts.length})
+		</h2>
+		<p class="section-lede">
+			Every field, dungeon, and connected hunting map with mob spawns
+			in the {town.name} region. Sorted alphabetically; click any
+			card for the full map dossier including exact spawn positions.
+		</p>
+		{hunts.length === 0 ? (
+			<p class="empty">No mob-spawn maps ID-linked to this town's area.</p>
+		) : (
+			<div class="hunt-grid">
+				{hunts.map((h) => {
+					// Cap at 3 mob previews so the card stays compact.
+					const previewMobs = (h.mobs ?? []).slice(0, 3);
+					return (
+						<a class="hunt-card" href={`/maps/${h.id}`}>
+							<div class="hunt-card__thumb">
+								<Sprite
+									srcs={mapThumbnailSrcs(h.id, h.wzId)}
+									alt=""
+									placeholder={themePlaceholderUrl(town.theme)}
+								/>
+							</div>
+							<div class="hunt-card__body">
+								<strong>{h.name}</strong>
+								<span class="hunt-card__meta">
+									{h.streetName ?? "-"}
+									{h.mobLevelRange && <> &middot; Lv {h.mobLevelRange.min}-{h.mobLevelRange.max}</>}
+								</span>
+								<div class="hunt-card__mobs">
+									{previewMobs.map((m) => {
+										const mob = mobById.get(m.id);
+										if (!mob) return <span class="hunt-card__mob-name">{m.name}</span>;
+										return (
+											<span class="hunt-card__mob" title={mob.name}>
+												<Sprite
+													srcs={mobSpriteSrcs(mob.id, mob.wzId)}
+													alt=""
+													placeholder={themePlaceholderUrl(town.theme)}
+													height="24"
+												/>
+											</span>
+										);
+									})}
+									{(h.mobs?.length ?? 0) > 3 && (
+										<span class="hunt-card__more">+{(h.mobs?.length ?? 0) - 3}</span>
+									)}
+								</div>
+							</div>
+						</a>
+					);
+				})}
+			</div>
+		)}
+	</section>
+
+	<!-- ============================================================ -->
+	{interiors.length > 0 && (
+		<section aria-labelledby="interior-heading">
+			<h2 class="section-title" id="interior-heading">
+				Town interiors ({interiors.length})
+			</h2>
+			<p class="section-lede">
+				Shops, hair salons, party stations, and other indoor sub-maps
+				filed under {town.name}. Each has its own dossier with
+				stationed NPCs and connections.
+			</p>
+			<div class="interior-grid">
+				{interiors.map((i) => (
+					<a class="interior-card" href={`/maps/${i.id}`}>
+						<strong>{i.name}</strong>
+						<span>{i.npcs?.length ?? 0} NPC{i.npcs?.length === 1 ? "" : "s"}</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	<!-- ============================================================ -->
+	{exits.length > 0 && (
+		<section aria-labelledby="exits-heading">
+			<h2 class="section-title" id="exits-heading">
+				Direct exits ({exits.length})
+			</h2>
+			<p class="section-lede">
+				Portals you can take from {town.name}'s main map to another
+				location. Doesn't include exits from sub-maps - see each
+				interior for those.
+			</p>
+			<div class="exit-grid">
+				{exits.map((e) => (
+					<a class="exit-card" href={`/maps/${e.id}`}>
+						<strong>{e.name}</strong>
+						<span>{e.streetName ?? e.region ?? "-"}</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	<!-- ============================================================ -->
+	<section class="continue">
+		<h2 class="section-title">Continue exploring</h2>
+		<div class="continue-grid">
+			{prevTown && (
+				<a class="continue-card continue-card--prev" href={`/world/victoria-island/${prevTown.slug}`}>
+					<span class="continue-card__dir">&larr; Previous town</span>
+					<strong>{prevTown.name}</strong>
+					<span>Lv {prevTown.levelRange[0]}-{prevTown.levelRange[1]}</span>
+				</a>
+			)}
+			<a class="continue-card" href="/world/victoria-island">
+				<span class="continue-card__dir">Back to</span>
+				<strong>Victoria Island overview</strong>
+				<span>All 8 towns + leveling arc</span>
+			</a>
+			{nextTown && (
+				<a class="continue-card continue-card--next" href={`/world/victoria-island/${nextTown.slug}`}>
+					<span class="continue-card__dir">Next town &rarr;</span>
+					<strong>{nextTown.name}</strong>
+					<span>Lv {nextTown.levelRange[0]}-{nextTown.levelRange[1]}</span>
+				</a>
+			)}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	/* All accents inherit from BaseLayout's theme system - we don't
+	 * hardcode per-town colors here. That means one CSS block works
+	 * for every town's page, and if we add a new theme file it just
+	 * works when passed to `theme={...}` on BaseLayout above. */
+
+	.crumbs {
+		margin: 1rem 0 0.5rem;
+		font-size: 0.9rem;
+		color: var(--text-secondary, #4a3a1a);
+	}
+	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+
+	/* -------- Hero -------- */
+	.town-hero {
+		display: grid;
+		grid-template-columns: 1fr minmax(auto, 16rem);
+		gap: 1.5rem;
+		padding: 1.75rem 2rem 1.5rem;
+		background: linear-gradient(135deg,
+			color-mix(in srgb, var(--accent-primary) 8%, #fefaf0),
+			color-mix(in srgb, var(--accent-primary) 3%, #f5efd8));
+		border: 2px solid var(--accent-primary);
+		border-radius: 14px;
+		margin: 0 0 1.5rem;
+		align-items: start;
+	}
+	.town-hero__body { min-width: 0; }
+	.town-hero__title-row {
+		display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;
+	}
+	.town-hero__title-row h1 {
+		font-size: 2.4rem; margin: 0;
+		color: var(--accent-primary);
+	}
+	.town-hero__class-tag {
+		font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+		text-transform: uppercase; padding: 0.2rem 0.6rem;
+		background: var(--accent-primary); color: #fff; border-radius: 999px;
+	}
+	.town-hero__lv-tag {
+		font-size: 0.8rem; font-weight: 600;
+		padding: 0.2rem 0.6rem;
+		background: rgba(0,0,0,0.08);
+		color: var(--text-primary, #2a1e00);
+		border-radius: 4px;
+	}
+	.town-hero__tagline {
+		font-style: italic; margin: 0.5rem 0 0.75rem;
+		font-size: 1.05rem; color: var(--text-primary);
+	}
+	.town-hero__blurb {
+		margin: 0; line-height: 1.6;
+		color: var(--text-secondary);
+	}
+	.town-hero__minimap {
+		display: flex; flex-direction: column; gap: 0.5rem; align-items: center;
+	}
+	.town-hero__minimap img {
+		width: 100%; height: auto; display: block;
+		border-radius: 6px; border: 2px solid var(--accent-primary);
+		image-rendering: pixelated;
+		max-height: 12rem; object-fit: contain;
+		background: rgba(0,0,0,0.03);
+	}
+	.town-hero__minimap-link {
+		font-size: 0.85rem; font-weight: 600;
+		color: var(--accent-primary); text-decoration: none;
+	}
+	.town-hero__minimap-link:hover { text-decoration: underline; }
+
+	/* -------- Stats bar -------- */
+	.stats-bar {
+		display: flex; flex-wrap: wrap; gap: 0.75rem;
+		margin: 0 0 2rem;
+	}
+	.stat {
+		display: flex; flex-direction: column; align-items: center;
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card, #d9c9a0);
+		border-left: 3px solid var(--accent-primary);
+		padding: 0.6rem 1rem; border-radius: 6px;
+		min-width: 5.5rem;
+	}
+	.stat strong { font-size: 1.4rem; color: var(--accent-primary); line-height: 1; }
+	.stat span { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+	/* -------- Section chrome -------- */
+	.section-title {
+		font-size: 1.35rem;
+		margin: 0 0 0.4rem;
+		color: var(--accent-primary);
+		border-left: 4px solid var(--accent-primary);
+		padding-left: 0.75rem;
+	}
+	.section-lede {
+		color: var(--text-secondary); margin: 0 0 1rem;
+		max-width: 44rem; line-height: 1.55;
+	}
+	section { margin: 2rem 0; }
+	.empty {
+		font-style: italic; color: var(--text-muted);
+		padding: 0.75rem; background: rgba(0,0,0,0.03); border-radius: 6px;
+	}
+
+	/* Featured content CTA (renders only when town.featuredContent is
+	 * set). Sits between the stats bar and the landmarks list so it's
+	 * the first prominent thing after the town identity block. */
+	.featured-content {
+		display: flex; flex-direction: column;
+		margin: 0 0 2rem;
+		padding: 1.25rem 1.5rem;
+		background: linear-gradient(135deg,
+			color-mix(in srgb, var(--accent-primary) 12%, #fefaf0),
+			color-mix(in srgb, var(--accent-primary) 5%, #f5efd8));
+		border: 2px solid var(--accent-primary);
+		border-radius: 12px;
+		text-decoration: none; color: inherit;
+		transition: transform 0.12s, box-shadow 0.15s;
+	}
+	.featured-content:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+	}
+	.featured-content__eyebrow {
+		font-size: 0.72rem; font-weight: 700;
+		text-transform: uppercase; letter-spacing: 0.08em;
+		color: var(--accent-primary);
+	}
+	.featured-content__title {
+		font-size: 1.5rem; margin: 0.3rem 0 0.4rem;
+		color: var(--accent-primary);
+	}
+	.featured-content__blurb {
+		margin: 0 0 0.6rem; line-height: 1.55;
+		color: var(--text-primary); max-width: 44rem;
+	}
+	.featured-content__cta {
+		font-weight: 700; color: var(--accent-primary);
+	}
+
+	.landmarks-callout ul {
+		list-style: none; padding: 0; margin: 0;
+		display: flex; flex-wrap: wrap; gap: 0.4rem;
+	}
+	.landmarks-callout li {
+		background: rgba(0,0,0,0.06);
+		padding: 0.25rem 0.7rem;
+		border-radius: 4px; font-size: 0.9rem;
+	}
+
+	/* -------- Sprint 69: Lore panel --------
+	   Two-column max-width layout so the lore prose reads as a
+	   book column rather than a full-width wall of text. Uses the
+	   town's theme accent for the left border. */
+	.town-lore {
+		margin: 1.75rem 0;
+		padding: 1.4rem 1.6rem;
+		background: color-mix(in srgb, var(--surface-card, #fffdf7) 96%, transparent);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--town-accent, var(--accent-primary));
+		border-radius: 0.6rem;
+	}
+	.town-lore .section-title {
+		margin-top: 0;
+	}
+	.town-lore__body {
+		max-width: 46rem;
+	}
+	.town-lore__body p {
+		margin: 0 0 0.9rem;
+		line-height: 1.7;
+		font-size: 1rem;
+	}
+	.town-lore__body p:last-child { margin-bottom: 0; }
+
+	/* -------- Sprint 69: Activities grid --------
+	   6 category variants driven by class name suffix. Each category
+	   picks a subtle accent + emoji-free eyebrow tag so the reader
+	   scans the grid by color first, title second. Keeps the town
+	   pages feeling like destinations, not spreadsheets. */
+	.town-activities {
+		margin: 1.75rem 0;
+	}
+	.activity-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 0.85rem;
+		margin-top: 0.9rem;
+	}
+	.activity-card {
+		padding: 0.95rem 1.05rem;
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.activity-card__cat {
+		font-size: 0.78rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+	}
+	.activity-card__title {
+		margin: 0;
+		font-size: 1.02rem;
+		color: var(--text-heading);
+		line-height: 1.3;
+	}
+	.activity-card__desc {
+		margin: 0;
+		font-size: 0.92rem;
+		color: var(--text-body);
+		line-height: 1.5;
+	}
+	/* Category color variants. Palette chosen to be distinguishable
+	   at a glance without being loud - subtle left-border tints. */
+	.activity-card--quest       { border-left-color: #b8730e; }
+	.activity-card--combat      { border-left-color: #c04a3d; }
+	.activity-card--social      { border-left-color: #158a4d; }
+	.activity-card--exploration { border-left-color: #3d7cc0; }
+	.activity-card--trade       { border-left-color: #a8873d; }
+	.activity-card--lore        { border-left-color: #7a4cb5; }
+	.activity-card--quest       .activity-card__cat { color: #b8730e; }
+	.activity-card--combat      .activity-card__cat { color: #c04a3d; }
+	.activity-card--social      .activity-card__cat { color: #158a4d; }
+	.activity-card--exploration .activity-card__cat { color: #3d7cc0; }
+	.activity-card--trade       .activity-card__cat { color: #a8873d; }
+	.activity-card--lore        .activity-card__cat { color: #7a4cb5; }
+
+	/* -------- NPC grid -------- */
+	.npc-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+		gap: 0.6rem;
+	}
+	.npc-card {
+		display: flex; align-items: center; gap: 0.6rem;
+		padding: 0.6rem 0.75rem;
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 6px;
+		text-decoration: none; color: inherit;
+		transition: transform 0.1s, border-color 0.1s;
+	}
+	.npc-card:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.npc-card__sprite {
+		flex: 0 0 3rem; width: 3rem; height: 3rem;
+		display: flex; align-items: center; justify-content: center;
+		background: rgba(0,0,0,0.03); border-radius: 4px;
+	}
+	.npc-card__sprite img {
+		max-width: 100%; max-height: 100%; image-rendering: pixelated;
+	}
+	.npc-card__body { display: flex; flex-direction: column; min-width: 0; }
+	.npc-card__body strong { color: var(--accent-primary); }
+	.npc-card__meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+	/* -------- Quest bands -------- */
+	.quest-bands {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+		gap: 1rem;
+	}
+	.quest-band {
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 8px; padding: 0.75rem 1rem;
+	}
+	.quest-band__title {
+		font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em;
+		color: var(--accent-primary); margin: 0 0 0.5rem;
+	}
+	.quest-band__list { list-style: none; padding: 0; margin: 0; }
+	.quest-band__item {
+		padding: 0.4rem 0;
+		border-bottom: 1px dashed rgba(0,0,0,0.08);
+		display: flex; flex-direction: column;
+	}
+	.quest-band__item:last-child { border-bottom: none; }
+	.quest-band__item a {
+		color: var(--accent-primary); font-weight: 500;
+	}
+	.quest-band__giver { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+	/* -------- Hunt grid -------- */
+	.hunt-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+		gap: 0.75rem;
+	}
+	.hunt-card {
+		display: flex; gap: 0.75rem;
+		padding: 0.6rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 8px;
+		text-decoration: none; color: inherit;
+		transition: transform 0.1s, border-color 0.1s;
+	}
+	.hunt-card:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.hunt-card__thumb {
+		flex: 0 0 5rem; height: 4rem;
+		background: rgba(0,0,0,0.05); border-radius: 4px;
+		overflow: hidden;
+		display: flex; align-items: center; justify-content: center;
+	}
+	.hunt-card__thumb img {
+		width: 100%; height: 100%; object-fit: cover;
+		image-rendering: pixelated;
+	}
+	.hunt-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+	.hunt-card__body strong { color: var(--accent-primary); font-size: 0.95rem; }
+	.hunt-card__meta { font-size: 0.72rem; color: var(--text-muted); margin: 0.15rem 0 0.4rem; }
+	.hunt-card__mobs { display: flex; align-items: center; gap: 0.35rem; margin-top: auto; flex-wrap: wrap; }
+	.hunt-card__mob {
+		display: inline-flex; width: 24px; height: 24px;
+		align-items: center; justify-content: center;
+	}
+	.hunt-card__mob img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
+	.hunt-card__mob-name { font-size: 0.72rem; color: var(--text-secondary); }
+	.hunt-card__more { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; }
+
+	/* -------- Interior + exit grids share styling -------- */
+	.interior-grid, .exit-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+		gap: 0.5rem;
+	}
+	.interior-card, .exit-card {
+		display: flex; flex-direction: column;
+		padding: 0.5rem 0.75rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 6px;
+		text-decoration: none; color: inherit;
+		font-size: 0.9rem;
+		transition: transform 0.1s, border-color 0.1s;
+	}
+	.interior-card:hover, .exit-card:hover {
+		transform: translateY(-1px);
+		border-color: var(--accent-primary);
+	}
+	.interior-card strong, .exit-card strong { color: var(--accent-primary); }
+	.interior-card span, .exit-card span { font-size: 0.72rem; color: var(--text-muted); }
+
+	/* -------- Continue exploring -------- */
+	.continue-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 0.75rem;
+	}
+	.continue-card {
+		display: flex; flex-direction: column;
+		padding: 0.75rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 8px;
+		text-decoration: none; color: inherit;
+		transition: transform 0.1s, border-color 0.1s;
+	}
+	.continue-card:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.continue-card--next { text-align: right; border-left: none; border-right: 3px solid var(--accent-primary); }
+	.continue-card__dir { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+	.continue-card strong { color: var(--accent-primary); font-size: 1.05rem; margin: 0.15rem 0; }
+	.continue-card span:last-child { font-size: 0.75rem; color: var(--text-muted); }
+
+	/* -------- Mobile -------- */
+	@media (max-width: 720px) {
+		.town-hero {
+			grid-template-columns: 1fr;
+			padding: 1.25rem 1rem;
+		}
+		.town-hero h1 { font-size: 1.75rem; }
+		.town-hero__minimap { align-items: flex-start; }
+		.town-hero__minimap img { max-width: 100%; }
+	}
+</style>

@@ -57,3 +57,49 @@
 	--cursor-default: url("/cursors/leaf.cur") 4 4, auto;
 	--cursor-pointer: url("/cursors/point_horizontal_green.cur") 4 4, pointer;
 }
+
+/* Ellinia uses a scenic treetop-city background: multi-level tree
+ * houses connected by rope bridges with warm-lit windows, waterfalls
+ * cascading in the misty distance, hanging lantern vines, a purple
+ * magic warp portal set into the largest tree, cyan-teal atmospheric
+ * palette warmed by a cream-yellow sky glow at the top. Cream scrim
+ * on the bottom transitions the misty canopy into the readable
+ * card-surface area below (matches --surface-card cream-leaf).
+ *
+ * SCRIM TUNING NOTE: Ellinia's image has a dominantly GREEN palette
+ * (mean RGB ~90, 122, 105), unlike Perion's orange sunset which pops
+ * through a heavy cream scrim beautifully. A cream scrim over green
+ * pixels just makes more green - detail dissolves. So Ellinia's
+ * scrim starts later (55% down instead of 45%) and maxes lower (65%
+ * instead of 85%) so the treehouses + lanterns stay visible through
+ * the fade. If we ever want cards to sit on a fully-opaque cream
+ * surface here, that's what --surface-card + card padding are for -
+ * the body scrim is for atmosphere, not readability. */
+
+/* !important is defensive against browser style caching keeping the
+ * base gradient. Theme MUST win. Same pattern as perion.css. */
+html[data-theme="ellinia"] body {
+	background-color: var(--bg-sky-top) !important;
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(30, 64, 40, 0) 0%,
+			rgba(245, 252, 240, 0.20) 55%,
+			rgba(245, 252, 240, 0.65) 100%
+		),
+		url("/images/ellinia-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
+}
+
+/* The scenic image already has lush foliage, hanging vines, and
+ * glowing lanterns baked in - CSS decoration overlays would just
+ * be visual noise. Kill them for Ellinia. */
+html[data-theme="ellinia"] body[data-theme-decorations="on"]::before,
+html[data-theme="ellinia"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
+}

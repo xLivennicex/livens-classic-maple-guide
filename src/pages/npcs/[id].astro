@@ -1,0 +1,226 @@
+---
+/**
+ * /npcs/[id] - full dossier for one NPC.
+ *
+ * Combines two cross-references we can build entirely from the
+ * datamine:
+ *   1. mapsInhabited - via map.npcs[] reverse index.
+ *   2. questsGiven   - via quest.npc_name reverse lookup.
+ *
+ * When a proper NPC descriptor (dialogue, sprite palette, personality
+ * tag) shows up in the datamine, this page grows without touching
+ * the layout - just extend the dossier fields.
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import npcDossiers from "../../data/db/npcs.json";
+import { npcSpriteUrl, npcSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import { themeForLocation } from "../../lib/region-theme";
+import Sprite from "../../components/Sprite.astro";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return npcDossiers.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d },
+	}));
+};
+
+const { d } = Astro.props;
+
+// Extract theme once so both BaseLayout AND the placeholder helper
+// use the same value - DRY, no risk of drift.
+const pageTheme = themeForLocation(
+	(d.mapsInhabited ?? []).map((m) => m.mapName),
+	d.mapsInhabited?.[0]?.region,
+);
+
+// Group quests by region for a cleaner list when a single NPC gives
+// many quests spanning regions (rare but possible for cross-region
+// story quests).
+const questsByRegion: Record<string, typeof d.questsGiven> = {};
+for (const q of d.questsGiven) {
+	const r = q.region ?? "Unknown";
+	if (!questsByRegion[r]) questsByRegion[r] = [];
+	questsByRegion[r].push(q);
+}
+---
+
+<BaseLayout
+	title={`${d.name} - NPCs - Liven's Classic Maple Guide`}
+	description={`${d.name} (NPC ID ${d.id}) - which maps they live on, quests they give. Cross-referenced from CoT 2 datamine.`}
+	theme={pageTheme}
+>
+	<nav class="crumbs">
+		<a href="/npcs">&larr; NPCs</a>
+		<span class="crumbs__sep">&middot;</span>
+		<span>{d.name}</span>
+	</nav>
+
+	<header class="hero">
+		<div class="hero__sprite">
+			<Sprite
+				srcs={npcSpriteSrcs(d.wzId, d.name)}
+				alt={`${d.name} sprite`}
+				loading="eager"
+				placeholder={themePlaceholderUrl(pageTheme)}
+			/>
+		</div>
+		<div class="hero__title">
+			<h1>{d.name}</h1>
+			<div class="hero__badges">
+				<span class="badge badge--id">NPC ID {d.id}</span>
+				<span class="badge">Lives on {d.mapsInhabited.length} map{d.mapsInhabited.length === 1 ? "" : "s"}</span>
+				<span class="badge">Gives {d.questsGiven.length} quest{d.questsGiven.length === 1 ? "" : "s"}</span>
+			</div>
+		</div>
+	</header>
+
+	<div class="disclaimer">
+		<strong>Available:</strong> which maps this NPC is stationed on
+		+ which quests they hand out.
+		<strong>Not yet documented:</strong> dialogue lines, quest
+		descriptions rendered inline, portrait sprite. Coming when
+		those fields land in the datamine.
+	</div>
+
+	{d.mapsInhabited.length > 0 ? (
+		<section class="section">
+			<h2>Found on <span class="count">({d.mapsInhabited.length} map{d.mapsInhabited.length === 1 ? "" : "s"})</span></h2>
+			<div class="map-grid">
+				{d.mapsInhabited.map((m) => (
+					<a class={`map-chip map-chip--${m.kind}`} href={`/maps/${m.mapId}`}>
+						<span class="map-chip__name">{m.mapName}</span>
+						<span class="map-chip__meta">{m.region}</span>
+					</a>
+				))}
+			</div>
+		</section>
+	) : (
+		<section class="section">
+			<h2>Found on</h2>
+			<p class="muted">
+				No map placement found in the datamine. This NPC may be
+				a special/scripted spawn or their map hasn't been
+				exposed in the current dump.
+			</p>
+		</section>
+	)}
+
+	{d.questsGiven.length > 0 && (
+		<section class="section">
+			<h2>Gives quests <span class="count">({d.questsGiven.length})</span></h2>
+			{Object.entries(questsByRegion).map(([region, quests]) => (
+				<div class="quest-group">
+					<h3 class="quest-group__region">{region}</h3>
+					<ul class="quest-list">
+						{quests.map((q) => (
+							<li class="quest-row">
+								{q.level != null && <span class="quest-row__level">L{q.level}</span>}
+								<a class="quest-row__name" href={`/quests/${q.questId}`}>
+									{q.questName}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</section>
+	)}
+</BaseLayout>
+
+<style>
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; }
+
+	.hero {
+		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;
+		align-items: center; padding: 1.5rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem; margin-bottom: 1rem;
+	}
+	.hero__sprite {
+		width: 96px; height: 96px;
+		display: flex; align-items: center; justify-content: center;
+		background: var(--bg-cloud); border-radius: 0.5rem;
+		image-rendering: pixelated;
+	}
+	.hero__sprite img { max-width: 100%; max-height: 100%; }
+	.hero__sprite-fallback {
+		font-size: 2rem; color: var(--text-muted);
+		font-family: monospace; opacity: 0.5;
+	}
+	.hero__title h1 { margin: 0 0 0.5rem; }
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.badge {
+		display: inline-block; padding: 0.25rem 0.6rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px;
+	}
+	.badge--id {
+		background: var(--bg-cloud); color: var(--text-muted); font-family: monospace;
+	}
+
+	.disclaimer {
+		margin-bottom: 1.5rem; padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem; line-height: 1.5;
+	}
+
+	.section { margin: 1.5rem 0; }
+	.section h2 { font-size: 1.3rem; margin: 0 0 0.8rem; }
+	.count { font-weight: normal; color: var(--text-muted); font-size: 0.85rem; }
+	.muted { color: var(--text-muted); font-style: italic; margin: 0; }
+
+	.map-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+		gap: 0.5rem;
+	}
+	.map-chip {
+		display: flex; flex-direction: column;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease;
+	}
+	.map-chip:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.map-chip--training { border-left-color: #7cc48a; }
+	.map-chip--hidden   { border-left-color: #a07cc4; }
+	.map-chip--town     { border-left-color: #7ca0c4; }
+	.map-chip__name { font-weight: 500; font-size: 0.9rem; color: var(--accent-primary); }
+	.map-chip__meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+	.quest-group { margin-bottom: 1.2rem; }
+	.quest-group__region {
+		font-size: 0.9rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.05em;
+		color: var(--text-muted); margin: 0 0 0.5rem;
+	}
+	.quest-list { list-style: none; padding: 0; margin: 0; }
+	.quest-row {
+		display: flex; align-items: center; gap: 0.7rem;
+		padding: 0.55rem 0.9rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem;
+		margin-bottom: 0.3rem;
+	}
+	.quest-row__level {
+		padding: 0.2rem 0.55rem; font-size: 0.75rem; font-weight: bold;
+		background: var(--bg-cloud); color: var(--text-muted);
+		border-radius: 999px; font-family: monospace; flex-shrink: 0;
+	}
+	.quest-row__name {
+		font-weight: 500; color: var(--accent-primary); text-decoration: none;
+	}
+	.quest-row__name:hover { text-decoration: underline; }
+</style>

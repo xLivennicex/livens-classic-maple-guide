@@ -1,0 +1,422 @@
+---
+/**
+ * /guides/skill-changes - class-by-class rundown of first-job skill
+ * kit differences from v83 to CoT 2.
+ *
+ * SEO target: 'maplestory classic worlds skill changes v83',
+ * 'MSCW new skills', 'MSCW Bowman Blessing of Amazon removed',
+ * 'maplestory classic warrior new passive'. Returning-player
+ * query intent.
+ *
+ * All change claims below are verified against the CoT 2 client
+ * datamine (via osmsdataexplorer.com's skill dump). Numeric values
+ * (damage %, max levels, MP costs) still reflect v83-era baseline
+ * pending live-server verification during Founder's Access. The
+ * job MDs (src/content/jobs/*.md) are the source of truth for the
+ * skill lists cited here.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Skill Changes Per Class (v83 to CoT 2) - Liven's Classic Maple Guide"
+	description="Which first-job skills survived v83 into MapleStory Classic World, which got dropped, and which are brand new. Confirmed changes: Warrior gained Precise Strikes, Bowman lost Blessing of Amazon and gained Power Knockback. Magician and Thief kits are unchanged."
+	currentPath="/guides"
+	theme="perion"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">CoT 2 vs v83 Reality Check</span>
+			<h1>Skill Changes Per Class</h1>
+			<p class="lede">
+				Every returning player's build plan starts from muscle memory:
+				"max Power Strike, then Slash Blast, then Iron Body." Some of
+				that advice still works. Some of it needs a footnote. Two
+				classes have confirmed kit changes in CoT 2; two are unchanged
+				from v83. Here's the class-by-class rundown, all datamine-verified.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Verification:</strong> the skill LISTS and skill IDs below
+			are 100% CoT 2-verified against ohmi69's client-datamine
+			dashboard at
+			<a href="https://osmsdataexplorer.com" rel="external nofollow">osmsdataexplorer.com</a>.
+			Damage percentages, max-level values, and MP costs still reflect
+			v83-era baseline - Nexon may have retuned individual skill numbers
+			without us noticing yet. Once Founder's Access opens October 6,
+			numeric values get live-verified.
+		</div>
+
+		<h2 id="summary">The 30-second summary</h2>
+		<div class="guide-summary-grid">
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Warrior <span class="status-pill status-pill--new">+1 SKILL</span></h3>
+				<p>
+					Gained a new 6th passive: <strong>Precise Strikes</strong>
+					(accuracy + crit rate). Other 5 skills unchanged.
+					Standard v83 build order still valid, just slot the new
+					skill for utility.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Bowman <span class="status-pill status-pill--rework">SKILL SWAP</span></h3>
+				<p>
+					Lost <strong>Blessing of Amazon</strong> (the classic party
+					attack buff), gained <strong>Power Knockback</strong>
+					(CC AoE that always crits). Significant build rethink.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--same">
+				<h3>Magician <span class="status-pill status-pill--same">UNCHANGED</span></h3>
+				<p>
+					All six first-job skills match v83 baseline exactly. Your
+					old build plan works as-is.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--same">
+				<h3>Thief <span class="status-pill status-pill--same">UNCHANGED</span></h3>
+				<p>
+					All six first-job skills match v83 baseline exactly. The
+					datamine calls it "Rogue" internally but the visible class
+					name is unchanged. Same DEX-for-advancement quirk, same
+					Lucky Seven, same Bandit Steal.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="warrior">Warrior: gained Precise Strikes</h2>
+		<p>
+			The classic v83 Warrior 1st-job kit had five skills: Improved HP
+			Recovery, Improved MaxHP Increase, Power Strike, Slash Blast, and
+			Iron Body. CoT 2 keeps all five with unchanged names/IDs and adds
+			a sixth:
+		</p>
+
+		<div class="skill-callout skill-callout--new">
+			<div class="skill-callout__head">
+				<span class="skill-callout__badge">NEW IN COT 2</span>
+				<h3>Precise Strikes</h3>
+				<span class="skill-callout__meta">Passive &middot; Max Lv 15 &middot; Skill ID 1000002</span>
+			</div>
+			<p>
+				Repeated practice with your weapon increases <strong>Accuracy
+				and Critical Rate</strong>. A passive quality-of-life boost -
+				Accuracy helps you actually connect with same-level or
+				higher-level mobs, and Crit is genuinely rare on Warriors, so
+				this fills two subtle-but-real gaps.
+			</p>
+			<p>
+				<strong>Suggested allocation:</strong> 1 point utility, or
+				fully skip in favor of the classic v83 damage-first build.
+				With only 61 SP total available across levels 10-30 and five
+				core skills competing for them, Precise Strikes isn't a
+				priority for grinders. Boss-focused Warriors might invest more
+				for the accuracy floor.
+			</p>
+		</div>
+
+		<p>
+			<strong>Revised recommended order (Warrior):</strong>
+			1 point in Improved HP Recovery, then max Improved MaxHP Increase
+			(compounds every level), then max Power Strike, then max Slash
+			Blast, then Iron Body with anything left over. Slot Precise
+			Strikes at 1-point utility once you're at 30, or skip it entirely
+			if you're comfortable with the classic build.
+		</p>
+		<p>
+			See <a href="/jobs/warrior">the full Warrior guide</a> for the
+			complete 1st-job skill breakdown with numbers.
+		</p>
+
+		<h2 id="bowman">Bowman: lost Blessing of Amazon, gained Power Knockback</h2>
+		<p>
+			The <strong>biggest single class change confirmed in CoT 2.</strong>
+			The classic v83 Bowman 1st-job kit had six skills: Blessing of
+			Amazon (party attack buff), Critical Shot, the Booster
+			(Hunter's Focus / Crossbow Focus), the Soul Arrow variant,
+			Arrow Blow, and Double Shot. CoT 2 dropped Blessing of Amazon
+			entirely and replaced it with:
+		</p>
+
+		<div class="skill-callout skill-callout--rework">
+			<div class="skill-callout__head">
+				<span class="skill-callout__badge skill-callout__badge--rework">REPLACES BLESSING OF AMAZON</span>
+				<h3>Power Knockback</h3>
+				<span class="skill-callout__meta">Attack &middot; Max Lv 15 &middot; CoT 2 verified</span>
+			</div>
+			<p>
+				Swings the bow widely to push multiple enemies far back.
+				<strong>This attack ALWAYS crits</strong>, and higher skill
+				levels increase the number of mobs pushed per swing. A
+				genuine mob-training utility, especially on maps where
+				kite-and-shoot beats stand-and-deliver.
+			</p>
+			<p>
+				<strong>Why this matters for returners:</strong> Blessing of
+				Amazon was a party utility that many v83 builds threw a few
+				points into for the group buff. Power Knockback is a
+				completely different mechanic - a solo-mobility crowd
+				control attack, not a party buff. If your v83 memory tells
+				you "throw 3 points into Amazon for the party synergy",
+				forget that entirely.
+			</p>
+		</div>
+
+		<p>
+			<strong>Revised recommended order (Bowman):</strong>
+			1 point in Arrow Blow so you have an attack, then MAX Double Shot
+			(pure damage winner), then MAX Critical Shot (damage multiplier),
+			then evaluate Power Knockback based on your training style -
+			grinders love it, boss-focused Bowmen skip it for the Booster.
+			Blessing of Amazon is gone; do not budget SP for it.
+		</p>
+		<p>
+			See <a href="/jobs/bowman">the full Bowman guide</a> for the
+			complete 1st-job skill breakdown with numbers.
+		</p>
+
+		<h2 id="magician">Magician: no changes, use v83 build as-is</h2>
+		<p>
+			All six first-job Magician skills match the v83 baseline exactly:
+			Improved MP Recovery, Improved MaxMP Increase, Magic Guard, Magic
+			Armor, Energy Bolt, Magic Claw. Same skill IDs, same names, same
+			mechanics per the datamine.
+		</p>
+		<p>
+			<strong>Recommended order (unchanged from v83):</strong>
+			1 point in Energy Bolt for an attack, max Magic Claw (your
+			workhorse), max Magic Guard (the survival skill that defines
+			Magicians), then MP Recovery + MaxMP as SP allows. Magic Armor
+			is optional utility.
+		</p>
+		<p>
+			Numeric values (MP costs, Magic Guard's damage-to-MP ratio,
+			advancement level) still reflect v83 baseline pending live
+			confirmation. See <a href="/jobs/magician">the full Magician
+			guide</a>.
+		</p>
+
+		<h2 id="thief">Thief: no changes, still called "Rogue" in the datamine</h2>
+		<p>
+			All six first-job Thief skills match v83 baseline. Nimble Feet,
+			Keen Eyes, Disorder, Dark Sight, Lucky Seven, and Double Stab
+			all present with unchanged IDs. Datamine files call the class
+			"Rogue" internally (Nexon's canonical class name for the 1st job
+			tier) but the visible in-game name is unchanged.
+		</p>
+		<p>
+			Class quirks preserved from v83:
+		</p>
+		<ul>
+			<li>
+				<strong>Advancement requires DEX 25</strong>, not the STR/DEX/
+				etc. minimum other classes use. New players sometimes miss
+				this and get stuck at Lv 10 with wrong AP.
+			</li>
+			<li>
+				<strong>Lucky Seven damage formula is LUK-only</strong>, not
+				LUK+DEX. Foundational to the Assassin build later; overinvest
+				LUK from Lv 1.
+			</li>
+			<li>
+				<strong>Bandit Steal drop rates unchanged</strong> (per the
+				datamine skill definition). Assassin vs Bandit is still the
+				same fork at Lv 30.
+			</li>
+		</ul>
+		<p>
+			See <a href="/jobs/thief">the full Thief guide</a>.
+		</p>
+
+		<h2 id="second-job">What about 2nd + 3rd job?</h2>
+		<p>
+			We've only surfaced <strong>1st-job</strong> skill changes so far.
+			2nd-job class splits (Fighter/Page/Spearman, Hunter/Crossbowman,
+			Wizard-FP/Wizard-IL/Cleric, Assassin/Bandit) exist in the
+			datamine but we haven't done the full v83-vs-CoT2 diff on those
+			kits yet. The Sprint plan is to do the 2nd job pass once
+			Founder's Access opens, so we can validate against live behavior
+			at the same time.
+		</p>
+		<p>
+			If a 2nd job skill on the class page you're reading has a
+			<code>verificationStatus: "closed-test-info"</code> tag, treat
+			the numeric values as v83-baseline until noted otherwise.
+		</p>
+
+		<h2 id="how-to-check">How to check a specific skill</h2>
+		<p>
+			The class-specific job pages are the authoritative source:
+		</p>
+		<ul>
+			<li><a href="/jobs/warrior">Warrior</a> - full skill breakdown with numbers</li>
+			<li><a href="/jobs/magician">Magician</a></li>
+			<li><a href="/jobs/bowman">Bowman</a></li>
+			<li><a href="/jobs/thief">Thief</a></li>
+		</ul>
+		<p>
+			Each page lists every skill in the 1st-job kit with its skill ID,
+			max level, mechanic summary, and suggested AP allocation. Skills
+			flagged "New in CoT 2" or "CoT 2 verified" are datamine-confirmed;
+			everything else uses v83 baseline values that we'll re-verify
+			post-launch.
+		</p>
+
+		<h2 id="next-2nd-job">What about 2nd job?</h2>
+		<p>
+			1st-job kits are datamine-confirmed. 2nd-job kits are canonical
+			v83 pending Founder's Access verification. If you're planning
+			ahead for your Lv 30 branch decision, we've got a dedicated
+			guide per class:
+		</p>
+		<ul>
+			<li><a href="/guides/warrior-2nd-job">Warrior: Fighter, Page, or Spearman?</a> - three-branch decision, all skill kits and build orders.</li>
+			<li><a href="/guides/magician-2nd-job">Magician: F/P, I/L, or Cleric?</a> - element choice + Cleric heal-farming.</li>
+			<li><a href="/guides/bowman-2nd-job">Bowman: Hunter or Crossbowman?</a> - covers the Power Knockback shuffle specific to this branch.</li>
+			<li><a href="/guides/thief-2nd-job">Thief: Assassin or Bandit?</a> - ranged stars vs melee daggers.</li>
+		</ul>
+
+		<p class="closing">
+			Related: <a href="/guides/whats-new-in-cot2">What's New in CoT 2</a>
+			for the broader zone-and-systems changelog, and
+			<a href="/guides/exp-then-vs-now">Then vs Now: EXP &amp;
+			Progression</a> for how mob/quest EXP values changed alongside
+			the skill kits.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 76ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose h3 {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose code {
+		font-family: var(--font-mono);
+		font-size: 0.88em;
+		background: var(--bg-cloud);
+		padding: 0.1em 0.35em;
+		border-radius: 0.25rem;
+		border: 1px solid var(--border-card);
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+
+	.callout {
+		margin: 1.2rem 0;
+		padding: 0.9rem 1.1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border-card);
+		background: var(--bg-cloud);
+		border-left: 4px solid var(--accent-primary);
+	}
+
+	.skill-callout {
+		margin: 1.2rem 0;
+		padding: 1rem 1.15rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.55rem;
+	}
+	.skill-callout--new { border-left: 4px solid #158a4d; }
+	.skill-callout--rework { border-left: 4px solid #b8730e; }
+	.skill-callout__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+	.skill-callout__badge {
+		/* Sprint 67 typography floor: bumped from 0.65 -> 0.78. */
+		font-size: 0.78rem;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		padding: 0.15rem 0.45rem;
+		background: #158a4d;
+		color: white;
+		border-radius: 999px;
+	}
+	.skill-callout__badge--rework { background: #b8730e; }
+	.skill-callout h3 {
+		margin: 0;
+		font-size: 1.15rem;
+		color: var(--text-heading);
+		border: none;
+		padding: 0;
+		flex: 1 1 auto;
+	}
+	.skill-callout__meta {
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		font-family: var(--font-mono);
+	}
+	.skill-callout p {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+</style>

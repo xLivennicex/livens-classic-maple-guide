@@ -1,27 +1,24 @@
 ---
-import type { Job } from "../data/jobs";
+/**
+ * JobCard - renders one class in the jobs directory and homepage
+ * grid. Takes direct props rather than a `Job` object so the caller
+ * can adapt any data source (currently the `jobs` content collection).
+ */
 
 interface Props {
-	job: Job;
+	monogram: string;
+	name: string;
+	description: string;
+	href: string;
 }
-const { job } = Astro.props;
-
-// If a guide exists, render a real link. Otherwise show a disabled
-// placeholder button. Keeps the surrounding grid uniform without the
-// caller having to branch.
-const hasGuide = job.href !== null;
+const { monogram, name, description, href } = Astro.props;
 ---
 
 <article class="card job-card">
-	<span class="job-monogram" aria-hidden="true">{job.monogram}</span>
-	<h3>{job.name}</h3>
-	<p>{job.description}</p>
-
-	{hasGuide ? (
-		<a class="secondary-button" href={job.href}>Read the guide</a>
-	) : (
-		<span class="ghost-button" aria-disabled="true">Guide coming soon</span>
-	)}
+	<span class="job-monogram" aria-hidden="true">{monogram}</span>
+	<h3>{name}</h3>
+	<p>{description}</p>
+	<a class="secondary-button" href={href}>Read the guide</a>
 </article>
 
 <style>
@@ -38,22 +35,21 @@ const hasGuide = job.href !== null;
 		height: 3rem;
 		margin-bottom: 0.6rem;
 		border-radius: 0.6rem;
-		background: #f5ad42;
-		color: #4b351d;
+		background: var(--surface-nav);
+		color: var(--text-on-nav);
 		font-size: 1.5rem;
 		font-weight: bold;
-		border: 2px solid #d18428;
+		border: 2px solid var(--border-nav);
 	}
 
 	.job-card p {
 		flex: 1;
 		min-height: 5rem;
-		color: #5d665d;
+		color: var(--text-muted);
 		line-height: 1.5;
 	}
 
-	.job-card :global(.secondary-button),
-	.job-card :global(.ghost-button) {
+	.job-card :global(.secondary-button) {
 		align-self: flex-start;
 	}
 </style>

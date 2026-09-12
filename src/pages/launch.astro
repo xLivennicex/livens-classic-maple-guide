@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LaunchTimeline from "../components/LaunchTimeline.astro";
+import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
 import SourceBadge from "../components/SourceBadge.astro";
 import SourceCard from "../components/SourceCard.astro";
 import VerificationNotice from "../components/VerificationNotice.astro";
@@ -90,7 +91,7 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="timeline" class="launch-section">
-		<h2>Launch timeline</h2>
+		<h2 class="section-panel-title">Launch timeline</h2>
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
@@ -101,36 +102,37 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="founders" class="launch-section">
-		<h2>Founder's Package and Founder's Access</h2>
+		<h2 class="section-panel-title">Founder's Packages</h2>
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-ossyria-exploration-report"]}
-			note="Package contents and progression carryover are among the open questions below."
+			sourceSlugs={["nexon-founders-packages-on-sale", "nexon-founders-package-purchase-guide"]}
 		/>
+
+		<FoundersPackagesCard />
 
 		<div class="card prose">
 			<p>
-				<strong>Founder's Packages</strong> go on sale
-				<strong>September 2</strong>. Purchasing one grants access to
-				<strong>Founder's Access</strong>: a roughly two-week early-play
-				period beginning <strong>October 6</strong> and running until
-				the official launch on <strong>October 21</strong>.
+				<strong>Founder's Access</strong> begins <strong>October 6</strong>
+				for the Orange Mushroom and Zakum tiers, giving those buyers
+				roughly two weeks of early play before <strong>Grand Launch on
+				October 21</strong>. Nexon has confirmed that all progression
+				made during Founder's Access <em>carries into Grand Launch</em> -
+				characters, levels, items, and mesos persist.
 			</p>
 			<p>
-				Package tiers, pricing, and specific contents have not been
-				publicly detailed. Whether progression made during Founder's
-				Access carries into the October 21 official launch has also
-				not been explicitly confirmed. See
-				<a href="#open-questions">Not yet announced</a> for the specific
-				unknowns we are tracking.
+				One purchase per account per platform. Steam only sells the
+				Zakum tier - if you want Snail or Orange Mushroom, buy through
+				the Nexon webstore. Upgrade paths are available on the Nexon
+				webstore only, and both new purchases and upgrades stop at
+				<strong>11:59 PM PDT on October 14</strong>.
 			</p>
 		</div>
 	</section>
 
 	<!-- ============================================================ -->
 	<section id="grand-launch" class="launch-section">
-		<h2>Grand Launch</h2>
+		<h2 class="section-panel-title">Grand Launch</h2>
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
@@ -155,7 +157,7 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="mark-of-beta" class="launch-section">
-		<h2>Mark of Beta</h2>
+		<h2 class="section-panel-title">Mark of Beta</h2>
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
@@ -188,7 +190,7 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="confirmed" class="launch-section">
-		<h2>Confirmed launch features</h2>
+		<h2 class="section-panel-title">Confirmed launch features</h2>
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
@@ -213,7 +215,7 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="open-questions" class="launch-section">
-		<h2>Not yet announced</h2>
+		<h2 class="section-panel-title">Not yet announced</h2>
 		<VerificationNotice
 			type="awaiting-confirmation"
 			checkedOn={LAST_CHECKED}
@@ -222,7 +224,7 @@ const questionsByCategory = openQuestions.reduce<
 
 		{Object.entries(questionsByCategory).map(([category, questions]) => (
 			<div class="open-questions__group">
-				<h3>{category}</h3>
+				<h3 class="section-panel-subtitle">{category}</h3>
 				<ul class="open-questions__list">
 					{questions.map((q) => (
 						<li class="card open-question">
@@ -245,7 +247,7 @@ const questionsByCategory = openQuestions.reduce<
 
 	<!-- ============================================================ -->
 	<section id="sources" class="launch-section">
-		<h2>Official sources</h2>
+		<h2 class="section-panel-title">Official sources</h2>
 		<p class="section-lede">
 			Every claim on this page traces back to one of these entries. Each
 			card includes a summary, the confirmed facts we draw from it, and
@@ -267,12 +269,16 @@ const questionsByCategory = openQuestions.reduce<
 </BaseLayout>
 
 <style>
+	/* Themed via CSS vars so this page picks up whatever theme
+	   BaseLayout hands it. Today that's Henesys (green), but a
+	   future Ossyria launch page could reuse this markup with
+	   theme="lith" or similar - all colors would remap for free. */
 	.launch-hero {
 		padding: 2rem;
-		background: rgba(255, 255, 255, 0.94);
-		border: 3px solid #8caf73;
+		background: var(--surface-hero-panel);
+		border: 3px solid var(--border-hero);
 		border-radius: 1.25rem;
-		box-shadow: 0 10px 30px rgba(49, 75, 50, 0.15);
+		box-shadow: var(--shadow-panel);
 	}
 
 	.launch-hero h1 {
@@ -292,16 +298,16 @@ const questionsByCategory = openQuestions.reduce<
 		gap: 0.4rem;
 		margin: 1.5rem 0;
 		padding: 0.65rem;
-		background: #fffdf6;
-		border: 2px solid #d8c99c;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
 		border-radius: 0.75rem;
 	}
 
 	.jump-nav a {
 		padding: 0.4rem 0.75rem;
 		border-radius: 999px;
-		background: #f4f0df;
-		color: #48734b;
+		background: var(--bg-ground);
+		color: var(--accent-primary);
 		font-size: 0.85rem;
 		font-weight: bold;
 		text-decoration: none;
@@ -309,8 +315,8 @@ const questionsByCategory = openQuestions.reduce<
 
 	.jump-nav a:hover,
 	.jump-nav a:focus-visible {
-		background: #ffe2a5;
-		color: #4b351d;
+		background: var(--surface-nav-hover);
+		color: var(--text-on-nav);
 	}
 
 	.launch-section {
@@ -318,16 +324,15 @@ const questionsByCategory = openQuestions.reduce<
 		scroll-margin-top: 1rem;
 	}
 
-	.launch-section > h2 {
-		margin-bottom: 0.75rem;
-		color: #304f34;
-	}
+	/* .launch-section > h2 typography is now handled by the shared
+	   .section-panel-title class in global.css. This scoped rule is
+	   intentionally omitted so the global styles win. */
 
 	.section-lede {
 		max-width: 46rem;
 		margin-bottom: 1rem;
 		line-height: 1.55;
-		color: #4f6653;
+		color: var(--text-brand-tagline);
 	}
 
 	.prose p {
@@ -340,7 +345,7 @@ const questionsByCategory = openQuestions.reduce<
 	}
 
 	.prose a {
-		color: #365c3a;
+		color: var(--accent-primary-strong);
 		text-decoration: underline;
 		text-underline-offset: 2px;
 	}
@@ -349,14 +354,14 @@ const questionsByCategory = openQuestions.reduce<
 		margin-top: 1rem;
 		padding: 0.8rem 1rem;
 		border-radius: 0.5rem;
-		border-left: 4px solid #b77a2d;
-		background: #fdecc8;
-		color: #4b351d;
+		border-left: 4px solid var(--accent-secondary-border);
+		background: var(--accent-secondary);
+		color: var(--text-on-nav);
 		line-height: 1.55;
 	}
 
 	.callout--heads-up {
-		border-left-color: #b77a2d;
+		border-left-color: var(--accent-secondary-border);
 	}
 
 	.confirmed-list {
@@ -382,12 +387,12 @@ const questionsByCategory = openQuestions.reduce<
 	.confirmed-list__body h3 {
 		margin: 0 0 0.25rem;
 		font-size: 1.05rem;
-		color: #304f34;
+		color: var(--text-heading);
 	}
 
 	.confirmed-list__body p {
 		margin: 0;
-		color: #4f6653;
+		color: var(--text-brand-tagline);
 		line-height: 1.5;
 	}
 
@@ -399,13 +404,9 @@ const questionsByCategory = openQuestions.reduce<
 		margin-top: 1.25rem;
 	}
 
-	.open-questions__group h3 {
-		margin: 0 0 0.5rem;
-		color: #48734b;
-		font-size: 1rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
+	/* .open-questions__group h3 typography now lives on the shared
+	   .section-panel-subtitle class in global.css - this rule is
+	   intentionally left empty as documentation of the migration. */
 
 	.open-questions__list {
 		list-style: none;
@@ -426,13 +427,13 @@ const questionsByCategory = openQuestions.reduce<
 	.open-question__header h4 {
 		margin: 0;
 		font-size: 1rem;
-		color: #304f34;
+		color: var(--text-heading);
 	}
 
 	.open-question__detail,
 	.open-question__expected {
 		margin: 0.4rem 0 0;
-		color: #4f6653;
+		color: var(--text-brand-tagline);
 		line-height: 1.55;
 		font-size: 0.92rem;
 	}
@@ -448,7 +449,7 @@ const questionsByCategory = openQuestions.reduce<
 	.page-footer {
 		margin: 3rem 0 1rem;
 		padding-top: 1rem;
-		border-top: 1px solid #d8c99c;
+		border-top: 1px solid var(--border-card);
 		text-align: center;
 	}
 

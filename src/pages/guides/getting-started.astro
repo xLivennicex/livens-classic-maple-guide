@@ -1,0 +1,362 @@
+---
+/**
+ * /guides/getting-started - the "your first 30 hours in MSCW" orientation
+ * page. Top-of-funnel content for players who Google "how to start
+ * maplestory classic". Structured so every section links deeper into
+ * the site (jobs, party quests, character customizer, glossary).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Getting Started - Liven's Classic Maple Guide"
+	description="Your first 30 hours in MapleStory Classic World: Maple Island tutorial, class choice, 1st job advancement, Kerning PQ at Lv 21, common mistakes to skip."
+	currentPath="/guides"
+	theme="henesys"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Orientation</span>
+			<h1>Getting Started</h1>
+			<p class="lede">
+				Your first 30 hours in MapleStory Classic World, distilled. If
+				you've never played v83-era Maple - or you played 15 years ago
+				and forgot most of it - this is the sequence. Every section
+				links to a deeper page.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<h2 id="what-is-mscw">What is Classic World, exactly?</h2>
+		<p>
+			MapleStory Classic World (MSCW) is Nexon's official re-release of
+			MapleStory as it existed around 2007 - the "v83" era that most
+			longtime players remember as the sweet spot before the Big Bang
+			revamp. Explorer classes only (Warrior, Magician, Bowman, Thief).
+			No Cygnus Knights, no Aran, no Legends. Four regions - Victoria
+			Island, Ossyria (partial), Ludibrium, and events - with the same
+			skill trees, quests, and mob rosters you probably remember.
+		</p>
+		<p>
+			The difference: everything runs on Nexon's modern client, servers
+			are officially supported (no more private-server drama), and the
+			cash shop / progression have been rebalanced for a re-release
+			audience. Founder's Access starts <strong>October 6</strong> with
+			public launch shortly after.
+		</p>
+		<p>
+			Not sure this matches your memory? Check the <a href="/guides/glossary">glossary</a>
+			for any term that sounds unfamiliar.
+		</p>
+
+		<h2 id="maple-island">Step 1: Maple Island (Lv 1-10)</h2>
+		<p>
+			Every character starts on Maple Island as a Beginner. The tutorial
+			zone teaches basic movement, monster kills, and the quest UI. You
+			cannot leave Maple Island until you reach Lv 10 <em>and</em> finish
+			the ferry quest from Shanks - so don't waste time trying.
+		</p>
+		<p>Priorities on the island:</p>
+		<ul>
+			<li>
+				<strong>Kill snails and shrooms until Lv 8-10.</strong> Green
+				Snails at 1, Blue Snails around 3, Red Snails around 5, Orange
+				Mushrooms at 6-10.
+			</li>
+			<li>
+				<strong>Do the Amos the Strong quest chain.</strong> Free
+				beginner armor + a Maple weapon that carries you into Victoria
+				Island. Talk to every NPC in Amherst / Southperry once.
+			</li>
+			<li>
+				<strong>Bank your first meso via Storage.</strong> Storage NPCs
+				share inventory across your account - useful once you make a
+				mule later.
+			</li>
+			<li>
+				<strong>Don't buy potions yet.</strong> Shroom Souls and
+				beginner-tier consumables from quest rewards are enough. Save
+				meso for after you leave.
+			</li>
+		</ul>
+		<p>
+			Full Maple Island detail lives on the <a href="/world">world map</a>
+			- click the Maple Island pin.
+		</p>
+
+		<h2 id="choosing-class">Step 2: Choose your class</h2>
+		<p>
+			At Lv 10 (or Lv 8 for Magicians), you visit a class instructor to
+			advance from Beginner. Each class lives in a different town and
+			suits a different playstyle.
+		</p>
+		<div class="class-grid">
+			<a class="class-card class-card--warrior" href="/jobs/warrior">
+				<h3>Warrior <span>Perion</span></h3>
+				<p>
+					High HP, melee, STR-based. Fighter (Sword/Axe), Page
+					(Sword/BW), or Spearman (Spear/Polearm) branches at Lv 30.
+					Great party support (Rage, Hyper Body). Slowest solo
+					early-game but tanky forever.
+				</p>
+			</a>
+			<a class="class-card class-card--magician" href="/jobs/magician">
+				<h3>Magician <span>Ellinia</span></h3>
+				<p>
+					Fastest early-game leveling thanks to Magic Claw + Magic
+					Guard. F.P./I.L. Wizard (nukes) or Cleric (heals + undead
+					damage) at Lv 30. Squishy but scales into endgame nukes.
+					<em>Advances at Lv 8, not 10.</em>
+				</p>
+			</a>
+			<a class="class-card class-card--bowman" href="/jobs/bowman">
+				<h3>Bowman <span>Henesys</span></h3>
+				<p>
+					Ranged DEX-based DPS. Hunter (Bow) or Crossbowman (Xbow) at
+					Lv 30. Consistent damage, high crit, becomes the boss-carry
+					class at 4th job with Sharp Eyes.
+				</p>
+			</a>
+			<a class="class-card class-card--thief" href="/jobs/thief">
+				<h3>Thief <span>Kerning City</span></h3>
+				<p>
+					LUK-based. Assassin (throwing stars) or Bandit (daggers) at
+					Lv 30. Fast attacks, high avoidability. Bandit gets Meso
+					Explosion at 3rd job - the class's signature meme skill.
+				</p>
+			</a>
+		</div>
+		<p class="callout">
+			<strong>Can't decide?</strong> Magician is the newbie-friendliest -
+			easy leveling, useful party buffs, forgiving skill build. Warrior
+			is the most beginner-hostile solo (slow, expensive potions) but
+			gets invited to every party. Play what looks fun; every class ships
+			with 2-4 <a href="/jobs">skill builds</a> here.
+		</p>
+
+		<h2 id="first-job">Step 3: First Job Advancement</h2>
+		<p>
+			Once you hit Lv 10 (Magicians: Lv 8), take the boat/portal to your
+			class's home town and visit the instructor. Advancement is free and
+			hands you 1 SP to spend immediately, plus 3 SP per level after that.
+		</p>
+		<p>
+			<strong>Spend your first SP the moment you advance.</strong> Every
+			class ships with recommended 1st-job builds on the <a href="/jobs">Jobs</a>
+			pages. Warriors: Improve MaxHP + Slash Blast. Magicians: Magic
+			Guard THEN Magic Claw. Bowmen: Double Shot or Arrow Blow. Thieves:
+			Lucky Seven (Assassin) or Double Stab (Bandit). Do not skip these
+			- they define your training speed.
+		</p>
+
+		<h2 id="lv-11-30">Step 4: Grinding Lv 11-30</h2>
+		<p>
+			The gap from 1st job to 2nd job is where new players quit. It's
+			slow, repetitive, and most classes hit a wall around Lv 25-28. The
+			antidote is <strong>Kerning Party Quest at Lv 21</strong>.
+		</p>
+		<p>
+			<a href="/party-quests/kerning-pq">Kerning PQ (KPQ)</a> is a 3-6
+			player instanced dungeon with puzzles, mob waves, and a mini-boss.
+			Gives 2-3x the EXP-per-hour of solo grinding, drops Rock/Paper/Scissors
+			gloves that carry your 1st job, and teaches party mechanics you'll
+			need for LPQ at Lv 35.
+		</p>
+		<p>
+			Between PQ runs, grind at:
+		</p>
+		<ul>
+			<li><strong>Lv 11-15:</strong> Stumps and Slimes on the Perion/Henesys/Ellinia border maps</li>
+			<li><strong>Lv 15-20:</strong> Green Mushrooms in Mushroom Park (Henesys)</li>
+			<li><strong>Lv 20-25:</strong> Ligators / Croco in Kerning Swamp; Wild Boars in Perion</li>
+			<li><strong>Lv 25-30:</strong> Fire Boar Ashen Land; Zombie Mushrooms in Sleepywood; Kerning PQ every hour</li>
+		</ul>
+
+		<h2 id="lv-30-advancement">Step 5: 2nd Job at Lv 30</h2>
+		<p>
+			At Lv 30 (all classes), you unlock the 2nd job advancement quest -
+			a short combat trial + fetch quest from your class instructor.
+			Warriors branch into Fighter/Page/Spearman, Bowmen into
+			Hunter/Crossbowman, etc.
+		</p>
+		<p>
+			<strong>Plan your 2nd-job build BEFORE you hit Lv 30.</strong>
+			You'll have 121 SP to spend from Lv 30-70 and misallocating early
+			levels hurts. Every 2nd-job class has both a canonical build and an
+			alt build on the <a href="/jobs">Jobs</a> pages - pick one, then
+			follow the per-level SP tables.
+		</p>
+
+		<h2 id="common-mistakes">Common mistakes to skip</h2>
+		<ul class="mistakes">
+			<li>
+				<strong>Selling unfamiliar items.</strong> Some quest items
+				don't get flagged clearly. When in doubt, keep it. Detailed
+				list coming in a future guide - for now, if it has "Ore",
+				"Scroll", "Coin", "Card", or a class name in the item name,
+				don't sell.
+			</li>
+			<li>
+				<strong>Blowing meso on potions.</strong> Under Lv 30, cheap
+				potions (Red Potion, Orange Potion) are all you need. Save meso
+				for a job-change weapon at 30 and gear rebuys around 35.
+			</li>
+			<li>
+				<strong>Scrolling gear you're about to outgrow.</strong> Do not
+				scroll anything you plan to replace inside 10 levels. Scrolls
+				are permanent to the item - if the item goes into storage or
+				trade, the meso is gone with it.
+			</li>
+			<li>
+				<strong>Skipping stat allocation.</strong> Every class has a
+				stat build rule (usually 4/1 - four points into primary, one
+				into secondary). Random-allocating AP will brick your class by
+				Lv 30. Check the class page.
+			</li>
+			<li>
+				<strong>Ignoring party invites.</strong> Party EXP shares
+				generously in Classic - 3-player parties often out-EXP solo.
+				Say yes to friendly invites in your training map's channel.
+			</li>
+			<li>
+				<strong>Solo grinding at KPQ level.</strong> If you're between
+				Lv 21 and Lv 30 and NOT running KPQ every hour, you're leaving
+				2-3x EXP on the table. It's the best content for that range.
+			</li>
+		</ul>
+
+		<h2 id="whats-next">Where to go next</h2>
+		<ul class="next-links">
+			<li><a href="/guides/glossary">Glossary</a> - 80+ terms explained</li>
+			<li><a href="/guides/meso-saving">Meso Saving Guide</a> - where your first million goes</li>
+			<li><a href="/jobs">Jobs & Skill Builds</a> - canonical + alt builds for every class</li>
+			<li><a href="/party-quests/kerning-pq">KPQ Walkthrough</a> - the Lv 21-30 grind saviour</li>
+			<li><a href="/bosses">Boss Compendium</a> - what to fight after you hit 2nd job</li>
+			<li><a href="/character">Character Customizer</a> - preview hair/face/NX equips</li>
+		</ul>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 1.5rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+	}
+
+	.prose {
+		max-width: 72ch;
+		color: var(--text-body);
+		line-height: 1.6;
+	}
+	.prose h2 {
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		margin: 2rem 0 0.6rem;
+		padding-bottom: 0.3rem;
+		border-bottom: 1px solid var(--border-card);
+		scroll-margin-top: 5rem;
+	}
+	.prose p {
+		margin: 0.7rem 0;
+	}
+	.prose ul {
+		margin: 0.7rem 0;
+		padding-left: 1.4rem;
+	}
+	.prose li {
+		margin: 0.35rem 0;
+	}
+	.prose a {
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+
+	.class-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 0.7rem;
+		margin: 1rem 0;
+	}
+	.class-card {
+		display: block;
+		padding: 0.85rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left-width: 4px;
+		border-radius: 0.4rem;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.14s ease, border-color 0.14s ease;
+	}
+	.class-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+	}
+	.class-card h3 {
+		margin: 0 0 0.3rem;
+		font-size: 1.1rem;
+		color: var(--text-heading);
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.6rem;
+	}
+	.class-card h3 span {
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	.class-card p {
+		margin: 0;
+		font-size: 0.9rem;
+		color: var(--text-body);
+		line-height: 1.45;
+	}
+	.class-card--warrior { border-left-color: #c94a4a; }
+	.class-card--magician { border-left-color: #7a4bc7; }
+	.class-card--bowman { border-left-color: #3ea86b; }
+	.class-card--thief { border-left-color: #4d6674; }
+
+	.callout {
+		margin: 1.2rem 0 !important;
+		padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.35rem;
+	}
+
+	.mistakes li strong {
+		color: var(--text-heading);
+	}
+
+	.next-links {
+		list-style: none;
+		padding: 0 !important;
+	}
+	.next-links li {
+		padding: 0.5rem 0.8rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.35rem;
+		margin: 0.35rem 0 !important;
+	}
+</style>

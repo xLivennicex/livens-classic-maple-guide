@@ -1,0 +1,281 @@
+---
+/**
+ * /guides/bowman-2nd-job - Bowman 2nd job branches guide.
+ *
+ * Verification posture: Bowman's 1st-job kit CHANGED in CoT 2 (Power
+ * Knockback moved from 2nd-job Hunter/Crossbowman kits down to 1st
+ * job as a Bowman skill, replacing the removed Blessing of Amazon).
+ * This directly affects 2nd-job kits - v83 Hunter and Crossbowman
+ * both had Power Knockback. We're explicit about that shuffle below
+ * and assume the rest of the 2nd-job kits are near-baseline pending
+ * Founder's Access verification.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Bowman 2nd Job Branches: Hunter or Crossbowman - Liven's Classic Maple Guide"
+	description="Level 30 Bowmen pick between Hunter (bow) and Crossbowman (crossbow). Two branches, one weapon-speed decision. Full skill kits, build orders, and the Power Knockback shuffle that changes the 2nd-job kit composition in CoT 2 vs v83."
+	currentPath="/guides"
+	theme="henesys"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">2nd Job Branches</span>
+			<h1>Bowman: Hunter or Crossbowman?</h1>
+			<p class="lede">
+				The Bowman branch decision is technically about weapon type
+				(bow vs crossbow) but it's really about attack speed vs
+				per-hit damage. Same six skills, mirrored across weapon
+				lines. Here's the full kit, the build orders, and the
+				Power Knockback shuffle that specifically affects 2nd-job
+				Bowmen in CoT 2 vs v83.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Verification (CoT 2 change):</strong> in v83, Power
+			Knockback was a 2nd-job skill for BOTH Hunter and Crossbowman.
+			In CoT 2 it moved <em>down</em> to 1st-job Bowman
+			(<a href="/guides/skill-changes">datamine-confirmed</a>). So
+			the 2nd-job kits below are v83 lists MINUS Power Knockback -
+			you already have it by the time you branch. Whether Nexon
+			added a REPLACEMENT skill in the 2nd-job slot is unverified
+			until Founder's Access opens. The rest of the values remain
+			v83-baseline.
+		</div>
+
+		<h2 id="summary">The two branches at a glance</h2>
+		<div class="guide-summary-grid">
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Hunter <span class="status-pill status-pill--new">SPEED</span></h3>
+				<p>
+					<strong>Bow.</strong> Faster attack speed (Normal-5),
+					lower per-hit damage. More Final Attack proc chances
+					per fight. Smoother combat feel. Arrow Bomb (AoE
+					stun explosion) is the star of the kit. Becomes
+					Ranger at 70, Bowmaster at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Crossbowman <span class="status-pill status-pill--rework">CRITS</span></h3>
+				<p>
+					<strong>Crossbow.</strong> Slower attack speed (Slow-6),
+					higher per-hit damage and higher crit multiplier
+					ceiling. Iron Arrow pierces through mobs in a line -
+					AoE via geometry instead of explosion. Becomes
+					Sniper at 70, Marksman at 120.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="the-decision">The decision, in one paragraph</h2>
+		<p>
+			<strong>Hunter for grinding, Crossbowman for bossing.</strong>
+			Hunter's higher speed = more Final Attack triggers per
+			minute + smoother DPS; Arrow Bomb's stun AoE dominates mob
+			packs. Crossbowman's per-hit ceiling + Iron Arrow line-AoE
+			is better vs single tough targets and dense corridors. Both
+			branches feel great; pick the weapon aesthetic you like
+			more, because at endgame Bowmasters and Marksmen are both
+			top-tier.
+		</p>
+
+		<hr />
+
+		<h2 id="hunter">Branch 1: Hunter</h2>
+		<p class="section-lede">
+			The bow branch. Faster attacks, AoE stun via Arrow Bomb.
+			If you liked how Bowman 1st-job felt with the CoT 2
+			addition of Power Knockback, Hunter doubles down on that
+			control identity.
+		</p>
+
+		<h3>Hunter skill kit (v83 baseline minus Power Knockback, ~5 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Bow Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>+Bow mastery %, +accuracy. Damage floor climbs closer to ceiling. Priority max.</td>
+					</tr>
+					<tr>
+						<td><strong>Bow Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Bows. Consumes MP. Uptime maintenance.</td>
+					</tr>
+					<tr>
+						<td><strong>Final Attack: Bow</strong></td>
+						<td>Passive proc</td>
+						<td>30</td>
+						<td>Chance to trigger a bonus shot after basic attacks. Damage% scales with level. Bowman's biggest DPS multiplier.</td>
+					</tr>
+					<tr>
+						<td><strong>Soul Arrow: Bow</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>Removes arrow consumption for a duration. Signature Bowman utility - eliminates ammo economy forever.</td>
+					</tr>
+					<tr>
+						<td><strong>Arrow Bomb</strong></td>
+						<td>Attack (AoE stun)</td>
+						<td>30</td>
+						<td>Single-target shot that EXPLODES on hit, dealing AoE damage + a stun proc chance to nearby mobs. Signature Hunter skill. Core grinding button.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p>
+			<em>Note</em>: v83 also had Power Knockback in this slot at
+			2nd job. In CoT 2 it's already yours from 1st job, so you're
+			starting Hunter with one skill already "banked". If Nexon
+			introduces a replacement 2nd-job skill in the vacated slot,
+			we'll update this page after Founder's Access.
+		</p>
+
+		<h3>Hunter recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Bow Booster. Dump into Bow Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Bow Mastery (20 points). Max Bow Booster (20 for full uptime) or ~8-10 as filler.</li>
+			<li><strong>Levels 45-55</strong>: Max Arrow Bomb (30 points). This is your grinding identity - the AoE stun is why you picked Hunter.</li>
+			<li><strong>Levels 55-60</strong>: Max Soul Arrow: Bow (20 points). Frees you from ammo forever.</li>
+			<li><strong>Levels 60-70</strong>: Max Final Attack: Bow (30 points). Late but the biggest DPS spike in the kit.</li>
+		</ol>
+
+		<hr />
+
+		<h2 id="crossbowman">Branch 2: Crossbowman</h2>
+		<p class="section-lede">
+			The crossbow branch. Slower attacks, higher per-hit damage,
+			line-piercing AoE via Iron Arrow. Better boss identity than
+			Hunter but requires more patience with individual shots.
+		</p>
+
+		<h3>Crossbowman skill kit (v83 baseline minus Power Knockback, ~5 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Crossbow Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>+Crossbow mastery %, +accuracy. Same math as Bow Mastery.</td>
+					</tr>
+					<tr>
+						<td><strong>Crossbow Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Crossbows.</td>
+					</tr>
+					<tr>
+						<td><strong>Final Attack: Crossbow</strong></td>
+						<td>Passive proc</td>
+						<td>30</td>
+						<td>Same bonus-shot mechanic. Core DPS.</td>
+					</tr>
+					<tr>
+						<td><strong>Soul Arrow: Crossbow</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>Removes arrow consumption for Crossbows.</td>
+					</tr>
+					<tr>
+						<td><strong>Iron Arrow</strong></td>
+						<td>Attack (piercing)</td>
+						<td>30</td>
+						<td>Shot that PIERCES through multiple mobs in a straight line. Signature Crossbowman skill. AoE via geometry - line up mobs, hit them all.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Crossbowman recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Crossbow Booster. Dump into Crossbow Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Crossbow Mastery (20 points). Max Booster (20 for full uptime) or ~8-10 filler.</li>
+			<li><strong>Levels 45-55</strong>: Max Iron Arrow (30 points). Line-clearing on packed maps becomes trivial.</li>
+			<li><strong>Levels 55-60</strong>: Max Soul Arrow: Crossbow (20 points).</li>
+			<li><strong>Levels 60-70</strong>: Max Final Attack: Crossbow (30 points).</li>
+		</ol>
+		<p>
+			<strong>Piercing tip</strong>: Iron Arrow's damage doesn't
+			drop per pierce - each mob in the line takes full damage.
+			Positioning is your DPS multiplier: fight in narrow
+			corridors, line mobs up before firing.
+		</p>
+
+		<hr />
+
+		<h2 id="progression">Common 2nd-job progression (30 to 70)</h2>
+
+		<h3>Where to grind</h3>
+		<ul>
+			<li><strong>Lv 30-40</strong>: Copper Drakes at Sleepywood.
+				Fire Boars at Burning Land (for Hunter Arrow Bomb crowds).
+				Ligators still viable at 30-35.</li>
+			<li><strong>Lv 40-55</strong>: Wraiths at Kerning subway (Hunter
+				Arrow Bomb crowd-stun heaven). Fire Boars stay great.
+				Ludi PQ full window (35-51).</li>
+			<li><strong>Lv 55-70</strong>: Death Teddies at Ludi. Coolie
+				Zombies (Crossbowman Iron Arrow line-clearing). Ludi
+				Maze PQ (55-70).</li>
+		</ul>
+
+		<h3>Gear buys at Lv 30</h3>
+		<p>
+			Hunter target: <strong>Ryden</strong> (Lv 35 Bow, cheap
+			starter) or <strong>Bow of Magical Destruction</strong>
+			(Lv 43, higher tier). Crossbowman target: <strong>Steel
+			Crossbow</strong> (Lv 30) or <strong>Nisrock</strong>
+			(Lv 43).
+		</p>
+		<p>
+			Armor priority: DEX overall or top+bottom with 10% white
+			DEX scrolls. Every point of DEX is bow accuracy AND damage
+			(via mastery secondary scaling). LUK provides no benefit -
+			ignore anything with LUK on it.
+		</p>
+
+		<h3>What to expect at 3rd job (70)</h3>
+		<ul>
+			<li><strong>Hunter -&gt; Ranger</strong>: Strafe (4-hit
+				single target shot burst), Mortal Blow (execute passive),
+				Puppet (decoy summon that tanks mob aggro).</li>
+			<li><strong>Crossbowman -&gt; Sniper</strong>: Strafe
+				(4-hit variant), Mortal Blow, Puppet. Sniper's Strafe
+				has higher per-hit but lower speed. Same skill
+				philosophy, mirrored math.</li>
+		</ul>
+
+		<h2 id="related">Related reading</h2>
+		<ul>
+			<li><a href="/jobs/bowman">Bowman 1st Job Guide</a></li>
+			<li><a href="/guides/skill-changes">Skill Changes: v83 vs CoT 2</a> - Bowman is the class with the biggest 1st-job kit change</li>
+			<li><a href="/guides/party-exp">Party EXP &amp; Grinding</a></li>
+			<li><a href="/guides/exp-then-vs-now">EXP: Then vs Now</a></li>
+		</ul>
+	</article>
+</BaseLayout>

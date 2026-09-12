@@ -1,0 +1,405 @@
+---
+/**
+ * /maps - regional map catalog.
+ *
+ * 426 maps grouped by region (Victoria, Ossyria, Sleepywood, etc),
+ * filterable by kind:
+ *   training - has mob spawns, primary combat map
+ *   hidden   - street_name = "Hidden Street" (secret / gated maps)
+ *   town     - NPC-only social hubs (no mob spawns)
+ *   (event and dev maps excluded from the main list)
+ *
+ * Filter chips are orthogonal to region grouping - selecting
+ * "hidden" hides non-hidden rows in every region, and regions
+ * with zero visible rows auto-collapse.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import indexData from "../../data/db/index.json";
+import generatedAt from "../../data/db/generated-at.json";
+import { mapThumbnailSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import Sprite from "../../components/Sprite.astro";
+
+// Only surface the "user-facing" kinds. Dev/event maps stay in the
+// dossier for cross-reference but are hidden from the main list.
+const SHOWN_KINDS = new Set(["training", "hidden", "town"]);
+const maps = indexData.maps
+	.filter((m) => SHOWN_KINDS.has(m.kind))
+	.sort((a, b) => a.id - b.id);
+
+// Region order prioritizes the reader's journey (Maple Island ->
+// Victoria Island -> Ossyria). The datamine collapses everything
+// else (Sleepywood, party quest dungeons, Free Market, 2nd-job
+// advancement zones) into 'Other'. If the datamine ever exposes
+// finer regions, they'll slot in here in reader-journey order.
+const REGION_ORDER = [
+	"Maple Island",
+	"Victoria Island",
+	"Ossyria",
+	"Other",
+];
+
+const groups: Record<string, typeof maps> = {};
+for (const m of maps) {
+	const r = m.region || "Other";
+	if (!groups[r]) groups[r] = [];
+	groups[r].push(m);
+}
+const orderedRegions: Array<{ region: string; maps: typeof maps }> = [];
+const seen = new Set<string>();
+for (const r of REGION_ORDER) {
+	if (groups[r]) {
+		orderedRegions.push({ region: r, maps: groups[r] });
+		seen.add(r);
+	}
+}
+for (const r of Object.keys(groups).sort()) {
+	if (!seen.has(r)) orderedRegions.push({ region: r, maps: groups[r] });
+}
+
+// Human-friendly labels + counts for the filter chips.
+const KIND_META: Record<string, { label: string; }> = {
+	training: { label: "Training" },
+	hidden: { label: "Hidden" },
+	town: { label: "Town" },
+};
+
+const kindCounts: Record<string, number> = {};
+for (const m of maps) kindCounts[m.kind] = (kindCounts[m.kind] ?? 0) + 1;
+
+const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
+---
+
+<BaseLayout
+	title="Maps - Liven's Classic Maple Guide"
+	description="Regional map catalog for MapleStory Classic World - training grounds, hidden streets, town hubs. Cross-referenced with quest givers and mob spawns."
+	currentPath="/maps"
+	theme="henesys"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference catalog</span>
+			<h1>Maps</h1>
+			<p class="lede">
+				{maps.length} maps across {orderedRegions.length} regions,
+				pulled from the CoT 2 client datamine. Each map lists its
+				mob spawns, NPCs, and any quest givers stationed there.
+				Filter by kind or search by name. Boss maps aren't
+				auto-classified yet - editorial overlay incoming.
+			</p>
+			<p class="build-meta">
+				Catalog regenerated <strong>{buildDate}</strong>.
+				Rerun <code>npm run db</code> to refresh from
+				<a href="https://osmsdataexplorer.com" target="_blank" rel="noopener">osmsdataexplorer.com</a>.
+			</p>
+		</div>
+		<StatusBadge status="closed-test" verifiedOn="pre-launch" />
+	</section>
+
+	<div class="controls">
+		<label class="search-label">
+			<span>Search</span>
+			<input
+				id="map-search"
+				type="search"
+				placeholder="Map name, street, or ID..."
+				autocomplete="off"
+			/>
+		</label>
+
+		<div class="filter-row">
+			<span class="filter-row__label">Kind:</span>
+			<div class="filter-chips" id="kind-chips">
+				<button class="chip chip--active" data-kind="">All ({maps.length})</button>
+				{Object.entries(KIND_META).map(([kind, meta]) => (
+					<button class="chip" data-kind={kind}>
+						{meta.label} ({kindCounts[kind] ?? 0})
+					</button>
+				))}
+			</div>
+		</div>
+
+		<div class="expand-controls">
+			<button type="button" class="expand-btn" data-action="expand-all">
+				Expand all regions
+			</button>
+			<button type="button" class="expand-btn" data-action="collapse-all">
+				Collapse all regions
+			</button>
+		</div>
+	</div>
+
+	<div class="result-count" id="result-count">
+		Showing all {maps.length} maps across {orderedRegions.length} regions
+	</div>
+
+	<div class="regions">
+		{orderedRegions.map((r) => (
+			<details class="region" data-region={r.region} open>
+				<summary class="region-header">
+					<span class="chevron" aria-hidden="true">&rsaquo;</span>
+					<h2 class="region-header__title">{r.region}</h2>
+					<span class="region-header__count">
+						<span class="region-header__visible">{r.maps.length}</span>
+						<span class="region-header__total">/ {r.maps.length}</span>
+					</span>
+				</summary>
+				<div class="map-grid">
+					{r.maps.map((m) => (
+						<a
+							class={`map-card map-card--${m.kind}`}
+							href={`/maps/${m.id}`}
+							data-name={(m.name + " " + (m.streetName ?? "")).toLowerCase()}
+							data-id={m.id}
+							data-kind={m.kind}
+						>
+							<Sprite
+								class="map-card__minimap"
+								srcs={mapThumbnailSrcs(m.id, m.wzId)}
+								alt=""
+								placeholder={themePlaceholderUrl("henesys")}
+							/>
+							<div class="map-card__body">
+								<h3 class="map-card__name">{m.name}</h3>
+								{m.streetName && (
+									<p class="map-card__street">{m.streetName}</p>
+								)}
+								<div class="map-card__stats">
+									<span class={`kind-pill kind-pill--${m.kind}`}>
+										{KIND_META[m.kind]?.label ?? m.kind}
+									</span>
+									{m.levelMin != null && (
+										<span class="stat-pill stat-pill--lvl">
+											{m.levelMin === m.levelMax
+												? `Lv ${m.levelMin}`
+												: `Lv ${m.levelMin}-${m.levelMax}`}
+										</span>
+									)}
+									{m.mobCount > 0 && (
+										<span class="stat-pill">{m.mobCount} mob type{m.mobCount === 1 ? "" : "s"}</span>
+									)}
+									{m.npcCount > 0 && (
+										<span class="stat-pill">{m.npcCount} NPC{m.npcCount === 1 ? "" : "s"}</span>
+									)}
+									{m.questCount > 0 && (
+										<span class="stat-pill stat-pill--quest">{m.questCount} quest{m.questCount === 1 ? "" : "s"}</span>
+									)}
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+			</details>
+		))}
+	</div>
+
+	<script is:inline>
+		(function () {
+			const search = document.getElementById("map-search");
+			const kindChips = document.getElementById("kind-chips");
+			const resultCount = document.getElementById("result-count");
+			const regions = Array.from(document.querySelectorAll(".region"));
+
+			let activeKind = "";
+			let searchTerm = "";
+
+			function applyFilters() {
+				let totalVisible = 0;
+				let visibleRegions = 0;
+				for (const region of regions) {
+					const cards = region.querySelectorAll(".map-card");
+					let regionVisible = 0;
+					for (const card of cards) {
+						const matchesKind = !activeKind || card.dataset.kind === activeKind;
+						const matchesSearch =
+							!searchTerm ||
+							card.dataset.name.includes(searchTerm) ||
+							card.dataset.id.includes(searchTerm);
+						const show = matchesKind && matchesSearch;
+						card.hidden = !show;
+						if (show) regionVisible++;
+					}
+					const visSpan = region.querySelector(".region-header__visible");
+					if (visSpan) visSpan.textContent = regionVisible.toString();
+					if (regionVisible === 0) {
+						region.hidden = true;
+					} else {
+						region.hidden = false;
+						visibleRegions++;
+						totalVisible += regionVisible;
+					}
+				}
+				resultCount.textContent = `Showing ${totalVisible} maps across ${visibleRegions} regions`;
+			}
+
+			search.addEventListener("input", (e) => {
+				searchTerm = e.target.value.toLowerCase().trim();
+				applyFilters();
+			});
+
+			kindChips.addEventListener("click", (e) => {
+				const chip = e.target.closest(".chip");
+				if (!chip) return;
+				kindChips.querySelectorAll(".chip").forEach((c) =>
+					c.classList.remove("chip--active"),
+				);
+				chip.classList.add("chip--active");
+				activeKind = chip.dataset.kind || "";
+				applyFilters();
+			});
+
+			document.addEventListener("click", (e) => {
+				const btn = e.target.closest(".expand-btn");
+				if (!btn) return;
+				const open = btn.dataset.action === "expand-all";
+				regions.forEach((d) => (d.open = open));
+			});
+		})();
+	</script>
+</BaseLayout>
+
+<style>
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: var(--accent-primary);
+	}
+	h1 { margin: 0.3rem 0 0.5rem; }
+	.lede { max-width: 48rem; line-height: 1.6; color: var(--text-body); margin: 0; }
+	.build-meta { margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-muted); }
+	.build-meta code {
+		padding: 0.1rem 0.4rem; background: var(--surface-nav);
+		color: var(--text-on-nav); border-radius: 0.25rem; font-size: 0.9em;
+	}
+
+	.controls {
+		display: flex; flex-direction: column; gap: 0.9rem;
+		margin-bottom: 1rem; padding: 1rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+	.search-label {
+		display: flex; flex-direction: column; gap: 0.3rem;
+		font-size: 0.85rem; font-weight: bold;
+	}
+	.search-label input {
+		padding: 0.5rem 0.75rem; border: 1px solid var(--border-card);
+		border-radius: 0.4rem; font-size: 1rem; background: var(--bg-cloud);
+	}
+	.filter-row { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
+	.filter-row__label {
+		font-size: 0.85rem; font-weight: bold;
+		color: var(--text-muted); min-width: 4rem;
+	}
+	.filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.chip {
+		padding: 0.35rem 0.7rem; font-size: 0.8rem;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border: 1px solid var(--border-card); border-radius: 999px;
+		cursor: pointer; transition: background 120ms ease, color 120ms ease;
+	}
+	.chip:hover { background: var(--accent-primary); color: white; }
+	.chip--active {
+		background: var(--accent-primary); color: white;
+		border-color: var(--accent-primary);
+	}
+	.expand-controls {
+		display: flex; gap: 0.5rem; padding-top: 0.5rem;
+		border-top: 1px dashed var(--border-card);
+	}
+	.expand-btn {
+		padding: 0.4rem 0.9rem;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border: 1px solid var(--border-card); border-radius: 999px;
+		font-size: 0.8rem; font-weight: bold; cursor: pointer;
+		transition: background 120ms ease, color 120ms ease;
+	}
+	.expand-btn:hover { background: var(--accent-primary); color: white; }
+
+	.result-count { margin: 0.5rem 0 0.8rem; font-size: 0.85rem; color: var(--text-muted); }
+
+	.regions { display: flex; flex-direction: column; gap: 0.8rem; }
+	.region {
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+	.region-header {
+		display: flex; align-items: center; gap: 0.8rem;
+		padding: 0.85rem 1.2rem;
+		cursor: pointer; list-style: none;
+		border-left: 5px solid var(--accent-primary);
+		transition: background 120ms ease;
+	}
+	.region-header::-webkit-details-marker { display: none; }
+	.region-header:hover { background: var(--bg-cloud); }
+	.chevron {
+		display: inline-block; font-size: 1.3rem; line-height: 1;
+		color: var(--accent-primary);
+		transition: transform 150ms ease;
+	}
+	.region[open] .chevron { transform: rotate(90deg); }
+	.region-header__title { margin: 0; font-size: 1.15rem; }
+	.region-header__count {
+		margin-left: auto; font-size: 0.85rem;
+		color: var(--text-muted); font-family: monospace;
+	}
+	.region-header__total { opacity: 0.6; margin-left: 0.2rem; }
+
+	.map-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 0.8rem;
+		padding: 1rem 1.2rem 1.2rem;
+	}
+	.map-card {
+		display: flex; flex-direction: column;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+		overflow: hidden;
+		text-decoration: none; color: inherit;
+		transition: transform 120ms ease, border-color 120ms ease;
+	}
+	.map-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+	}
+	.map-card__minimap {
+		width: 100%; height: 110px; object-fit: contain;
+		background: var(--surface-nav);
+		image-rendering: pixelated;
+	}
+	.map-card__body { padding: 0.7rem 0.85rem; }
+	.map-card__name {
+		margin: 0 0 0.2rem;
+		font-size: 0.95rem; line-height: 1.3;
+	}
+	.map-card__street {
+		margin: 0 0 0.5rem;
+		font-size: 0.75rem; color: var(--text-muted); font-style: italic;
+	}
+	.map-card__stats {
+		display: flex; flex-wrap: wrap; gap: 0.3rem;
+	}
+	.kind-pill, .stat-pill {
+		display: inline-block; padding: 0.15rem 0.5rem;
+		font-size: 0.78rem; font-weight: bold;
+		background: var(--bg-cloud); color: var(--text-muted);
+		border: 1px solid var(--border-card); border-radius: 999px;
+	}
+	.kind-pill--training { background: #d1e7d1; color: #2e5d31; border-color: #7cc48a; }
+	.kind-pill--hidden { background: #e7d1e7; color: #5d2e5d; border-color: #a07cc4; }
+	.kind-pill--town { background: #d1dfe7; color: #2e4a5d; border-color: #7ca0c4; }
+	.stat-pill--quest {
+		background: var(--accent-secondary);
+		color: var(--text-on-nav);
+		border-color: var(--accent-secondary-border);
+	}
+	.stat-pill--lvl {
+		background: #fff2df; color: #b25c00; border-color: #f0c98a;
+		font-family: monospace; font-weight: bold;
+	}
+</style>

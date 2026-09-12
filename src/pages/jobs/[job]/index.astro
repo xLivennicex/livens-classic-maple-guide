@@ -1,0 +1,30 @@
+---
+/**
+ * Dynamic job-guide route - renders every entry in the `jobs`
+ * content collection at `/jobs/{slug}`.
+ *
+ * Mirrors the pattern in src/pages/[slug].astro (the guides
+ * collection): getStaticPaths iterates the collection, and the layout
+ * does all the actual rendering.
+ *
+ * Sprint 53 note: this file was migrated from
+ * `src/pages/jobs/[job].astro` to `src/pages/jobs/[job]/index.astro`
+ * so a sibling `builds.astro` could add `/jobs/{slug}/builds` for
+ * the new skill-build planner without URL collision.
+ */
+
+import { getCollection } from "astro:content";
+import JobGuideLayout from "../../../layouts/JobGuideLayout.astro";
+
+export async function getStaticPaths() {
+	const jobs = await getCollection("jobs");
+	return jobs.map((entry) => ({
+		params: { job: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+---
+
+<JobGuideLayout entry={entry} />

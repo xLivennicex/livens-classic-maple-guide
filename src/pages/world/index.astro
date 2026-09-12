@@ -1,0 +1,167 @@
+---
+/**
+ * /world - the top-level world map. Renders the "WorldMap" entry
+ * (the continent selector) via the shared WorldMapView component.
+ *
+ * Kept as a static index rather than a redirect so the URL /world
+ * has a canonical body and the bookmark experience is snappy.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WorldMapView from "../../components/WorldMapView.astro";
+import worldMaps from "../../data/db/worldmaps.json";
+import mapDossiers from "../../data/db/maps.json";
+
+const wm = worldMaps.WorldMap;
+
+// Small lookup so pin hover labels can show "Henesys" instead of
+// "Map 100000000" for pins whose Nexon `description` field is empty.
+const dossierMapNames = new Map(mapDossiers.map((d) => [d.id, d.name]));
+
+// Level-range lookup: powers "Lv 8-15" hints on pin tooltips.
+// Only ~64% of maps have a range (needs at least one WZ-resolved
+// mob with a level stat), so missing entries are fine - the UI
+// just hides the hint gracefully.
+const dossierMapLevels = new Map(
+	mapDossiers
+		.filter((d) => d.mobLevelRange)
+		.map((d) => [d.id, d.mobLevelRange!]),
+);
+
+// Build a per-region enumeration below the map so keyboard users
+// (and search engines) still get a navigable list. Groups linked
+// sub-worldmaps + all resolvable pins.
+const subRegions = wm.links.map((l) => ({
+	name: l.toolTip ?? l.linksTo,
+	slug: l.linksTo,
+	pinCount: worldMaps[l.linksTo]?.maps?.filter((p) => p.dossierMapId != null).length ?? 0,
+}));
+---
+
+<BaseLayout
+	title="World Map - Liven's Classic Maple Guide"
+	description="Interactive MapleStory Classic World map. Click any region to zoom in, then click any pin to jump to the full map dossier."
+	currentPath="/world"
+	theme="henesys"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference catalog</span>
+			<h1>World Map</h1>
+			<p class="lede">
+				The Maple World, straight out of the client's WorldMap.img.
+				Click a region label to zoom into a continent; click any pulsing
+				pin to jump to that map's full dossier. Grayed-out pins mark maps
+				we haven't documented yet - they'll wake up as the catalog grows.
+			</p>
+		</div>
+	</section>
+
+	<WorldMapView wm={wm} dossierMapNames={dossierMapNames} dossierMapLevels={dossierMapLevels} />
+
+	<section class="section vi-feature">
+		<a class="vi-feature__card" href="/world/victoria-island">
+			<div class="vi-feature__body">
+				<span class="eyebrow">Featured deep dive</span>
+				<h2>Victoria Island</h2>
+				<p>
+					The mainland every adventure passes through. Six major towns
+					(four class hubs), the Sleepywood dungeon system, the Ant
+					Tunnels, and the full leveling path from 1 to 70+ - laid out
+					end to end with cross-referenced NPCs, mobs, quests, and
+					hunting grounds.
+				</p>
+				<span class="vi-feature__cta">Read the deep dive &rarr;</span>
+			</div>
+		</a>
+	</section>
+
+	<section class="section">
+		<h2>Continents</h2>
+		<div class="region-grid">
+			{subRegions.map((r) => (
+				<a class="region-card" href={`/world/${r.slug}`}>
+					<span class="region-card__name">{r.name}</span>
+					<span class="region-card__meta">
+						{r.pinCount} documented pin{r.pinCount === 1 ? "" : "s"}
+					</span>
+				</a>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.1em;
+		color: var(--accent-primary);
+	}
+	h1 { margin: 0.3rem 0 0.5rem; }
+	.lede {
+		max-width: 48rem; line-height: 1.6;
+		color: var(--text-body); margin: 0 0 1.5rem;
+	}
+	.section { margin: 2rem 0; }
+	.section h2 { margin: 0 0 0.8rem; font-size: 1.3rem; }
+
+	.region-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 0.6rem;
+	}
+	.region-card {
+		display: flex; flex-direction: column;
+		padding: 0.7rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease;
+	}
+	.region-card:hover {
+		transform: translateY(-1px);
+		border-color: var(--accent-primary);
+		background: var(--bg-cloud);
+	}
+	.region-card__name {
+		font-weight: 500; color: var(--accent-primary);
+	}
+	.region-card__meta {
+		font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;
+	}
+
+	/* Featured Victoria Island deep-dive card - sits right under the
+	 * interactive map and above the continent grid so anyone who
+	 * lands on /world sees it first. Themed henesys since VI is
+	 * the mainland. */
+	.vi-feature { margin: 2rem 0 1.5rem; }
+	.vi-feature__card {
+		display: block;
+		background: linear-gradient(135deg, #fefaf0 0%, #f5efd8 100%);
+		border: 2px solid var(--accent-secondary-border, #b77a2d);
+		border-radius: 14px;
+		padding: 1.5rem 1.75rem;
+		text-decoration: none; color: inherit;
+		transition: transform 0.1s, box-shadow 0.15s;
+	}
+	.vi-feature__card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+	}
+	.vi-feature__body h2 {
+		font-size: 1.6rem; margin: 0.3rem 0 0.5rem;
+		color: var(--accent-primary);
+	}
+	.vi-feature__body p {
+		margin: 0 0 0.75rem;
+		line-height: 1.55;
+		color: var(--text-secondary, #4a3a1a);
+		max-width: 46rem;
+	}
+	.vi-feature__cta {
+		display: inline-block; font-weight: 700;
+		color: var(--accent-primary);
+	}
+</style>

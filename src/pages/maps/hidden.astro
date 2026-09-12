@@ -1,0 +1,353 @@
+---
+/**
+ * /maps/hidden - dedicated hidden-street index.
+ *
+ * The main /maps page already supports a `hidden` kind filter, but a
+ * dedicated page earns SEO for the specific query "maplestory hidden
+ * street list" and gives us room for editorial: how hidden streets
+ * work in Classic, examples of the new Forgotten Hollow zone, and
+ * how to access each one (usually a hidden portal on a parent map).
+ *
+ * 69 hidden-street maps in the current datamine, grouped by region.
+ * Each row deep-links to the map's dossier at /maps/{id} where the
+ * portal-from-where lives (returnMapId + returnMapName in maps.json).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import indexData from "../../data/db/index.json";
+
+const hiddenMaps = indexData.maps
+	.filter((m) => m.kind === "hidden")
+	.sort((a, b) => a.id - b.id);
+
+// Group by region, in reader-journey order. Same ordering as /maps.
+const REGION_ORDER = ["Maple Island", "Victoria Island", "Ossyria", "Other"];
+
+type HiddenMap = (typeof hiddenMaps)[number];
+const byRegion: Record<string, HiddenMap[]> = {};
+for (const m of hiddenMaps) {
+	const r = m.region || "Other";
+	(byRegion[r] ??= []).push(m);
+}
+
+const orderedRegions = REGION_ORDER
+	.filter((r) => byRegion[r])
+	.map((r) => ({ region: r, maps: byRegion[r]! }));
+
+const totalHidden = hiddenMaps.length;
+const regionCount = orderedRegions.length;
+
+// Featured hidden streets - editorial spotlight. Cards render at the
+// top with a longer description than the plain table rows below.
+// Cross-references to quest chains where they exist.
+const FEATURED = [
+	{
+		name: "Forgotten Hollow",
+		mapId: "610030000", // approximate; real id in maps.json - fall back to name search
+		blurb: "The COT 2 addition - a hidden cave system nestled under Ellinia. Access via the Precipice of Darkness quest chain (start with 'Welcome to the Hollow' from the Ellinia cave fairy at Lv 45).",
+		region: "Victoria Island",
+		questSlug: "welcome-to-the-hollow",
+	},
+	{
+		name: "Pig Beach",
+		blurb: "One of the oldest hidden streets. Portal from the Lith Harbor beach area. Solid low-level meso farm for beginners who know it exists.",
+		region: "Victoria Island",
+		wzId: 104010001,
+	},
+	{
+		name: "Mushroom Garden",
+		blurb: "A hidden pocket in Henesys' Mushroom Park. Green Mushroom paradise if the outer maps are crowded.",
+		region: "Victoria Island",
+		wzId: 104030001,
+	},
+];
+
+// Resolve featured entries against the real map DB where possible so
+// the mapId we deep-link to actually exists. Falls back to the plain
+// name if no match (still readable, just not clickable).
+function findMapByName(name: string): HiddenMap | undefined {
+	return hiddenMaps.find((m) => m.name === name);
+}
+---
+
+<BaseLayout
+	title="Hidden Streets - Liven's Classic Maple Guide"
+	description={`${totalHidden} hidden street maps across ${regionCount} regions in MapleStory Classic World. Portal locations, level ranges, mob spawns, and the new Forgotten Hollow zone.`}
+	currentPath="/maps"
+	theme="ellinia"
+	decorations={false}
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<a href="/">Home</a>
+		<span class="crumbs__sep">&rsaquo;</span>
+		<a href="/maps">Maps</a>
+		<span class="crumbs__sep">&rsaquo;</span>
+		<span aria-current="page">Hidden Streets</span>
+	</nav>
+
+	<header class="section-heading">
+		<span class="eyebrow">Map Sub-Catalog</span>
+		<h1>Hidden Streets</h1>
+		<p class="lede">
+			{totalHidden} hidden-street maps across {regionCount} regions.
+			Hidden streets are hand-drawn cave portals, unmarked side paths,
+			and secret pockets that don't appear on the World Map -
+			historically the source of some of Maple's best low-competition
+			farming spots and Easter-egg content. Every entry deep-links to
+			its map dossier, where the parent-map portal location lives.
+		</p>
+	</header>
+
+	<section class="explainer">
+		<h2 class="section-title">How hidden streets work</h2>
+		<p>
+			A hidden street is any map whose <code>streetName</code> field is
+			<em>"Hidden Street"</em> - meaning it has no permanent name on the
+			World Map. You reach them by walking into a portal that isn't
+			marked with an arrow icon (or, in some cases, one that only opens
+			after a specific quest).
+		</p>
+		<p>
+			The layout is otherwise identical to any other map: mobs spawn,
+			NPCs sit around, quest triggers fire. The only difference is
+			discoverability - if nobody told you about the portal, you'd
+			never know it existed. That obscurity is a feature: hidden
+			streets stay low-competition even on populated servers.
+		</p>
+	</section>
+
+	<section class="featured">
+		<h2 class="section-title">Featured hidden streets</h2>
+		<div class="feature-grid">
+			{FEATURED.map((f) => {
+				const match = findMapByName(f.name);
+				const href = match ? `/maps/${match.id}` : undefined;
+				const Wrap = href ? "a" : "div";
+				return (
+					<Wrap class="feature-card" href={href}>
+						<h3>{f.name}</h3>
+						<p class="feature-card__region">{f.region}</p>
+						<p class="feature-card__blurb">{f.blurb}</p>
+						{f.questSlug && (
+							<a class="feature-card__quest" href={`/quests/${f.questSlug}`}>
+								Quest chain: {f.questSlug.replace(/-/g, " ")} &rarr;
+							</a>
+						)}
+						{href && <span class="feature-card__cta">Map dossier &rarr;</span>}
+					</Wrap>
+				);
+			})}
+		</div>
+	</section>
+
+	<section class="all-hidden">
+		<h2 class="section-title">Every hidden street ({totalHidden})</h2>
+		<p class="section-lede">
+			Sorted by internal map ID within each region. Level ranges
+			reflect the mobs that spawn inside (higher levels = deeper into
+			the region).
+		</p>
+
+		{orderedRegions.map(({ region, maps }) => (
+			<div class="region-block">
+				<h3 class="region-heading">
+					{region}
+					<span class="region-count">{maps.length} maps</span>
+				</h3>
+				<div class="hidden-grid">
+					{maps.map((m) => (
+						<a class="hidden-row" href={`/maps/${m.id}`}>
+							<span class="hidden-row__name">{m.name}</span>
+							<span class="hidden-row__meta">
+								{m.levelMin && m.levelMax
+									? `Lv ${m.levelMin}-${m.levelMax}`
+									: m.levelMin
+										? `Lv ${m.levelMin}+`
+										: "no mobs"}
+								{m.mobCount > 0 && ` \u00b7 ${m.mobCount} mob type${m.mobCount === 1 ? "" : "s"}`}
+								{m.questCount > 0 && ` \u00b7 ${m.questCount} quest${m.questCount === 1 ? "" : "s"}`}
+							</span>
+						</a>
+					))}
+				</div>
+			</div>
+		))}
+	</section>
+</BaseLayout>
+
+<style>
+	.crumbs {
+		margin: 1rem 0 0.5rem;
+		font-size: 0.9rem;
+		color: var(--text-muted);
+	}
+	.crumbs__sep {
+		margin: 0 0.4rem;
+	}
+	.crumbs a {
+		color: var(--accent-primary);
+		text-decoration: none;
+	}
+	.crumbs a:hover { text-decoration: underline; }
+
+	.section-heading {
+		max-width: 70ch;
+		margin-bottom: 1.5rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+	}
+	h1 {
+		font-size: 2.1rem;
+		margin: 0.3rem 0 0.6rem;
+		color: var(--text-heading);
+	}
+	.lede {
+		font-size: 1.02rem;
+		color: var(--text-body);
+		line-height: 1.6;
+	}
+
+	.section-title {
+		font-size: 1.4rem;
+		margin: 2rem 0 0.7rem;
+		color: var(--text-heading);
+		border-left: 4px solid var(--accent-primary);
+		padding-left: 0.7rem;
+	}
+	.section-lede {
+		color: var(--text-body);
+		margin: 0 0 1rem;
+		max-width: 60rem;
+		line-height: 1.55;
+	}
+
+	.explainer p {
+		color: var(--text-body);
+		line-height: 1.6;
+		max-width: 65ch;
+	}
+	.explainer code {
+		background: var(--bg-cloud);
+		padding: 0.1rem 0.4rem;
+		border-radius: 0.25rem;
+		font-size: 0.88em;
+	}
+	.explainer em {
+		color: var(--text-heading);
+		font-style: normal;
+		font-weight: 600;
+	}
+
+	.feature-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+		gap: 0.9rem;
+	}
+	.feature-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		padding: 1rem 1.15rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.55rem;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.12s, border-color 0.12s;
+	}
+	a.feature-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+	}
+	.feature-card h3 {
+		margin: 0;
+		font-size: 1.2rem;
+		color: var(--text-heading);
+	}
+	.feature-card__region {
+		margin: 0;
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+		font-weight: 700;
+	}
+	.feature-card__blurb {
+		margin: 0.2rem 0 0.4rem;
+		font-size: 0.92rem;
+		color: var(--text-body);
+		line-height: 1.5;
+	}
+	.feature-card__quest {
+		font-size: 0.86rem;
+		font-weight: 600;
+		color: var(--accent-primary);
+		text-transform: capitalize;
+	}
+	.feature-card__cta {
+		margin-top: auto;
+		font-size: 0.86rem;
+		font-weight: 700;
+		color: var(--accent-primary);
+	}
+
+	.region-block {
+		margin: 1.5rem 0;
+	}
+	.region-heading {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.7rem;
+		font-size: 1.2rem;
+		margin: 0 0 0.55rem;
+		padding-bottom: 0.3rem;
+		border-bottom: 2px solid var(--border-card);
+		color: var(--text-heading);
+	}
+	.region-count {
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.hidden-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 0.4rem;
+	}
+	.hidden-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.35rem;
+		text-decoration: none;
+		color: inherit;
+		transition: border-color 0.12s, background 0.12s;
+	}
+	.hidden-row:hover {
+		border-color: var(--accent-primary);
+		background: color-mix(in srgb, var(--accent-primary) 6%, var(--surface-card));
+	}
+	.hidden-row__name {
+		font-weight: 600;
+		color: var(--text-heading);
+		font-size: 0.95rem;
+	}
+	.hidden-row__meta {
+		font-size: 0.78rem;
+		color: var(--text-muted);
+	}
+</style>

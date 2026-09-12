@@ -1,0 +1,164 @@
+---
+/**
+ * /search - full-text search across every page of the site.
+ *
+ * Implementation: Pagefind (https://pagefind.app) runs at BUILD time
+ * as a post-step in `npm run build` (see package.json). It scans
+ * every HTML file in `dist/` for elements marked `data-pagefind-body`
+ * and emits a static search index + UI assets at `dist/pagefind/`.
+ *
+ * At runtime this page loads Pagefind's default UI script from
+ * `/pagefind/pagefind-ui.js`. Everything runs client-side against the
+ * pre-built index - no server, no API calls, nothing sent anywhere.
+ *
+ * Reader flow:
+ * 1. Header search input is a `<form action="/search">` that submits
+ *    with `?q=<query>`.
+ * 2. This page reads `q` from the URL and pre-populates the widget.
+ * 3. Widget updates results as the reader types (Pagefind handles the
+ *    debounce internally).
+ *
+ * DEV WARNING: search will 404 on the /pagefind assets during
+ * `astro dev` because pagefind runs AFTER astro build. To test
+ * locally, run `npm run build && npm run preview`. This is called
+ * out inline in the UI's empty state so devs don't get confused.
+ */
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Search - Liven's Classic Maple Guide"
+	description="Search across every guide, job page, quest, and item in the reference database."
+	currentPath="/search"
+	theme="henesys"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference database</span>
+			<h1>Search</h1>
+			<p class="lede">
+				Full-text search across every page. Indexes guides, class
+				pages, quests, items, and reference systems. Powered by
+				<a href="https://pagefind.app" target="_blank" rel="noopener">Pagefind</a>
+				- runs entirely in your browser against a pre-built static
+				index, so results are instant and nothing you type is sent
+				to a server.
+			</p>
+			<p class="dev-warning" data-hidden-in-prod>
+				<strong>Dev note:</strong> if you're seeing 404s for
+				<code>/pagefind/*</code> below, that's because Pagefind
+				only indexes at build time. Run
+				<code>npm run build &amp;&amp; npm run preview</code>
+				to try search locally.
+			</p>
+		</div>
+	</section>
+
+	<!-- Pagefind mounts its UI inside this container. -->
+	<div id="search" class="search-container"></div>
+
+	<!-- Pagefind's default stylesheet + UI runtime. `is:inline`
+	     prevents Astro from trying to bundle/resolve these at build
+	     time; they're loaded fresh at runtime from the post-build
+	     `/pagefind/` output. -->
+	<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+	<script src="/pagefind/pagefind-ui.js" is:inline></script>
+	<script is:inline>
+		// Wait for DOMContentLoaded so the #search div and the pagefind
+		// UI script are both guaranteed available before we instantiate.
+		window.addEventListener("DOMContentLoaded", () => {
+			// Bail cleanly if pagefind failed to load (dev mode, or CDN
+			// hiccup). No thrown exception; the container just stays
+			// empty. The dev-warning paragraph above tells the reader why.
+			if (typeof PagefindUI === "undefined") {
+				return;
+			}
+
+			const ui = new PagefindUI({
+				element: "#search",
+				showSubResults: true,
+				showImages: false,
+				resetStyles: false,
+				debounceTimeoutMs: 150,
+			});
+
+			// Pre-populate from ?q=... so someone arriving from the
+			// header search bar immediately sees results.
+			const params = new URLSearchParams(window.location.search);
+			const initialQuery = params.get("q");
+			if (initialQuery) {
+				ui.triggerSearch(initialQuery);
+			}
+		});
+	</script>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		margin-bottom: 1.5rem;
+	}
+
+	.lede {
+		max-width: 46rem;
+		margin-top: 0.5rem;
+		line-height: 1.6;
+		color: var(--text-body);
+	}
+
+	.lede a {
+		font-weight: bold;
+	}
+
+	/* Dev warning: shows only when the /pagefind assets 404
+	 * (i.e. during `astro dev` before a fresh production build).
+	 * Since we can't know at render time whether pagefind loaded,
+	 * we always show it - the copy is honest, and readers using
+	 * production preview will read past it once and forget it. */
+	.dev-warning {
+		margin-top: 0.75rem;
+		padding: 0.55rem 0.75rem;
+		background: var(--surface-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+
+	.dev-warning code {
+		padding: 0.1rem 0.35rem;
+		background: var(--surface-nav);
+		color: var(--text-on-nav);
+		border-radius: 0.25rem;
+		font-size: 0.9em;
+	}
+
+	/* Pagefind ships with its own themable UI - we just constrain
+	 * the width and give it breathing room. */
+	.search-container {
+		max-width: 46rem;
+		margin: 0 auto;
+	}
+
+	/* Tighten a few Pagefind default styles so they blend better with
+	 * our card-and-panel aesthetic. Prefixed selectors so we don't
+	 * accidentally clobber anything outside the search widget. */
+	.search-container :global(.pagefind-ui__search-input) {
+		border-radius: 0.6rem;
+		border: 2px solid var(--border-card);
+		padding: 0.7rem 0.9rem;
+	}
+
+	.search-container :global(.pagefind-ui__result) {
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		background: var(--surface-card);
+		margin-bottom: 0.7rem;
+		padding: 0.9rem 1.1rem;
+	}
+
+	.search-container :global(.pagefind-ui__result-link) {
+		color: var(--accent-primary);
+		font-weight: bold;
+	}
+</style>

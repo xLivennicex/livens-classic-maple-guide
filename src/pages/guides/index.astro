@@ -1,0 +1,365 @@
+---
+/**
+ * /guides - the beginner-oriented meta content hub. Non-class-specific
+ * reference material that new MSCW players will Google-arrive on:
+ * glossary, getting-started, economy fundamentals, etc.
+ *
+ * Distinct from /jobs (class-specific skill builds) and /party-quests
+ * (specific PQ walkthroughs). This is the "everything else a new
+ * player needs to know" section.
+ *
+ * Adding a guide: add a page under src/pages/guides/, then append a
+ * card to the GUIDES array below with a matching href.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+interface GuideCard {
+	title: string;
+	href: string;
+	blurb: string;
+	category: "reference" | "orientation" | "economy" | "cot2-diff" | "class-choice" | "planned";
+	badge?: string;
+}
+
+const GUIDES: GuideCard[] = [
+	{
+		title: "Glossary",
+		href: "/guides/glossary",
+		blurb: "80+ v83 terms alphabetized and cross-linked. WATK, HB, KPQ, HP washing, Chaos Scroll - if you've seen an acronym in chat and paused, it's here.",
+		category: "reference",
+		badge: "80+ terms",
+	},
+	{
+		title: "Getting Started",
+		href: "/guides/getting-started",
+		blurb: "Your first 30 hours in Classic World. Maple Island tutorial, class choice, 1st job advancement, Kerning PQ at Lv 21, common newbie mistakes to skip.",
+		category: "orientation",
+		badge: "Start here",
+	},
+	{
+		title: "Meso Saving",
+		href: "/guides/meso-saving",
+		blurb: "Where your first million goes and where it shouldn't. Potion overspending, gear rebuying, scroll gambling - the three sinks that keep new players broke.",
+		category: "economy",
+	},
+	{
+		title: "Items You Should Never Sell",
+		href: "/guides/items-to-keep",
+		blurb: "The quest-required, event-locked, and later-game-critical items new players sell for pocket change and regret at Lv 50. Real quest-demand counts from the datamine.",
+		category: "reference",
+		badge: "Never sell",
+	},
+	{
+		title: "Consumables Guide",
+		href: "/guides/consumables",
+		blurb: "HP/MP potion progression with real mesos-per-HP math, elixir tier explained, buff foods, pet auto-pot setup, and the overspending trap.",
+		category: "economy",
+	},
+	{
+		title: "Party EXP & Grinding",
+		href: "/guides/party-exp",
+		blurb: "The v83 party EXP formula, why 2-3 attacker parties out-level solo, the classic PQ progression (KPQ/LPQ/LMPQ/OPQ), and grinding spots by level bracket.",
+		category: "orientation",
+	},
+	{
+		title: "What's New in Classic World",
+		href: "/guides/whats-new-in-cot2",
+		blurb: "The honest v83-vs-CoT 2 changelog. Forgotten Hollow, Citizenship, Crafting, Physical Fitness Test - what Nexon added, what got renamed, and what we still don't know pre-launch.",
+		category: "cot2-diff",
+		badge: "Start here (returners)",
+	},
+	{
+		title: "Then vs Now: EXP & Progression",
+		href: "/guides/exp-then-vs-now",
+		blurb: "Datamine-verified mob EXP tables comparing v83 to CoT 2, quest EXP examples, and an honest paragraph about the party formula uncertainty. Slime's EXP jumped 67%, most other iconic mobs unchanged.",
+		category: "cot2-diff",
+	},
+	{
+		title: "Skill Changes Per Class",
+		href: "/guides/skill-changes",
+		blurb: "Which first-job skills got dropped, added, or unchanged between v83 and CoT 2. Warrior gained Precise Strikes; Bowman lost Blessing of Amazon and gained Power Knockback; Magician and Thief unchanged.",
+		category: "cot2-diff",
+	},
+
+	// Sprint 68: 2nd-job branch decision guides. One per class. Written
+	// against v83-baseline skill kits with a verification note (unlike
+	// 1st-job which is fully datamine-confirmed, 2nd-job kits will get
+	// live-verified during Founder's Access Oct 6).
+	{
+		title: "Warrior: Fighter, Page, or Spearman?",
+		href: "/guides/warrior-2nd-job",
+		blurb: "Level 30 Warriors pick between three branches. Fighter (Sword/Axe pure DPS + Rage), Page (Sword/BW tank with Threaten + Power Guard), or Spearman (Spear/Polearm party support with Hyper Body). Full skill kits and build orders.",
+		category: "class-choice",
+		badge: "2nd Job",
+	},
+	{
+		title: "Magician: F/P, I/L, or Cleric?",
+		href: "/guides/magician-2nd-job",
+		blurb: "Level 30 Magicians pick their element. F/P (Fire + Poison DoT DPS), I/L (Ice freeze + Lightning AoE), or Cleric (Heal + Bless support). Full skill kits, build orders, and the party-role identity for each.",
+		category: "class-choice",
+		badge: "2nd Job",
+	},
+	{
+		title: "Bowman: Hunter or Crossbowman?",
+		href: "/guides/bowman-2nd-job",
+		blurb: "Level 30 Bowmen pick their weapon. Hunter (bow, faster speed, Arrow Bomb AoE stun) or Crossbowman (crossbow, harder crits, Iron Arrow line-piercing). Covers the Power Knockback shuffle that changed the 2nd-job kit in CoT 2.",
+		category: "class-choice",
+		badge: "2nd Job",
+	},
+	{
+		title: "Thief: Assassin or Bandit?",
+		href: "/guides/thief-2nd-job",
+		blurb: "Level 30 Thieves pick their weapon AND range. Assassin (claw + throwing stars, ranged crit spam) or Bandit (dagger, melee multi-hit + Steal). Full skill kits and the LUK-scaling identity of both branches.",
+		category: "class-choice",
+		badge: "2nd Job",
+	},
+];
+
+// Rendering order: the CoT-2-diff pieces first (highest value for
+// returning players who Google-arrive), then the general beginner
+// reference guides, then anything in "planned".
+const cot2Diff = GUIDES.filter((g) => g.category === "cot2-diff");
+const classChoice = GUIDES.filter((g) => g.category === "class-choice");
+const otherShipped = GUIDES.filter(
+	(g) =>
+		g.category !== "planned" &&
+		g.category !== "cot2-diff" &&
+		g.category !== "class-choice",
+);
+const planned = GUIDES.filter((g) => g.category === "planned");
+---
+
+<BaseLayout
+	title="Guides - Liven's Classic Maple Guide"
+	description="Beginner meta content for MapleStory Classic World: glossary of terms, getting-started walkthrough, meso-saving fundamentals, and more."
+	currentPath="/guides"
+	theme="henesys"
+	decorations={true}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Reference & Orientation</span>
+			<h1>Guides</h1>
+			<p class="lede">
+				Non-class content for new and returning Classic World players.
+				Reference material, orientation walkthroughs, and economy
+				fundamentals - the stuff you Google mid-chat when someone drops
+				an acronym you don't recognize.
+			</p>
+		</div>
+	</section>
+
+	<section class="guide-grid">
+		<h2 class="grid-heading grid-heading--featured">
+			CoT 2 vs v83 Reality Check
+			<span class="grid-heading__lede">
+				Start here if you played v83 or old GMS - what actually
+				changed in Classic World.
+			</span>
+		</h2>
+		<div class="cards">
+			{cot2Diff.map((g) => (
+				<a class={`card card--${g.category}`} href={g.href}>
+					<div class="card__head">
+						<h3>{g.title}</h3>
+						{g.badge && <span class="card__badge">{g.badge}</span>}
+					</div>
+					<p class="card__blurb">{g.blurb}</p>
+					<span class="card__cta">Read the guide -&gt;</span>
+				</a>
+			))}
+		</div>
+
+		<h2 class="grid-heading grid-heading--class-choice">
+			2nd Job Branch Decisions
+			<span class="grid-heading__lede">
+				You hit Level 30, the instructor asks you to pick a branch,
+				and now you're staring at the UI. One guide per class,
+				covering every branch, every skill, every build order.
+			</span>
+		</h2>
+		<div class="cards">
+			{classChoice.map((g) => (
+				<a class={`card card--${g.category}`} href={g.href}>
+					<div class="card__head">
+						<h3>{g.title}</h3>
+						{g.badge && <span class="card__badge">{g.badge}</span>}
+					</div>
+					<p class="card__blurb">{g.blurb}</p>
+					<span class="card__cta">Read the guide -&gt;</span>
+				</a>
+			))}
+		</div>
+
+		<h2 class="grid-heading">Beginner reference &amp; orientation</h2>
+		<div class="cards">
+			{otherShipped.map((g) => (
+				<a class={`card card--${g.category}`} href={g.href}>
+					<div class="card__head">
+						<h3>{g.title}</h3>
+						{g.badge && <span class="card__badge">{g.badge}</span>}
+					</div>
+					<p class="card__blurb">{g.blurb}</p>
+					<span class="card__cta">Read the guide -&gt;</span>
+				</a>
+			))}
+		</div>
+
+		{planned.length > 0 && (
+			<>
+				<h2 class="grid-heading grid-heading--planned">Coming next</h2>
+				<div class="cards">
+					{planned.map((g) => (
+						<article class="card card--planned">
+							<div class="card__head">
+								<h3>{g.title}</h3>
+								{g.badge && <span class="card__badge card__badge--planned">{g.badge}</span>}
+							</div>
+							<p class="card__blurb">{g.blurb}</p>
+							<span class="card__cta card__cta--muted">Not yet written</span>
+						</article>
+					))}
+				</div>
+			</>
+		)}
+	</section>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+	}
+
+	.guide-grid {
+		margin-top: 1rem;
+	}
+	.grid-heading {
+		font-size: 1.4rem;
+		color: var(--text-heading);
+		margin: 1.5rem 0 0.8rem;
+		padding-bottom: 0.35rem;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.grid-heading--planned {
+		color: var(--text-muted);
+		margin-top: 2.2rem;
+	}
+	.grid-heading--featured {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		border-bottom: 2px solid var(--accent-primary);
+		padding-bottom: 0.55rem;
+	}
+	.grid-heading__lede {
+		font-size: 0.88rem;
+		font-weight: 500;
+		color: var(--text-body);
+		text-transform: none;
+		letter-spacing: 0;
+	}
+	.card--cot2-diff {
+		border-left: 4px solid var(--accent-primary);
+	}
+	.card--class-choice {
+		border-left: 4px solid #b8730e;
+	}
+	.grid-heading--class-choice {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		border-bottom: 2px solid #b8730e;
+		padding-bottom: 0.55rem;
+	}
+
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 1rem;
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		padding: 1rem 1.1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.6rem;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+	}
+	.card:not(.card--planned):hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+		box-shadow: 0 6px 18px color-mix(in srgb, var(--accent-primary) 18%, transparent);
+	}
+	.card--planned {
+		opacity: 0.65;
+		background: var(--bg-cloud);
+		border-style: dashed;
+	}
+
+	.card__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.6rem;
+	}
+	.card__head h3 {
+		margin: 0;
+		color: var(--text-heading);
+		font-size: 1.15rem;
+	}
+	.card__badge {
+		/* Sprint 67 typography floor: bumped from 0.68 -> 0.78. */
+		font-size: 0.78rem;
+		font-weight: 700;
+		padding: 0.15rem 0.5rem;
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+		border-radius: 999px;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		white-space: nowrap;
+	}
+	.card__badge--planned {
+		background: var(--text-muted);
+	}
+
+	.card__blurb {
+		font-size: 0.92rem;
+		color: var(--text-body);
+		margin: 0;
+		line-height: 1.45;
+	}
+
+	.card__cta {
+		margin-top: auto;
+		font-size: 0.86rem;
+		font-weight: 600;
+		color: var(--accent-primary);
+	}
+	.card__cta--muted {
+		color: var(--text-muted);
+		font-style: italic;
+		font-weight: 500;
+	}
+</style>

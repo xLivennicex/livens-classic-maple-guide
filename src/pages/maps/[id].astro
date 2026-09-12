@@ -1,0 +1,460 @@
+---
+/**
+ * /maps/[id] - full dossier for one map.
+ *
+ * Shows minimap image, full map background, mob spawn list (with
+ * per-mob spawn count), NPC list, and any quests originating from
+ * this map. Cross-links to /mobs/{id}, /quests/{id}, and eventually
+ * /npcs/{id} (when those pages exist).
+ *
+ * The minimap comes from maplestory.io GMS/83 as v83 fallback -
+ * CoT 2 minimap images live at osmsdataexplorer but under paths
+ * we can't hotlink reliably. Same for the full render.
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import mapDossiers from "../../data/db/maps.json";
+import { mapMinimapUrl, mapRenderUrl, mobSpriteUrl, mobSpriteSrcs, npcSpriteUrl, mapThumbnailSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import Sprite from "../../components/Sprite.astro";
+import mobDossiers from "../../data/db/mobs.json";
+import npcDossiers from "../../data/db/npcs.json";
+import { themeForLocation } from "../../lib/region-theme";
+
+// Look up each NPC's WZ ID for sprite rendering. Our map dossier
+// stores `npc.id` (internal), but sprite URLs need the WZ ID which
+// lives in the NPC dossier. O(1) lookup via pre-built map.
+const npcWzById = new Map(npcDossiers.map((n) => [n.id, n.wzId]));
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return mapDossiers.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d },
+	}));
+};
+
+const { d } = Astro.props;
+
+const KIND_LABELS: Record<string, string> = {
+	training: "Training map",
+	hidden: "Hidden street",
+	town: "Town / social",
+	event: "Event map",
+	dev: "Dev / debug map",
+};
+
+// Sort mobs by spawn count desc so the most common mob leads
+// the list - matches a player's mental model of "what am I
+// mostly going to fight if I sit here?"
+const mobsByCount = [...d.mobs].sort((a, b) => b.count - a.count);
+
+// Pre-resolve NPC/mob NAMES for the schematic-layout tooltips.
+// The dossier stores positions as {id, x, y} without labels; we
+// look up names here so the SVG `<title>` element (native tooltip)
+// shows something useful on hover.
+const npcNameById = new Map(d.npcs.map((n) => [n.id, n.name]));
+const mobNameById = new Map(d.mobs.map((m) => [m.id, m.name]));
+
+// Compute a bounding box across all positions so we can render a
+// coord-normalized schematic SVG. Padded by 8% so edge dots don't
+// clip. When no positions exist (or all positions coincide) the
+// bbox degenerates and we skip the schematic entirely.
+const allPos = [...(d.npcPositions ?? []), ...(d.mobPositions ?? [])];
+let layoutBBox: { x: number; y: number; w: number; h: number } | null = null;
+if (allPos.length > 0) {
+	const xs = allPos.map((p) => p.x);
+	const ys = allPos.map((p) => p.y);
+	const minX = Math.min(...xs), maxX = Math.max(...xs);
+	const minY = Math.min(...ys), maxY = Math.max(...ys);
+	const w = Math.max(maxX - minX, 100);
+	const h = Math.max(maxY - minY, 100);
+	const padX = w * 0.08, padY = h * 0.08;
+	layoutBBox = { x: minX - padX, y: minY - padY, w: w + padX * 2, h: h + padY * 2 };
+}
+// Dot radius scales with the map extent so tiny maps get
+// proportionally sized markers - a fixed 15px radius on a
+// 100x100 map would swallow everything.
+const dotR = layoutBBox ? Math.max(layoutBBox.w, layoutBBox.h) * 0.015 : 10;
+
+// Build-once mobId -> wzId lookup so <Sprite> gets a fallback
+// URL when MeowDB is missing the mob (9 known holes, all covered
+// by maplestory.io via wzId). Map has hundreds of entries so we
+// hoist this once, not per-row.
+const mobWzById = new Map<number, number | null>(
+	mobDossiers.map((m) => [m.id, m.wzId ?? null]),
+);
+
+// Auto-pick a theme so a Perion map gets Perion's warm palette +
+// og:image, not the default Henesys green. Signals ordered strongest
+// first: nearest-town field, streetName, then map name itself.
+const pageTheme = themeForLocation(
+	[d.returnMapName, d.streetName, d.name],
+	d.region,
+);
+---
+
+<BaseLayout
+	title={`${d.name} - Maps - Liven's Classic Maple Guide`}
+	description={`${d.name} (${d.region}) - map ID ${d.id}. Mob spawns, NPCs, quest givers, minimap. Cross-referenced from CoT 2 datamine.`}
+	theme={pageTheme}
+>
+	<nav class="crumbs">
+		<a href="/maps">&larr; Maps</a>
+		<span class="crumbs__sep">&middot;</span>
+		<span>{d.region}</span>
+		<span class="crumbs__sep">&middot;</span>
+		<span>{d.name}</span>
+		{d.worldMapRefs && d.worldMapRefs.length > 0 && (
+			<>
+				<span class="crumbs__sep">&middot;</span>
+				<a href={`/world/${d.worldMapRefs[0].worldMapName}`}>View on world map &rarr;</a>
+			</>
+		)}
+	</nav>
+
+	<header class:list={["hero", !d.wzId && "hero--no-minimap"]}>
+		{d.wzId && (
+			<div class="hero__minimap">
+				<Sprite
+					srcs={mapThumbnailSrcs(d.id, d.wzId)}
+					alt={`${d.name} minimap`}
+					loading="eager"
+					placeholder={themePlaceholderUrl(pageTheme)}
+				/>
+			</div>
+		)}
+		<div class="hero__body">
+			<h1>{d.name}</h1>
+			{d.streetName && <p class="hero__street">{d.streetName}</p>}
+			<div class="hero__badges">
+				<span class="badge badge--id">Map ID {d.id}</span>
+				<span class={`badge badge--kind badge--kind-${d.kind}`}>
+					{KIND_LABELS[d.kind] ?? d.kind}
+				</span>
+				<span class="badge">{d.region}</span>
+				{d.mapMark && d.mapMark !== "Event" && (
+					<span class="badge">{d.mapMark}</span>
+				)}
+				{d.mobLevelRange && (
+					<span class="badge badge--lvl">
+						Mob {d.mobLevelRange.min === d.mobLevelRange.max
+							? `Lv ${d.mobLevelRange.min}`
+							: `Lv ${d.mobLevelRange.min}-${d.mobLevelRange.max}`}
+					</span>
+				)}
+			</div>
+			{d.bgm && (
+				<p class="hero__bgm">Background music: <code>{d.bgm}</code></p>
+			)}
+		</div>
+	</header>
+
+	{/* Full map render - big banner below the hero card. Only
+	    render if we have any positions to attach; empty maps
+	    would just show a wall of background art with nothing
+	    to look at. */}
+	{d.wzId && (d.mobs.length > 0 || d.npcs.length > 0) && (
+		<section class="section">
+			<h2 class="section-panel-title">Map render</h2>
+			<div class="map-render">
+				<img
+					src={mapRenderUrl(d.wzId)}
+					alt={`${d.name} full background render`}
+					loading="lazy"
+					onerror="this.parentElement.style.display='none'"
+				/>
+				<p class="map-render__note">
+					v83-era render from maplestory.io. CoT 2 may render
+					this map slightly differently at launch - we'll swap
+					to Classic World assets when they're hotlinkable.
+				</p>
+			</div>
+		</section>
+	)}
+
+	<div class="disclaimer">
+		<strong>Available:</strong> mob spawn types + counts, mob combat
+		stats (level, HP, EXP), NPC list, quest givers stationed here,
+		portal connections to adjacent maps.
+		<strong>Not yet documented:</strong> exact x/y overlay on the
+		minimap, per-portal spawn point coordinates. Coming when the
+		datamine exposes them.
+	</div>
+
+	{/* Mob spawn list - sorted by spawn count desc so the dominant
+	    mob leads the list. */}
+	{mobsByCount.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">
+				Mob spawns <span class="count">({mobsByCount.length} type{mobsByCount.length === 1 ? "" : "s"}, {d.mobPositionCount} total spawn points)</span>
+			</h2>
+			<div class="mob-grid">
+				{mobsByCount.map((m) => (
+					<a class="mob-card" href={`/mobs/${m.id}`}>
+						<Sprite
+							class="mob-card__sprite"
+							srcs={mobSpriteSrcs(m.id, mobWzById.get(m.id) ?? null)}
+							alt=""
+							placeholder={themePlaceholderUrl(pageTheme)}
+						/>
+						<div class="mob-card__body">
+							<span class="mob-card__name">{m.name}</span>
+							<span class="mob-card__count">x{m.count} spawn{m.count === 1 ? "" : "s"}</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	{/* NPC list - each is clickable. NPC dossier pages don't exist
+	    yet (planned round 25+), so links currently 404 gracefully. */}
+	{d.npcs.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">
+				NPCs <span class="count">({d.npcs.length})</span>
+			</h2>
+			<div class="npc-grid">
+				{d.npcs.map((npc) => (
+					<a class="npc-card" href={`/npcs/${npc.id}`}>
+						{npcSpriteUrl(npcWzById.get(npc.id), npc.name) && (
+							<img
+								class="npc-card__sprite"
+								src={npcSpriteUrl(npcWzById.get(npc.id), npc.name)}
+								alt=""
+								loading="lazy"
+								onerror="this.style.visibility='hidden'"
+							/>
+						)}
+						<div class="npc-card__body">
+							<span class="npc-card__name">{npc.name}</span>
+							<span class="npc-card__id">NPC {npc.id}</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	{/* Quest givers stationed on this map. Cross-ref from
+	    quest.npc_name -> npc_id -> map.npcs. Best-effort:
+	    some quests have unusual NPC name spellings that
+	    don't reverse-lookup, and those are simply omitted. */}
+	{d.questsHere.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">
+				Quests starting here <span class="count">({d.questsHere.length})</span>
+			</h2>
+			<ul class="quest-list">
+				{d.questsHere
+					.sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
+					.map((q) => (
+						<li class="quest-row">
+							{q.level != null && <span class="quest-row__level">L{q.level}</span>}
+							<div class="quest-row__body">
+								<a class="quest-row__name" href={`/quests/${q.questId}`}>
+									{q.questName}
+								</a>
+								<span class="quest-row__giver">Given by {q.npcName}</span>
+							</div>
+						</li>
+					))}
+			</ul>
+		</section>
+	)}
+
+	{/* Portal connections to adjacent maps. Each exit becomes a
+	    clickable chip that navigates to the neighboring map's
+	    dossier - closes the loop for "how do I get from here to
+	    there?" navigation. Dedup on toMapId so a map with two
+	    portals both leading to the same destination doesn't
+	    render two identical chips. */}
+	{d.exits && d.exits.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">
+				Portals <span class="count">({new Set(d.exits.map((e) => e.toMapId)).size} destination{new Set(d.exits.map((e) => e.toMapId)).size === 1 ? "" : "s"})</span>
+			</h2>
+			<div class="portal-grid">
+				{[...new Map(d.exits.map((e) => [e.toMapId, e])).values()].map((exit) => (
+					<a class="portal-chip" href={`/maps/${exit.toMapId}`}>
+						<span class="portal-chip__arrow">→</span>
+						<div class="portal-chip__body">
+							<span class="portal-chip__name">{exit.toMapName}</span>
+							<span class="portal-chip__id">Map {exit.toMapId}</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+</BaseLayout>
+
+<style>
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; }
+
+	.hero {
+		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;
+		align-items: center; padding: 1.5rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem; margin-bottom: 1rem;
+	}
+	/* Collapse to a single column when there's no minimap (map has
+	   no WZ ID) - otherwise the phantom `auto` track leaves a
+	   1.2rem gap of dead whitespace on the left edge. */
+	.hero--no-minimap { grid-template-columns: 1fr; }
+	.hero__minimap {
+		width: 160px; min-height: 100px;
+		background: var(--bg-cloud); border-radius: 0.5rem;
+		image-rendering: pixelated;
+		display: flex; align-items: center; justify-content: center;
+	}
+	.hero__minimap img { max-width: 100%; max-height: 140px; }
+	.hero__body h1 { margin: 0 0 0.3rem; }
+	.hero__street {
+		margin: 0 0 0.6rem;
+		font-style: italic; color: var(--text-muted);
+	}
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+	.badge {
+		display: inline-block; padding: 0.25rem 0.6rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px;
+	}
+	.badge--id { background: var(--bg-cloud); color: var(--text-muted); font-family: monospace; }
+	.badge--kind-training { background: #d1e7d1; color: #2e5d31; }
+	.badge--kind-hidden { background: #e7d1e7; color: #5d2e5d; }
+	.badge--kind-town { background: #d1dfe7; color: #2e4a5d; }
+	.badge--lvl { background: #fff2df; color: #b25c00; font-family: monospace; }
+	.hero__bgm {
+		margin: 0; font-size: 0.8rem; color: var(--text-muted);
+	}
+	.hero__bgm code {
+		padding: 0.1rem 0.4rem; background: var(--bg-cloud);
+		border-radius: 0.25rem; font-size: 0.85em;
+	}
+
+	.disclaimer {
+		margin: 1rem 0;
+		padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem; line-height: 1.5;
+	}
+
+	.section { margin: 1.5rem 0; }
+	.count { font-weight: normal; color: var(--text-muted); font-size: 0.85rem; }
+
+	.map-render {
+		padding: 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.map-render img {
+		width: 100%; max-width: 900px;
+		display: block; margin: 0 auto;
+		image-rendering: pixelated;
+	}
+	.map-render__note {
+		margin: 0.8rem 0 0; font-size: 0.75rem;
+		color: var(--text-muted); font-style: italic; text-align: center;
+	}
+
+	.mob-grid, .npc-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 0.6rem;
+	}
+	.mob-card, .npc-card {
+		display: flex; align-items: center; gap: 0.7rem;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+		text-decoration: none; color: inherit;
+	}
+	.mob-card:hover, .npc-card:hover { border-color: var(--accent-primary); background: var(--bg-cloud); }
+	.mob-card__sprite, .npc-card__sprite {
+		width: 40px; height: 40px;
+		object-fit: contain;
+		image-rendering: pixelated;
+	}
+	.mob-card__body, .npc-card__body {
+		display: flex; flex-direction: column;
+		min-width: 0;
+	}
+	.mob-card__name, .npc-card__name {
+		font-weight: 500; color: var(--accent-primary);
+		font-size: 0.9rem;
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.mob-card__count, .npc-card__id {
+		font-size: 0.75rem; color: var(--text-muted); font-family: monospace;
+	}
+
+	.quest-list { list-style: none; padding: 0; margin: 0; }
+	.quest-row {
+		display: flex; align-items: center; gap: 0.8rem;
+		padding: 0.7rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+		margin-bottom: 0.4rem;
+	}
+	.quest-row__level {
+		padding: 0.2rem 0.55rem; font-size: 0.75rem; font-weight: bold;
+		background: var(--bg-cloud); color: var(--text-muted);
+		border-radius: 999px; font-family: monospace;
+		flex-shrink: 0;
+	}
+	.quest-row__body { display: flex; flex-direction: column; min-width: 0; }
+	.quest-row__name {
+		font-weight: 500; color: var(--accent-primary); text-decoration: none;
+	}
+	.quest-row__name:hover { text-decoration: underline; }
+	.quest-row__giver { font-size: 0.75rem; color: var(--text-muted); font-style: italic; }
+
+	/* Portal chips: mirror the mob-card / npc-card visual language
+	   so the whole page reads as a consistent grid of clickable
+	   entities. Arrow glyph doubles as the visual affordance for
+	   "this navigates you somewhere else." */
+	.portal-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 0.5rem;
+	}
+	.portal-chip {
+		display: flex; align-items: center; gap: 0.7rem;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease;
+	}
+	.portal-chip:hover {
+		transform: translateY(-1px);
+		border-color: var(--accent-primary);
+		background: var(--bg-cloud);
+	}
+	.portal-chip__arrow {
+		font-size: 1.2rem; font-weight: bold;
+		color: var(--accent-primary);
+		flex-shrink: 0;
+	}
+	.portal-chip__body { display: flex; flex-direction: column; min-width: 0; }
+	.portal-chip__name {
+		font-weight: 500; color: var(--accent-primary);
+		font-size: 0.9rem;
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.portal-chip__id {
+		font-size: 0.75rem; color: var(--text-muted); font-family: monospace;
+	}
+</style>

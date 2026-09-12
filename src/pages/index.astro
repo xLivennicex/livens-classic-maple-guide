@@ -8,13 +8,39 @@ import InfoCard from "../components/InfoCard.astro";
 import AccuracyLedger, { type LedgerEntry } from "../components/AccuracyLedger.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import Countdown from "../components/Countdown.astro";
-import { jobs } from "../data/jobs";
+import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
+import HomeCarousel from "../components/HomeCarousel.astro";
 import { countdownTargets } from "../data/launch";
+import generatedAt from "../data/db/generated-at.json";
 
-// System guides come straight from the content collection so this
-// section auto-updates the moment a new .md is added. Sorted alpha
-// by heading for now - swap for `lastUpdated` desc if we want
-// recency-first later.
+// Reference-database tile config. Kept as a static array so ordering
+// + copy is trivially reorderable and reads at-a-glance. Counts pull
+// from generated-at.json (5-key JSON, no dossier bundles imported).
+// Emoji rather than image assets: zero request cost, universally
+// legible, matches the informal Liven voice.
+const referenceTiles = [
+	{ href: "/world", icon: "🗺️", name: "World map", count: null,
+	  desc: "Visual atlas - click a region pin to jump to that map's dossier." },
+	{ href: "/maps", icon: "🏘️", name: "Maps", count: generatedAt.mapCount,
+	  desc: "Every map indexed with mob spawns, NPC lists, and portal links." },
+	{ href: "/mobs", icon: "👹", name: "Mobs", count: generatedAt.mobCount,
+	  desc: "Combat stats + drop tables + spawn locations. Sortable, searchable." },
+	{ href: "/npcs", icon: "🧙", name: "NPCs", count: generatedAt.npcCount,
+	  desc: "Where they stand, what quests they hand out." },
+	{ href: "/quests", icon: "📜", name: "Quests", count: generatedAt.questCount,
+	  desc: "Chain length, level range, giver NPC, rewards." },
+	{ href: "/items", icon: "💎", name: "Items", count: generatedAt.itemCount,
+	  desc: "Every icon, stat, and price from the datamine." },
+];
+
+// Both grids source directly from content collections so they stay
+// in sync automatically as new guides ship.
+// - Jobs: sorted by listOrder (canonical Warrior->Magician->Bowman->Thief).
+// - System guides: sorted alpha by heading - swap for `lastUpdated`
+//   desc if we want recency-first later.
+const jobs = (await getCollection("jobs")).sort(
+	(a, b) => a.data.listOrder - b.data.listOrder
+);
 const systemGuides = (await getCollection("guides")).sort((a, b) =>
 	a.data.heading.localeCompare(b.data.heading)
 );
@@ -81,11 +107,48 @@ const prepChecklist = [
 
 			<div class="hero-actions">
 				<a class="primary-button" href="/jobs">Choose your job</a>
+				<a class="secondary-button" href="#reference">Look up anything</a>
 				<a class="secondary-button" href="/launch">Launch checklist</a>
 			</div>
 		</div>
 
 		<LaunchTimeline />
+	</section>
+
+	<HomeCarousel />
+
+	<FoundersPackagesCard />
+
+	<!-- Forgotten Hollow spotlight - the flagship COT2 addition.
+	     New hidden zone tucked under Ellinia, unlocked via the
+	     "Welcome to the Hollow" quest chain at Lv 45. Deserves
+	     top-of-page real estate because it's the single biggest
+	     new-content story between v83-era Maple and MSCW. -->
+	<section class="section spotlight" aria-labelledby="hollow-heading">
+		<div class="spotlight__inner">
+			<div class="spotlight__copy">
+				<span class="eyebrow">New in Classic World</span>
+				<h2 id="hollow-heading">Forgotten Hollow</h2>
+				<p>
+					A hidden cave system nestled under Ellinia - the flagship
+					new zone shipped in COT 2. Access starts at Lv 45 via the
+					<a href="/quests/welcome-to-the-hollow">Welcome to the Hollow</a>
+					quest chain from the cave fairy. Runs through 7 quests culminating
+					in the Precipice of Darkness at Lv 50 (Stasis Seal finale). If
+					you're planning your first character's arc past 2nd job, this
+					is where the endgame teaser lives.
+				</p>
+				<div class="spotlight__actions">
+					<a class="primary-button" href="/quests/welcome-to-the-hollow">Read the quest chain</a>
+					<a class="secondary-button" href="/maps/hidden">See all hidden streets</a>
+				</div>
+			</div>
+			<div class="spotlight__badge" aria-hidden="true">
+				<span class="spotlight__badge-eyebrow">Zone</span>
+				<span class="spotlight__badge-name">Forgotten Hollow</span>
+				<span class="spotlight__badge-loc">Ellinia &middot; Lv 45-50</span>
+			</div>
+		</div>
 	</section>
 
 	<section class="section countdown-section" aria-labelledby="countdown-heading">
@@ -123,7 +186,14 @@ const prepChecklist = [
 		</div>
 
 		<div class="job-grid">
-			{jobs.map((job) => <JobCard job={job} />)}
+			{jobs.map((job) => (
+				<JobCard
+					monogram={job.data.monogram}
+					name={job.data.title}
+					description={job.data.cardDescription}
+					href={`/jobs/${job.id}`}
+				/>
+			))}
 		</div>
 	</section>
 
@@ -155,6 +225,41 @@ const prepChecklist = [
 		</section>
 	)}
 
+	<!-- Reference database section: surfaces every catalog page so
+	     the entirety of Phase 4 isn't hidden behind just the nav bar.
+	     Cards intentionally minimalist (icon + count + one-liner) so
+	     the grid scans in <2 seconds. -->
+	<section class="section" id="reference">
+		<div class="section-heading">
+			<div>
+				<span class="eyebrow">Reference database</span>
+				<h2>Look up anything</h2>
+			</div>
+			<span class="countdown-note">
+				Datamined from CoT 2, verified against maplestory.io
+			</span>
+		</div>
+
+		<div class="ref-grid">
+			{referenceTiles.map((t) => (
+				<a class="ref-card" href={t.href}>
+					<span class="ref-card__icon" aria-hidden="true">{t.icon}</span>
+					<div class="ref-card__body">
+						<div class="ref-card__title-row">
+							<h3 class="ref-card__name">{t.name}</h3>
+							{t.count != null && (
+								<span class="ref-card__count">
+									{t.count.toLocaleString()}
+								</span>
+							)}
+						</div>
+						<p class="ref-card__desc">{t.desc}</p>
+					</div>
+				</a>
+			))}
+		</div>
+	</section>
+
 	<section class="guide-grid" id="prepare">
 		<InfoCard eyebrow="Start here" heading="Prepare for launch">
 			<ul>
@@ -172,15 +277,17 @@ const prepChecklist = [
 </BaseLayout>
 
 <style>
+	/* Homepage hero panel - themed via CSS vars so the same
+	   markup respects whatever theme BaseLayout applies. */
 	.hero {
 		display: grid;
 		grid-template-columns: 1.5fr 0.75fr;
 		gap: 1.5rem;
 		padding: 2.5rem;
-		background: rgba(255, 255, 255, 0.94);
-		border: 3px solid #8caf73;
+		background: var(--surface-hero-panel);
+		border: 3px solid var(--border-hero);
 		border-radius: 1.25rem;
-		box-shadow: 0 10px 30px rgba(49, 75, 50, 0.15);
+		box-shadow: var(--shadow-panel);
 	}
 
 	.hero-copy {
@@ -212,6 +319,81 @@ const prepChecklist = [
 		margin-bottom: 1rem;
 	}
 
+	/* Spotlight card - used for Forgotten Hollow (Sprint 60) and any
+	 * future "new zone / new system" call-outs. Renders a two-column
+	 * layout with copy on the left and a badge card on the right. */
+	.spotlight {
+		padding: 1.5rem 1.75rem;
+		background: linear-gradient(135deg,
+			color-mix(in srgb, var(--accent-primary) 22%, var(--surface-card)),
+			var(--surface-card) 65%);
+		border: 2px solid var(--accent-primary);
+		border-radius: 1rem;
+		box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+	}
+	.spotlight__inner {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1.5rem;
+		align-items: center;
+	}
+	.spotlight__copy h2 {
+		margin: 0.3rem 0 0.6rem;
+		font-size: 1.8rem;
+		color: var(--text-heading);
+	}
+	.spotlight__copy p {
+		margin: 0.4rem 0 0.9rem;
+		max-width: 52ch;
+		line-height: 1.55;
+		color: var(--text-body);
+	}
+	/* Inline paragraph links only. Scoped to `p a` so it doesn't
+	 * hijack the .primary-button / .secondary-button styling
+	 * inside .spotlight__actions (which sets its own white text). */
+	.spotlight__copy p a {
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+	.spotlight__actions {
+		display: flex;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+	}
+	.spotlight__badge {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.15rem;
+		padding: 1.1rem 1.4rem;
+		background: var(--bg-cloud);
+		border: 1px dashed var(--accent-primary);
+		border-radius: 0.7rem;
+		min-width: 12rem;
+	}
+	.spotlight__badge-eyebrow {
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-weight: 700;
+		color: var(--text-muted);
+	}
+	.spotlight__badge-name {
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: var(--accent-primary);
+		text-align: center;
+	}
+	.spotlight__badge-loc {
+		font-size: 0.8rem;
+		color: var(--text-body);
+	}
+	@media (max-width: 640px) {
+		.spotlight__inner {
+			grid-template-columns: 1fr;
+		}
+	}
+
 	.section-heading h2 {
 		margin-bottom: 0;
 	}
@@ -237,6 +419,58 @@ const prepChecklist = [
 		margin-top: 2rem;
 	}
 
+	/* Reference-database tiles - 3-col grid on desktop, collapses
+	   at narrow widths. Emoji icons anchor the eye; the count pill
+	   right-aligns so the numbers form a scannable column. */
+	.ref-grid {
+		display: grid;
+		/* 19rem min → collapses to 3 cols at typical desktop widths
+		   so 6 tiles form a clean 2x3 grid instead of 4+2. Falls back
+		   to 2 cols at ~640px, 1 col at ~340px. */
+		grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+		/* 1fr rows keeps card heights uniform across rows even when
+		   descriptions have different line counts. */
+		grid-auto-rows: 1fr;
+		gap: 0.75rem;
+	}
+	.ref-card {
+		display: flex; gap: 0.85rem; align-items: flex-start;
+		padding: 0.9rem 1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.6rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+	}
+	.ref-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	}
+	.ref-card__icon {
+		font-size: 1.75rem; line-height: 1;
+		flex-shrink: 0;
+	}
+	.ref-card__body { flex: 1; min-width: 0; }
+	.ref-card__title-row {
+		display: flex; align-items: baseline; justify-content: space-between;
+		gap: 0.5rem; margin-bottom: 0.25rem;
+	}
+	.ref-card__name {
+		margin: 0; font-size: 1rem;
+		color: var(--accent-primary);
+	}
+	.ref-card__count {
+		font-family: monospace; font-size: 0.75rem; font-weight: bold;
+		color: var(--text-muted);
+		background: var(--bg-cloud);
+		padding: 0.1rem 0.45rem; border-radius: 999px;
+	}
+	.ref-card__desc {
+		margin: 0; font-size: 0.85rem; color: var(--text-muted);
+		line-height: 1.4;
+	}
+
 	.countdown-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -245,7 +479,7 @@ const prepChecklist = [
 
 	.countdown-note {
 		font-size: 0.78rem;
-		color: #5d665d;
+		color: var(--text-muted);
 		font-style: italic;
 	}
 
@@ -261,7 +495,7 @@ const prepChecklist = [
 	}
 
 	.see-all a {
-		color: #365c3a;
+		color: var(--accent-primary-strong);
 		text-decoration: underline;
 		text-underline-offset: 2px;
 		font-weight: bold;

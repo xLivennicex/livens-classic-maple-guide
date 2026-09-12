@@ -1,0 +1,363 @@
+---
+/**
+ * /mobs/[id] - full dossier for one mob.
+ *
+ * Sourced from three cross-referenced datamines:
+ *   - osmsdataexplorer.com (mob roster + quest cross-refs)
+ *   - maplestory.io (Mob.wz stats: HP/MP/EXP/level/attack/defense)
+ *   - MeowDB (crowdsourced community drop tables)
+ *
+ * Stats block only renders when mob.wzId resolved AND stats came
+ * back non-null. Falls through gracefully otherwise - the disclaimer
+ * flips to explain which data is missing for THIS mob.
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import mobDossiers from "../../data/db/mobs.json";
+import itemDossiers from "../../data/db/items.json";
+import { mobSpriteUrl, mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+import Sprite from "../../components/Sprite.astro";
+import { themeForLocation } from "../../lib/region-theme";
+
+// Pre-index items by WZ ID so drop-table rows can render an icon
+// + link into /items/{id}. Missing items still render (name only) -
+// MeowDB may list drops for items that aren't in our datamine yet.
+const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	return mobDossiers.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d },
+	}));
+};
+
+const { d } = Astro.props;
+
+// Theme by scanning ALL spawn map names for a town substring so
+// e.g. Snail (first spawn "Snail Hunting Ground I", later spawn
+// "Henesys Field North") lands on henesys instead of the coarse
+// Victoria-Island fallback. Bosses without any spawn data fall
+// back to sleepywood (endgame / dungeon vibe).
+const spawnNames = (d.mapsSpawnedOn ?? []).map((s) => s.mapName);
+const primaryRegion = d.mapsSpawnedOn?.[0]?.region ?? "Ossyria";
+const pageTheme = themeForLocation(spawnNames, primaryRegion);
+---
+
+<BaseLayout
+	title={`${d.name} - Mobs - Liven's Classic Maple Guide`}
+	description={`${d.name} (mob ID ${d.id}) - quest requirements, spawn locations (soon), drop tables (soon).`}
+	theme={pageTheme}
+>
+	<nav class="crumbs">
+		<a href="/mobs">← Mobs</a>
+		<span class="crumbs__sep">·</span>
+		<span>{d.name}</span>
+	</nav>
+
+	<header class="hero">
+		<div class="hero__icon">
+			<Sprite
+				srcs={mobSpriteSrcs(d.id, d.wzId)}
+				alt={`${d.name} sprite`}
+				loading="eager"
+				placeholder={themePlaceholderUrl(pageTheme)}
+			/>
+		</div>
+		<div class="hero__title">
+			<h1>{d.name}</h1>
+			<div class="hero__badges">
+				<span class="badge badge--id">Mob ID {d.id}</span>
+				{d.stats?.level != null && (
+					<span class="badge badge--lvl">Lv. {d.stats.level}</span>
+				)}
+				{d.stats?.isBoss && <span class="badge badge--boss">BOSS</span>}
+				{d.stats?.isUndead && <span class="badge">Undead</span>}
+				<span class="badge">
+					Spawns on {d.mapsSpawnedOn?.length ?? 0} map{d.mapsSpawnedOn?.length === 1 ? "" : "s"}
+				</span>
+				<span class="badge">
+					Drops {d.drops?.length ?? 0} item{d.drops?.length === 1 ? "" : "s"}
+				</span>
+				<span class="badge">
+					{d.requiredByQuests.length} quest requirement{d.requiredByQuests.length === 1 ? "" : "s"}
+				</span>
+			</div>
+		</div>
+	</header>
+
+	{d.stats ? (
+		<section class="section">
+			<h2>Combat stats</h2>
+			<div class="stat-grid">
+				<div class="stat"><span class="stat__label">Level</span><span class="stat__val">{d.stats.level ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Max HP</span><span class="stat__val">{d.stats.maxHP?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Max MP</span><span class="stat__val">{d.stats.maxMP?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat stat--exp"><span class="stat__label">EXP</span><span class="stat__val">{d.stats.exp?.toLocaleString() ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Phys. ATK</span><span class="stat__val">{d.stats.physicalDamage ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Phys. DEF</span><span class="stat__val">{d.stats.physicalDefense ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Mag. ATK</span><span class="stat__val">{d.stats.magicDamage ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Mag. DEF</span><span class="stat__val">{d.stats.magicDefense ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Accuracy</span><span class="stat__val">{d.stats.accuracy ?? "?"}</span></div>
+				<div class="stat"><span class="stat__label">Evasion</span><span class="stat__val">{d.stats.evasion ?? "?"}</span></div>
+			</div>
+			<p class="muted-note">
+				Base stats mirrored from
+				<a href={`https://maplestory.io/api/GMS/83/mob/${d.wzId}`} target="_blank" rel="noopener">maplestory.io</a>
+				(GMS v83 Mob.wz). Classic World values may differ - Founder's
+				Access will let us verify in-game.
+			</p>
+		</section>
+	) : (
+		<div class="disclaimer">
+			<strong>Stats not yet mirrored for this mob.</strong>
+			{" "}Name lookup on maplestory.io didn't return a match (usually a
+			post-v83 CoT addition or a renamed variant). Quest cross-refs,
+			spawn maps, and drop table below are still authoritative.
+		</div>
+	)}
+
+	{d.drops && d.drops.length > 0 && (
+		<section class="section">
+			<h2>Drops <span class="count">({d.drops.length} item{d.drops.length === 1 ? "" : "s"})</span></h2>
+			<p class="muted-note">
+				Drop data crowdsourced from
+				<a href="https://meowdb.com/msclassic" target="_blank" rel="noopener">MeowDB</a>.
+				Score = community upvotes minus downvotes; higher = more
+				reliable sighting.
+			</p>
+			<div class="drop-table">
+				{d.drops.map((drop) => {
+					const item = itemsById.get(drop.itemId);
+					return (
+						<a
+							class="drop-row"
+							href={item ? `/items/${drop.itemId}` : "#"}
+							data-orphan={item ? undefined : "1"}
+						>
+							<img
+								class="drop-row__icon"
+								src={itemIconUrl(drop.itemId)}
+								alt=""
+								loading="lazy"
+								onerror="this.style.visibility='hidden'"
+							/>
+							<span class="drop-row__name">{drop.itemName}</span>
+							<span class="drop-row__type">
+								{drop.itemType}{drop.itemSubtype ? ` / ${drop.itemSubtype}` : ""}
+							</span>
+							<span class={`drop-row__score drop-row__score--${drop.score >= 5 ? "high" : drop.score >= 2 ? "med" : "low"}`}>
+								{drop.score > 0 ? `+${drop.score}` : drop.score}
+							</span>
+						</a>
+					);
+				})}
+			</div>
+		</section>
+	)}
+
+	{d.mapsSpawnedOn && d.mapsSpawnedOn.length > 0 && (
+		<section class="section">
+			<h2>Spawns on <span class="count">({d.mapsSpawnedOn.length} map{d.mapsSpawnedOn.length === 1 ? "" : "s"})</span></h2>
+			<div class="map-grid">
+				{d.mapsSpawnedOn.map((m) => (
+					<a class={`map-chip map-chip--${m.kind}`} href={`/maps/${m.mapId}`}>
+						<span class="map-chip__name">{m.mapName}</span>
+						<span class="map-chip__meta">
+							{m.region}{m.count > 1 ? ` · x${m.count} spawns` : ""}
+						</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	<section class="section">
+		<h2>Required by quests <span class="count">({d.requiredByQuests.length})</span></h2>
+		{d.requiredByQuests.length === 0 ? (
+			<p class="muted">
+				This mob isn't a documented quest requirement. It's still
+				killable for EXP grinding; it just doesn't gate any quest
+				completion.
+			</p>
+		) : (
+			<ul class="ref-list">
+				{d.requiredByQuests.map((q) => (
+					<li>
+						<span class="ref-name">
+							<a href={`/quests/${q.questId}`}>{q.questName}</a>
+						</span>
+						<span class="ref-meta">
+							{q.level != null && <>L{q.level} · </>}{q.region ?? "?"}
+							{q.count && q.count > 1 ? ` · defeat x${q.count}` : ""}
+						</span>
+					</li>
+				))}
+			</ul>
+		)}
+	</section>
+</BaseLayout>
+
+<style>
+	.crumbs {
+		font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;
+	}
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; }
+
+	.hero {
+		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;
+		align-items: center; padding: 1.5rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem; margin-bottom: 1rem;
+	}
+	.hero__icon {
+		width: 96px; height: 96px;
+		display: flex; align-items: center; justify-content: center;
+		background: var(--bg-cloud); border-radius: 0.5rem;
+		image-rendering: pixelated;
+	}
+	.hero__icon img { max-width: 100%; max-height: 100%; }
+	.hero__title h1 { margin: 0 0 0.5rem; }
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.badge {
+		display: inline-block; padding: 0.25rem 0.6rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px;
+	}
+	.badge--id { background: var(--bg-cloud); color: var(--text-muted); font-family: monospace; }
+	.badge--lvl { background: #d1e0e7; color: #2e4a5d; font-family: monospace; }
+	.badge--boss { background: #7a1f1f; color: #ffe8c8; letter-spacing: 0.08em; }
+
+	/* Combat stats grid - responsive, denormalized labels/values so
+	   a reader can scan the 10-field block without reading full
+	   sentences. `--exp` variant highlights the payoff stat. */
+	.stat-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+		gap: 0.4rem;
+		margin-bottom: 0.75rem;
+	}
+	.stat {
+		display: flex; flex-direction: column;
+		padding: 0.55rem 0.75rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem;
+	}
+	.stat--exp { border-left: 3px solid var(--accent-primary); }
+	.stat__label {
+		font-size: 0.7rem; text-transform: uppercase;
+		letter-spacing: 0.06em; color: var(--text-muted);
+	}
+	.stat__val {
+		font-size: 1.05rem; font-weight: 600; font-family: monospace;
+		margin-top: 0.15rem;
+	}
+
+	.disclaimer {
+		margin-bottom: 1.5rem;
+		padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem; line-height: 1.5;
+	}
+
+	.section { margin: 1.5rem 0; }
+	.section h2 { font-size: 1.3rem; margin: 0 0 0.8rem; }
+	.count { font-weight: normal; color: var(--text-muted); font-size: 0.85rem; }
+	.muted { color: var(--text-muted); font-style: italic; margin: 0; }
+
+	.ref-list {
+		list-style: none; padding: 0; margin: 0;
+		background: var(--surface-card); border: 1px solid var(--border-card);
+		border-radius: 0.5rem; overflow: hidden;
+	}
+	.ref-list li {
+		display: flex; flex-direction: column;
+		padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-card);
+	}
+	.ref-list li:last-child { border-bottom: none; }
+	.ref-name { font-weight: 500; }
+	.ref-name a { color: var(--accent-primary); text-decoration: none; }
+	.ref-name a:hover { text-decoration: underline; }
+	.ref-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+	/* Cross-referenced spawn-map chips. Kind-tinted border rail so
+	   a reader can eyeball 'training map' vs 'hidden street' at a
+	   glance without reading a badge. */
+	.map-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+		gap: 0.5rem;
+	}
+	.map-chip {
+		display: flex; flex-direction: column;
+		padding: 0.6rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		text-decoration: none; color: inherit;
+		transition: transform 100ms ease, border-color 100ms ease;
+	}
+	.map-chip:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.map-chip--training { border-left-color: #7cc48a; }
+	.map-chip--hidden   { border-left-color: #a07cc4; }
+	.map-chip--town     { border-left-color: #7ca0c4; }
+	.map-chip__name { font-weight: 500; font-size: 0.9rem; color: var(--accent-primary); }
+	.map-chip__meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+	/* Drop table: icon | name | type | community score. Score pill
+	   uses the same green/yellow/gray convention as verification
+	   badges - reader instantly knows if a listed drop is well-
+	   confirmed vs a single-report rumor. */
+	.muted-note {
+		font-size: 0.8rem; color: var(--text-muted);
+		margin: 0 0 0.8rem; font-style: italic;
+	}
+	.muted-note a { color: var(--accent-primary); }
+	.drop-table {
+		display: flex; flex-direction: column; gap: 0.3rem;
+	}
+	.drop-row {
+		display: grid;
+		grid-template-columns: 32px 1fr auto auto;
+		align-items: center; gap: 0.7rem;
+		padding: 0.4rem 0.7rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem;
+		text-decoration: none; color: inherit;
+		transition: background 120ms ease;
+	}
+	.drop-row:hover { background: var(--bg-cloud); }
+	.drop-row[data-orphan="1"] {
+		opacity: 0.6; cursor: default; pointer-events: none;
+	}
+	.drop-row__icon {
+		width: 24px; height: 24px; object-fit: contain;
+		image-rendering: pixelated;
+	}
+	.drop-row__name {
+		font-weight: 500; color: var(--accent-primary);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.drop-row[data-orphan="1"] .drop-row__name { color: var(--text-muted); }
+	.drop-row__type {
+		font-size: 0.75rem; color: var(--text-muted);
+		font-family: monospace;
+	}
+	.drop-row__score {
+		padding: 0.15rem 0.5rem;
+		font-size: 0.75rem; font-weight: bold; font-family: monospace;
+		border-radius: 999px;
+		background: var(--bg-cloud); color: var(--text-muted);
+		min-width: 2.5rem; text-align: center;
+	}
+	.drop-row__score--high { background: #d1e7d1; color: #2e5d31; }
+	.drop-row__score--med  { background: #e7dfd1; color: #5d4a2e; }
+</style>

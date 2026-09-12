@@ -1,0 +1,143 @@
+---
+/**
+ * /items/[item] - one item detail page per WZ ID, with editorial
+ * overlay when a matching content collection entry exists.
+ *
+ * The `item` param accepts EITHER:
+ *   - A WZ ID (e.g. /items/2000000) - canonical URL
+ *   - An editorial slug (e.g. /items/red-potion) - legacy URL
+ *     kept for backwards compat with links we've already shipped.
+ *
+ * getStaticPaths generates one path per dossier ID plus one extra
+ * per editorial slug so both URL styles route to the same page.
+ *
+ * The layout (ItemDetailLayout) receives the dossier ALWAYS and
+ * the editorial overlay OPTIONALLY. Zero code duplication.
+ */
+
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import ItemDetailLayout from "../../layouts/ItemDetailLayout.astro";
+import itemDossiers from "../../data/db/items.json";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	/**
+	 * Sprint 69: compute "related items" during path generation so the
+	 * layout receives a small pre-filtered list instead of re-scanning
+	 * the 4300-item corpus on every render.
+	 *
+	 * Note: defined INSIDE getStaticPaths because Astro isolates the
+	 * getStaticPaths scope during static path generation - module-
+	 * level helpers get "not defined" errors in the prerender chunk.
+	 *
+	 * Grouping strategy:
+	 *   - Only Equipment category items are eligible (weapons + armor).
+	 *   - Weapons: group by `weaponType` (Sword, Axe, Bow, etc.). Wider
+	 *     +/-10 level window because weapons are sparsely leveled.
+	 *   - Armor: group by `subCategory` (Hat, Top, Bottom, Shoes, Glove,
+	 *     Shield, Cape, Overall, Earring). Tighter +/-5 level window.
+	 *
+	 * NOTE: `equipSlot` field is null on ~95% of equipment in items.json
+	 * so it's UNRELIABLE for grouping. Only 208/4300 items have equipSlot
+	 * set. The actual axis of similarity is `subCategory` for armor and
+	 * `weaponType` for weapons. Weapons all share subCategory="Weapon"
+	 * so subCategory alone isn't specific enough there.
+	 *
+	 * Same reqJobLabel OR one of them "All" (don't cross-recommend a
+	 * Warrior sword to a Magician viewer). Level fallback: `reqLevel ?? 0`
+	 * so tier-0 starter gear participates. Consumables and etc-items
+	 * skip the section entirely.
+	 */
+	function findRelatedItems(current: any) {
+		if (current.category !== "Equipment") return [];
+
+		const isWeapon = Boolean(current.weaponType);
+		// Non-weapon equipment must have a subCategory (Hat/Top/etc.)
+		// to be grouped. Weapons use weaponType instead.
+		if (!isWeapon && !current.subCategory) return [];
+
+		const currentLevel = current.stats?.reqLevel ?? 0;
+		const currentJob = current.reqJobLabel ?? "All";
+		const LEVEL_WINDOW = isWeapon ? 10 : 5;
+
+		return itemDossiers
+			.filter((it: any) => {
+				if (it.id === current.id) return false;
+				if (it.category !== "Equipment") return false;
+				// Group by the appropriate axis: weaponType OR subCategory.
+				if (isWeapon) {
+					if (it.weaponType !== current.weaponType) return false;
+				} else {
+					if (it.subCategory !== current.subCategory) return false;
+					// Don't let a Sword sneak into a Shield's related list
+					// just because subCategory="Weapon" matches something odd.
+					if (it.weaponType) return false;
+				}
+				const lv = it.stats?.reqLevel ?? 0;
+				if (Math.abs(lv - currentLevel) > LEVEL_WINDOW) return false;
+				const itJob = it.reqJobLabel ?? "All";
+				if (currentJob !== "All" && itJob !== "All" && currentJob !== itJob) return false;
+				return true;
+			})
+			.map((it: any) => ({
+				id: it.id,
+				name: it.name,
+				reqLevel: it.stats?.reqLevel ?? null,
+				equipSlot: it.equipSlot,
+				subCategory: it.weaponType ?? it.subCategory,
+			}))
+			.sort((a: any, b: any) => (a.reqLevel ?? 0) - (b.reqLevel ?? 0))
+			.slice(0, 8);
+	}
+
+	const editorialEntries = await getCollection("items");
+
+	// Map WZ ID -> editorial entry so lookup is O(1) during path gen.
+	const editorialByWzId = new Map(
+		editorialEntries.map((e) => [e.data.wzId, e]),
+	);
+
+	// Every dossier gets a WZ-ID-keyed path. Editorial entries also
+	// get a slug-keyed path so legacy links keep working.
+	const paths: Array<{ params: { item: string }; props: any }> = [];
+
+	for (const dossier of itemDossiers) {
+		const editorial = editorialByWzId.get(dossier.id);
+		const overlay = editorial
+			? {
+					tagline: editorial.data.tagline,
+					editorial: editorial.data.editorial,
+					callout: editorial.data.callout,
+					relatedGuides: editorial.data.relatedGuides ?? [],
+					verificationStatus: editorial.data.verificationStatus,
+					verificationNote: editorial.data.verificationNote,
+					sourceSlugs: editorial.data.sourceSlugs ?? [],
+					lastUpdated: editorial.data.lastUpdated,
+					slug: editorial.id,
+				}
+			: null;
+
+		const related = findRelatedItems(dossier);
+
+		// Canonical WZ ID path
+		paths.push({
+			params: { item: String(dossier.id) },
+			props: { dossier, editorial: overlay, related },
+		});
+
+		// Legacy slug path (only for editorial entries)
+		if (editorial) {
+			paths.push({
+				params: { item: editorial.id },
+				props: { dossier, editorial: overlay, related },
+			});
+		}
+	}
+
+	return paths;
+};
+
+const { dossier, editorial, related } = Astro.props;
+---
+
+<ItemDetailLayout dossier={dossier} editorial={editorial} related={related} />

@@ -1,0 +1,295 @@
+---
+/**
+ * /guides/thief-2nd-job - Thief 2nd job branches guide.
+ *
+ * Verification posture: Thief's 1st-job kit is datamine-confirmed
+ * unchanged in CoT 2 (osmsdataexplorer.com; see skill-changes.astro).
+ * 2nd-job kits assume v83 baseline pending Founder's Access.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Thief 2nd Job Branches: Assassin or Bandit - Liven's Classic Maple Guide"
+	description="Level 30 Thieves pick between Assassin (claw + throwing stars) and Bandit (dagger). Two completely different playstyles, one shared Haste buff. Full skill kits, build orders, and playstyle identity for both branches, framed against canonical v83."
+	currentPath="/guides"
+	theme="kerning"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">2nd Job Branches</span>
+			<h1>Thief: Assassin or Bandit?</h1>
+			<p class="lede">
+				The Thief branching decision is the most radical in the
+				game. Assassin becomes a ranged LUK-scaling star-thrower.
+				Bandit becomes a melee LUK-scaling dagger user. Same
+				stat, opposite ranges, entirely different rhythms. Both
+				get Haste - the game's best party movement buff. Here's
+				the full breakdown.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Verification:</strong> Thief's 1st-job kit is
+			<a href="/guides/skill-changes">datamine-confirmed unchanged</a>
+			in CoT 2. 2nd-job kits below are canonical v83; numeric
+			values (damage %, max levels, MP costs) pending Founder's
+			Access datamine verification. Internal client name for the
+			class is "Rogue" but the visible name is "Thief" -
+			cosmetic-only.
+		</div>
+
+		<h2 id="summary">The two branches at a glance</h2>
+		<div class="guide-summary-grid">
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Assassin <span class="status-pill status-pill--new">RANGED CRIT</span></h3>
+				<p>
+					<strong>Claw + throwing stars.</strong> Ranged.
+					Lucky Seven throws 2 stars per cast for high crit-
+					friendly damage. Critical Throw guarantees a % crit
+					rate. Positioning matters - you're squishy but you
+					can kite anything. Becomes Hermit at 70, Night Lord
+					at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Bandit <span class="status-pill status-pill--rework">MELEE MULTI-HIT</span></h3>
+				<p>
+					<strong>Dagger.</strong> Melee. Savage Blow is a
+					6-hit dagger flurry with strong per-hit damage.
+					Steal is a chance to snatch drops from mobs. Higher
+					survivability than Assassin (has to be - you're
+					in melee range). Becomes Chief Bandit at 70, Shadower
+					at 120.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="the-decision">The decision, in one paragraph</h2>
+		<p>
+			<strong>Assassin if you like being untouchable.</strong> Range
+			+ Haste + Dark Sight (from 1st job) = you never get hit.
+			Highest single-target burst potential. Star cost is real but
+			cheap.
+			<strong>Bandit if you like flurry damage AND drop farming.</strong>
+			Savage Blow's 6 hits stack ridiculous damage numbers,
+			especially with Steal's bonus drops turning your grinding
+			into a mesos machine. Bandit also gets the meta-defining
+			3rd-job skill (Meso Explosion), but that's Chief Bandit's
+			problem - at 2nd job both are strong.
+		</p>
+
+		<hr />
+
+		<h2 id="assassin">Branch 1: Assassin</h2>
+		<p class="section-lede">
+			The ranged branch. Claw + stars. Lucky Seven is your main
+			button, Critical Throw is your damage multiplier. Nobody
+			catches you.
+		</p>
+
+		<h3>Assassin skill kit (v83 baseline, 6 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Claw Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>+Claw mastery %, +accuracy. Priority max - Lucky Seven damage variance shrinks massively.</td>
+					</tr>
+					<tr>
+						<td><strong>Claw Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Claws. Consumes MP.</td>
+					</tr>
+					<tr>
+						<td><strong>Critical Throw</strong></td>
+						<td>Passive</td>
+						<td>30</td>
+						<td>Guaranteed % chance for throwing-star attacks to crit (with a bonus crit damage multiplier). Signature Assassin damage boost.</td>
+					</tr>
+					<tr>
+						<td><strong>Drain</strong></td>
+						<td>Attack (life steal)</td>
+						<td>30</td>
+						<td>Single-hit Claw attack that steals HP equal to a % of damage dealt. Solo survivability + damage in one skill.</td>
+					</tr>
+					<tr>
+						<td><strong>Endure</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Boosts HP/MP regen while sitting on the ground. Marginal but cheap.</td>
+					</tr>
+					<tr>
+						<td><strong>Haste</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+movement speed +jump to self AND party for a duration. Best Thief party contribution. Everyone wants Haste.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Assassin recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Claw Booster + 1 point in Haste (immediate party value). Dump into Claw Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Claw Mastery (20 points). This is where Lucky Seven becomes reliable.</li>
+			<li><strong>Levels 45-55</strong>: Max Critical Throw (30 points). Damage doubles once this is high.</li>
+			<li><strong>Levels 55-60</strong>: Max Haste (20 points). Full party utility.</li>
+			<li><strong>Levels 60-65</strong>: Max Claw Booster (20 points).</li>
+			<li><strong>Levels 65-70</strong>: Drain (30) or Endure (20) filler. Drain is optional in party settings; Endure is optional in general.</li>
+		</ol>
+		<p>
+			<strong>Star management</strong>: at 30 you're still on Steely
+			Throwing Knives or Ilbi (endgame stars are 3rd-job problem).
+			Buy in bulk - a full stack of Steelies lasts hours.
+		</p>
+
+		<hr />
+
+		<h2 id="bandit">Branch 2: Bandit</h2>
+		<p class="section-lede">
+			The melee branch. Dagger. Savage Blow is your grinding
+			button and Steal is your income accelerant. Higher HP
+			than Assassin, closer to targets, tanks better.
+		</p>
+
+		<h3>Bandit skill kit (v83 baseline, 6 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Dagger Mastery</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>+Dagger mastery %, +accuracy. Same math as Claw Mastery.</td>
+					</tr>
+					<tr>
+						<td><strong>Dagger Booster</strong></td>
+						<td>Buff</td>
+						<td>20</td>
+						<td>+2 attack speed for Daggers.</td>
+					</tr>
+					<tr>
+						<td><strong>Steal</strong></td>
+						<td>Attack (utility)</td>
+						<td>20</td>
+						<td>Single-target dagger attack with a % chance to STEAL an item from the mob's drop table on hit. Bandit's signature income skill. Turns grinding into farming.</td>
+					</tr>
+					<tr>
+						<td><strong>Savage Blow</strong></td>
+						<td>Attack (multi-hit)</td>
+						<td>30</td>
+						<td>6-hit dagger flurry on a single target. Each hit rolls damage independently. Huge crit potential + sustained DPS. Core grinding button.</td>
+					</tr>
+					<tr>
+						<td><strong>Endure</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Same as Assassin. Marginal, cheap.</td>
+					</tr>
+					<tr>
+						<td><strong>Haste</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>Same as Assassin. Universal Thief party utility.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Bandit recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Dagger Booster + 1 point in Haste. Dump into Dagger Mastery.</li>
+			<li><strong>Levels 35-45</strong>: Max Dagger Mastery (20 points).</li>
+			<li><strong>Levels 45-55</strong>: Max Savage Blow (30 points). This is your grinding identity.</li>
+			<li><strong>Levels 55-60</strong>: Max Haste (20 points).</li>
+			<li><strong>Levels 60-65</strong>: Max Dagger Booster (20 points).</li>
+			<li><strong>Levels 65-70</strong>: Max Steal (20 points) if you love farming; otherwise Endure filler. Steal shines against specific-drop mobs (etc quest items, rare potion drops).</li>
+		</ol>
+		<p>
+			<strong>Steal ROI</strong>: Steal's proc chance is modest but
+			the DROPPED item is duplicate-yield - you get the normal drop
+			roll AND the stolen item. Great vs mobs that drop crafting
+			mats, quest items, or scrolls.
+		</p>
+
+		<hr />
+
+		<h2 id="progression">Common 2nd-job progression (30 to 70)</h2>
+
+		<h3>Where to grind</h3>
+		<ul>
+			<li><strong>Lv 30-40</strong>: Ligators + Cursed Eyes at
+				Kerning Swamp (Assassin star heaven). Zombie Mushrooms
+				+ Wild Boars for Bandit Savage Blow single-target
+				practice.</li>
+			<li><strong>Lv 40-55</strong>: Copper Drakes at Sleepywood.
+				Wraiths (both branches). Ludi PQ full window.</li>
+			<li><strong>Lv 55-70</strong>: Fire Boars at Burning Land
+				(Assassin), Coolie Zombies (Bandit Savage Blow +
+				Steal). Death Teddies at Ludi. Ludi Maze PQ (55-70).</li>
+		</ul>
+
+		<h3>Gear buys at Lv 30</h3>
+		<p>
+			<strong>Assassin claws</strong>: Steel Chakramas (Lv 30, cheap
+			starter), Kandayo (Lv 40, upgrade target), Serpent's Coil
+			(Lv 50, endgame 2nd-job claw).
+			<strong>Bandit daggers</strong>: Fruit Knife (Lv 30 starter),
+			Dragon Kanzir (Lv 43, high per-hit damage), Ganges Dagger
+			(Lv 50).
+		</p>
+		<p>
+			Armor priority: <strong>LUK overall</strong> or top+bottom
+			with 10% LUK scrolls. LUK is Thief's primary damage stat.
+			DEX only matters for accuracy (which mastery already covers).
+			Ignore anything without LUK on it.
+		</p>
+
+		<h3>What to expect at 3rd job (70)</h3>
+		<ul>
+			<li><strong>Assassin -&gt; Hermit</strong>: Avenger (piercing
+				3-hit star shot), Shadow Web (AoE stun web),
+				Meso Up (bonus mesos from mobs), Shadow Partner
+				(clone that copies your attacks). This is where
+				Assassins go feral.</li>
+			<li><strong>Bandit -&gt; Chief Bandit</strong>: Meso
+				Explosion (drop mesos + detonate them for insane AoE
+				damage - defining skill of the class), Assaulter
+				(dash-attack), Pickpocket (mobs drop mesos when hit),
+				Band of Thieves (summon). Chief Bandit is a top-3
+				grinding class from 70 to 200.</li>
+		</ul>
+
+		<h2 id="related">Related reading</h2>
+		<ul>
+			<li><a href="/jobs/thief">Thief 1st Job Guide</a></li>
+			<li><a href="/guides/skill-changes">Skill Changes: v83 vs CoT 2</a> - Thief 1st job confirmed unchanged</li>
+			<li><a href="/guides/party-exp">Party EXP &amp; Grinding</a></li>
+			<li><a href="/guides/exp-then-vs-now">EXP: Then vs Now</a></li>
+		</ul>
+	</article>
+</BaseLayout>

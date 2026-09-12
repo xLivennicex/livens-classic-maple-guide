@@ -1,0 +1,179 @@
+---
+/**
+ * /jobs/[job]/builds - per-level SP allocation guides.
+ *
+ * Reads `src/data/skill-builds/{job}.json`. Only classes with a
+ * corresponding data file get a builds page - the getStaticPaths
+ * filter enumerates JSON files at build time, so adding a new
+ * class = drop a new JSON file + rebuild. No wiring needed.
+ *
+ * Sprint 53 v1 ships Bowman 1st Job only as pattern proof. Follow-up
+ * sprints will add: Bowman 2nd (Hunter + Crossbowman), Bowman 3rd
+ * (Ranger + Sniper), then Warrior/Magician/Thief full ladders.
+ *
+ * Layout mirrors /bosses/[slug] editorial style: theme-aware colors
+ * everywhere (learned that lesson in Sprint 52), tldr-style
+ * intro, then per-advancement `SkillBuildTable` blocks stacked.
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import SkillBuildTable, { type Advancement } from "../../../components/SkillBuildTable.astro";
+
+// Vite glob imports every skill-build data file. Each file's key in
+// the returned object is its full path (e.g. "/src/data/skill-builds/bowman.json"),
+// so we derive slug from the filename.
+const buildFiles = import.meta.glob<{ default: SkillBuildFile }>(
+	"../../../data/skill-builds/*.json",
+	{ eager: true },
+);
+
+interface SkillBuildFile {
+	class: { slug: string; name: string; primaryStat: string; theme: string };
+	advancements: Advancement[];
+}
+
+// Build slug -> data map. Filename (without .json) becomes the slug
+// and must match the `class.slug` field inside for consistency (we
+// warn but don't hard-fail on mismatch).
+const bySlug = new Map<string, SkillBuildFile>();
+for (const [path, mod] of Object.entries(buildFiles)) {
+	const filename = path.split(/[\\/]/).pop() ?? "";
+	const slug = filename.replace(/\.json$/, "");
+	if (mod.default.class.slug !== slug) {
+		// eslint-disable-next-line no-console
+		console.warn(`[builds] filename slug "${slug}" != class.slug "${mod.default.class.slug}" in ${path}`);
+	}
+	bySlug.set(slug, mod.default);
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	// Only enumerate classes that actually have a skill-build JSON.
+	// This means /jobs/warrior/builds returns 404 until we ship the
+	// warrior data - preferred over shipping an empty page.
+	const files = import.meta.glob<{ default: { class: { slug: string } } }>(
+		"../../../data/skill-builds/*.json",
+		{ eager: true },
+	);
+	return Object.values(files).map((mod) => ({
+		params: { job: mod.default.class.slug },
+	}));
+};
+
+const { job } = Astro.params;
+const data = bySlug.get(job!);
+if (!data) throw new Error(`No skill-build data for ${job}`);
+
+const { class: klass, advancements } = data;
+const pageTheme = klass.theme as any;
+---
+
+<BaseLayout
+	title={`${klass.name} skill builds - Liven's Classic Maple Guide`}
+	description={`Level-by-level SP allocation plans for every ${klass.name} advancement. ${advancements.length} advancement${advancements.length === 1 ? "" : "s"} covered, with named build variants and reasoning for each choice.`}
+	theme={pageTheme}
+>
+	<nav class="crumbs">
+		<a href={`/jobs/${klass.slug}`}>← {klass.name}</a>
+		<span class="crumbs__sep">·</span>
+		<span>Skill builds</span>
+	</nav>
+
+	<header class="hero">
+		<div>
+			<span class="eyebrow">Skill build planner</span>
+			<h1>{klass.name} skill builds</h1>
+			<p class="lede">
+				Level-by-level SP allocation for {klass.name}. Every
+				advancement below has one or more named builds - each
+				with a per-level table, cumulative skill totals in every
+				column, and a paragraph explaining why the build is
+				shaped the way it is. Formatted after the classic
+				<a href="https://ayumilovemaple.wordpress.com/" target="_blank" rel="noopener">Ayumilove</a>
+				convention for MapleStory skill build guides.
+			</p>
+			<p class="build-meta">
+				<strong>{advancements.length} advancement{advancements.length === 1 ? "" : "s"}</strong>
+				documented so far. Full ladder (2nd, 3rd jobs) landing in
+				follow-up sprints. Skill max levels and IDs are CoT 2
+				verified; per-level plans reflect widely-accepted v83
+				meta.
+			</p>
+		</div>
+	</header>
+
+	{advancements.map((adv) => (
+		<SkillBuildTable advancement={adv} />
+	))}
+
+	<section class="section--tail">
+		<a class="tail-link" href={`/jobs/${klass.slug}`}>
+			← Back to {klass.name} main guide
+		</a>
+	</section>
+</BaseLayout>
+
+<style>
+	.crumbs {
+		display: inline-block;
+		font-size: 0.85rem;
+		margin-bottom: 1rem;
+		padding: 0.3rem 0.7rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 999px;
+		color: var(--text-body);
+	}
+	.crumbs a { color: var(--accent-primary); text-decoration: none; font-weight: 600; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+
+	.hero {
+		padding: 1.5rem 1.7rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.75rem;
+		margin-bottom: 1.5rem;
+	}
+	.eyebrow {
+		display: block;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--accent-primary);
+		margin-bottom: 0.3rem;
+	}
+	.hero h1 {
+		margin: 0 0 0.7rem;
+		font-size: 2.3rem;
+		color: var(--text-heading);
+	}
+	.lede {
+		margin: 0 0 0.6rem;
+		color: var(--text-body);
+		max-width: 68ch;
+		line-height: 1.55;
+	}
+	.lede a { color: var(--accent-primary); }
+	.build-meta {
+		margin: 0;
+		font-size: 0.87rem;
+		color: var(--text-muted);
+		max-width: 68ch;
+	}
+
+	.section--tail {
+		text-align: center;
+		margin: 2rem 0 1rem;
+	}
+	.tail-link {
+		display: inline-block;
+		padding: 0.6rem 1.2rem;
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+		text-decoration: none;
+		border-radius: 0.5rem;
+		font-weight: 600;
+	}
+	.tail-link:hover { opacity: 0.9; }
+</style>

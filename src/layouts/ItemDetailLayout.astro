@@ -1,0 +1,981 @@
+---
+/**
+ * ItemDetailLayout - the single canonical item detail page.
+ *
+ * Unifies two data sources:
+ *   1. Dossier (always present) - the datamine cross-reference from
+ *      src/data/db/items.json. Provides stats, category, price,
+ *      acquisition, uses.
+ *   2. Editorial (optional overlay) - a `items` content collection
+ *      entry. Provides Liven's tagline, prose, callout, related
+ *      guides, and verification metadata.
+ *
+ * Design principle: honest fallbacks. Every field has a defined
+ * behavior when its data source is absent - the page never renders
+ * a broken half. Editorial overlay is purely additive.
+ *
+ * Zen of Python: "There should be one - and preferably only one -
+ * obvious way to do it." One layout. One route. One item detail
+ * page. The dossier is the single source of truth; editorial is
+ * curated commentary.
+ */
+
+import BaseLayout from "./BaseLayout.astro";
+import SourceCard from "../components/SourceCard.astro";
+import LastUpdated from "../components/LastUpdated.astro";
+import { getSource, type SourceType } from "../data/sources";
+import { itemIconUrl, mobSpriteUrl, mobSpriteSrcs, themePlaceholderUrl } from "../lib/maplestory-cdn";
+import Sprite from "../components/Sprite.astro";
+import mobDossiers from "../data/db/mobs.json";
+
+interface QuestRef {
+	questId: string;
+	questName: string;
+	level?: number | null;
+	region?: string | null;
+	count?: number;
+	guaranteed?: boolean;
+}
+
+interface CraftRef {
+	discipline: string;
+	outputType?: string;
+	reqLevel?: number | null;
+	mesoCost?: number | null;
+	craftExp?: number | null;
+	resultCount?: number | null;
+	ingredients?: Array<{ id: number | null; name: string; count: number }>;
+	outputId?: number;
+	outputName?: string;
+	count?: number;
+}
+
+interface StatRange {
+	base: number;
+	min: number;
+	max: number;
+}
+
+interface Dossier {
+	id: number;
+	name: string;
+	category: string;
+	subCategory: string | null;
+	stats: Record<string, number>;
+	statRanges: { incPAD?: StatRange; incMAD?: StatRange } | null;
+	reqJobLabel: string | null;
+	weaponType: string | null;
+	attackSpeedLabel: string | null;
+	npcSellPrice: number | null;
+	spec: Record<string, number> | null;
+	description: string | null;
+	equipSlot: string | null;
+	statType: string | null;
+	tier: string | null;
+	givenByQuests: QuestRef[];
+	requiredByQuests: QuestRef[];
+	usedAsMaterial: CraftRef[];
+	craftableFrom: CraftRef[];
+	// Which mobs drop this item, sorted by community score desc.
+	// Populated by MeowDB scrape in the ingestion script.
+	droppedBy?: Array<{ mobId: number; mobName: string; score: number }>;
+	editorialSlug: string | null;
+}
+
+interface EditorialOverlay {
+	tagline?: string;
+	editorial?: string;
+	callout?: string;
+	relatedGuides?: string[];
+	verificationStatus?: SourceType;
+	verificationNote?: string;
+	sourceSlugs?: string[];
+	lastUpdated?: string;
+	slug?: string;
+}
+
+interface RelatedItem {
+	id: number;
+	name: string;
+	reqLevel: number | null;
+	equipSlot: string | null;
+	subCategory: string | null;
+}
+
+interface Props {
+	dossier: Dossier;
+	editorial?: EditorialOverlay | null;
+	// Sprint 69: pre-computed "same category, similar level" list.
+	// Populated by /pages/items/[item].astro getStaticPaths so we
+	// don't re-scan the full corpus per render. Empty array is
+	// valid (means item has no equip context to relate to, e.g.
+	// consumables and etc items).
+	related?: RelatedItem[];
+}
+
+const { dossier: d, editorial, related = [] } = Astro.props;
+
+// mobId -> {wzId, level, region} lookup so drop-table rows get
+// a fallback sprite URL (for the 9 mobs MeowDB doesn't serve) AND
+// a level/region hint next to the name. Hoisted once per page
+// render, shared across every <li> in the drop-source list.
+//
+// Sprint 69: added level + region enrichment so the reader can
+// see "farm at Ligator (Lv 15, Kerning City)" without an extra
+// click through to /mobs/{id}. First region listed on the mob
+// (mapsSpawnedOn[0].region) is the canonical "where you'd hunt
+// this" - subsequent regions are usually one-off spawns.
+interface MobInfo {
+	wzId: number | null;
+	level: number | null;
+	region: string | null;
+}
+const mobInfoById = new Map<number, MobInfo>(
+	mobDossiers.map((m) => [
+		m.id,
+		{
+			wzId: m.wzId ?? null,
+			level: m.stats?.level ?? null,
+			region: m.mapsSpawnedOn?.[0]?.region ?? null,
+		},
+	]),
+);
+
+// Human-friendly stat labels. MapleStory keys are terse (incPAD,
+// tuc); readers need the full name.
+const STAT_LABELS: Record<string, string> = {
+	tuc: "Upgrade slots",
+	attackSpeed: "Attack speed value",
+	incPAD: "Attack (PAD)",
+	incMAD: "Magic Attack (MAD)",
+	incPDD: "Physical Defense (PDD)",
+	incMDD: "Magic Defense (MDD)",
+	incSTR: "STR",
+	incDEX: "DEX",
+	incINT: "INT",
+	incLUK: "LUK",
+	incMHP: "Max HP",
+	incMMP: "Max MP",
+	incACC: "Accuracy",
+	incEVA: "Avoidability",
+	incSpeed: "Speed",
+	incJump: "Jump",
+	reqSTR: "Requires STR",
+	reqDEX: "Requires DEX",
+	reqINT: "Requires INT",
+	reqLUK: "Requires LUK",
+	reqLevel: "Requires level",
+};
+
+// Split stats into requirements vs bonuses so the display groups
+// naturally: "You need X to equip" vs "It gives you Y".
+const requirementKeys = new Set(["reqLevel", "reqSTR", "reqDEX", "reqINT", "reqLUK"]);
+const requirements = Object.entries(d.stats ?? {})
+	.filter(([k, v]) => requirementKeys.has(k) && v !== 0)
+	.sort();
+const bonuses = Object.entries(d.stats ?? {})
+	.filter(([k, v]) => !requirementKeys.has(k) && k !== "price" && v !== 0)
+	.sort();
+
+// Consumable effects (spec.hp / spec.mp) get their own compact block.
+const specEntries = Object.entries(d.spec ?? {}).filter(
+	([, v]) => v !== null && v !== undefined && v !== 0,
+);
+
+// Source cards - dedupe by slug, only render if editorial provided them.
+const sourceSlugs = editorial?.sourceSlugs ?? [];
+const uniqueSources = [...new Set(sourceSlugs)]
+	.map((s) => getSource(s))
+	.filter((s): s is NonNullable<ReturnType<typeof getSource>> => s !== undefined);
+
+const hasEditorial = Boolean(
+	editorial?.editorial || editorial?.callout || editorial?.tagline,
+);
+
+// Format helpers
+const fmt = (n: number | null | undefined) =>
+	n === null || n === undefined ? "-" : n.toLocaleString();
+
+const rangeLabel = (r: StatRange | undefined) =>
+	r ? `${r.min} ~ ${r.max}` : null;
+
+// Theme picker - if editorial provides a theme via its content
+// collection (not part of this overlay yet), we'd honor it here.
+// Default 'sleepywood' matches the database theme so all reference
+// pages feel like the same section of the site.
+const theme = "sleepywood";
+---
+
+<BaseLayout
+	title={`${d.name} - Items - Liven's Classic Maple Guide`}
+	description={
+		editorial?.tagline ??
+		d.description?.split("\n")[0] ??
+		`${d.name} (WZ ID ${d.id}) - stats, acquisition, uses, and cross-references.`
+	}
+	theme={theme}
+>
+	<nav class="crumbs">
+		<a href="/items">← Items</a>
+		<span class="crumbs__sep">·</span>
+		<span>{d.name}</span>
+	</nav>
+
+	<header class="hero">
+		<div class="hero__icon">
+			<img
+				src={itemIconUrl(d.id)}
+				alt={`${d.name} sprite`}
+				width="48"
+				height="48"
+				onerror="this.style.visibility='hidden'"
+			/>
+		</div>
+		<div class="hero__title">
+			<h1>{d.name}</h1>
+			{editorial?.tagline && <p class="hero__tagline">{editorial.tagline}</p>}
+			<div class="hero__badges">
+				{/* Sprint 69: WZ ID doubles as a copy-to-clipboard
+				    control. Renders as a button when JS is available
+				    (click copies + flashes "Copied!"); degrades to a
+				    plain non-interactive badge without JS. */}
+				<button
+					type="button"
+					class="badge badge--id badge--copyable"
+					data-copy-wzid={d.id}
+					aria-label={`Copy WZ ID ${d.id} to clipboard`}
+					title="Click to copy"
+				>
+					WZ ID {d.id}
+					<span class="badge--copyable__hint" aria-hidden="true">copy</span>
+				</button>
+				<span class="badge">{d.category}</span>
+				{d.subCategory && <span class="badge">{d.subCategory}</span>}
+				{d.weaponType && <span class="badge">{d.weaponType}</span>}
+				{d.reqJobLabel && d.reqJobLabel !== "All" && (
+					<span class="badge badge--job">{d.reqJobLabel}</span>
+				)}
+				{d.tier && <span class="badge badge--tier">{d.tier}</span>}
+			</div>
+		</div>
+		{/* Verification badge - simple inline indicator without
+		    the full VerificationNotice component (which requires
+		    checkedOn dates we don't carry in the overlay). */}
+		{editorial?.verificationStatus && (
+			<div class="hero__verify">
+				<span class="verify-badge">Verified: {editorial.verificationStatus}</span>
+			</div>
+		)}
+	</header>
+
+	{/* Description block - only shown if item.description exists */}
+	{d.description && (
+		<section class="section">
+			<div class="in-game-text">
+				<h3>In-game description</h3>
+				<p>{d.description}</p>
+			</div>
+		</section>
+	)}
+
+	{/* Editorial prose - Liven's take */}
+	{editorial?.editorial && (
+		<section class="section section--editorial">
+			<h2 class="section-panel-title">Liven's take</h2>
+			<div class="editorial-body" set:html={editorial.editorial} />
+		</section>
+	)}
+
+	{/* Callout - typically actionable advice */}
+	{editorial?.callout && (
+		<aside class="callout" set:html={editorial.callout} />
+	)}
+
+	{/* Stats grid - requirements + bonuses side by side when both exist */}
+	{(requirements.length > 0 || bonuses.length > 0 || specEntries.length > 0) && (
+		<section class="section">
+			<h2 class="section-panel-title">Stats</h2>
+			<div class="stats-grid">
+				{requirements.length > 0 && (
+					<div class="stat-card">
+						<h3>Requirements</h3>
+						<table class="stat-table">
+							<tbody>
+								{requirements.map(([k, v]) => (
+									<tr>
+										<td>{STAT_LABELS[k] ?? k}</td>
+										<td class="stat-value">{v}</td>
+									</tr>
+								))}
+								{d.reqJobLabel && d.reqJobLabel !== "All" && (
+									<tr>
+										<td>Requires job</td>
+										<td class="stat-value">{d.reqJobLabel}</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+					</div>
+				)}
+				{bonuses.length > 0 && (
+					<div class="stat-card">
+						<h3>Stats granted</h3>
+						<table class="stat-table">
+							<tbody>
+								{bonuses.map(([k, v]) => {
+									const range = d.statRanges?.[k as "incPAD" | "incMAD"];
+									return (
+										<tr>
+											<td>{STAT_LABELS[k] ?? k}</td>
+											<td class="stat-value">
+												{range ? (
+													<>
+														<span class="stat-range">{range.min} ~ {range.max}</span>
+														<small class="stat-base">(base {range.base})</small>
+													</>
+												) : (
+													v
+												)}
+											</td>
+										</tr>
+									);
+								})}
+								{d.attackSpeedLabel && (
+									<tr>
+										<td>Attack speed</td>
+										<td class="stat-value">{d.attackSpeedLabel}</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+					</div>
+				)}
+				{specEntries.length > 0 && (
+					<div class="stat-card">
+						<h3>Effect</h3>
+						<table class="stat-table">
+							<tbody>
+								{specEntries.map(([k, v]) => (
+									<tr>
+										<td>{k === "hp" ? "Restores HP" : k === "mp" ? "Restores MP" : k}</td>
+										<td class="stat-value">+{v}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
+			</div>
+			{d.statRanges && (
+				<p class="stat-note">
+					Attack ranges shown are calculated via the standard v83-era
+					variance formula (base &plusmn; base/10). Actual roll variance
+					may differ slightly - CoT 2's exact wz variance values aren't
+					publicly exposed yet.
+				</p>
+			)}
+		</section>
+	)}
+
+	{/* Economy strip - NPC sell price */}
+	{d.npcSellPrice !== null && (
+		<section class="section">
+			<div class="econ-strip">
+				<div class="econ-cell">
+					<span class="econ-label">NPC sell price</span>
+					<span class="econ-value">{fmt(d.npcSellPrice)} mesos</span>
+				</div>
+			</div>
+		</section>
+	)}
+
+	{/* Acquisition sources: quests + crafting */}
+	<section class="section">
+		<h2 class="section-panel-title">Where it comes from</h2>
+		<div class="acq-grid">
+			<div class="acq-column">
+				<h3>Given by quests <span class="count">({d.givenByQuests.length})</span></h3>
+				{d.givenByQuests.length === 0 ? (
+					<p class="muted">Not a documented quest reward.</p>
+				) : (
+					<ul class="ref-list">
+						{d.givenByQuests.map((q) => (
+							<li>
+								<span class="ref-name">
+									<a href={`/quests/${q.questId}`}>{q.questName}</a>
+								</span>
+								<span class="ref-meta">
+									{q.level != null && <>L{q.level} · </>}{q.region ?? "?"}
+									{q.count && q.count > 1 ? ` · x${q.count}` : ""}
+									{q.guaranteed ? " · guaranteed" : ""}
+								</span>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+
+			<div class="acq-column">
+				<h3>Dropped by <span class="count">({d.droppedBy?.length ?? 0})</span></h3>
+				{(d.droppedBy?.length ?? 0) === 0 ? (
+					<p class="muted">
+						Not in any documented mob drop table. Either the drop
+						hasn't been crowdsourced at
+						<a href="https://meowdb.com/msclassic" target="_blank" rel="noopener">MeowDB</a>
+						yet, or this item is quest/craft/vendor-only.
+					</p>
+				) : (
+					<ul class="drop-source-list">
+						{d.droppedBy?.map((src) => (
+							<li>
+								{(() => {
+									const info = mobInfoById.get(src.mobId);
+									return (
+										<a class="drop-source-row" href={`/mobs/${src.mobId}`}>
+											<Sprite
+												class="drop-source-row__sprite"
+												srcs={mobSpriteSrcs(src.mobId, info?.wzId ?? null)}
+												alt=""
+												placeholder={themePlaceholderUrl("henesys")}
+											/>
+											<div class="drop-source-row__body">
+												<span class="drop-source-row__name">{src.mobName}</span>
+												{(info?.level != null || info?.region) && (
+													<span class="drop-source-row__meta">
+														{info.level != null && <>Lv {info.level}</>}
+														{info.level != null && info.region && " · "}
+														{info.region}
+													</span>
+												)}
+											</div>
+											<span class={`drop-source-row__score drop-source-row__score--${src.score >= 5 ? "high" : src.score >= 2 ? "med" : "low"}`}>
+												{src.score > 0 ? `+${src.score}` : src.score}
+											</span>
+										</a>
+									);
+								})()}
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+
+			<div class="acq-column">
+				<h3>Craftable <span class="count">({d.craftableFrom.length})</span></h3>
+				{d.craftableFrom.length === 0 ? (
+					<p class="muted">Not produced by any crafting recipe.</p>
+				) : (
+					<ul class="ref-list">
+						{d.craftableFrom.map((r) => (
+							<li>
+								<span class="ref-name">
+									{r.discipline} L{r.reqLevel ?? "?"}
+								</span>
+								<span class="ref-meta">
+									Costs {fmt(r.mesoCost)} mesos · Yields x{r.resultCount ?? 1}
+									{r.ingredients && r.ingredients.length > 0 && (
+										<>
+											<br />
+											Ingredients: {r.ingredients.map((i) => (
+												<span>
+													{i.id ? (
+														<a href={`/items/${i.id}`}>{i.name}</a>
+													) : (
+														i.name
+													)}
+													<span> x{i.count}</span>
+													<span>; </span>
+												</span>
+											))}
+										</>
+									)}
+								</span>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</div>
+
+		<div class="disclaimer">
+			<strong>Available:</strong> quest rewards, crafting recipes,
+			and crowdsourced mob drops (via MeowDB).
+			<strong>Not yet documented:</strong> NPC vendor lists beyond
+			the NPC sell price. Vendor data isn't publicly exposed at
+			osmsdataexplorer as of this build.
+		</div>
+	</section>
+
+	{/* Uses: required by quests + used as material */}
+	{(d.requiredByQuests.length > 0 || d.usedAsMaterial.length > 0) && (
+		<section class="section">
+			<h2 class="section-panel-title">What it's used for</h2>
+			<div class="acq-grid">
+				<div class="acq-column">
+					<h3>Required by quests <span class="count">({d.requiredByQuests.length})</span></h3>
+					{d.requiredByQuests.length === 0 ? (
+						<p class="muted">Not a documented quest requirement.</p>
+					) : (
+						<ul class="ref-list">
+							{d.requiredByQuests.map((q) => (
+								<li>
+									<span class="ref-name">
+										<a href={`/quests/${q.questId}`}>{q.questName}</a>
+									</span>
+									<span class="ref-meta">
+										{q.level != null && <>L{q.level} · </>}{q.region ?? "?"}
+										{q.count && q.count > 1 ? ` · needs x${q.count}` : ""}
+									</span>
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+
+				<div class="acq-column">
+					<h3>Used as crafting material <span class="count">({d.usedAsMaterial.length})</span></h3>
+					{d.usedAsMaterial.length === 0 ? (
+						<p class="muted">Not used as an ingredient in any known recipe.</p>
+					) : (
+						<ul class="ref-list">
+							{d.usedAsMaterial.map((r) => (
+								<li>
+									<span class="ref-name">
+										<a href={`/items/${r.outputId}`}>{r.outputName}</a>
+									</span>
+									<span class="ref-meta">
+										{r.discipline} L{r.reqLevel ?? "?"} · consumes x{r.count}
+									</span>
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			</div>
+		</section>
+	)}
+
+	{/* Related items - "same category, similar level" progression
+	    helper. Only shown for equipment (see findRelatedItems in
+	    /pages/items/[item].astro). Rendered before editorial-linked
+	    "Related guides" so the reader sees data-driven upgrades
+	    first, then the curated deep-dive links. */}
+	{related.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">Similar items nearby</h2>
+			<p class="section-subtitle">
+				Same slot / weapon type, within a few levels of this item's
+				requirement. Handy for planning your next upgrade.
+			</p>
+			<div class="related-grid">
+				{related.map((r) => (
+					<a class="related-card" href={`/items/${r.id}`}>
+						<img
+							class="related-card__icon"
+							src={itemIconUrl(r.id)}
+							alt=""
+							width="32"
+							height="32"
+							loading="lazy"
+							onerror="this.style.visibility='hidden'"
+						/>
+						<div class="related-card__body">
+							<span class="related-card__name">{r.name}</span>
+							<span class="related-card__meta">
+								{r.reqLevel != null && <>Lv {r.reqLevel}</>}
+								{r.reqLevel != null && r.subCategory && " · "}
+								{r.subCategory}
+							</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+
+	{/* Related guides - editorial-only */}
+	{editorial?.relatedGuides && editorial.relatedGuides.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">Related guides</h2>
+			<ul class="link-list">
+				{editorial.relatedGuides.map((href) => (
+					<li><a href={href}>{href}</a></li>
+				))}
+			</ul>
+		</section>
+	)}
+
+	{/* Sources - editorial-only */}
+	{uniqueSources.length > 0 && (
+		<section class="section">
+			<h2 class="section-panel-title">Sources</h2>
+			<div class="sources-grid">
+				{uniqueSources.map((source) => <SourceCard source={source} />)}
+			</div>
+		</section>
+	)}
+
+	{editorial?.lastUpdated && (
+		<LastUpdated date={editorial.lastUpdated} />
+	)}
+</BaseLayout>
+
+<script>
+	/**
+	 * Sprint 69: copy-WZ-ID buttons.
+	 * Progressive enhancement - the buttons render as static badges
+	 * without JS, and gain click-to-copy on hydration. Uses the
+	 * modern async Clipboard API with a fallback to the legacy
+	 * document.execCommand approach for older browsers.
+	 */
+	function initCopyButtons(): void {
+		const buttons = document.querySelectorAll<HTMLButtonElement>("[data-copy-wzid]");
+		buttons.forEach((btn) => {
+			btn.addEventListener("click", async () => {
+				const id = btn.dataset.copyWzid;
+				if (!id) return;
+				const hint = btn.querySelector<HTMLElement>(".badge--copyable__hint");
+				const originalHint = hint?.textContent ?? "copy";
+				try {
+					if (navigator.clipboard?.writeText) {
+						await navigator.clipboard.writeText(id);
+					} else {
+						// Legacy fallback - hidden textarea + execCommand.
+						const ta = document.createElement("textarea");
+						ta.value = id;
+						ta.style.position = "fixed";
+						ta.style.opacity = "0";
+						document.body.appendChild(ta);
+						ta.select();
+						document.execCommand("copy");
+						document.body.removeChild(ta);
+					}
+					if (hint) {
+						hint.textContent = "copied";
+						btn.classList.add("badge--copyable--flash");
+						setTimeout(() => {
+							hint.textContent = originalHint;
+							btn.classList.remove("badge--copyable--flash");
+						}, 1500);
+					}
+				} catch (err) {
+					console.warn("Copy failed:", err);
+					if (hint) {
+						hint.textContent = "failed";
+						setTimeout(() => {
+							hint.textContent = originalHint;
+						}, 1500);
+					}
+				}
+			});
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initCopyButtons);
+	} else {
+		initCopyButtons();
+	}
+</script>
+
+<style>
+	.crumbs {
+		font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;
+	}
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; }
+
+	.hero {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 1.2rem;
+		align-items: center;
+		padding: 1.5rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.75rem;
+		margin-bottom: 1rem;
+	}
+	.hero__icon {
+		width: 72px; height: 72px;
+		display: flex; align-items: center; justify-content: center;
+		background: var(--bg-cloud); border-radius: 0.5rem;
+		image-rendering: pixelated;
+	}
+	.hero__title h1 { margin: 0 0 0.4rem; }
+	.hero__tagline {
+		margin: 0 0 0.6rem;
+		color: var(--text-body); font-size: 0.95rem;
+		font-style: italic; line-height: 1.5;
+	}
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.badge {
+		display: inline-block; padding: 0.25rem 0.6rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px;
+	}
+	.badge--id { background: var(--bg-cloud); color: var(--text-muted); font-family: monospace; }
+	/* Sprint 69: copy-WZ-ID button state. Renders as a <button>
+	   but styled like a badge; a small "copy" hint pill sits on
+	   the right, changes to "copied" on click. */
+	.badge--copyable {
+		display: inline-flex; align-items: center; gap: 0.4rem;
+		border: 1px solid var(--border-card);
+		font: inherit; cursor: pointer;
+		transition: background 0.15s, border-color 0.15s;
+	}
+	.badge--copyable:hover, .badge--copyable:focus-visible {
+		background: var(--surface-nav-hover, var(--bg-cloud));
+		border-color: var(--accent-primary);
+		outline: none;
+	}
+	.badge--copyable__hint {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		opacity: 0.7;
+		padding: 0 0.35rem;
+		border-left: 1px solid var(--border-card);
+	}
+	.badge--copyable--flash {
+		background: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-cloud));
+		border-color: var(--accent-primary);
+	}
+	.badge--job { background: var(--accent-primary); color: white; }
+	.badge--tier { background: var(--accent-primary); color: white; }
+	.verify-badge {
+		display: inline-block; padding: 0.35rem 0.7rem;
+		background: var(--bg-cloud); color: var(--text-muted);
+		border-radius: 0.4rem; font-size: 0.75rem; font-weight: bold;
+		text-transform: uppercase; letter-spacing: 0.05em;
+	}
+
+	.section { margin: 1.5rem 0; }
+	.section h2 { font-size: 1.3rem; margin: 0 0 0.8rem; }
+	.section h3 { margin: 0 0 0.7rem; font-size: 1rem; }
+
+	.in-game-text {
+		padding: 1rem 1.2rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+	}
+	.in-game-text h3 {
+		font-size: 0.75rem; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--text-muted);
+		margin: 0 0 0.3rem;
+	}
+	.in-game-text p {
+		margin: 0; line-height: 1.5; white-space: pre-line;
+	}
+
+	.section--editorial {
+		padding: 1.2rem 1.4rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.editorial-body { line-height: 1.65; }
+	.editorial-body p { margin: 0.7rem 0; }
+	.editorial-body p:first-child { margin-top: 0; }
+	.editorial-body p:last-child { margin-bottom: 0; }
+	.editorial-body a { color: var(--accent-primary); }
+
+	.callout {
+		padding: 1rem 1.2rem;
+		background: var(--surface-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 0.9rem;
+	}
+	.stat-card {
+		padding: 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.stat-table { width: 100%; border-collapse: collapse; }
+	.stat-table td {
+		padding: 0.35rem 0;
+		font-size: 0.9rem;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.stat-table tr:last-child td { border-bottom: none; }
+	.stat-value {
+		text-align: right; font-weight: bold; font-family: monospace;
+	}
+	.stat-range { font-family: monospace; }
+	.stat-base {
+		display: block; margin-top: 0.15rem;
+		font-size: 0.78rem; color: var(--text-muted);
+		font-weight: normal; font-family: sans-serif;
+	}
+	.stat-note {
+		margin-top: 0.8rem;
+		font-size: 0.8rem; color: var(--text-muted); font-style: italic;
+	}
+
+	.econ-strip {
+		display: inline-flex; gap: 0.8rem; align-items: center;
+		padding: 0.8rem 1.2rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.econ-cell { display: flex; flex-direction: column; }
+	.econ-label {
+		font-size: 0.75rem; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--text-muted);
+	}
+	.econ-value { font-weight: bold; font-family: monospace; }
+
+	.acq-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 1rem;
+	}
+	.acq-column {
+		padding: 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+
+	/* Mob-sprite drop source rows. Confidence score badge uses same
+	   green/amber/gray convention as the drop-table on /mobs/[id]
+	   so a reader recognizes the semantics at a glance across pages. */
+	.drop-source-list { list-style: none; padding: 0; margin: 0; }
+	.drop-source-list li { margin-bottom: 0.3rem; }
+	.drop-source-row {
+		display: grid;
+		grid-template-columns: 32px 1fr auto;
+		align-items: center; gap: 0.6rem;
+		padding: 0.4rem 0.6rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.35rem;
+		text-decoration: none; color: inherit;
+	}
+	.drop-source-row:hover { border-color: var(--accent-primary); }
+	.drop-source-row__sprite {
+		width: 28px; height: 28px; object-fit: contain;
+		image-rendering: pixelated;
+	}
+	.drop-source-row__body {
+		display: flex; flex-direction: column;
+		min-width: 0; /* keep name ellipsis working inside grid */
+	}
+	.drop-source-row__name {
+		font-weight: 500; color: var(--accent-primary);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.drop-source-row__meta {
+		font-size: 0.78rem; color: var(--text-muted);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.drop-source-row__score {
+		padding: 0.15rem 0.5rem;
+		font-size: 0.75rem; font-weight: bold; font-family: monospace;
+		border-radius: 999px;
+		background: var(--bg-cloud); color: var(--text-muted);
+		min-width: 2.5rem; text-align: center;
+	}
+	.drop-source-row__score--high { background: #d1e7d1; color: #2e5d31; }
+	.drop-source-row__score--med  { background: #e7dfd1; color: #5d4a2e; }
+	.count { font-weight: normal; color: var(--text-muted); font-size: 0.85rem; }
+	.muted { color: var(--text-muted); font-style: italic; margin: 0; font-size: 0.9rem; }
+
+	.ref-list { list-style: none; padding: 0; margin: 0; }
+	.ref-list li {
+		display: flex; flex-direction: column;
+		padding: 0.5rem 0; border-bottom: 1px solid var(--border-card);
+	}
+	.ref-list li:last-child { border-bottom: none; }
+	.ref-name { font-weight: 500; }
+	.ref-name a { color: var(--accent-primary); text-decoration: none; }
+	.ref-name a:hover { text-decoration: underline; }
+	.ref-meta {
+		font-size: 0.8rem; color: var(--text-muted);
+		margin-top: 0.15rem; line-height: 1.4;
+	}
+	.ref-meta a { color: var(--accent-primary); text-decoration: none; }
+
+	.disclaimer {
+		margin-top: 1rem;
+		padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem;
+		line-height: 1.5;
+	}
+
+	.link-list { list-style: none; padding: 0; margin: 0; }
+	.link-list li { margin-bottom: 0.3rem; }
+	.link-list a { color: var(--accent-primary); }
+
+	.sources-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 0.75rem;
+	}
+
+	/* Sprint 69: related items grid - condensed 2-line cards. Uses
+	   the same border/hover language as .drop-source-row so the
+	   pattern reads as consistent across the page. Icon column is
+	   fixed-width so text alignment stays clean when icons are
+	   loading or the CDN returns 404 (visibility hidden). */
+	.section-subtitle {
+		margin: -0.4rem 0 0.8rem;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+	.related-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 0.5rem;
+	}
+	.related-card {
+		display: grid;
+		grid-template-columns: 32px 1fr;
+		align-items: center; gap: 0.6rem;
+		padding: 0.5rem 0.7rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem;
+		text-decoration: none; color: inherit;
+		transition: border-color 0.15s, transform 0.15s;
+	}
+	.related-card:hover {
+		border-color: var(--accent-primary);
+		transform: translateY(-1px);
+	}
+	.related-card__icon {
+		width: 32px; height: 32px;
+		image-rendering: pixelated;
+	}
+	.related-card__body {
+		display: flex; flex-direction: column;
+		min-width: 0;
+	}
+	.related-card__name {
+		font-weight: 500;
+		color: var(--accent-primary);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+	.related-card__meta {
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	}
+</style>

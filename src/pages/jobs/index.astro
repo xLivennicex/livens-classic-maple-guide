@@ -1,8 +1,17 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import JobCard from "../../components/JobCard.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
-import { jobs } from "../../data/jobs";
+
+// Job cards come straight from the `jobs` content collection so this
+// grid stays in sync automatically as new class guides ship. Sorted
+// by the frontmatter `listOrder` so the traditional Warrior /
+// Magician / Bowman / Thief order is preserved regardless of file
+// name alphabetical order.
+const jobs = (await getCollection("jobs")).sort(
+	(a, b) => a.data.listOrder - b.data.listOrder
+);
 ---
 
 <BaseLayout
@@ -17,15 +26,22 @@ import { jobs } from "../../data/jobs";
 			<h1>Jobs directory</h1>
 			<p class="lede">
 				Every Classic World base class, its early-game feel, and where to go
-				for the full write-up. Guides are added in vertical slices - Warrior
-				lands first, the rest follow.
+				for the full write-up. All four base classes now have full guides -
+				pick one below.
 			</p>
 		</div>
 		<StatusBadge status="closed-test" verifiedOn="pre-launch" />
 	</section>
 
 	<div class="job-grid">
-		{jobs.map((job) => <JobCard job={job} />)}
+		{jobs.map((job) => (
+			<JobCard
+				monogram={job.data.monogram}
+				name={job.data.title}
+				description={job.data.cardDescription}
+				href={`/jobs/${job.id}`}
+			/>
+		))}
 	</div>
 </BaseLayout>
 
@@ -42,7 +58,7 @@ import { jobs } from "../../data/jobs";
 		max-width: 42rem;
 		margin-top: 0.5rem;
 		line-height: 1.6;
-		color: #4f6653;
+		color: var(--text-brand-tagline);
 	}
 
 	.job-grid {

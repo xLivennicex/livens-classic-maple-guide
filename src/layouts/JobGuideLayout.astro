@@ -1,0 +1,375 @@
+---
+/**
+ * JobGuideLayout - the sole authority on what a job guide looks like.
+ *
+ * Takes the fully-structured frontmatter from a `jobs` collection
+ * entry and renders the eight standard sections (Overview,
+ * Advancement, AP, Skills, Training, Equipment, Second Jobs, FAQ).
+ *
+ * Every field on `data` is either from the zod schema in
+ * src/content.config.ts (structured) or an HTML string that renders
+ * via set:html for inline formatting (<strong>, <em>, <a>).
+ *
+ * All shared section styles (.guide-section, .skill-table,
+ * .route-grid, .branches-grid, .faq) live in global.css so this
+ * template stays pure structure.
+ */
+
+import type { CollectionEntry } from "astro:content";
+import GuideLayout from "./GuideLayout.astro";
+import SourceBadge from "../components/SourceBadge.astro";
+import InfoCard from "../components/InfoCard.astro";
+import { skillIconUrl } from "../lib/maplestory-cdn";
+
+interface Props {
+	entry: CollectionEntry<"jobs">;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+
+// Detect at build time whether we've shipped a skill-build data
+// file for this class. Only classes with a JSON file get the
+// "View skill builds" CTA rendered - avoids sending readers to a
+// 404 for classes still in the pipeline. Filename must match the
+// job's collection id (e.g. "bowman.json" for entry.id "bowman").
+const availableBuildFiles = import.meta.glob("../data/skill-builds/*.json", { eager: true });
+const hasSkillBuilds = Object.keys(availableBuildFiles).some((p) => p.endsWith(`/${entry.id}.json`));
+
+// Compose the full <title> tag once; every job page reads the same.
+const pageTitle = `${d.title} - Liven's Classic Maple Guide`;
+---
+
+<GuideLayout
+	title={pageTitle}
+	currentPath="/jobs"
+	theme={d.theme}
+	decorations={d.decorations}
+	eyebrow="Class Guide"
+	heading={d.title}
+	tagline={d.tagline}
+	verificationStatus={d.verificationStatus}
+	lastChecked={d.lastUpdated}
+	sourceSlugs={d.sourceSlugs}
+	verificationNote={d.verificationNote}
+	toc={d.toc}
+>
+	<!-- ============================================================ -->
+	<section id="overview" class="guide-section">
+		<h2 class="section-panel-title">Overview</h2>
+
+		{d.overview.identity && (
+			<aside class="identity-card" aria-label="Class identity at a glance">
+				<h3 class="identity-card__heading">Identity at a glance</h3>
+				<dl class="identity-card__grid">
+					<div class="identity-card__row">
+						<dt>Primary stat</dt>
+						<dd set:html={d.overview.identity.primaryStat} />
+					</div>
+					<div class="identity-card__row">
+						<dt>Secondary stat</dt>
+						<dd set:html={d.overview.identity.secondaryStat} />
+					</div>
+					<div class="identity-card__row">
+						<dt>Damage type</dt>
+						<dd set:html={d.overview.identity.damageType} />
+					</div>
+					<div class="identity-card__row">
+						<dt>Weapon families</dt>
+						<dd set:html={d.overview.identity.weaponFamilies} />
+					</div>
+					<div class="identity-card__row">
+						<dt>Health profile</dt>
+						<dd set:html={d.overview.identity.healthProfile} />
+					</div>
+					<div class="identity-card__row">
+						<dt>Mobility profile</dt>
+						<dd set:html={d.overview.identity.mobilityProfile} />
+					</div>
+					<div class="identity-card__row identity-card__row--wide">
+						<dt>Play style</dt>
+						<dd set:html={d.overview.identity.playStyle} />
+					</div>
+				</dl>
+			</aside>
+		)}
+
+		<div class="card prose">
+			{d.overview.paragraphs.map((p) => <p set:html={p} />)}
+			{d.overview.callout && (
+				<div class="callout" set:html={d.overview.callout} />
+			)}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="advancement" class="guide-section">
+		<h2 class="section-panel-title">How to become a {d.title}</h2>
+		<div class="card prose">
+			<p><strong>Requirements (v83 baseline):</strong></p>
+			<ul>
+				{d.advancement.requirements.map((req) => (
+					<li set:html={req} />
+				))}
+			</ul>
+
+			<p><strong>Where to go:</strong></p>
+			<ol>
+				{d.advancement.steps.map((step) => (
+					<li set:html={step} />
+				))}
+			</ol>
+
+			{d.advancement.followup && (
+				<p set:html={d.advancement.followup} />
+			)}
+
+			{d.advancement.callout && (
+				<div class="callout" set:html={d.advancement.callout} />
+			)}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="ap" class="guide-section">
+		<h2 class="section-panel-title">AP allocation</h2>
+		<div class="card prose">
+			<p set:html={d.apAllocation.summary} />
+
+			<p><strong>Two schools of thought exist:</strong></p>
+			<ul>
+				{d.apAllocation.builds.map((build) => (
+					<li>
+						<strong set:html={build.name} />: <span set:html={build.description} />
+					</li>
+				))}
+			</ul>
+
+			{d.apAllocation.notes && (
+				<p set:html={d.apAllocation.notes} />
+			)}
+
+			{d.apAllocation.callout && (
+				<div class="callout" set:html={d.apAllocation.callout} />
+			)}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="skills" class="guide-section">
+		<h2 class="section-panel-title">First job skills</h2>
+
+		<p class="section-lede" set:html={d.skills.order} />
+
+		<div
+			class="skill-table"
+			role="table"
+			aria-label={`${d.title} first job skills`}
+		>
+			<div class="skill-table__header" role="row">
+				<span role="columnheader">Skill</span>
+				<span role="columnheader">Type</span>
+				<span role="columnheader">Summary</span>
+				<span role="columnheader">Suggested investment</span>
+			</div>
+			{d.skills.entries.map((skill) => (
+				<div class="skill-table__row" role="row">
+					<div role="cell" class="skill-name-cell">
+						{skill.skillId && (
+							<img
+								class="skill-icon"
+								src={skillIconUrl(skill.skillId)}
+								alt=""
+								width="32"
+								height="32"
+								loading="lazy"
+							/>
+						)}
+						<span class="skill-name-cell__text">
+							<strong>{skill.name}</strong>
+							<small>Max Level: {skill.maxLevel}</small>
+						</span>
+					</div>
+					<div role="cell">{skill.type}</div>
+					<div role="cell" set:html={skill.summary} />
+					<div role="cell" set:html={skill.suggested} />
+				</div>
+			))}
+		</div>
+
+		{d.skills.infoCard && (
+			<InfoCard
+				eyebrow={d.skills.infoCard.eyebrow}
+				heading={d.skills.infoCard.heading}
+			>
+				<div set:html={d.skills.infoCard.body} />
+			</InfoCard>
+		)}
+
+		{hasSkillBuilds && (
+			<a class="builds-cta" href={`/jobs/${entry.id}/builds`}>
+				<div class="builds-cta__body">
+					<span class="builds-cta__eyebrow">Level-by-level planner</span>
+					<strong class="builds-cta__heading">View {d.title} skill builds →</strong>
+					<span class="builds-cta__sub">
+						Per-level SP allocation tables in the classic Ayumilove format,
+						with named build variants and reasoning for each choice.
+					</span>
+				</div>
+			</a>
+		)}
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="training" class="guide-section">
+		<h2 class="section-panel-title">Training routes (levels 1 - 30)</h2>
+
+		<p class="section-lede" set:html={d.training.intro} />
+
+		<div class="route-grid">
+			{d.training.routes.map((route) => (
+				<div class="card route-card">
+					<h3>{route.levels}</h3>
+					<p><strong>Where:</strong> <span set:html={route.where} /></p>
+					<p><strong>What:</strong> <span set:html={route.what} /></p>
+					<p set:html={route.note} />
+				</div>
+			))}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="equipment" class="guide-section">
+		<h2 class="section-panel-title">Equipment progression</h2>
+		<div class="card prose">
+			<p set:html={d.equipment.intro} />
+
+			{d.equipment.weapons && d.equipment.weapons.length > 0 && (
+				<>
+					{d.equipment.weaponsIntro && (
+						<p set:html={d.equipment.weaponsIntro} />
+					)}
+					<ul>
+						{d.equipment.weapons.map((w) => (
+							<li>
+								<strong set:html={w.name} />: <span set:html={w.description} />
+							</li>
+						))}
+					</ul>
+					{d.equipment.weaponsNote && (
+						<p set:html={d.equipment.weaponsNote} />
+					)}
+				</>
+			)}
+
+			<p><strong>Armor progression (v83 baseline):</strong></p>
+			<ul>
+				{d.equipment.armorProgression.map((phase) => (
+					<li>
+						<strong set:html={phase.name} /> <span set:html={phase.description} />
+					</li>
+				))}
+			</ul>
+
+			{d.equipment.callout && (
+				<div class="callout" set:html={d.equipment.callout} />
+			)}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="second-job" class="guide-section">
+		<h2 class="section-panel-title">Second job branches (level 30)</h2>
+
+		<p class="section-lede" set:html={d.secondJobs.intro} />
+
+		<div class="branches-grid">
+			{d.secondJobs.branches.map((job) => {
+				// Two shapes: with previewSkills -> collapsible <details>
+				// card; without -> static <article>. Progressive enhancement
+				// via native HTML - no JS bundle cost, keyboard-accessible.
+				const hasPreview = job.previewSkills && job.previewSkills.length > 0;
+				const summaryBlock = (
+					<>
+						<h3>{job.name}</h3>
+						<p class="branch-card__weapon">
+							<strong>{job.subtitleLabel}:</strong> {job.subtitleValue}
+						</p>
+						<p set:html={job.summary} />
+						<p class="branch-card__for">
+							<strong>Best for:</strong> <span set:html={job.bestFor} />
+						</p>
+					</>
+				);
+				return hasPreview ? (
+					<details class="card branch-card branch-card--expandable">
+						<summary class="branch-card__summary">
+							{summaryBlock}
+							<span class="branch-card__expand-hint">
+								Click to preview signature skills
+							</span>
+						</summary>
+						<div class="branch-card__skills">
+							<h4 class="branch-card__skills-heading">
+								Signature skills
+							</h4>
+							<ul class="branch-preview-skills">
+								{job.previewSkills!.map((sk) => (
+									<li class="branch-preview-skills__item">
+										<img
+											class="branch-preview-skills__icon"
+											src={skillIconUrl(sk.skillId)}
+											alt=""
+											width="32"
+											height="32"
+											loading="lazy"
+										/>
+										<div class="branch-preview-skills__body">
+											<strong>{sk.name}</strong>
+											<span set:html={sk.summary} />
+										</div>
+									</li>
+								))}
+							</ul>
+						</div>
+					</details>
+				) : (
+					<article class="card branch-card">
+						{summaryBlock}
+					</article>
+				);
+			})}
+		</div>
+
+		{d.secondJobs.infoCard && (
+			<InfoCard
+				eyebrow={d.secondJobs.infoCard.eyebrow}
+				heading={d.secondJobs.infoCard.heading}
+			>
+				<div set:html={d.secondJobs.infoCard.body} />
+			</InfoCard>
+		)}
+	</section>
+
+	<!-- ============================================================ -->
+	<section id="faq" class="guide-section">
+		<h2 class="section-panel-title">Frequently asked questions</h2>
+
+		<InfoCard eyebrow="FAQ" heading={`Common ${d.title} questions`}>
+			<dl class="faq">
+				{d.faq.map((entry) => (
+					<>
+						<dt>{entry.question}</dt>
+						<dd>
+							<span set:html={entry.answer} />
+							{entry.badge && (
+								<span class="inline-badge">
+									<SourceBadge type={entry.badge} compact />
+								</span>
+							)}
+						</dd>
+					</>
+				))}
+			</dl>
+		</InfoCard>
+	</section>
+</GuideLayout>

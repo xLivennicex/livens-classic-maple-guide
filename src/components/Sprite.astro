@@ -1,0 +1,106 @@
+---
+/**
+ * <Sprite> - <img> with an ordered fallback chain.
+ *
+ * Solves the "primary CDN doesn't have this asset" problem. Pass a
+ * list of URLs in preference order (best-quality/canonical first,
+ * lower-quality fallbacks after). If the first URL 404s, an inline
+ * onerror handler swaps to the next URL in the chain, and so on.
+ * When every URL fails, the image is hidden (visibility:hidden) so
+ * we never ship a broken-image icon.
+ *
+ * Why not build-time probing? Would add 5000+ HEAD requests to
+ * `npm run build`, we already have a client-side fallback story
+ * (onerror), and cascading in the browser lets us try
+ * cheap/preferred sources first without a build-cache round-trip.
+ *
+ * Why not srcset? srcset picks by DPI/viewport, not by
+ * availability. We need "try A, then B, then C" — a different
+ * primitive.
+ *
+ * Usage:
+ *   <Sprite srcs={mobSpriteSrcs(id, wzId)} alt="Snail sprite" />
+ *   <Sprite srcs={[url1, url2]} alt="..." class="my-class" />
+ *
+ * The generated `onerror` chain is inlined verbatim into the img
+ * tag so it works without any client-side JS runtime. Zero cost
+ * on the happy path (primary URL succeeds).
+ */
+
+interface Props {
+	srcs: (string | null | undefined)[];
+	alt: string;
+	class?: string;
+	loading?: "eager" | "lazy";
+	width?: number | string;
+	height?: number | string;
+	// Final fallback when every URL in srcs 404s. Typically a
+	// themed silhouette SVG under /images/placeholders/. Omit to
+	// keep the legacy behavior (hide the image on total failure).
+	placeholder?: string;
+}
+
+const {
+	srcs,
+	alt,
+	class: className,
+	loading = "lazy",
+	width,
+	height,
+	placeholder,
+} = Astro.props;
+
+// Filter out null/undefined so bad inputs don't break the chain.
+const cleanSrcs = srcs.filter((s): s is string => !!s);
+const primary = cleanSrcs[0];
+const fallbacks = cleanSrcs.slice(1);
+
+// Build an onerror chain: on failure, hop to the next URL. On the
+// LAST failure, hide the image so no broken-icon glyph shows up.
+// Each onerror hop clears the current handler so we don't loop.
+//
+// The chain is generated as a single JS-in-attribute expression.
+// Reads ugly but produces one round-trip per attempted URL and
+// zero framework overhead.
+// The terminal handler when every URL has failed. When a placeholder
+// is provided, swap to it AND mark the image with a class so CSS can
+// dim/style it as "unavailable". Otherwise hide entirely (legacy).
+const terminalHandler = placeholder
+	? `this.onerror=null;this.src=${JSON.stringify(placeholder)};this.classList.add('sprite--placeholder')`
+	: "this.style.visibility='hidden';this.onerror=null";
+
+function buildOnError(fallbacks: string[]): string | undefined {
+	if (fallbacks.length === 0) return terminalHandler;
+	// JSON.stringify handles quote escaping and Unicode safely.
+	const next = fallbacks[0];
+	const rest = fallbacks.slice(1);
+	const nextHandler = buildOnError(rest);
+	// Set src=next, and replace onerror with the next hop in the chain.
+	return `this.onerror=null;this.src=${JSON.stringify(next)};this.onerror=function(){${nextHandler}}`;
+}
+const onerror = primary ? buildOnError(fallbacks) : undefined;
+---
+
+{/* When srcs is empty but a placeholder is provided, render the
+    placeholder directly so callers get consistent visuals whether
+    the URL chain is empty or just fails at runtime. */}
+{primary ? (
+	<img
+		src={primary}
+		alt={alt}
+		class={className}
+		loading={loading}
+		width={width}
+		height={height}
+		onerror={onerror}
+	/>
+) : placeholder ? (
+	<img
+		src={placeholder}
+		alt={alt}
+		class:list={[className, "sprite--placeholder"]}
+		loading={loading}
+		width={width}
+		height={height}
+	/>
+) : null}

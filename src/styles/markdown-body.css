@@ -1,0 +1,119 @@
+/*
+ * Shared prose styles for rendered markdown inside a GuideLayout.
+ * Imported from any page that uses <Content /> from astro:content
+ * to render a .md body. Global by design - <Content /> renders
+ * unscoped HTML so scoped Astro styles wouldn't reach it.
+ *
+ * Keep this file focused on prose. Hero/toc/verification styling
+ * belongs to GuideLayout.astro; card/table components have their own.
+ */
+
+.markdown-body {
+	max-width: 72ch;
+	color: var(--text-body);
+	line-height: 1.65;
+	font-size: 1rem;
+}
+
+.markdown-body h2 {
+	color: var(--text-heading);
+	font-size: 1.55rem;
+	margin: 2.2rem 0 0.7rem;
+	padding-bottom: 0.35rem;
+	border-bottom: 2px solid var(--accent-primary);
+	scroll-margin-top: 5rem;
+}
+
+.markdown-body h3 {
+	color: var(--text-heading);
+	font-size: 1.2rem;
+	margin: 1.6rem 0 0.5rem;
+}
+
+.markdown-body h4 {
+	color: var(--text-heading);
+	font-size: 1.05rem;
+	margin: 1.2rem 0 0.35rem;
+}
+
+.markdown-body p {
+	margin: 0.8rem 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+	margin: 0.8rem 0;
+	padding-left: 1.5rem;
+}
+
+.markdown-body li {
+	margin: 0.3rem 0;
+}
+
+.markdown-body a {
+	color: var(--accent-primary);
+	font-weight: 600;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+}
+
+.markdown-body strong {
+	color: var(--text-heading);
+}
+
+.markdown-body blockquote {
+	margin: 1rem 0;
+	padding: 0.7rem 1rem;
+	background: var(--bg-cloud);
+	border-left: 3px solid var(--accent-primary);
+	border-radius: 0.35rem;
+	color: var(--text-body);
+}
+
+.markdown-body blockquote p {
+	margin: 0.35rem 0;
+}
+
+.markdown-body code {
+	background: var(--bg-cloud);
+	padding: 0.1rem 0.35rem;
+	border-radius: 0.25rem;
+	font-size: 0.9em;
+}
+
+.markdown-body table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1rem 0;
+	font-size: 0.92rem;
+	background: var(--surface-card);
+	border: 1px solid var(--border-card);
+	border-radius: 0.4rem;
+	overflow: hidden;
+}
+
+.markdown-body th,
+.markdown-body td {
+	padding: 0.55rem 0.75rem;
+	text-align: left;
+	border-bottom: 1px solid var(--border-card);
+	vertical-align: top;
+}
+
+.markdown-body th {
+	background: var(--bg-cloud);
+	color: var(--text-heading);
+	font-weight: 700;
+	font-size: 0.85rem;
+}
+
+.markdown-body tr:last-child td {
+	border-bottom: none;
+}
+
+.markdown-body hr {
+	border: none;
+	border-top: 1px solid var(--border-card);
+	margin: 1.5rem 0;
+}

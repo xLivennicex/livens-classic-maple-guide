@@ -106,14 +106,18 @@ const units: { key: string; label: string }[] = [
 </script>
 
 <style>
+	/* Base countdown card - themed via CSS vars. The `--green` and
+	   `--amber` tone variants below intentionally use fixed hex
+	   colors: their purpose is to visually distinguish 'early
+	   access' from 'official launch' regardless of active theme. */
 	.countdown {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 0.75rem;
 		padding: 1.5rem 1.25rem;
-		background: #fffdf6;
-		border: 3px solid #d8c99c;
+		background: var(--surface-card);
+		border: 3px solid var(--border-card);
 		border-radius: 1rem;
 		text-align: center;
 	}
@@ -134,7 +138,7 @@ const units: { key: string; label: string }[] = [
 		font-weight: bold;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: #48734b;
+		color: var(--accent-primary);
 	}
 
 	.countdown--amber .countdown__label {
@@ -167,7 +171,7 @@ const units: { key: string; label: string }[] = [
 		font-size: clamp(1.8rem, 5vw, 2.8rem);
 		font-weight: bold;
 		line-height: 1;
-		color: #304f34;
+		color: var(--text-heading);
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -177,22 +181,22 @@ const units: { key: string; label: string }[] = [
 
 	.countdown__unit-label {
 		margin-top: 0.35rem;
-		font-size: 0.7rem;
+		font-size: 0.78rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		color: #5d665d;
+		color: var(--text-muted);
 	}
 
 	.countdown__sublabel {
 		margin: 0;
 		font-size: 0.8rem;
-		color: #5d665d;
+		color: var(--text-muted);
 	}
 
 	.countdown__live {
 		margin: 0.25rem 0 0;
 		font-weight: bold;
 		font-size: 1.1rem;
-		color: #46784b;
+		color: var(--accent-primary);
 	}
 </style>

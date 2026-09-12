@@ -1,0 +1,621 @@
+---
+/**
+ * <PrimaryNav> - the site's primary top navigation.
+ *
+ * Extracted from BaseLayout during Sprint 64 when the flat 17-item
+ * row got unusably crowded. Now organized as 7 top-level entries,
+ * three of which are grouped-dropdown menus.
+ *
+ * Structure lives in ONE place (`NAV_STRUCTURE` below). Adding a
+ * section = one array entry. Grouped sections use `type: "group"`
+ * with `children` for their submenu.
+ *
+ * Accessibility posture:
+ *   - Groups use <button> + <ul> pattern, not <a> (buttons don't
+ *     navigate on click, they toggle their menu).
+ *   - Menus are keyboard-navigable: tab into the button, enter or
+ *     space to open, arrow-down through items, escape to close and
+ *     return focus to the button.
+ *   - CSS opens submenus on :hover AND :focus-within so mouse and
+ *     keyboard users both get discovery without JS.
+ *   - JS layer handles click-to-toggle (mobile touch), click-outside-
+ *     to-close, and escape-to-close semantics.
+ *   - aria-expanded on the button + aria-hidden on the collapsed menu
+ *     keeps screen readers in sync with what's visually shown.
+ *
+ * Active-state:
+ *   - Standalone entry: aria-current="page" when currentPath matches.
+ *   - Group entry: gets an "active-branch" style when currentPath
+ *     matches ANY of its children (so users can see "you're inside
+ *     Content" even when the dropdown is closed).
+ */
+
+interface Props {
+	currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+interface NavLink {
+	type: "link";
+	label: string;
+	href: string;
+}
+
+interface NavGroup {
+	type: "group";
+	label: string;
+	children: NavLink[];
+}
+
+type NavEntry = NavLink | NavGroup;
+
+// Grouping rationale (Sprint 64 consolidation from 17-item flat row):
+// - Standalone entries stay standalone when they're high-frequency
+//   destinations (Home) OR high-urgency (Launch countdown) OR
+//   high-SEO-value (Guides, Blog).
+// - Everything else clusters by user intent:
+//     "Play" = things about YOUR character (Jobs, class kit, systems)
+//     "World" = things IN the world (maps + who/what lives there)
+//     "Content" = things TO DO (quests, PQs, item catalog)
+const NAV_STRUCTURE: NavEntry[] = [
+	{ type: "link", label: "Home", href: "/" },
+	{ type: "link", label: "Launch", href: "/launch" },
+	{
+		type: "group",
+		label: "Play",
+		children: [
+			{ type: "link", label: "Jobs", href: "/jobs" },
+			{ type: "link", label: "Character", href: "/character" },
+			{ type: "link", label: "Citizenship", href: "/citizenship" },
+			{ type: "link", label: "Crafting", href: "/crafting" },
+		],
+	},
+	{
+		type: "group",
+		label: "World",
+		children: [
+			{ type: "link", label: "World map", href: "/world" },
+			{ type: "link", label: "Maps", href: "/maps" },
+			{ type: "link", label: "NPCs", href: "/npcs" },
+			{ type: "link", label: "Mobs", href: "/mobs" },
+			{ type: "link", label: "Bosses", href: "/bosses" },
+			{ type: "link", label: "Hall of Fame", href: "/hall-of-fame" },
+		],
+	},
+	{
+		type: "group",
+		label: "Content",
+		children: [
+			{ type: "link", label: "Quests", href: "/quests" },
+			{ type: "link", label: "Party Quests", href: "/party-quests" },
+			{ type: "link", label: "Items", href: "/items" },
+		],
+	},
+	{ type: "link", label: "Guides", href: "/guides" },
+	{ type: "link", label: "Blog", href: "/blog" },
+];
+
+// Which group (if any) contains the currentPath? Used to apply the
+// "active-branch" style to that group's trigger button so the user
+// sees where they are even when the dropdown is closed.
+function isGroupActive(group: NavGroup): boolean {
+	return group.children.some((c) => c.href === currentPath);
+}
+---
+
+<nav class="primary-nav" aria-label="Primary navigation">
+	{/* Hamburger toggle - only visible below ~820px. On desktop the
+	    horizontal <ul> handles everything and this button is display:
+	    none. On mobile, clicking this opens the drawer version of the
+	    menu. Same nav data, different presentation - no dropdown
+	    clipping problems, tap targets are naturally 44+px tall. */}
+	<button
+		class="primary-nav__burger"
+		type="button"
+		aria-expanded="false"
+		aria-controls="primary-nav-list"
+		aria-label="Open navigation menu"
+		data-nav-burger
+	>
+		<span class="primary-nav__burger-lines" aria-hidden="true">
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+		<span class="primary-nav__burger-label">Menu</span>
+	</button>
+
+	{/* Mobile-only backdrop; tap to close the drawer. Rendered here so
+	    it participates in the nav's stacking context. */}
+	<div class="primary-nav__backdrop" data-nav-backdrop aria-hidden="true"></div>
+
+	<ul class="primary-nav__list" id="primary-nav-list">
+		{NAV_STRUCTURE.map((entry) =>
+			entry.type === "link" ? (
+				<li class="primary-nav__item">
+					<a
+						class="primary-nav__link"
+						href={entry.href}
+						aria-current={entry.href === currentPath ? "page" : undefined}
+					>
+						{entry.label}
+					</a>
+				</li>
+			) : (
+				<li class="primary-nav__item primary-nav__item--group">
+					<button
+						class:list={[
+							"primary-nav__link",
+							"primary-nav__trigger",
+							{ "primary-nav__trigger--active": isGroupActive(entry) },
+						]}
+						type="button"
+						aria-expanded="false"
+						aria-haspopup="true"
+					>
+						{entry.label}
+						<span class="primary-nav__chevron" aria-hidden="true">
+							&#9662;
+						</span>
+					</button>
+					<ul class="primary-nav__menu" aria-hidden="true">
+						{entry.children.map((child) => (
+							<li>
+								<a
+									class="primary-nav__menu-link"
+									href={child.href}
+									aria-current={child.href === currentPath ? "page" : undefined}
+								>
+									{child.label}
+								</a>
+							</li>
+						))}
+					</ul>
+				</li>
+			),
+		)}
+	</ul>
+</nav>
+
+<script>
+	/**
+	 * Primary nav interactivity. Two modes:
+	 *
+	 *   Desktop (>= 820px): horizontal nav. Hover/focus opens dropdowns
+	 *     via CSS; this JS handles click-to-toggle (touch on tablet),
+	 *     click-outside-close, and escape-close.
+	 *
+	 *   Mobile (< 820px): hamburger button toggles a slide-in drawer.
+	 *     Same dropdown triggers work as accordion sections inside
+	 *     the drawer.
+	 *
+	 * One JS block handles both modes because the DOM is identical -
+	 * only CSS layout changes at the breakpoint.
+	 */
+	(() => {
+		const nav = document.querySelector<HTMLElement>(".primary-nav");
+		if (!nav) return;
+
+		const burger = nav.querySelector<HTMLButtonElement>("[data-nav-burger]");
+		const backdrop = nav.querySelector<HTMLElement>("[data-nav-backdrop]");
+		const list = nav.querySelector<HTMLElement>(".primary-nav__list");
+		const triggers = nav.querySelectorAll<HTMLButtonElement>(
+			".primary-nav__trigger",
+		);
+
+		// ---------- Dropdown / accordion group toggle ----------
+
+		function closeMenu(trigger: HTMLButtonElement): void {
+			trigger.setAttribute("aria-expanded", "false");
+			const menu = trigger.nextElementSibling as HTMLElement | null;
+			if (menu) menu.setAttribute("aria-hidden", "true");
+			trigger.parentElement?.classList.remove("primary-nav__item--open");
+		}
+
+		function openMenu(trigger: HTMLButtonElement): void {
+			// Close any other open group first (one open at a time).
+			triggers.forEach((t) => {
+				if (t !== trigger) closeMenu(t);
+			});
+			trigger.setAttribute("aria-expanded", "true");
+			const menu = trigger.nextElementSibling as HTMLElement | null;
+			if (menu) menu.setAttribute("aria-hidden", "false");
+			trigger.parentElement?.classList.add("primary-nav__item--open");
+		}
+
+		triggers.forEach((trigger) => {
+			trigger.addEventListener("click", (e) => {
+				e.stopPropagation();
+				const isOpen = trigger.getAttribute("aria-expanded") === "true";
+				if (isOpen) closeMenu(trigger);
+				else openMenu(trigger);
+			});
+		});
+
+		// ---------- Hamburger drawer toggle ----------
+
+		function isDrawerOpen(): boolean {
+			return nav?.classList.contains("primary-nav--drawer-open") ?? false;
+		}
+
+		function openDrawer(): void {
+			nav?.classList.add("primary-nav--drawer-open");
+			burger?.setAttribute("aria-expanded", "true");
+			burger?.setAttribute("aria-label", "Close navigation menu");
+			backdrop?.setAttribute("aria-hidden", "false");
+			// Prevent background scroll while the drawer is open.
+			document.documentElement.style.overflow = "hidden";
+		}
+
+		function closeDrawer(): void {
+			nav?.classList.remove("primary-nav--drawer-open");
+			burger?.setAttribute("aria-expanded", "false");
+			burger?.setAttribute("aria-label", "Open navigation menu");
+			backdrop?.setAttribute("aria-hidden", "true");
+			document.documentElement.style.overflow = "";
+			// Also collapse any expanded accordion groups inside the drawer.
+			triggers.forEach((t) => closeMenu(t));
+		}
+
+		burger?.addEventListener("click", (e) => {
+			e.stopPropagation();
+			if (isDrawerOpen()) closeDrawer();
+			else openDrawer();
+		});
+
+		backdrop?.addEventListener("click", () => closeDrawer());
+
+		// Tapping a link inside the drawer navigates - close first.
+		list?.addEventListener("click", (e) => {
+			const target = e.target as HTMLElement;
+			if (target.tagName === "A") closeDrawer();
+		});
+
+		// ---------- Global dismissers ----------
+
+		// Click outside closes dropdowns (desktop) but not the drawer
+		// (the drawer has its own backdrop handler).
+		document.addEventListener("click", (e) => {
+			const target = e.target as Node;
+			if (nav?.contains(target)) return;
+			triggers.forEach((t) => closeMenu(t));
+		});
+
+		// Escape closes drawer first (if open) OR the frontmost dropdown.
+		document.addEventListener("keydown", (e) => {
+			if (e.key !== "Escape") return;
+			if (isDrawerOpen()) {
+				closeDrawer();
+				burger?.focus();
+				return;
+			}
+			triggers.forEach((t) => {
+				if (t.getAttribute("aria-expanded") === "true") {
+					closeMenu(t);
+					t.focus();
+				}
+			});
+		});
+
+		// If viewport crosses the breakpoint while drawer is open, close it.
+		const mql = window.matchMedia("(min-width: 820px)");
+		mql.addEventListener("change", (e) => {
+			if (e.matches && isDrawerOpen()) closeDrawer();
+		});
+	})();
+</script>
+
+<style>
+	.primary-nav {
+		background: var(--surface-nav);
+		border-block: 3px solid var(--border-nav);
+	}
+
+	.primary-nav__list {
+		list-style: none;
+		margin: 0;
+		padding: 0.45rem 1rem;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+	}
+
+	.primary-nav__item {
+		position: relative;
+	}
+
+	.primary-nav__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.6rem 0.9rem;
+		border-radius: 0.5rem;
+		font-weight: bold;
+		font-family: inherit;
+		font-size: inherit;
+		text-decoration: none;
+		color: var(--text-on-nav);
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
+	.primary-nav__link:hover,
+	.primary-nav__link:focus-visible,
+	.primary-nav__link[aria-current="page"],
+	.primary-nav__trigger--active {
+		background: var(--surface-nav-hover);
+	}
+
+	.primary-nav__chevron {
+		font-size: 0.7em;
+		opacity: 0.75;
+		transition: transform 0.15s ease;
+	}
+
+	/* Rotate chevron when the dropdown is open (hover, focus-within,
+	   or JS-added open state all trigger this). */
+	.primary-nav__item--group:hover .primary-nav__chevron,
+	.primary-nav__item--group:focus-within .primary-nav__chevron,
+	.primary-nav__item--open .primary-nav__chevron {
+		transform: rotate(180deg);
+	}
+
+	.primary-nav__menu {
+		list-style: none;
+		margin: 0;
+		padding: 0.35rem;
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(4px);
+		min-width: 12rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.55rem;
+		box-shadow:
+			0 6px 24px color-mix(in srgb, black 22%, transparent),
+			0 2px 6px color-mix(in srgb, black 12%, transparent);
+		z-index: 60;
+
+		/* Hidden by default; opened by :hover, :focus-within, or the
+		   JS-added .primary-nav__item--open class. Uses visibility +
+		   opacity (not display) so keyboard focus can enter the menu
+		   during the transition. */
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition:
+			opacity 0.15s ease,
+			visibility 0.15s ease,
+			transform 0.15s ease;
+	}
+
+	.primary-nav__item--group:hover .primary-nav__menu,
+	.primary-nav__item--group:focus-within .primary-nav__menu,
+	.primary-nav__item--open .primary-nav__menu {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	.primary-nav__menu-link {
+		display: block;
+		padding: 0.55rem 0.85rem;
+		border-radius: 0.4rem;
+		text-decoration: none;
+		color: var(--text-heading, var(--text-on-nav));
+		font-weight: 600;
+		font-size: 0.94rem;
+	}
+
+	.primary-nav__menu-link:hover,
+	.primary-nav__menu-link:focus-visible,
+	.primary-nav__menu-link[aria-current="page"] {
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+		color: var(--accent-primary);
+	}
+
+	/* ---------- Hamburger button + backdrop (mobile only) ----------
+	   Hidden entirely on desktop via display: none inside the media
+	   query below. */
+	.primary-nav__burger {
+		display: none;
+		align-items: center;
+		gap: 0.55rem;
+		background: transparent;
+		border: none;
+		font: inherit;
+		font-weight: 700;
+		color: var(--text-on-nav);
+		padding: 0.65rem 1rem;
+		cursor: pointer;
+		min-height: 44px;
+	}
+	.primary-nav__burger:hover,
+	.primary-nav__burger:focus-visible {
+		background: var(--surface-nav-hover);
+	}
+	.primary-nav__burger-lines {
+		display: inline-flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 22px;
+		height: 16px;
+	}
+	.primary-nav__burger-lines span {
+		display: block;
+		height: 2px;
+		background: currentColor;
+		border-radius: 2px;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+	}
+	/* Burger -> X animation when drawer is open. Top line rotates 45,
+	   middle fades, bottom rotates -45. Cheap and reads as "close". */
+	.primary-nav--drawer-open .primary-nav__burger-lines span:nth-child(1) {
+		transform: translateY(7px) rotate(45deg);
+	}
+	.primary-nav--drawer-open .primary-nav__burger-lines span:nth-child(2) {
+		opacity: 0;
+	}
+	.primary-nav--drawer-open .primary-nav__burger-lines span:nth-child(3) {
+		transform: translateY(-7px) rotate(-45deg);
+	}
+
+	.primary-nav__backdrop {
+		display: none;
+		position: fixed;
+		inset: 0;
+		background: color-mix(in srgb, black 55%, transparent);
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
+		z-index: 90;
+		opacity: 0;
+		/* pointer-events: none by default so the transparent backdrop
+		   doesn't intercept clicks after the drawer closes. Toggled to
+		   auto below when .primary-nav--drawer-open is active. */
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+	}
+
+	/* ==========================================================
+	   MOBILE BREAKPOINT: < 820px switches to hamburger drawer.
+	   Same DOM, entirely different layout. The 7-item horizontal
+	   nav needs ~587px to fit uncramped; below that we drawer.
+	   ========================================================== */
+	@media (max-width: 819px) {
+		.primary-nav {
+			display: flex;
+			justify-content: flex-start;
+			padding: 0;
+		}
+
+		.primary-nav__burger {
+			display: inline-flex;
+			z-index: 110;
+			position: relative;
+		}
+
+		.primary-nav__backdrop {
+			display: block;
+		}
+		.primary-nav--drawer-open .primary-nav__backdrop {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		/* Drawer: slide in from the left as an off-canvas panel. Fixed
+		   positioning so it overlays whatever's below (page content),
+		   full-height, scrollable if the nav grows beyond viewport.
+
+		   Top padding is generous (3.75rem) so the hamburger toggle
+		   (which stays at its original position, ~y=57-101, with
+		   z-index above the drawer) never overlaps the first item
+		   in the list. Cheaper than repositioning the hamburger. */
+		.primary-nav__list {
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: min(84vw, 320px);
+			padding: 3.75rem 0.6rem 2rem;
+			background: var(--surface-card);
+			border-right: 3px solid var(--border-nav);
+			box-shadow: 4px 0 24px color-mix(in srgb, black 22%, transparent);
+			flex-direction: column;
+			flex-wrap: nowrap;
+			justify-content: flex-start;
+			align-items: stretch;
+			gap: 0.15rem;
+			z-index: 100;
+			overflow-y: auto;
+
+			/* Hidden by default; slide in when drawer-open class is set. */
+			transform: translateX(-100%);
+			transition: transform 0.25s ease;
+		}
+		.primary-nav--drawer-open .primary-nav__list {
+			transform: translateX(0);
+		}
+
+		.primary-nav__item {
+			width: 100%;
+		}
+
+		.primary-nav__link {
+			width: 100%;
+			justify-content: space-between;
+			padding: 0.9rem 1rem;
+			border-radius: 0.4rem;
+			min-height: 44px; /* WCAG tap target */
+			color: var(--text-heading, var(--text-on-nav));
+			font-size: 1rem;
+		}
+
+		.primary-nav__link:hover,
+		.primary-nav__link:focus-visible,
+		.primary-nav__link[aria-current="page"],
+		.primary-nav__trigger--active {
+			background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+			color: var(--accent-primary);
+		}
+
+		/* Inside the drawer, submenus become accordion sections that
+		   flow inline (not absolute-positioned popovers). Hidden by
+		   default until the trigger's group is open. */
+		.primary-nav__menu {
+			position: static;
+			transform: none;
+			box-shadow: none;
+			border: none;
+			border-radius: 0;
+			background: transparent;
+			padding: 0.1rem 0 0.4rem 0.5rem;
+			min-width: 0;
+			width: 100%;
+			display: none; /* hard-hide when closed - no accidental hover-open on touch */
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+			transition: none;
+		}
+
+		/* On mobile, ONLY the JS-toggled open state expands the submenu.
+		   Hover/focus-within DON'T count - they cause flicker on touch. */
+		.primary-nav__item--open .primary-nav__menu {
+			display: block;
+			transform: none;
+		}
+		.primary-nav__item--group:hover .primary-nav__menu,
+		.primary-nav__item--group:focus-within .primary-nav__menu {
+			display: none;
+		}
+		.primary-nav__item--group.primary-nav__item--open .primary-nav__menu {
+			display: block;
+		}
+
+		/* Specificity override: the desktop base rule
+		   `.primary-nav__item--group:hover .primary-nav__menu, ...,
+		   .primary-nav__item--open .primary-nav__menu` sets
+		   `transform: translateX(-50%) translateY(0)` for the desktop
+		   popover centering. On mobile that pushes the accordion
+		   sub-items off the drawer's left edge. Matching the exact
+		   specificity of the desktop rule here so `transform: none`
+		   wins consistently, then belt-and-braces reset display for
+		   the open case. */
+		.primary-nav__item--group:hover .primary-nav__menu,
+		.primary-nav__item--group:focus-within .primary-nav__menu,
+		.primary-nav__item--open .primary-nav__menu {
+			transform: none;
+		}
+
+		.primary-nav__menu-link {
+			padding: 0.7rem 1rem;
+			min-height: 40px;
+			font-size: 0.95rem;
+		}
+	}
+</style>

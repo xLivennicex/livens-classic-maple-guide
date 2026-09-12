@@ -1,0 +1,435 @@
+---
+/**
+ * /guides/exp-then-vs-now - the "which v83 EXP numbers still apply?"
+ * reference. Covers mob EXP, quest EXP, and the party EXP formula
+ * with an honest "here's what we know / don't know" framing.
+ *
+ * SEO target: 'maplestory classic exp changes', 'MSCW mob exp
+ * different from v83', 'maplestory classic quest exp', 'maplestory
+ * classic leveling different'. Returning-player intent query.
+ *
+ * All CoT 2 mob values below come directly from mobs.json
+ * (stats.exp). v83 baseline values are from Hidden Street / OldSchool
+ * wikis - we cite the range of values seen across community sources
+ * rather than pretending there's ONE canonical v83 number (there
+ * often isn't - GMS retuned during patches and private servers
+ * added their own multipliers).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Then vs Now: EXP & Progression Changes (v83 to CoT 2) - Liven's Classic Maple Guide"
+	description="The v83 wiki mob-EXP tables are mostly still accurate for MapleStory Classic World, but there are shifts worth knowing about. Datamine-verified CoT 2 numbers for iconic mobs, quest EXP examples, and an honest note on party EXP formula uncertainty."
+	currentPath="/guides"
+	theme="ellinia"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">CoT 2 vs v83 Reality Check</span>
+			<h1>Then vs Now: EXP & Progression</h1>
+			<p class="lede">
+				Old v83 mob-EXP tables are the returning player's default mental
+				model. Are they still accurate for Classic World? Mostly - but
+				there are shifts, some of them significant, and we don't have
+				live-server confirmation on the party EXP formula at all yet.
+				This guide walks through what we know, what we don't, and how
+				to fact-check any specific value.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Data sources:</strong> all "CoT 2 datamine" numbers below
+			are pulled directly from <code>mobs.json</code> and
+			<code>quests.json</code>, extracted from the Closed Online Test 2
+			client. "v83 baseline" references community wikis (Hidden Street,
+			OldSchool) - which themselves disagree on some values because GMS
+			retuned during its own patch history. When we cite a v83 number,
+			assume &plusmn;20% variance across sources unless we explicitly
+			say otherwise.
+		</div>
+
+		<h2 id="mob-exp-comparison">Mob EXP: mostly the same, with exceptions</h2>
+		<p>
+			The datamine surprises here. Most iconic v83 mob EXP values
+			carried over into CoT 2 unchanged. Selective shifts DO exist -
+			the low-level Slime notably almost doubled - but the "everything
+			has been retuned!" narrative you might have heard is largely
+			false. Concrete numbers:
+		</p>
+
+		<div class="table-wrap">
+		<table class="exp-table">
+			<thead>
+				<tr>
+					<th>Mob</th>
+					<th>Lv</th>
+					<th>CoT 2 EXP</th>
+					<th>Common v83 wiki EXP</th>
+					<th>Delta</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Snail</td><td>1</td><td>3</td><td>3</td><td class="same">same</td></tr>
+				<tr><td>Blue Snail</td><td>2</td><td>4</td><td>4</td><td class="same">same</td></tr>
+				<tr><td>Red Snail</td><td>4</td><td>8</td><td>8</td><td class="same">same</td></tr>
+				<tr><td><strong>Slime</strong></td><td>6</td><td><strong>10</strong></td><td>6</td><td class="up">+67% ⬆</td></tr>
+				<tr><td>Pig</td><td>7</td><td>15</td><td>15</td><td class="same">same</td></tr>
+				<tr><td>Orange Mushroom</td><td>8</td><td>15</td><td>15</td><td class="same">same</td></tr>
+				<tr><td>Ribbon Pig</td><td>10</td><td>20</td><td>20</td><td class="same">same</td></tr>
+				<tr><td>Green Mushroom</td><td>15</td><td>26</td><td>27</td><td class="down">-4% ⬇</td></tr>
+				<tr><td>Bubbling</td><td>15</td><td>26</td><td>~26</td><td class="same">same</td></tr>
+				<tr><td>Blue Mushroom</td><td>20</td><td>32</td><td>32</td><td class="same">same</td></tr>
+				<tr><td>Stirge</td><td>20</td><td>33</td><td>33</td><td class="same">same</td></tr>
+				<tr><td>Jr. Necki</td><td>21</td><td>38</td><td>38</td><td class="same">same</td></tr>
+				<tr><td>Horny Mushroom</td><td>22</td><td>35</td><td>35</td><td class="same">same</td></tr>
+				<tr><td>Zombie Mushroom</td><td>24</td><td>42</td><td>42</td><td class="same">same</td></tr>
+				<tr><td>Wild Boar</td><td>25</td><td>42</td><td>42</td><td class="same">same</td></tr>
+				<tr><td>Fire Boar</td><td>32</td><td>60</td><td>60</td><td class="same">same</td></tr>
+				<tr><td>Ligator</td><td>32</td><td>60</td><td>60</td><td class="same">same</td></tr>
+				<tr><td>Curse Eye</td><td>35</td><td>70</td><td>70</td><td class="same">same</td></tr>
+				<tr><td>Cold Eye</td><td>40</td><td>85</td><td>85</td><td class="same">same</td></tr>
+				<tr><td>Zombie Lupin</td><td>40</td><td>90</td><td>90</td><td class="same">same</td></tr>
+				<tr><td>Copper Drake</td><td>45</td><td>105</td><td>105</td><td class="same">same</td></tr>
+				<tr><td>Master Chronos</td><td>46</td><td>115</td><td>115</td><td class="same">same</td></tr>
+				<tr><td>Wraith</td><td>48</td><td>120</td><td>120</td><td class="same">same</td></tr>
+				<tr><td>Drake</td><td>50</td><td>135</td><td>135</td><td class="same">same</td></tr>
+				<tr><td>Coolie Zombie</td><td>57</td><td>190</td><td>190</td><td class="same">same</td></tr>
+				<tr><td>Death Teddy</td><td>85</td><td>1300</td><td>1300</td><td class="same">same</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			<strong>The pattern:</strong> from Lv 15 onward, mob EXP appears
+			identical to v83 within margin-of-error. The only significant
+			outlier we've spotted is <strong>Slime</strong> jumping from 6 to
+			10 EXP - a 67% increase that meaningfully speeds up the Lv 6-10
+			bracket. Green Mushroom drops 1 EXP but that's within wiki
+			variance.
+		</p>
+		<p>
+			<strong>Practical takeaway:</strong> if you have v83 grinding-spot
+			habits, they're probably still valid EXP-per-hour. The
+			<a href="/mobs">mobs catalog</a> shows the live CoT 2 datamine
+			value for every mob - if you want to verify a specific number,
+			search the mob and check its detail page.
+		</p>
+
+		<h2 id="quest-exp">Quest EXP: harder to compare</h2>
+		<p>
+			Quest EXP is much harder to A/B compare against v83 because
+			community wikis rarely captured exact quest reward numbers - they
+			focused on mob EXP and left "quest rewards vary" as a wave-of-the-
+			hand. Datamine gives us concrete numbers. Examples pulled from
+			<code>quests.json</code>:
+		</p>
+
+		<div class="table-wrap">
+		<table class="exp-table">
+			<thead>
+				<tr>
+					<th>Quest</th>
+					<th>Min Level</th>
+					<th>CoT 2 EXP reward</th>
+					<th>Region</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mai's Training</td><td>3</td><td>70</td><td>Maple Island</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The comparison table is intentionally small - we're avoiding
+			citing v83 quest EXP numbers we can't confidently source. The
+			<a href="/quests">quests catalog</a> lists every CoT 2 quest with
+			its EXP + item rewards; if a value looks different from your
+			memory, treat the datamine number as authoritative for CoT 2.
+		</p>
+
+		<h2 id="party-formula">Party EXP formula: the big unknown</h2>
+		<p>
+			The v83 canonical party EXP formula is:
+		</p>
+		<pre class="callout formula"><code>partyExp(member) = mobBaseExp * (0.6 / partySize + 0.4 * (memberLv / totalPartyLv))</code></pre>
+		<p>
+			Our <a href="/guides/party-exp">Party EXP guide</a> uses this
+			formula as its working assumption because it's the most-cited
+			v83 formula and Nexon has not publicly announced retuning the
+			party split. But <strong>we do not have datamine-level
+			confirmation that CoT 2 preserves this exact formula.</strong>
+			Reasons to be cautious:
+		</p>
+		<ul>
+			<li>
+				<strong>Party formulas typically live in server code, not
+				client files.</strong> Datamining the client doesn't
+				surface the party-split math the way it does mob EXP.
+			</li>
+			<li>
+				<strong>Nexon has retuned party bonuses in other MapleStory
+				builds.</strong> Modern KMS and BB-era GMS both use
+				materially different party formulas from classic v83.
+			</li>
+			<li>
+				<strong>New systems interact with party EXP.</strong>
+				Citizenship contribution may bundle into party turnins; the
+				new Physical Fitness Test event system likely has its own
+				reward structure entirely.
+			</li>
+		</ul>
+		<p>
+			<strong>What to do about it:</strong> assume the v83 formula is
+			directionally correct (partying benefits both members, 3-player
+			parties benefit modestly more) but don't build a spreadsheet
+			around exact percentages. Once Founder's Access opens October 6
+			we'll do controlled tests and publish confirmed numbers on the
+			<a href="/guides/party-exp">Party EXP guide</a>.
+		</p>
+
+		<h2 id="what-nexon-can-tune">What Nexon typically retunes vs leaves alone</h2>
+		<p>
+			Historical pattern across MapleStory relaunches (KMS Reboot, BB,
+			MSEA "Renegades"): Nexon rarely touches individual mob EXP but
+			frequently touches:
+		</p>
+		<ul>
+			<li>
+				<strong>Level curve thresholds</strong> (EXP-to-level values
+				at each level). This is the big multiplier - even without
+				touching mob EXP, tuning the level curve makes the same mob
+				feel faster or slower.
+			</li>
+			<li>
+				<strong>Party bonus multipliers</strong> and buff bonuses
+				(Holy Symbol, Rainbow Mark, etc.).
+			</li>
+			<li>
+				<strong>Event EXP multipliers</strong> (2x events, weekend
+				bonuses, first-week launch bonuses) - these are the biggest
+				live-server variables and don't appear in datamine at all.
+			</li>
+			<li>
+				<strong>Quest reward EXP</strong> at the individual quest
+				level, especially for chain quests where a single retune
+				changes leveling meta.
+			</li>
+		</ul>
+		<p>
+			What Nexon <strong>rarely</strong> touches:
+		</p>
+		<ul>
+			<li>
+				Individual mob base EXP - consistent with what we see in the
+				datamine (mostly unchanged).
+			</li>
+			<li>
+				Class base kits at 1st job (Bowman is a notable exception this
+				time - see <a href="/guides/skill-changes">Skill Changes</a>).
+			</li>
+			<li>
+				Base stat formulas (STR-to-damage, DEX-to-accuracy, etc.).
+			</li>
+		</ul>
+
+		<h2 id="how-to-fact-check">How to fact-check any EXP claim</h2>
+		<p>
+			Two workflows depending on what you're checking:
+		</p>
+		<ul>
+			<li>
+				<strong>Specific mob EXP:</strong> search the mob on
+				<a href="/mobs">the mobs catalog</a>, open its detail page,
+				read <code>stats.exp</code>. That's the CoT 2 datamine value
+				- authoritative for CoT 2, ignore whatever the v83 wiki says.
+			</li>
+			<li>
+				<strong>Specific quest EXP:</strong> search the quest on
+				<a href="/quests">the quests catalog</a>. Reward EXP is
+				listed at the top of the detail page.
+			</li>
+			<li>
+				<strong>Level curve / party formula:</strong> we don't yet
+				have these live-verified for CoT 2. Wait for Founder's Access
+				data or run your own controlled test post-launch.
+			</li>
+			<li>
+				<strong>Event multipliers:</strong> check Nexon's official
+				MSCW announcements. These change weekly and are never in
+				datamine.
+			</li>
+		</ul>
+
+		<h2 id="bottom-line">Bottom line for returners</h2>
+		<p>
+			Your v83 grinding-spot instincts are mostly still valid. Mob EXP
+			for iconic mobs (Wild Boar, Cold Eye, Wraith, Drake, Death Teddy)
+			matches the wiki you remember. Where things get uncertain is:
+		</p>
+		<ul>
+			<li>
+				<strong>Party bonus percentages</strong> - directionally
+				correct, exact values TBD.
+			</li>
+			<li>
+				<strong>Quest reward EXP</strong> - CoT 2 datamine is
+				authoritative; treat old wiki quest-EXP numbers as vibes.
+			</li>
+			<li>
+				<strong>Level curve</strong> - unclear. If leveling feels
+				faster/slower than v83 memory, it's probably the curve rather
+				than mob EXP.
+			</li>
+			<li>
+				<strong>Post-launch event multipliers</strong> - completely
+				unknown until Nexon announces the event schedule.
+			</li>
+		</ul>
+
+		<p class="closing">
+			Related: <a href="/guides/whats-new-in-cot2">What's New in CoT 2</a>
+			for the broader v83-vs-CoT2 changelog,
+			<a href="/guides/skill-changes">Skill Changes Per Class</a> for
+			the class-kit-level diffs, and <a href="/guides/party-exp">Party
+			EXP &amp; Grinding</a> for the (v83-assumed) party formula math.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin-bottom: 0.4rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+		line-height: 1.55;
+	}
+
+	.prose {
+		max-width: 76ch;
+		font-size: 1rem;
+		line-height: 1.62;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		margin-top: 2.2rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-heading);
+		font-size: 1.5rem;
+		border-bottom: 1px solid var(--border-card);
+		padding-bottom: 0.35rem;
+	}
+	.prose p,
+	.prose ul,
+	.prose ol {
+		margin-top: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.prose li {
+		margin-bottom: 0.35rem;
+	}
+	.prose code {
+		font-family: var(--font-mono);
+		font-size: 0.88em;
+		background: var(--bg-cloud);
+		padding: 0.1em 0.35em;
+		border-radius: 0.25rem;
+		border: 1px solid var(--border-card);
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: underline;
+		text-decoration-thickness: 0.09em;
+		text-underline-offset: 0.2em;
+	}
+	.prose strong {
+		color: var(--text-heading);
+	}
+	.prose .closing {
+		margin-top: 2.2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-style: italic;
+		color: var(--text-muted);
+	}
+
+	.callout {
+		margin: 1.2rem 0;
+		padding: 0.9rem 1.1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border-card);
+		background: var(--bg-cloud);
+		border-left: 4px solid var(--accent-primary);
+	}
+	.callout--framing {
+		font-size: 0.94rem;
+	}
+	.callout.formula {
+		font-family: var(--font-mono);
+		font-size: 0.88rem;
+		overflow-x: auto;
+	}
+	.callout.formula code {
+		white-space: pre;
+		background: transparent;
+		padding: 0;
+		border: none;
+	}
+
+	.table-wrap {
+		overflow-x: auto;
+		margin: 1rem 0 1.5rem;
+	}
+	.exp-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+	.exp-table th,
+	.exp-table td {
+		padding: 0.45rem 0.7rem;
+		text-align: left;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.exp-table th {
+		background: var(--bg-cloud);
+		color: var(--text-heading);
+		font-weight: 700;
+		text-transform: uppercase;
+		font-size: 0.75rem;
+		letter-spacing: 0.05em;
+	}
+	.exp-table td.same {
+		color: var(--text-muted);
+		font-size: 0.86rem;
+	}
+	.exp-table td.up {
+		color: #158a4d;
+		font-weight: 700;
+	}
+	.exp-table td.down {
+		color: #b03b3b;
+		font-weight: 700;
+	}
+	.exp-table tbody tr:hover {
+		background: color-mix(in srgb, var(--accent-primary) 5%, transparent);
+	}
+</style>

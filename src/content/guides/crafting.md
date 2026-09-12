@@ -1,4 +1,4 @@
-﻿---
+---
 # ---------- Core metadata ----------
 title: "Crafting Guide"
 description: "A complete guide to professions, mastery, materials, recipes, catalysts, weekly crafting kits, and efficient progression in MapleStory Classic World."
@@ -21,10 +21,11 @@ tagline: "Six disciplines, 348 recipes, and one economy in the making. Learn whe
 
 # ---------- Verification ----------
 verificationStatus: "closed-test-info"
-verificationNote: "All numeric details in this guide were recorded from Closed Online Test 2. Recipe counts, Mastery requirements, meso costs, and catalyst behavior may change before or during launch. The 348-recipe figure and per-discipline breakdowns come from the COT2 client snapshot on NiaMeowDB."
+verificationNote: "All numeric details were recorded from Closed Online Test 2. Recipe counts, Mastery requirements, meso costs, and catalyst behavior may change before or during launch. The 348-recipe figure, per-discipline counts, and specific recipe examples are cross-verified against the CoT 2 client datamine at osmsdataexplorer.com in addition to NiaMeowDB's community index."
 sourceSlugs:
   - nexon-cot1-release-notes
   - niameowdb-crafting
+  - osmsdataexplorer
 
 # ---------- TOC ----------
 toc:
@@ -51,7 +52,7 @@ The system contains six crafting disciplines, each with its own master, recipes,
 | Feature | COT2 implementation |
 | --- | --- |
 | Number of disciplines | 6 |
-| Observed crafting levels | 1â€“10 |
+| Observed crafting levels | 1–10 |
 | Current recipe count | 348 |
 | Profession unlock quests | Available from level 10 |
 | Weekly helper quests | Available from level 15 after learning the discipline |
@@ -93,6 +94,28 @@ No normal recipe-failure percentage has been reliably documented for COT2. The k
 | Arcforge | Chrishrama | Sleepywood | 44 | Gems, magical materials, magical equipment, and scrolls | Scroll Crafting Catalyst |
 
 COT2 player reports indicated that a single character could learn and train all six disciplines. Their Mastery bars remain separate, so leveling one discipline does not raise the others.
+
+### Your first craft in each discipline (COT2 verified)
+
+The following are the very first recipes each discipline unlocks - the recipes you will actually use to earn your first Mastery points on day one. Ingredient counts, meso costs, and craft EXP values were pulled directly from the CoT 2 client datamine at osmsdataexplorer.com and cross-referenced against the NiaMeowDB recipe browser.
+
+| Discipline | First recipe | Ingredients | Meso cost | Craft EXP |
+| --- | --- | --- | ---: | ---: |
+| Smithing | Metal Koif | 1x Bronze Koif + 2x Iron Ingot | 1,000 | 20 |
+| Weaponcrafting | Steel Pipe | 1x Iron Ingot | 1,500 | 20 |
+| Tailoring | Red Bandana | 2x Processed Cloth + 10x Red Snail Shell + 3x Spool of Thread | 600 | 20 |
+| Woodcrafting | Arrows for Bows (x500) | 1x Processed Wood + 1x Stiff Feather | 0 | 3 |
+| Leatherworking | Brown Skullcap | 1x Processed Leather + 5x Red Snail Shell + 5x Snail Shell + 3x Spool of Thread | 300 | 20 |
+| Arcforge | Hat Accuracy Scroll: Lesser | 1x Processed Parchment + 10x Fragment of Magic + 3x Garnet | 10,000 | 40 |
+
+A few things to notice at a glance:
+
+- **Woodcrafting's arrow recipe is the outlier.** It costs zero mesos, uses two very common ingredients, and produces 500 arrows per craft - but returns only 3 Mastery EXP. Woodcrafting is a Mastery grind, not an economic one. Compensate by crafting in volume.
+- **Arcforge's entry recipe is a Lesser Accuracy Scroll**, not a raw material. Arcforge is scroll-focused from the start and its entry cost (10,000 mesos + a Garnet) is by far the steepest of any first recipe. Do not learn Arcforge as your first discipline unless you already have material stockpiles.
+- **Tailoring and Leatherworking share a heavy dependency on early-monster drops** (Snail Shells, Red Snail Shells). If you plan to level either, farm a few hundred shells on Maple Island before ever advancing to Victoria.
+- **Weaponcrafting and Smithing depend on Iron Ingot**, which is itself a Smithing product. If you want to level Weaponcrafting cleanly, learn Smithing first or budget for buying ingots off the market.
+
+See the per-discipline sections below for level-10 signature recipes and master-recognition quests.
 
 ### Smithing
 
@@ -487,7 +510,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 
 ## Recommended Crafting Progression
 
-### Character Levels 10â€“14
+### Character Levels 10–14
 
 - Complete the apprenticeship quests for the disciplines you intend to use.
 - Do not attempt to level every discipline aggressively at once.
@@ -495,7 +518,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Learn which intermediate materials appear across multiple recipes.
 - Favor low-cost processing crafts over expensive equipment you do not need.
 
-### Character Levels 15â€“24
+### Character Levels 15–24
 
 - Complete each learned profession's weekly helper quest.
 - Save the 10% Kit until you have a prepared crafting batch.
@@ -503,7 +526,7 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Consider selling scarce raw materials rather than consuming everything yourself.
 - Level supporting disciplines only when their intermediates reduce your total cost.
 
-### Character Levels 25â€“39
+### Character Levels 25–39
 
 - Complete the master-recognition quests once eligible.
 - Treat the first catalyst as a demonstration item, not a reason to gamble immediately.
@@ -511,9 +534,9 @@ Use these as examples of the calculation method, not a permanent leveling route.
 - Begin specializing in recipes with actual player demand.
 - Track leftover batches of Screws, Thread, ingots, gems, and processed materials.
 
-### Character Levels 40â€“50+
+### Character Levels 40–50+
 
-- Push important disciplines toward Levels 8â€“10.
+- Push important disciplines toward Levels 8–10.
 - Reserve rare catalysts and gems for desirable final products.
 - Use market prices rather than NPC values when evaluating profit.
 - Coordinate with other crafters to reduce cross-profession overhead.
@@ -658,4 +681,4 @@ Learn Crafting early, but do not try to master everything immediately. Choose on
 
 Keep common crafting drops until you understand their demand, complete the weekly Kit quests, watch the character-level gates, and treat catalysts as valuable risk-and-reward materials rather than ordinary recipe components. Most importantly, compare the full cost of a craft against both NPC equipment and the player market before committing scarce materials.
 
-Crafting is likely to become one of Classic World's defining economic systems. The best crafters will not simply be the players with the highest Mastery â€” they will be the players who understand material chains, batch sizes, market demand, and when an expensive recipe is not worth making.
+Crafting is likely to become one of Classic World's defining economic systems. The best crafters will not simply be the players with the highest Mastery — they will be the players who understand material chains, batch sizes, market demand, and when an expensive recipe is not worth making.

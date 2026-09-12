@@ -1,0 +1,206 @@
+---
+/**
+ * /bosses - the boss compendium landing page.
+ *
+ * Sourced from src/lib/bosses.ts (which joins mobs.json with the
+ * hand-curated boss-manifest.json). Shows every boss as a card in
+ * level-ascending order so the page reads as a progression ladder
+ * from "your first hidden-street mini-boss" (Mano lv 20) to "deep
+ * Sleepywood undead terror" (Zombie Mushmom lv 65).
+ *
+ * Follow-up sprint queued: expand boss coverage to include Zakum,
+ * Papulatus, Pianus, Ergoth, Anego, and other v83 endgame bosses.
+ * Blocked on our CoT feed only pulling mobs referenced by tracked
+ * quests/items - endgame bosses need a supplementary maplestory.io
+ * mob fetch to make it into mobs.json.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Sprite from "../../components/Sprite.astro";
+import { allBosses, threatMeta } from "../../lib/bosses";
+import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+---
+
+<BaseLayout
+	title="Bosses - Liven's Classic Maple Guide"
+	description="Every boss in the MapleStory Classic v83 datamine - Mano, King Slime, Crimson Balrog, Jr. Balrog, Mushmom, Zombie Mushmom. Stats, spawn locations, strategy, drops."
+	currentPath="/bosses"
+	theme="sleepywood"
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">Field guide</span>
+			<h1>Boss compendium</h1>
+			<p class="lede">
+				Every boss the datamine flags for v83 Classic, in level
+				order. Cross-referenced with combat stats, spawn maps, and
+				drop tables. Each entry pairs the raw dossier data with
+				editorial notes on access, strategy, and threat level.
+			</p>
+			<p class="build-meta">
+				<strong>{allBosses.length} bosses</strong> catalogued.
+				Endgame set (Zakum, Papulatus, Pianus, Ergoth) is missing
+				from our current data feed - working on a supplementary
+				fetch. Ping <a href="/">the maintainers</a> if you spot
+				a boss we've missed.
+			</p>
+		</div>
+	</section>
+
+	<div class="boss-grid">
+		{allBosses.map((b) => {
+			const t = threatMeta(b.narrative.threat);
+			return (
+				<a class="boss-card" href={`/bosses/${b.slug}/`}>
+					<div class="boss-card__sprite">
+						<Sprite
+							srcs={mobSpriteSrcs(b.mob.id, b.mob.wzId)}
+							alt={`${b.mob.name} sprite`}
+							loading="lazy"
+							placeholder={themePlaceholderUrl("sleepywood")}
+						/>
+					</div>
+					<div class="boss-card__body">
+						<h2 class="boss-card__name">{b.mob.name}</h2>
+						<div class="boss-card__meta">
+							<span class="badge badge--lvl">Lv. {b.mob.stats?.level ?? "?"}</span>
+							<span class="badge">{b.mob.stats?.maxHP?.toLocaleString() ?? "?"} HP</span>
+							<span class={`badge ${t.cls}`}>{t.label}</span>
+						</div>
+						<p class="boss-card__role">{b.role}</p>
+						<p class="boss-card__tldr">
+							{b.narrative.tldr ?? "Editorial notes pending."}
+						</p>
+						<span class="boss-card__cta">
+							Read the dossier →
+						</span>
+					</div>
+				</a>
+			);
+		})}
+	</div>
+</BaseLayout>
+
+<style>
+	/* Wrap intro in same frosted card style used across other index pages
+	   so the lede stays legible on any theme's background. Sprint 52 QA
+	   caught this: original inline `color: #2c3e50` washed out over the
+	   dark sleepywood forest background. */
+	.section-heading {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+		padding: 1.4rem 1.6rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.75rem;
+	}
+	.eyebrow {
+		display: block;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--accent-primary);
+		margin-bottom: 0.3rem;
+	}
+	h1 { margin: 0 0 0.7rem; font-size: 2.5rem; color: var(--text-heading); }
+	.lede { margin: 0 0 0.6rem; color: var(--text-body); max-width: 65ch; }
+	.build-meta { font-size: 0.85rem; color: var(--text-muted); max-width: 65ch; }
+	.build-meta a { color: inherit; text-decoration: underline; }
+
+	.boss-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+		gap: 1.2rem;
+	}
+	.boss-card {
+		display: flex;
+		gap: 1rem;
+		padding: 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 10px;
+		text-decoration: none;
+		color: var(--text-body);
+		transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+	}
+	.boss-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+		border-color: var(--accent-primary);
+	}
+	.boss-card__sprite {
+		flex: 0 0 72px;
+		width: 72px;
+		height: 72px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--bg-cloud);
+		border-radius: 8px;
+		image-rendering: pixelated;
+	}
+	.boss-card__sprite :global(img) {
+		max-width: 64px;
+		max-height: 64px;
+		image-rendering: pixelated;
+	}
+	.boss-card__body {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 0;
+	}
+	.boss-card__name {
+		margin: 0;
+		font-size: 1.25rem;
+		color: var(--text-heading);
+	}
+	.boss-card__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+	.boss-card__role {
+		margin: 0.1rem 0 0;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		font-style: italic;
+	}
+	.boss-card__tldr {
+		margin: 0.3rem 0 0.5rem;
+		font-size: 0.9rem;
+		color: var(--text-body);
+		line-height: 1.4;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.boss-card__cta {
+		margin-top: auto;
+		font-size: 0.85rem;
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+
+	.badge {
+		display: inline-block;
+		padding: 0.15rem 0.55rem;
+		font-size: 0.75rem;
+		border-radius: 999px;
+		background: var(--bg-cloud);
+		color: var(--text-body);
+	}
+	.badge--lvl { background: #dfe8f2; color: #1f3a5f; font-weight: 600; }
+	/* Threat badges use fixed palettes for cross-theme legibility -
+	   see /bosses/[slug].astro for the same rationale. */
+	.threat--low       { background: #d4edda; color: #155724; }
+	.threat--moderate  { background: #fff3cd; color: #856404; }
+	.threat--high      { background: #f8d7da; color: #721c24; }
+	.threat--extreme   { background: #2b0d0f; color: #ffd7d9; }
+	.threat--unknown   { background: var(--bg-cloud); color: var(--text-body); }
+</style>

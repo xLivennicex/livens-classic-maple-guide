@@ -106,7 +106,7 @@ const autoDescription =
 	</div>
 
 	<section id="sources" class="guide-sources">
-		<h2>Sources for this guide</h2>
+		<h2 class="section-panel-title">Sources for this guide</h2>
 		<p class="guide-sources__lede">
 			Every claim above traces back to one of these entries. Historical
 			archives are the research baseline; entries labeled Awaiting
@@ -190,11 +190,19 @@ const autoDescription =
 		background: var(--surface-nav-hover);
 	}
 
+	/* Guide markdown body sits inside a card surface so heavy
+	 * prose remains readable against the themed page background
+	 * image (mirrors QuestLayout.quest-editorial and
+	 * ItemLayout.item-editorial patterns). */
 	.guide-body {
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
 		margin-top: 1.5rem;
+		padding: 1.5rem 1.75rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 1rem;
 	}
 
 	.guide-sources {

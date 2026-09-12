@@ -1,40 +1,106 @@
-/* Kerning: neon-lit night, thief quarter.
- * STUB palette - refine once we build a Kerning-themed page.
+/* Kerning City: neon-lit night, thief quarter, subway noir.
+ *
+ * The city lives after dark - purple neon signs, dark alleys, the
+ * hum of the subway underneath. Palette leans on deep indigo/violet
+ * backgrounds with hot magenta accents (the neon signage) and
+ * near-white text so everything stays readable on the dark surfaces.
  */
 
 [data-theme="kerning"] {
-	--bg-sky-top: #1a1830;
-	--bg-ground: #0d0f1a;
-	--bg-cloud: #2a2440;
-	--bg-grass: #2a2440;
+	/* --- Backgrounds --- */
+	--bg-sky-top: #1a1830;           /* midnight sky over the city */
+	--bg-ground: #0d0f1a;            /* asphalt after rain */
+	--bg-cloud: #2a2440;             /* neon-tinted haze */
+	--bg-grass: #2a2440;             /* rooftop silhouette */
 
-	--surface-card: #241f3a;
-	--surface-nav: #7c3aed;
-	--surface-nav-hover: #a97dfa;
-	--surface-announcement: #3d1f6b;
+	/* --- Surfaces --- */
+	--surface-card: #241f3a;         /* dim indoor panel */
+	--surface-nav: #7c3aed;          /* neon violet signage */
+	--surface-nav-hover: #a97dfa;    /* neon hover glow */
+	--surface-announcement: #3d1f6b; /* deep alley shadow */
 	--surface-hero-panel: rgba(36, 31, 58, 0.92);
 
+	/* --- Borders --- */
 	--border-card: #4b3d78;
 	--border-card-strong: #7c3aed;
 	--border-nav: #4b1a9a;
 	--border-hero: #a97dfa;
 	--border-divider: #3a3260;
 
-	--text-body: #d4c7f0;
-	--text-heading: #f0e7ff;
+	/* --- Text --- */
+	--text-body: #d4c7f0;            /* soft violet-tinted white */
+	--text-heading: #f0e7ff;         /* brighter white for headings */
 	--text-muted: #a89dc7;
 	--text-brand-tagline: #c084fc;
 	--text-on-nav: #ffffff;
 	--text-on-announcement: #ffffff;
 	--text-on-accent: #ffffff;
 
-	--accent-primary: #c084fc;
-	--accent-primary-strong: #a855f7;
-	--accent-secondary: #f0abfc;
+	/* --- Accents ---
+	 * Secondary is a hot magenta callout background. Its paired text
+	 * MUST be dark (fixed here from an earlier bug where white text
+	 * on light pink was unreadable in .callout and blockquote).
+	 * Callouts read as "neon sign against dark alley" - the accent
+	 * pops rather than blending into the moody backdrop. */
+	--accent-primary: #c084fc;             /* neon lavender */
+	--accent-primary-strong: #a855f7;      /* deeper neon */
+	--accent-secondary: #f0abfc;           /* hot magenta highlight */
 	--accent-secondary-border: #c026d3;
-	--accent-secondary-text: #ffffff;
+	--accent-secondary-text: #2a0a3a;      /* dark plum on hot magenta */
 	--accent-blossom: #ec4899;
 	--accent-blossom-strong: #be185d;
 
+	/* --- Effects --- */
 	--shadow-panel: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+	/* --- Cursors ---
+	 * Kerning is thief country - default cursor is an open hand
+	 * (sneaky, unassuming, about to grab something). Interactives
+	 * use the blue movement pointer, matching the cool neon palette
+	 * without competing with the primary violet accents. */
+	--cursor-default: url("/cursors/hand_open.cur") 4 4, auto;
+	--cursor-pointer: url("/cursors/point_move_blue.cur") 4 4, pointer;
+}
+
+/* Kerning uses a scenic neon-noir background: dusk cityscape with
+ * a purple sunset sky, wet reflective streets, graffiti-covered
+ * brick buildings, warm street-lamp glow, industrial pipes, and
+ * bridges misting into the distance. Dark scrim on the bottom
+ * matches the surface-card color so cards blend into the darker
+ * street-level portion of the image without harsh edges.
+ *
+ * ART DIRECTION NOTE: this is deliberately the "New Age Kerning
+ * City" - the modern-Nexon reimagining with graffiti-pop art on
+ * brick, cyberpunk-lite pipework, and moody neon reflections -
+ * NOT the simpler v83-era brown subway aesthetic. If a classic
+ * Kerning alternate ever gets requested (e.g. for a nostalgia
+ * skin toggle), that would be a separate theme (`kerning-classic`
+ * or similar), not a replacement for this file. */
+
+/* !important is defensive against browser style caching keeping the
+ * base gradient. Theme MUST win. Same pattern as perion.css. */
+html[data-theme="kerning"] body {
+	background-color: var(--bg-sky-top) !important;
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(13, 15, 26, 0) 0%,
+			rgba(36, 31, 58, 0.35) 45%,
+			rgba(36, 31, 58, 0.85) 100%
+		),
+		url("/images/kerning-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
+}
+
+/* The scenic image already has plenty of urban clutter, wires,
+ * lamps, and graffiti - CSS decoration overlays would just be
+ * visual noise. Kill them for Kerning. */
+html[data-theme="kerning"] body[data-theme-decorations="on"]::before,
+html[data-theme="kerning"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
 }

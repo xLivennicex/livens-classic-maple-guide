@@ -1,0 +1,390 @@
+---
+/**
+ * Dual-path quest route:
+ *   /quests/{editorial-slug}  -> rich hand-authored via QuestLayout
+ *                                 (90 curated quests)
+ *   /quests/{numeric-id}      -> slim datamine dossier for any of
+ *                                 322 quests. Editorial-available
+ *                                 banner links to the slug variant
+ *                                 when one exists.
+ *
+ * Numeric IDs and kebab-case slugs never collide, so one dynamic
+ * route captures both. Mirrors the `/items/[item]` dual-path
+ * pattern from round 19.
+ */
+
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import QuestLayout from "../../layouts/QuestLayout.astro";
+import questDossiers from "../../data/db/quests.json";
+import itemDossiers from "../../data/db/items.json";
+import { itemIconUrl, npcSpriteUrl } from "../../lib/maplestory-cdn";
+import { themeForLocation } from "../../lib/region-theme";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	const editorialEntries = await getCollection("quests");
+	const editorialByQuestId = new Map(
+		editorialEntries.map((e) => [e.data.questId, e]),
+	);
+	const paths: any[] = [];
+
+	// Editorial-slug paths (rich QuestLayout).
+	for (const entry of editorialEntries) {
+		paths.push({
+			params: { id: entry.id },
+			props: { kind: "editorial", entry },
+		});
+	}
+	// Numeric-ID paths (slim dossier) for every datamine quest.
+	for (const d of questDossiers) {
+		paths.push({
+			params: { id: d.id },
+			props: {
+				kind: "dossier",
+				d,
+				editorialSlug: editorialByQuestId.get(d.id)?.id ?? null,
+			},
+		});
+	}
+	return paths;
+};
+
+const props = Astro.props as any;
+
+// Look up reward icons/links from item dossier (best-effort).
+const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
+---
+
+{props.kind === "editorial" ? (
+	<QuestLayout
+		questId={props.entry.data.questId}
+		name={props.entry.data.name}
+		category={props.entry.data.category}
+		tagline={props.entry.data.tagline}
+		levelMin={props.entry.data.levelMin}
+		classReq={props.entry.data.classReq}
+		prerequisiteQuest={props.entry.data.prerequisiteQuest}
+		npcName={props.entry.data.npcName}
+		npcLocation={props.entry.data.npcLocation}
+		npcId={props.entry.data.npcId}
+		chainName={props.entry.data.chainName}
+		chainStep={props.entry.data.chainStep}
+		chainLength={props.entry.data.chainLength}
+		nextQuest={props.entry.data.nextQuest}
+		description={props.entry.data.description}
+		rewards={props.entry.data.rewards}
+		editorial={props.entry.data.editorial}
+		callout={props.entry.data.callout}
+		relatedGuides={props.entry.data.relatedGuides}
+		verificationStatus={props.entry.data.verificationStatus}
+		verificationNote={props.entry.data.verificationNote}
+		sourceSlugs={props.entry.data.sourceSlugs}
+		theme={props.entry.data.theme}
+		lastUpdated={props.entry.data.lastUpdated}
+	/>
+) : (
+	<BaseLayout
+		title={`${props.d.name} - Quest - Liven's Classic Maple Guide`}
+		description={`Quest ${props.d.id}: ${props.d.name}. Level ${props.d.levelMin ?? "?"}, given by ${props.d.npcName ?? "unknown"}. Rewards, starting map, chain position.`}
+		theme={themeForLocation(
+			(props.d.startingMaps ?? []).map((m: any) => m.mapName),
+			props.d.region,
+		)}
+	>
+		<nav class="crumbs">
+			<a href="/quests">&larr; Quests</a>
+			<span class="crumbs__sep">&middot;</span>
+			<span>{props.d.region ?? "Unknown region"}</span>
+			<span class="crumbs__sep">&middot;</span>
+			<span>{props.d.name}</span>
+		</nav>
+
+		{props.editorialSlug && (
+			<div class="editorial-banner">
+				<strong>Editorial guide available:</strong>
+				<a href={`/quests/${props.editorialSlug}`}>Read Liven's full write-up &rarr;</a>
+			</div>
+		)}
+
+		<header class="hero">
+			{npcSpriteUrl(props.d.npcWzId, props.d.npcName) && (
+				<div class="hero__npc">
+					<img
+						src={npcSpriteUrl(props.d.npcWzId, props.d.npcName)}
+						alt={`${props.d.npcName} sprite`}
+						onerror="this.parentElement.style.display='none'"
+					/>
+					<small>{props.d.npcName}</small>
+				</div>
+			)}
+			<div class="hero__title">
+				<h1>{props.d.name}</h1>
+				<div class="hero__badges">
+					<span class="badge badge--id">Quest {props.d.id}</span>
+					<span class="badge">Lv {props.d.levelMin ?? "?"}</span>
+					{props.d.region && <span class="badge">{props.d.region}</span>}
+					{props.d.chainLength && props.d.chainLength > 1 && (
+						<span class="badge">Chain of {props.d.chainLength}</span>
+					)}
+				</div>
+			</div>
+		</header>
+
+		<div class="disclaimer">
+			<strong>Datamine-only page.</strong> Auto-generated from the
+			CoT 2 client dump. In-game text, rewards, giver NPC, and
+			starting map come straight from the datamine and are reliable.
+			Strategy tips, optimal route, and Liven's commentary live only
+			on editorial pages (about a quarter of quests have one - see
+			the banner above when applicable).
+		</div>
+
+		<section class="section">
+			<h2 class="section-panel-title">At a glance</h2>
+			<dl class="stat-grid">
+				{props.d.npcName && (
+					<>
+						<dt>Quest giver</dt>
+						<dd>
+							{props.d.npcId ? (
+								<a href={`/npcs/${props.d.npcId}`}>{props.d.npcName}</a>
+							) : (
+								props.d.npcName
+							)}
+						</dd>
+					</>
+				)}
+				{props.d.startingMaps.length > 0 && (
+					<>
+						<dt>Starts at</dt>
+						<dd>
+							{props.d.startingMaps.map((m: any, i: number) => (
+								<>
+									{i > 0 && ", "}
+									<a href={`/maps/${m.mapId}`} class="stat-grid__link">
+										{m.mapName}
+									</a>
+								</>
+							))}
+						</dd>
+					</>
+				)}
+				<dt>Minimum level</dt>
+				<dd>{props.d.levelMin ?? "?"}</dd>
+				{props.d.chainLength && props.d.chainLength > 1 && (
+					<>
+						<dt>Chain length</dt>
+						<dd>{props.d.chainLength} quests</dd>
+					</>
+				)}
+				{props.d.parent && (
+					<>
+						<dt>Chain parent</dt>
+						<dd>{props.d.parent}</dd>
+					</>
+				)}
+			</dl>
+		</section>
+
+		{props.d.description && (
+			<section class="section">
+				<h2 class="section-panel-title">In-game text</h2>
+				<div class="quest-description">{props.d.description}</div>
+			</section>
+		)}
+
+		{props.d.rewards.length > 0 && (
+			<section class="section">
+				<h2 class="section-panel-title">Rewards</h2>
+				<ul class="reward-list">
+					{props.d.rewards.map((r: any) => {
+						const item = r.type === "item" && r.id ? itemsById.get(r.id) : null;
+						if (r.type === "item" && r.id) {
+							return (
+								<li class="reward-row">
+									<img
+										class="reward-row__icon"
+										src={itemIconUrl(r.id)}
+										alt=""
+										loading="lazy"
+										onerror="this.style.visibility='hidden'"
+									/>
+									<span class="reward-row__name">
+										<a href={`/items/${r.id}`}>{item?.name ?? `Item ${r.id}`}</a>
+										{r.count && r.count > 1 && (
+											<span class="reward-row__count"> &times; {r.count}</span>
+										)}
+									</span>
+									<span class="reward-row__type">
+										{r.guaranteed === false ? "chance" : "guaranteed"}
+									</span>
+								</li>
+							);
+						}
+						if (r.type === "meso") {
+							// Datamine inconsistency: some meso rewards use
+							// `amount`, others use `value`. Check both before
+							// falling back to "?".
+							const mesoAmt = r.amount ?? r.value;
+							return (
+								<li class="reward-row">
+									<span class="reward-row__icon" aria-hidden="true">$</span>
+									<span class="reward-row__name">{mesoAmt?.toLocaleString() ?? "?"} mesos</span>
+								</li>
+							);
+						}
+						if (r.type === "exp") {
+							// Same field-name split: 310 exp rewards in the
+							// datamine use `value` not `amount`. This fix
+							// takes the "?" display down to actually-missing.
+							const expAmt = r.amount ?? r.value;
+							return (
+								<li class="reward-row">
+									<span class="reward-row__icon" aria-hidden="true">*</span>
+									<span class="reward-row__name">{expAmt?.toLocaleString() ?? "?"} EXP</span>
+								</li>
+							);
+						}
+						if (r.type === "next_quest") {
+							return (
+								<li class="reward-row reward-row--next">
+									<span class="reward-row__icon" aria-hidden="true">&rarr;</span>
+									<span class="reward-row__name">
+										Unlocks next quest:{" "}
+										<a href={`/quests/${r.quest_id}`}>{props.d.nextQuestName ?? r.quest_id}</a>
+									</span>
+								</li>
+							);
+						}
+						return null;
+					})}
+				</ul>
+			</section>
+		)}
+
+		{props.d.nextQuestId && (
+			<section class="section">
+				<h2 class="section-panel-title">Chain navigation</h2>
+				<a class="chain-link" href={`/quests/${props.d.nextQuestId}`}>
+					Next: {props.d.nextQuestName ?? props.d.nextQuestId} &rarr;
+				</a>
+			</section>
+		)}
+	</BaseLayout>
+)}
+
+<style>
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs a:hover { text-decoration: underline; }
+	.crumbs__sep { margin: 0 0.4rem; }
+
+	.editorial-banner {
+		margin: 1rem 0;
+		padding: 0.9rem 1.2rem;
+		background: var(--accent-secondary);
+		border: 2px solid var(--accent-secondary-border);
+		border-radius: 0.5rem;
+		display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
+		align-items: baseline;
+	}
+	.editorial-banner strong { color: var(--text-heading); }
+	.editorial-banner a {
+		color: var(--accent-primary); font-weight: bold;
+		text-decoration: none;
+	}
+	.editorial-banner a:hover { text-decoration: underline; }
+
+	.hero {
+		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;
+		align-items: center; padding: 1.2rem 1.5rem;
+		background: var(--surface-card); border: 2px solid var(--border-card);
+		border-radius: 0.75rem; margin-bottom: 1rem;
+	}
+	.hero__npc {
+		display: flex; flex-direction: column; align-items: center;
+		gap: 0.3rem; min-width: 80px;
+	}
+	.hero__npc img {
+		max-width: 80px; max-height: 100px;
+		image-rendering: pixelated;
+	}
+	.hero__npc small { font-size: 0.75rem; color: var(--text-muted); }
+	.hero__title h1 { margin: 0 0 0.5rem; }
+	.hero__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.badge {
+		display: inline-block; padding: 0.25rem 0.6rem;
+		font-size: 0.75rem; font-weight: bold;
+		background: var(--surface-nav); color: var(--text-on-nav);
+		border-radius: 999px;
+	}
+	.badge--id { background: var(--bg-cloud); color: var(--text-muted); font-family: monospace; }
+
+	.disclaimer {
+		margin-bottom: 1.5rem; padding: 0.8rem 1rem;
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0.4rem;
+		font-size: 0.85rem; line-height: 1.5;
+	}
+
+	.section { margin: 1.5rem 0; }
+
+	.stat-grid {
+		display: grid; grid-template-columns: max-content 1fr;
+		gap: 0.5rem 1rem; margin: 0;
+	}
+	.stat-grid dt {
+		font-weight: bold; color: var(--text-muted);
+		font-size: 0.85rem; text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	.stat-grid dd { margin: 0; }
+	.stat-grid__link { color: var(--accent-primary); text-decoration: none; font-weight: 500; }
+	.stat-grid__link:hover { text-decoration: underline; }
+
+	.quest-description {
+		padding: 1rem 1.25rem;
+		background: var(--surface-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		font-style: italic;
+		line-height: 1.65;
+		white-space: pre-line;
+	}
+
+	.reward-list { list-style: none; padding: 0; margin: 0; }
+	.reward-row {
+		display: grid; grid-template-columns: 32px 1fr auto;
+		align-items: center; gap: 0.7rem;
+		padding: 0.55rem 0.85rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem; margin-bottom: 0.3rem;
+	}
+	.reward-row--next { border-color: var(--accent-primary); }
+	.reward-row__icon {
+		width: 24px; height: 24px; text-align: center;
+		font-size: 1.1rem;
+		image-rendering: pixelated;
+	}
+	.reward-row__name { font-weight: 500; }
+	.reward-row__name a { color: var(--accent-primary); text-decoration: none; }
+	.reward-row__name a:hover { text-decoration: underline; }
+	.reward-row__count { color: var(--text-muted); font-family: monospace; }
+	.reward-row__type {
+		font-size: 0.7rem; font-weight: bold;
+		padding: 0.15rem 0.5rem; border-radius: 999px;
+		background: var(--bg-cloud); color: var(--text-muted);
+	}
+
+	.chain-link {
+		display: inline-block;
+		padding: 0.7rem 1.2rem;
+		background: var(--accent-primary); color: white;
+		text-decoration: none; border-radius: 0.4rem;
+		font-weight: bold;
+	}
+	.chain-link:hover { background: var(--accent-primary-strong); }
+</style>

@@ -1,0 +1,367 @@
+---
+/**
+ * /guides/magician-2nd-job - Magician 2nd job branches guide.
+ *
+ * Same verification posture as warrior-2nd-job.astro: skill LISTS
+ * are canonical v83, numeric values pending Founder's Access
+ * datamine confirmation. Shared design primitives live in global.css
+ * (see "Editorial guide primitives" section).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Magician 2nd Job Branches: F/P, I/L, Cleric - Liven's Classic Maple Guide"
+	description="Level 30 Magicians pick between three branches: Fire/Poison Wizard (F/P), Ice/Lightning Wizard (I/L), or Cleric (holy support). Full skill kits, build orders, elemental identity, and party-role breakdown for all three, framed against canonical v83."
+	currentPath="/guides"
+	theme="ellinia"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow">2nd Job Branches</span>
+			<h1>Magician: F/P, I/L, or Cleric?</h1>
+			<p class="lede">
+				At Level 30 the Ellinia magician instructor asks which
+				element you'll bind yourself to. F/P burns and poisons.
+				I/L freezes and lightnings. Cleric heals and blesses. All
+				three deal magic damage, but that's about the only thing
+				they share. Here's the full breakdown of skill kits, build
+				orders, and party-role identity for each branch.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<div class="callout callout--framing">
+			<strong>Verification:</strong> skill lists below are canonical
+			v83. Magician's 1st-job kit is
+			<a href="/guides/skill-changes">datamine-confirmed unchanged in CoT 2</a>,
+			so we're extrapolating that 2nd-job kits are also close-to-baseline.
+			Numeric values (damage %, max levels, MP costs) still assume
+			v83 pending Founder's Access verification (October 6).
+		</div>
+
+		<h2 id="summary">The three branches at a glance</h2>
+		<div class="guide-summary-grid">
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>F/P Wizard <span class="status-pill status-pill--new">DoT DPS</span></h3>
+				<p>
+					<strong>Fire + Poison.</strong> The damage-over-time
+					specialist. Poison Breath sticks to a mob and ticks
+					down its HP - lets you fight things above your
+					damage-per-hit weight class. Highest sustained solo
+					DPS in the Magician tree at 2nd job. Becomes F/P Mage
+					at 70, F/P Arch Mage at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>I/L Wizard <span class="status-pill status-pill--new">CC + AoE</span></h3>
+				<p>
+					<strong>Ice + Lightning.</strong> The crowd-control
+					specialist. Cold Beam FREEZES targets (stuns for
+					seconds - actual freeze, not slow). Thunder Bolt is
+					the game's earliest true AoE. Best for grinding
+					packs and controlling boss adds. Becomes I/L Mage
+					at 70, I/L Arch Mage at 120.
+				</p>
+			</div>
+			<div class="guide-summary-card guide-summary-card--changed">
+				<h3>Cleric <span class="status-pill status-pill--rework">SUPPORT/HEAL</span></h3>
+				<p>
+					<strong>Holy element.</strong> The party healer. Heal
+					restores party HP AND deals damage to undead mobs
+					(insane at Wraiths / Zombies). Bless is a party buff.
+					Weakest solo damage but the most-invited class in
+					the game. Becomes Priest at 70, Bishop at 120.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="the-decision">The decision, in one paragraph</h2>
+		<p>
+			If you want to solo hard and don't need parties:
+			<strong>F/P</strong> - Poison Breath punches above its weight.
+			If you want to farm mob packs and lock down bosses:
+			<strong>I/L</strong> - freeze is the strongest single-target
+			CC at this level. If you want to be invited to every party
+			from now until endgame: <strong>Cleric</strong> - Heal is the
+			single most requested skill in the game, and it doubles as
+			a nuke against undead. All three become monster classes at
+			3rd job; the branch mostly shapes your early-70s solo grind
+			and party identity.
+		</p>
+
+		<hr />
+
+		<h2 id="fp-wizard">Branch 1: F/P Wizard (Fire &amp; Poison)</h2>
+		<p class="section-lede">
+			The damage-over-time branch. Fire is your bread and butter,
+			Poison is your "make bosses melt" tool.
+		</p>
+
+		<h3>F/P Wizard skill kit (v83 baseline, 6 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>MP Eater</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Chance on hit to drain MP from a mob into you. Massive sustainability - eliminates MP potion spend at high level. Universal across all three branches.</td>
+					</tr>
+					<tr>
+						<td><strong>Meditation</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+Magic Attack to party members for a duration. Best 2nd-job attacker buff for mage parties.</td>
+					</tr>
+					<tr>
+						<td><strong>Teleport</strong></td>
+						<td>Utility</td>
+						<td>20</td>
+						<td>Short-range instant blink. Level scales MP cost DOWN + distance UP. Universal mobility for all Magicians.</td>
+					</tr>
+					<tr>
+						<td><strong>Slow</strong></td>
+						<td>Debuff</td>
+						<td>20</td>
+						<td>Slows movement speed of nearby enemies. Signature Magician kite tool. Party-shared with I/L branch.</td>
+					</tr>
+					<tr>
+						<td><strong>Fire Arrow</strong></td>
+						<td>Attack (Fire)</td>
+						<td>30</td>
+						<td>Single-target Fire spell. Your main-hand DPS button. Hits Ice-weak mobs (Ice Golems, Ice Sentinels, Yeti) for 1.5x element damage.</td>
+					</tr>
+					<tr>
+						<td><strong>Poison Breath</strong></td>
+						<td>Attack (DoT)</td>
+						<td>30</td>
+						<td>Applies a Poison debuff that ticks damage over 8s. Damage is % of mob's max HP - EXTREMELY strong against tanky bosses. Signature F/P skill.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>F/P Wizard recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Meditation (party attack buff = instant party value). Dump into Fire Arrow for solo damage.</li>
+			<li><strong>Levels 35-45</strong>: Max Fire Arrow (30 points). This is your grinding button, prioritize it hard.</li>
+			<li><strong>Levels 45-55</strong>: Start Poison Breath at Lv 45 (needs Fire Arrow prereq). Max it (30 points). Now you can fight anything - poison ticks scale with mob HP, not your gear.</li>
+			<li><strong>Levels 55-60</strong>: Max Meditation (20 points).</li>
+			<li><strong>Levels 60-65</strong>: Max MP Eater (20 points). Sustainability + potion savings.</li>
+			<li><strong>Levels 65-70</strong>: Teleport + Slow filler (20 each, whatever fits). Utility buffs, not damage.</li>
+		</ol>
+
+		<hr />
+
+		<h2 id="il-wizard">Branch 2: I/L Wizard (Ice &amp; Lightning)</h2>
+		<p class="section-lede">
+			The crowd-control branch. Cold Beam FREEZES (not slows - full
+			stun). Thunder Bolt is real AoE. Best grinding class in the
+			game at 2nd job.
+		</p>
+
+		<h3>I/L Wizard skill kit (v83 baseline, 6 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>MP Eater</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Same as F/P version. Universal Magician sustainability skill.</td>
+					</tr>
+					<tr>
+						<td><strong>Meditation</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+Magic Attack to party. Same as F/P version.</td>
+					</tr>
+					<tr>
+						<td><strong>Teleport</strong></td>
+						<td>Utility</td>
+						<td>20</td>
+						<td>Same as F/P. Universal.</td>
+					</tr>
+					<tr>
+						<td><strong>Slow</strong></td>
+						<td>Debuff</td>
+						<td>20</td>
+						<td>Same as F/P. Universal.</td>
+					</tr>
+					<tr>
+						<td><strong>Cold Beam</strong></td>
+						<td>Attack (Ice)</td>
+						<td>30</td>
+						<td>Single-target Ice spell. FREEZES target on hit for a few seconds (rank-scaled). Freeze locks mob out of AI - insane vs single boss adds. Hits Fire-weak mobs (Fire Boars, Drakes) for 1.5x.</td>
+					</tr>
+					<tr>
+						<td><strong>Thunder Bolt</strong></td>
+						<td>Attack (Lightning AoE)</td>
+						<td>30</td>
+						<td>Point-blank AoE Lightning spell - hits every mob near your character. The earliest true AoE in the game. This is why I/L destroys grinding spots.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>I/L Wizard recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-35</strong>: 1 point in Meditation. Dump into Cold Beam for single-target damage + freeze utility.</li>
+			<li><strong>Levels 35-45</strong>: Max Cold Beam (30 points). Freeze is game-changing before Thunder Bolt matters.</li>
+			<li><strong>Levels 45-55</strong>: Start Thunder Bolt (needs Cold Beam prereq at Lv 45). Max it (30 points). This unlocks pack grinding.</li>
+			<li><strong>Levels 55-60</strong>: Max Meditation (20 points).</li>
+			<li><strong>Levels 60-65</strong>: Max MP Eater (20 points).</li>
+			<li><strong>Levels 65-70</strong>: Teleport + Slow filler.</li>
+		</ol>
+		<p>
+			<strong>Grinding tip</strong>: at Lv 50+ with maxed Thunder
+			Bolt, Wraiths in Kerning Subway become an EXP fountain.
+			Undead mobs take extra damage from Holy but Lightning also
+			hits packs hard. Second only to actual Cleric Heal-farming.
+		</p>
+
+		<hr />
+
+		<h2 id="cleric">Branch 3: Cleric</h2>
+		<p class="section-lede">
+			The holy support branch. Weakest solo damage in the tree,
+			single most-invited class in the game. Heal both restores
+			party AND kills undead - the dual mode is why Clerics thrive
+			everywhere.
+		</p>
+
+		<h3>Cleric skill kit (v83 baseline, 6 skills)</h3>
+		<div class="skill-list-wrap">
+			<table class="skill-list">
+				<thead>
+					<tr>
+						<th>Skill</th>
+						<th>Type</th>
+						<th>Max Lv</th>
+						<th>What it does</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>MP Eater</strong></td>
+						<td>Passive</td>
+						<td>20</td>
+						<td>Universal.</td>
+					</tr>
+					<tr>
+						<td><strong>Teleport</strong></td>
+						<td>Utility</td>
+						<td>20</td>
+						<td>Universal.</td>
+					</tr>
+					<tr>
+						<td><strong>Heal</strong></td>
+						<td>Party heal / Undead attack</td>
+						<td>30</td>
+						<td>Restores HP to all party members in range AND deals Holy damage to undead mobs in the same cast. Signature Cleric skill - fills your solo damage AND party support slot with one button.</td>
+					</tr>
+					<tr>
+						<td><strong>Invincible</strong></td>
+						<td>Passive</td>
+						<td>30</td>
+						<td>% chance to reduce incoming physical damage. Passive tankiness - Clerics are the only Magician branch that gets built-in DR.</td>
+					</tr>
+					<tr>
+						<td><strong>Bless</strong></td>
+						<td>Party buff</td>
+						<td>20</td>
+						<td>+Weapon Def, +Magic Def, +Accuracy, +Avoidability to party. Multi-stat party buff, always-on utility.</td>
+					</tr>
+					<tr>
+						<td><strong>Holy Arrow</strong></td>
+						<td>Attack (Holy)</td>
+						<td>30</td>
+						<td>Single-target Holy spell. Your non-Heal damage option for non-undead mobs. Deals 1.5x to Dark/Shadow-weak mobs.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h3>Cleric recommended build order</h3>
+		<ol>
+			<li><strong>Levels 30-45</strong>: <strong>Max Heal immediately</strong> (30 points). This is your farming button (vs undead), your party button, and your survivability button all at once. Nothing else matters until it's maxed.</li>
+			<li><strong>Levels 45-55</strong>: Max Bless (20 points). Party value spike.</li>
+			<li><strong>Levels 55-60</strong>: Max Invincible (30 points). Passive DR that stacks with any potion routine.</li>
+			<li><strong>Levels 60-65</strong>: Max MP Eater (20 points).</li>
+			<li><strong>Levels 65-70</strong>: Holy Arrow or Teleport filler. Holy Arrow is your only non-Heal damage source but it's rarely the optimal button.</li>
+		</ol>
+		<p>
+			<strong>Heal farming</strong>: at Lv 40+ with maxed Heal,
+			party up at Wraiths (Kerning Subway) or Jr Wraiths - undead
+			mobs die in 1-2 Heal casts and the AoE hits packs. This is
+			historically one of the fastest EXP flows in classic Maple.
+		</p>
+
+		<hr />
+
+		<h2 id="progression">Common 2nd-job progression (30 to 70)</h2>
+
+		<h3>Where to grind</h3>
+		<ul>
+			<li><strong>Lv 30-40</strong>: Zombie Mushrooms, Wild Boars,
+				Copper Drakes (Fire element for F/P, physical mobs for
+				I/L freeze). Cleric farms Jr Wraiths at Kerning subway.</li>
+			<li><strong>Lv 40-55</strong>: Fire Boars (great vs Cold Beam
+				freeze). Wraiths (Cleric heaven, I/L Thunder Bolt second
+				choice). Ludi PQ full window (35-51).</li>
+			<li><strong>Lv 55-70</strong>: Death Teddies at Ludi. Coolie
+				Zombies at El Nath (Cleric AoE Heal-farm). Ludi Maze PQ
+				(55-70).</li>
+		</ul>
+
+		<h3>Gear buys at Lv 30</h3>
+		<p>
+			Magician gear is <strong>INT-scaling wands and staves</strong>.
+			Level 30 target: Gold Gaia Staff (+INT), Evil Wings (2H
+			high-INT wand), or Blue Screw-Driver (cheap starter). Robe
+			or top+bottom overall with INT scrolls - even a 10% white
+			scroll adds real Magic Attack.
+		</p>
+		<p>
+			MP is your resource, so <strong>Magic Att overall</strong> +
+			<strong>INT wand</strong> + <strong>MP earrings</strong>
+			are the target trifecta. Skip Weapon Attack completely - it
+			does nothing for Magicians.
+		</p>
+
+		<h3>What to expect at 3rd job (70)</h3>
+		<ul>
+			<li><strong>F/P Wizard -&gt; F/P Mage</strong>: Explosion (huge AoE Fire), Element Amplification (self-damage multiplier), Poison Mist (persistent DoT floor).</li>
+			<li><strong>I/L Wizard -&gt; I/L Mage</strong>: Ice Strike (AoE freeze), Thunder Spear (Lightning), Element Amp. Freeze becomes even scarier.</li>
+			<li><strong>Cleric -&gt; Priest</strong>: Holy Symbol (party EXP buff - THE most-wanted buff in the game), Shining Ray (AoE Holy), Dispel, Doom, Summon Dragon. This is where Clerics eclipse everyone.</li>
+		</ul>
+
+		<h2 id="related">Related reading</h2>
+		<ul>
+			<li><a href="/jobs/magician">Magician 1st Job Guide</a></li>
+			<li><a href="/guides/skill-changes">Skill Changes: v83 vs CoT 2</a> - Magician 1st job is confirmed unchanged</li>
+			<li><a href="/guides/party-exp">Party EXP &amp; Grinding</a></li>
+			<li><a href="/guides/exp-then-vs-now">EXP: Then vs Now</a></li>
+		</ul>
+	</article>
+</BaseLayout>

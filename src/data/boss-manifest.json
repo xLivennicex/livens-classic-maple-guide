@@ -1,0 +1,80 @@
+{
+  "_readme": "Curated boss roster for /bosses/ pages. Keyed by WZ mob ID (the canonical maplestory.io identifier - stable across dossier ID variants). Include mobs the datamine flags with stats.isBoss=true PLUS manual entries (e.g. King Slime, whose isBoss flag is missing in the CoT feed). Editorial fields (tldr, access, strategy, threat) are hand-written; combat stats + drops + spawn maps still come from mobs.json at build time. Optional 'theme' overrides region auto-detection (needed for bosses with no static spawn map, like Crimson Balrog on the ferry, or for hidden-street bosses whose map names don't include a recognizable town substring). Valid themes: henesys, kerning, perion, ellinia, lith, sleepywood.",
+  "bosses": {
+    "9300184": {
+      "slug": "mano",
+      "role": "hidden-street mini-boss",
+      "recommendedLevelMin": 15,
+      "recommendedLevelMax": 25,
+      "narrative": {
+        "tldr": "The classic Maple training wheels for boss fights. Mano is a plump lv 20 sheep-goblin hybrid tucked away in a hidden street north of Perion. He hits like a wet noodle, but 2,000 HP is a real number when your Arrow Blow does 60 damage per hit - so it counts as your first taste of a real health bar.",
+        "access": "In Perion, head north to `Excavation Site` then take the north portal out of the Split Road of Beginners. His hidden street is 'Sparkling Land of Vanishing.' Solo-friendly and safe to wipe on - Mano doesn't hit hard enough to one-shot even a level-15 warrior.",
+        "strategy": "Whoever wants the kill just needs to out-damage everyone else - Mano drops loot on last-hit. Bring a stack of orange potions and expect a 2-4 minute fight if you're low on ATK. Mele can trade blows freely; ranged plays it safe from the platform edge.",
+        "threat": "low"
+      }
+    },
+    "9300003": {
+      "slug": "king-slime",
+      "role": "party quest final boss",
+      "recommendedLevelMin": 21,
+      "recommendedLevelMax": 30,
+      "narrative": {
+        "tldr": "The literal end of Kerning Party Quest. 8,000 HP wrapped in a bouncing blue slime crown. Beating him unlocks a bonus stage full of etc. drops and (if you're lucky) a Blue Mushroom Cap chair or Golden River. Everyone in the party gets EXP so this is where a lot of Maplers first hit level 30.",
+        "access": "Complete KPQ stages 1-5 with a party of 3-6 (levels 21-30). King Slime spawns automatically in the final stage after you place the crown on the pedestal. No solo access - PQ-only fight.",
+        "strategy": "Split roles: mages and clerics stay back and pump Magic Claw / Heal. Warriors and Chief Bandits (yes, Meso Explosion Bandits carry this fight in classic v83) go melee. Watch for the mini-slimes he spawns when hit - kill them fast so they don't overwhelm your healer. Cleric party bonus makes this trivial.",
+        "threat": "low"
+      }
+    },
+    "6400006": {
+      "slug": "crimson-balrog",
+      "role": "ferry event boss",
+      "recommendedLevelMin": 40,
+      "recommendedLevelMax": 60,
+      "theme": "ellinia",
+      "narrative": {
+        "tldr": "The Ellinia-Victoria ferry crashes roughly halfway through every ride and Crimson Balrog crashes the party. 50,000 HP, huge knockback, and only 5 minutes on the timer before the ship magically fixes itself and boots you off - so this is a race against the clock as much as against the boss.",
+        "access": "Board any Victoria Island to Ellinia (or reverse) ferry at Ellinia's Station or Victoria's Cargo Ship dock. Roughly 5 minutes into the trip the deck darkens and Crimson Balrog spawns. Free entry for anyone who paid the 1,000 meso fare. Runs every 15 minutes on both sides.",
+        "strategy": "You will NOT solo this. Bring a full party of 6 level-40+ hitters. Ranged classes stay on the top platform (Ranger, Sniper, Bishop, Wizard) and pump Strafe or Ice Strike - Balrog's ceiling reach can't touch you up there. Warriors take the deck; Chief Bandits love it because so many mobs spawn alongside him. Kill the Cursed Balrog adds first, THEN focus fire the big guy. If the ship arrives before the fight ends, you get zero drops.",
+        "threat": "high"
+      }
+    },
+    "6400008": {
+      "slug": "jr-balrog",
+      "role": "sleepywood dungeon boss",
+      "recommendedLevelMin": 55,
+      "recommendedLevelMax": 70,
+      "theme": "sleepywood",
+      "narrative": {
+        "tldr": "Baby version of the ferry boss - and by 'baby' we mean 30,000 HP, deep in Sleepywood dungeon, and one of the classic sources of Silver Deputy Star. Popular grind target for level 50-70 parties because his drop table hits an era-appropriate sweet spot: potions, throwing stars, and occasional Dark Ades / Blue Ades gear.",
+        "access": "From Sleepywood town, take Route to Cursed Sanctuary. Walk east until you hit the deep interior maps - Jr. Balrog spawns in 'Cursed Sanctuary' proper. Respawns roughly every hour per channel, so if he's dead try channel-hopping. Free entry, no quest gate.",
+        "strategy": "Duo or trio at level 55+; solo is possible for a Ranger with decent gear (Strafe from platform edge and kite the knockback). Watch the Silver Deputy Star drop rate - it's a low-single-digit chance but it's THE grind reason. Bring wizet mana pots for the long fight. Avoid the big body-attack windup - his slam animation telegraphs a huge damage tick.",
+        "threat": "moderate"
+      }
+    },
+    "6130101": {
+      "slug": "mushmom",
+      "role": "hidden-street world boss",
+      "recommendedLevelMin": 55,
+      "recommendedLevelMax": 75,
+      "narrative": {
+        "tldr": "The most iconic hidden-street boss in classic Maple. 20,000 HP wrapped in a big pink cap, spawns in a random Henesys hidden street once per real-world hour per channel. Drops the Amazon Skirt Pants set, Ilbi Throwing Stars, and (jackpot) Zakum Helm scroll for INT. Kill-stealing culture at its finest.",
+        "access": "Roam any of the mushroom hidden streets around Henesys: 'The Tree That Grew I/II/III', or the Green Mushroom hidden street north of Henesys. Check every channel. When Mushmom is up she replaces one of the giant mushroom mobs. First-hit-wins in most vanilla v83 servers; check your server's specific rules.",
+        "strategy": "If you find her alive, KS mode: unload everything. Ranger's Strafe, Chief Bandit's Assaulter combo, or a Hermit's Shadow Partner-boosted Avenger all reliably out-DPS a lonely warrior. If a party's already fighting her, back off - Maple etiquette in v83 says whoever tagged first has claim. Wave 6-8 baby mushrooms spawn while she's alive; ignore them and focus fire.",
+        "threat": "moderate"
+      }
+    },
+    "6300005": {
+      "slug": "zombie-mushmom",
+      "role": "sleepywood hidden-street boss",
+      "recommendedLevelMin": 60,
+      "recommendedLevelMax": 80,
+      "theme": "sleepywood",
+      "narrative": {
+        "tldr": "Mushmom, but goth. 35,000 HP, purple, undead, hits harder, drops the same tier of loot with slightly better rates plus occasional Blue/Red Craven or Maple Weapon pieces. Deep Sleepywood hidden street rotation, once-per-hour spawn.",
+        "access": "From Sleepywood, take 'The Forest East of Sleepywood' or 'The Path to the Excavation' hidden streets. Check every channel like you would Mushmom - most active servers have a rotating spawn schedule visible in the server info channel.",
+        "strategy": "Undead status means Holy damage from Cleric-line skills does bonus damage - a Priest party melts her in half the usual time. Chief Bandits with Meso Explosion still slap. Watch the physical damage tick from her body attack - it can two-shot underleveled ranged glass cannons.",
+        "threat": "moderate"
+      }
+    }
+  }
+}

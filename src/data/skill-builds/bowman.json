@@ -1,0 +1,496 @@
+{
+  "_readme": "Per-level SP allocation plans, Ayumi-style. Each advancement lists all skills and 1-2 named 'builds' each with a level-by-level row telling you which skill to put the SP in that level. Format is delta-based (`delta` = points to spend THIS level on this skill, not cumulative). Rows must sum to exactly `spTotalAvailable` for the advancement or the QA validator will complain. Add builds by appending to the `builds` array - the SkillBuildTable component renders them all as tabs.",
+  "class": {
+    "slug": "bowman",
+    "name": "Bowman",
+    "primaryStat": "DEX",
+    "theme": "henesys"
+  },
+  "advancements": [
+    {
+      "slug": "1st-job",
+      "displayName": "Bowman (1st Job)",
+      "shortName": "1st Job",
+      "levelRange": { "min": 10, "max": 30 },
+      "spTotalAvailable": 21,
+      "spNote": "1 SP at advancement (Lv 10) + 1 SP per level 11-30 = 21 SP total. It is NOT enough to max Double Shot AND touch Critical Shot; that trade is 1st job's central tension.",
+      "advancementCity": "Henesys",
+      "instructor": "Athena Pierce",
+      "skills": [
+        {
+          "id": "3001003",
+          "name": "Power Knockback",
+          "type": "attack",
+          "maxLevel": 15,
+          "summary": "AoE knockback swing that always crits. New in CoT 2 (replaced Blessing of Amazon). Great for grinders on grouped mobs; skip for bossing."
+        },
+        {
+          "id": "3000000",
+          "name": "Critical Shot",
+          "type": "passive",
+          "maxLevel": 30,
+          "summary": "Passive crit chance for +50% damage on ranged attacks. THE Bowman damage passive. You will NOT have SP to touch this in 1st job - save it for 2nd."
+        },
+        {
+          "id": "3000001",
+          "name": "The Eye of Amazon",
+          "type": "passive",
+          "maxLevel": 8,
+          "summary": "Passive attack-range extension. Small effect but every pixel of range = one more free hit."
+        },
+        {
+          "id": "3001000",
+          "name": "Focus",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Short-term self-buff to accuracy + avoidability. Situational for boss encounters; skippable for training."
+        },
+        {
+          "id": "3001001",
+          "name": "Arrow Blow",
+          "type": "attack",
+          "maxLevel": 20,
+          "summary": "Single-arrow attack. Higher damage-per-cast than the ATK-blow, but Double Shot fires twice per cast so DPS is lower once DS is leveled. You'll take 1 point for early training then abandon."
+        },
+        {
+          "id": "3001002",
+          "name": "Double Shot",
+          "type": "attack",
+          "maxLevel": 20,
+          "summary": "Two-arrow attack. The 1st-job workhorse. Max first. Every point doubles the number of chances your Crit Shot triggers on."
+        }
+      ],
+      "builds": [
+        {
+          "slug": "double-shot-rush",
+          "name": "Double Shot Rush",
+          "tagline": "Max Double Shot ASAP. Nothing else. The v83 canonical.",
+          "recommended": true,
+          "reasoning": "Double Shot fires two arrows per cast at Arrow-Blow-comparable damage each - roughly 2x damage per MP once maxed. You get 21 SP in 1st job, so you can spend 1 on Arrow Blow (need an attack at Lv 10) and 20 on Double Shot (max it). Zero SP for utility because the math doesn't allow it. Critical Shot waits for 2nd job. Focus and Eye of Amazon get 1-point splashes in 2nd job if at all.",
+          "endState": {
+            "3001001": 1,
+            "3001002": 20
+          },
+          "rows": [
+            { "level": 10, "actions": [{ "skillId": "3001001", "delta": 1, "note": "Need an attack skill at advancement" }] },
+            { "level": 11, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 12, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 13, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 14, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 15, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 16, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 17, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 18, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 19, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 20, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 21, "actions": [{ "skillId": "3001002", "delta": 1 }, { "skillId": "_note", "delta": 0, "note": "You're KPQ-eligible - grab a party" }] },
+            { "level": 22, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 23, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 24, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 25, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 26, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 27, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 28, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 29, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 30, "actions": [{ "skillId": "3001002", "delta": 1, "note": "Double Shot MAXED. Advance to Hunter or Crossbowman at Athena Pierce" }] }
+          ]
+        },
+        {
+          "slug": "grinder-splash",
+          "name": "Grinder Splash",
+          "tagline": "Sacrifice 5 Double Shot points for Power Knockback + utility. For mob-heavy training routes.",
+          "recommended": false,
+          "reasoning": "If you plan to spend levels 20-30 farming grouped-mob maps (Green Mushrooms, Zombie Mushrooms, Bubblings) rather than pure single-target training or KPQ grinding, Power Knockback earns its keep - it always crits, hits multiple targets, and pushes them back so you get free reload time. This build trades Double Shot 15-20 for PKB 5 + one point of Focus + one point of Eye of Amazon. Lower single-target DPS but higher training safety.",
+          "endState": {
+            "3001001": 1,
+            "3001002": 15,
+            "3001003": 3,
+            "3001000": 1,
+            "3000001": 1
+          },
+          "rows": [
+            { "level": 10, "actions": [{ "skillId": "3001001", "delta": 1, "note": "Need an attack skill" }] },
+            { "level": 11, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 12, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 13, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 14, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 15, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 16, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 17, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 18, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 19, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 20, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 21, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 22, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 23, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 24, "actions": [{ "skillId": "3001002", "delta": 1 }] },
+            { "level": 25, "actions": [{ "skillId": "3001002", "delta": 1, "note": "Double Shot at 15 - transition to utility" }] },
+            { "level": 26, "actions": [{ "skillId": "3001003", "delta": 1, "note": "Unlock Power Knockback" }] },
+            { "level": 27, "actions": [{ "skillId": "3001003", "delta": 1 }] },
+            { "level": 28, "actions": [{ "skillId": "3001003", "delta": 1 }] },
+            { "level": 29, "actions": [{ "skillId": "3001000", "delta": 1, "note": "1pt Focus for boss avoidability" }] },
+            { "level": 30, "actions": [{ "skillId": "3000001", "delta": 1, "note": "1pt Eye of Amazon for the free range. Advance!" }] }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hunter-2nd",
+      "displayName": "Hunter (2nd Job - Bow branch)",
+      "shortName": "Hunter 2nd",
+      "levelRange": { "min": 30, "max": 70 },
+      "spTotalAvailable": 121,
+      "spNote": "2nd job = 3 SP per level from Lv 31-70 + 1 SP at advancement = 121 SP. Enough to MAX 5 skills (Bow Mastery, Bow Booster, Arrow Bomb, Critical Shot, Soul Arrow) with 1 SP left over. Every skill in this plan is a defensible investment - no throwaway points. Follow-up build hits 1st-job skills that got shortchanged (Critical Shot from 0 to 30 is the biggest single-skill upgrade in the whole ladder).",
+      "advancementCity": "Henesys",
+      "instructor": "Athena Pierce",
+      "skills": [
+        {
+          "id": "3100000",
+          "name": "Bow Mastery",
+          "type": "passive",
+          "maxLevel": 20,
+          "summary": "Passive mastery% - lifts your minimum damage roll from 20% of max toward 60%+ at max. Kills the 1-damage misses that make early Hunter feel awful. Max FIRST."
+        },
+        {
+          "id": "3101004",
+          "name": "Bow Booster",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Temporary +2 attack speed. Fires and forget - reapply every 60-200 seconds depending on level. Attack speed is a straight DPS multiplier."
+        },
+        {
+          "id": "3101003",
+          "name": "Arrow Bomb: Bow",
+          "type": "attack",
+          "maxLevel": 30,
+          "summary": "AoE explosion arrow that stuns hit mobs. THE Hunter training skill - one cast can lock down 4-6 grouped mobs and let you tag them all for EXP + drops."
+        },
+        {
+          "id": "3101001",
+          "name": "Soul Arrow: Bow",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Buff that lets you fire without consuming arrows for X minutes. Maxed = ~4-minute duration on ~5-minute cooldown = practically permanent. Massive meso savings."
+        },
+        {
+          "id": "3000000",
+          "name": "Critical Shot",
+          "type": "passive",
+          "maxLevel": 30,
+          "summary": "Carried over from 1st job. Passive crit chance for +50% damage on ranged attacks. Max it here - single biggest damage passive in your kit."
+        },
+        {
+          "id": "3001000",
+          "name": "Focus",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Carried over from 1st job. Short accuracy + avoid buff. 1pt utility for the rare high-avoid boss."
+        },
+        {
+          "id": "3100001",
+          "name": "Final Attack: Bow",
+          "type": "passive",
+          "maxLevel": 30,
+          "summary": "60% chance for a bonus follow-up hit after any bow attack. Passive DPS - especially strong on single-target when you're spamming Double Shot / Arrow Blow. Skipped in the canonical build but the whole point of the FA Purist alt."
+        }
+      ],
+      "builds": [
+        {
+          "slug": "arrow-bomb-grinder",
+          "name": "Arrow Bomb Grinder (Canonical)",
+          "tagline": "Bow Mastery → Bow Booster → Arrow Bomb → Critical Shot → Soul Arrow. The v83 standard. Every SP defensible.",
+          "recommended": true,
+          "reasoning": "MASTERY FIRST because it eliminates the 1-damage roll problem that makes 30-40 feel miserable. BOOSTER SECOND because attack speed multiplies every other stat. ARROW BOMB THIRD because it's your training bread-and-butter - one cast tags a whole group. CRITICAL SHOT FOURTH because 30 crit chance for +50% damage doubles your DPS on average. SOUL ARROW LAST because it's a QoL max (no more arrow costs) once your damage output is set. 1 leftover SP goes to Focus for high-avoid bosses. Every point spent, nothing wasted.",
+          "endState": {
+            "3100000": 20,
+            "3101004": 20,
+            "3101003": 30,
+            "3101001": 20,
+            "3000000": 30,
+            "3001000": 1
+          },
+          "rows": [
+            { "level": 30, "actions": [{ "skillId": "3101003", "delta": 1, "note": "Advancement - unlock Arrow Bomb" }] },
+            { "level": 31, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 32, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 33, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 34, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 35, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 36, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 37, "actions": [{ "skillId": "3100000", "delta": 2, "note": "Bow Mastery MAXED - kills the 1-damage rolls" }, { "skillId": "3101004", "delta": 1 }] },
+            { "level": 38, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 39, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 40, "actions": [{ "skillId": "3101004", "delta": 3, "note": "Second-job weapon upgrade window (Maple Bow at 43)" }] },
+            { "level": 41, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 42, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 43, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 44, "actions": [{ "skillId": "3101004", "delta": 1, "note": "Bow Booster MAXED - +2 attack speed permanent" }, { "skillId": "3101003", "delta": 2 }] },
+            { "level": 45, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 46, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 47, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 48, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 49, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 50, "actions": [{ "skillId": "3101003", "delta": 3, "note": "Midgame milestone - Crimson Balrog viable with a party" }] },
+            { "level": 51, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 52, "actions": [{ "skillId": "3101003", "delta": 3 }] },
+            { "level": 53, "actions": [{ "skillId": "3101003", "delta": 3, "note": "Arrow Bomb MAXED - your training workhorse is done" }] },
+            { "level": 54, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 55, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 56, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 57, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 58, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 59, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 60, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Jr. Balrog range check" }] },
+            { "level": 61, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 62, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 63, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Critical Shot MAXED - +50% damage on ~30% of hits" }] },
+            { "level": 64, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 65, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 66, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 67, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 68, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 69, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 70, "actions": [{ "skillId": "3101001", "delta": 2, "note": "Soul Arrow MAXED - never buy arrows again" }, { "skillId": "3001000", "delta": 1, "note": "1pt Focus. Advance to Ranger!" }] }
+          ]
+        },
+        {
+          "slug": "fa-purist-hunter",
+          "name": "Final Attack Purist (Boss Sniper)",
+          "tagline": "Skip Arrow Bomb entirely. Max Final Attack + Critical Shot + Bow Mastery for pure single-target bossing.",
+          "recommended": false,
+          "reasoning": "The v83 meta minority build. Arrow Bomb is a grinder skill - if you plan to boss (Crimson Balrog runs, Jr. Balrog camp, hidden-street Mushmoms) more than you train, Final Attack's 60% follow-up chance on every Double Shot is worth more than Arrow Bomb's AoE. Same 121 SP total, different priorities: Mastery + Booster + Soul Arrow + Critical Shot (all as canonical), then max Final Attack instead of Arrow Bomb, 1 SP Focus filler. You WILL train slower on grouped mobs - so bring party buffs or accept the trade.",
+          "endState": {
+            "3100000": 20,
+            "3101004": 20,
+            "3100001": 30,
+            "3101001": 20,
+            "3000000": 30,
+            "3001000": 1
+          },
+          "rows": [
+            { "level": 30, "actions": [{ "skillId": "3100000", "delta": 1, "note": "Advancement - start Bow Mastery (no Arrow Bomb needed here)" }] },
+            { "level": 31, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 32, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 33, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 34, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 35, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 36, "actions": [{ "skillId": "3100000", "delta": 3 }] },
+            { "level": 37, "actions": [{ "skillId": "3100000", "delta": 1, "note": "Bow Mastery MAXED" }, { "skillId": "3101004", "delta": 2 }] },
+            { "level": 38, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 39, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 40, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 41, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 42, "actions": [{ "skillId": "3101004", "delta": 3 }] },
+            { "level": 43, "actions": [{ "skillId": "3101004", "delta": 3, "note": "Bow Booster MAXED" }] },
+            { "level": 44, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 45, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 46, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 47, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 48, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 49, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 50, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 51, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 52, "actions": [{ "skillId": "3100001", "delta": 3 }] },
+            { "level": 53, "actions": [{ "skillId": "3100001", "delta": 3, "note": "Final Attack MAXED - passive DPS locked in" }] },
+            { "level": 54, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 55, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 56, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 57, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 58, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 59, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 60, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 61, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 62, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 63, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Critical Shot MAXED" }] },
+            { "level": 64, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 65, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 66, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 67, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 68, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 69, "actions": [{ "skillId": "3101001", "delta": 3 }] },
+            { "level": 70, "actions": [{ "skillId": "3101001", "delta": 2, "note": "Soul Arrow MAXED" }, { "skillId": "3001000", "delta": 1, "note": "1pt Focus. Advance to Ranger!" }] }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "crossbowman-2nd",
+      "displayName": "Crossbowman (2nd Job - Crossbow branch)",
+      "shortName": "Crossbowman 2nd",
+      "levelRange": { "min": 30, "max": 70 },
+      "spTotalAvailable": 121,
+      "spNote": "121 SP total, same shape as Hunter but Iron Arrow replaces Arrow Bomb: Iron Arrow pierces mobs in a straight line rather than exploding in a radius. Better for tightly-packed maps with lined-up mob spawns (Kerning subway, Bubblings), slightly worse for scattered maps. Every other skill choice mirrors Hunter's - Crossbow Mastery, Crossbow Booster, Soul Arrow, Critical Shot, Focus.",
+      "advancementCity": "Henesys",
+      "instructor": "Athena Pierce",
+      "skills": [
+        {
+          "id": "3200000",
+          "name": "Crossbow Mastery",
+          "type": "passive",
+          "maxLevel": 20,
+          "summary": "Same as Bow Mastery. Lifts minimum damage roll from 20% to 60%+ at max. Kills 1-damage rolls. Max first."
+        },
+        {
+          "id": "3201004",
+          "name": "Crossbow Booster",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Same as Bow Booster - temporary +2 attack speed. Straight DPS multiplier."
+        },
+        {
+          "id": "3201003",
+          "name": "Iron Arrow: Crossbow",
+          "type": "attack",
+          "maxLevel": 30,
+          "summary": "Piercing bolt that hits every mob in a straight line. Better than Arrow Bomb on maps with lined-up mobs (subway platforms, narrow ledges); worse on scattered maps. Different playstyle same job power level."
+        },
+        {
+          "id": "3201001",
+          "name": "Soul Arrow: Crossbow",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Same as Soul Arrow: Bow - fire without consuming bolts. Massive meso savings. Bolts cost slightly more than arrows so this is even more valuable for Crossbowmen."
+        },
+        {
+          "id": "3000000",
+          "name": "Critical Shot",
+          "type": "passive",
+          "maxLevel": 30,
+          "summary": "Carried from 1st job. Max here for +50% damage on ~30% of hits."
+        },
+        {
+          "id": "3001000",
+          "name": "Focus",
+          "type": "buff",
+          "maxLevel": 20,
+          "summary": "Carried from 1st job. 1pt utility for high-avoid bosses."
+        },
+        {
+          "id": "3200001",
+          "name": "Final Attack: Crossbow",
+          "type": "passive",
+          "maxLevel": 30,
+          "summary": "60% chance for a bonus follow-up hit after any crossbow attack. Skipped in canonical, maxed in the FA Purist alt for pure bossing."
+        }
+      ],
+      "builds": [
+        {
+          "slug": "iron-arrow-grinder",
+          "name": "Iron Arrow Grinder (Canonical)",
+          "tagline": "Crossbow Mastery → Booster → Iron Arrow → Critical Shot → Soul Arrow. Mirror of Hunter build; play with tighter line-based mob positioning.",
+          "recommended": true,
+          "reasoning": "Same priorities as Hunter's Arrow Bomb build: mastery first for consistency, booster second for attack speed, primary attack third, damage passive fourth, quality-of-life last. Iron Arrow's piercing line changes HOW you train (position with mobs in a row) but not WHAT you level. Crossbowman advantages: slightly higher per-hit damage than Hunter, better against tightly-packed mob spawns. Disadvantages: Iron Arrow's line pattern is less forgiving than Arrow Bomb's AoE radius.",
+          "endState": {
+            "3200000": 20,
+            "3201004": 20,
+            "3201003": 30,
+            "3201001": 20,
+            "3000000": 30,
+            "3001000": 1
+          },
+          "rows": [
+            { "level": 30, "actions": [{ "skillId": "3201003", "delta": 1, "note": "Advancement - unlock Iron Arrow" }] },
+            { "level": 31, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 32, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 33, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 34, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 35, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 36, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 37, "actions": [{ "skillId": "3200000", "delta": 2, "note": "Crossbow Mastery MAXED" }, { "skillId": "3201004", "delta": 1 }] },
+            { "level": 38, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 39, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 40, "actions": [{ "skillId": "3201004", "delta": 3, "note": "Weapon upgrade window (Maple Crossbow at 43)" }] },
+            { "level": 41, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 42, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 43, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 44, "actions": [{ "skillId": "3201004", "delta": 1, "note": "Crossbow Booster MAXED" }, { "skillId": "3201003", "delta": 2 }] },
+            { "level": 45, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 46, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 47, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 48, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 49, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 50, "actions": [{ "skillId": "3201003", "delta": 3, "note": "Midgame milestone - Crimson Balrog viable with a party" }] },
+            { "level": 51, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 52, "actions": [{ "skillId": "3201003", "delta": 3 }] },
+            { "level": 53, "actions": [{ "skillId": "3201003", "delta": 3, "note": "Iron Arrow MAXED" }] },
+            { "level": 54, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 55, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 56, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 57, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 58, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 59, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 60, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Jr. Balrog range check" }] },
+            { "level": 61, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 62, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 63, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Critical Shot MAXED" }] },
+            { "level": 64, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 65, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 66, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 67, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 68, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 69, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 70, "actions": [{ "skillId": "3201001", "delta": 2, "note": "Soul Arrow MAXED - never buy bolts again" }, { "skillId": "3001000", "delta": 1, "note": "1pt Focus. Advance to Sniper!" }] }
+          ]
+        },
+        {
+          "slug": "fa-purist-xbow",
+          "name": "Final Attack Purist (Boss Sniper)",
+          "tagline": "Skip Iron Arrow entirely. Max Final Attack + Critical Shot. Mirror of the Hunter FA Purist for Xbow-committed bossers.",
+          "recommended": false,
+          "reasoning": "Same trade-off as the Hunter FA Purist: swap the grinder attack (Iron Arrow) for Final Attack's passive DPS. Iron Arrow's piercing line is amazing on lined-up mob maps, but on bosses it hits ONCE - the piercing means nothing. Final Attack procs on every attack you make, boss or not. Same 121 SP total, different priorities: Mastery + Booster + Soul Arrow + Critical Shot as canonical, then Final Attack replaces Iron Arrow, 1 SP Focus filler.",
+          "endState": {
+            "3200000": 20,
+            "3201004": 20,
+            "3200001": 30,
+            "3201001": 20,
+            "3000000": 30,
+            "3001000": 1
+          },
+          "rows": [
+            { "level": 30, "actions": [{ "skillId": "3200000", "delta": 1, "note": "Advancement - start Crossbow Mastery" }] },
+            { "level": 31, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 32, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 33, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 34, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 35, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 36, "actions": [{ "skillId": "3200000", "delta": 3 }] },
+            { "level": 37, "actions": [{ "skillId": "3200000", "delta": 1, "note": "Crossbow Mastery MAXED" }, { "skillId": "3201004", "delta": 2 }] },
+            { "level": 38, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 39, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 40, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 41, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 42, "actions": [{ "skillId": "3201004", "delta": 3 }] },
+            { "level": 43, "actions": [{ "skillId": "3201004", "delta": 3, "note": "Crossbow Booster MAXED" }] },
+            { "level": 44, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 45, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 46, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 47, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 48, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 49, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 50, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 51, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 52, "actions": [{ "skillId": "3200001", "delta": 3 }] },
+            { "level": 53, "actions": [{ "skillId": "3200001", "delta": 3, "note": "Final Attack MAXED" }] },
+            { "level": 54, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 55, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 56, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 57, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 58, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 59, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 60, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 61, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 62, "actions": [{ "skillId": "3000000", "delta": 3 }] },
+            { "level": 63, "actions": [{ "skillId": "3000000", "delta": 3, "note": "Critical Shot MAXED" }] },
+            { "level": 64, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 65, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 66, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 67, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 68, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 69, "actions": [{ "skillId": "3201001", "delta": 3 }] },
+            { "level": 70, "actions": [{ "skillId": "3201001", "delta": 2, "note": "Soul Arrow MAXED" }, { "skillId": "3001000", "delta": 1, "note": "1pt Focus. Advance to Sniper!" }] }
+          ]
+        }
+      ]
+    }
+  ]
+}

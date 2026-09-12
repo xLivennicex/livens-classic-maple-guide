@@ -1,0 +1,8600 @@
+{
+  "WorldMap080": {
+    "name": "WorldMap080",
+    "image": "/images/worldmaps/WorldMap080.png",
+    "width": 640,
+    "height": 472,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -171,
+        "spotY": 85,
+        "type": 0,
+        "mapNumbers": [
+          270000000
+        ],
+        "firstMapId": 270000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -259,
+        "spotY": 165,
+        "type": 1,
+        "mapNumbers": [
+          270000100
+        ],
+        "firstMapId": 270000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 148,
+        "spotY": 82,
+        "type": 1,
+        "mapNumbers": [
+          270010400
+        ],
+        "firstMapId": 270010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 182,
+        "spotY": 77,
+        "type": 1,
+        "mapNumbers": [
+          270010410
+        ],
+        "firstMapId": 270010410,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 192,
+        "spotY": 40,
+        "type": 1,
+        "mapNumbers": [
+          270010500
+        ],
+        "firstMapId": 270010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 172,
+        "spotY": 29,
+        "type": 1,
+        "mapNumbers": [
+          270020000
+        ],
+        "firstMapId": 270020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 139,
+        "spotY": 20,
+        "type": 1,
+        "mapNumbers": [
+          270020100
+        ],
+        "firstMapId": 270020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 103,
+        "spotY": 11,
+        "type": 1,
+        "mapNumbers": [
+          270020110
+        ],
+        "firstMapId": 270020110,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 70,
+        "spotY": 3,
+        "type": 1,
+        "mapNumbers": [
+          270020200
+        ],
+        "firstMapId": 270020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 27,
+        "spotY": -8,
+        "type": 1,
+        "mapNumbers": [
+          270020210
+        ],
+        "firstMapId": 270020210,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 45,
+        "spotY": -46,
+        "type": 1,
+        "mapNumbers": [
+          270020211
+        ],
+        "firstMapId": 270020211,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -57,
+        "spotY": -42,
+        "type": 1,
+        "mapNumbers": [
+          270020300
+        ],
+        "firstMapId": 270020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -87,
+        "spotY": 69,
+        "type": 1,
+        "mapNumbers": [
+          270010000
+        ],
+        "firstMapId": 270010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -92,
+        "spotY": -51,
+        "type": 1,
+        "mapNumbers": [
+          270020310
+        ],
+        "firstMapId": 270020310,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -145,
+        "spotY": -48,
+        "type": 1,
+        "mapNumbers": [
+          270020400
+        ],
+        "firstMapId": 270020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -179,
+        "spotY": -67,
+        "type": 1,
+        "mapNumbers": [
+          270020410
+        ],
+        "firstMapId": 270020410,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -156,
+        "spotY": -92,
+        "type": 1,
+        "mapNumbers": [
+          270020500
+        ],
+        "firstMapId": 270020500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -131,
+        "spotY": -115,
+        "type": 1,
+        "mapNumbers": [
+          270030000
+        ],
+        "firstMapId": 270030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -91,
+        "spotY": -122,
+        "type": 1,
+        "mapNumbers": [
+          270030100
+        ],
+        "firstMapId": 270030100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -44,
+        "spotY": -111,
+        "type": 1,
+        "mapNumbers": [
+          270030110
+        ],
+        "firstMapId": 270030110,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -5,
+        "spotY": -101,
+        "type": 1,
+        "mapNumbers": [
+          270030200
+        ],
+        "firstMapId": 270030200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 45,
+        "spotY": -102,
+        "type": 1,
+        "mapNumbers": [
+          270030210
+        ],
+        "firstMapId": 270030210,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 76,
+        "spotY": -94,
+        "type": 1,
+        "mapNumbers": [
+          270030300
+        ],
+        "firstMapId": 270030300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -39,
+        "spotY": 39,
+        "type": 1,
+        "mapNumbers": [
+          270010100
+        ],
+        "firstMapId": 270010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 104,
+        "spotY": -78,
+        "type": 1,
+        "mapNumbers": [
+          270030310
+        ],
+        "firstMapId": 270030310,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 129,
+        "spotY": -68,
+        "type": 1,
+        "mapNumbers": [
+          270030400
+        ],
+        "firstMapId": 270030400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 148,
+        "spotY": -71,
+        "type": 1,
+        "mapNumbers": [
+          270030410
+        ],
+        "firstMapId": 270030410,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 209,
+        "spotY": -59,
+        "type": 1,
+        "mapNumbers": [
+          270030411
+        ],
+        "firstMapId": 270030411,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 166,
+        "spotY": -86,
+        "type": 1,
+        "mapNumbers": [
+          270030500
+        ],
+        "firstMapId": 270030500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 179,
+        "spotY": -100,
+        "type": 1,
+        "mapNumbers": [
+          270040000
+        ],
+        "firstMapId": 270040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 192,
+        "spotY": -134,
+        "type": 1,
+        "mapNumbers": [
+          270050000
+        ],
+        "firstMapId": 270050000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -10,
+        "spotY": 42,
+        "type": 1,
+        "mapNumbers": [
+          270010110
+        ],
+        "firstMapId": 270010110,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -16,
+        "spotY": 90,
+        "type": 1,
+        "mapNumbers": [
+          270010111
+        ],
+        "firstMapId": 270010111,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 26,
+        "spotY": 51,
+        "type": 1,
+        "mapNumbers": [
+          270010200
+        ],
+        "firstMapId": 270010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 56,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          270010210
+        ],
+        "firstMapId": 270010210,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 90,
+        "spotY": 54,
+        "type": 1,
+        "mapNumbers": [
+          270010300
+        ],
+        "firstMapId": 270010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 117,
+        "spotY": 74,
+        "type": 1,
+        "mapNumbers": [
+          270010310
+        ],
+        "firstMapId": 270010310,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap010": {
+    "name": "WorldMap010",
+    "image": "/images/worldmaps/WorldMap010.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [
+      {
+        "toolTip": "Nautilus",
+        "linksTo": "WorldMap011",
+        "image": "/images/worldmaps/WorldMap010-link-0.png",
+        "width": 150,
+        "height": 85,
+        "originX": -58,
+        "originY": -135
+      },
+      {
+        "toolTip": "Sleepywood",
+        "linksTo": "WorldMap012",
+        "image": "/images/worldmaps/WorldMap010-link-1.png",
+        "width": 121,
+        "height": 100,
+        "originX": 105,
+        "originY": 23
+      },
+      {
+        "toolTip": "Kerning Square",
+        "linksTo": "WorldMap013",
+        "image": "/images/worldmaps/WorldMap010-link-2.png",
+        "width": 92,
+        "height": 91,
+        "originX": 296,
+        "originY": 160
+      }
+    ],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -28,
+        "spotY": 142,
+        "type": 0,
+        "mapNumbers": [
+          100000000,
+          100000001
+        ],
+        "firstMapId": 100000000,
+        "dossierMapId": 10001000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 124,
+        "spotY": 20,
+        "type": 0,
+        "mapNumbers": [
+          101000000,
+          101000001,
+          101000002,
+          101000003,
+          101000200
+        ],
+        "firstMapId": 101000000,
+        "dossierMapId": 10002000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 78,
+        "spotY": 66,
+        "type": 1,
+        "mapNumbers": [
+          100040100
+        ],
+        "firstMapId": 100040100,
+        "dossierMapId": 10002020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 98,
+        "spotY": 54,
+        "type": 1,
+        "mapNumbers": [
+          100050000
+        ],
+        "firstMapId": 100050000,
+        "dossierMapId": 10002010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 73,
+        "spotY": 26,
+        "type": 1,
+        "mapNumbers": [
+          101010000
+        ],
+        "firstMapId": 101010000,
+        "dossierMapId": 10002050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 54,
+        "spotY": 18,
+        "type": 1,
+        "mapNumbers": [
+          101010100
+        ],
+        "firstMapId": 101010100,
+        "dossierMapId": 10002060
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 43,
+        "spotY": -6,
+        "type": 1,
+        "mapNumbers": [
+          101020000,
+          101020001,
+          101020010,
+          101020002,
+          101020003,
+          101020004,
+          101020005,
+          101020006,
+          101020007,
+          101020008,
+          101020009
+        ],
+        "firstMapId": 101020000,
+        "dossierMapId": 10002070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 46,
+        "spotY": -35,
+        "type": 1,
+        "mapNumbers": [
+          101030000
+        ],
+        "firstMapId": 101030000,
+        "dossierMapId": 10004090
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 43,
+        "spotY": -62,
+        "type": 1,
+        "mapNumbers": [
+          101030100
+        ],
+        "firstMapId": 101030100,
+        "dossierMapId": 10004080
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 26,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          101030200
+        ],
+        "firstMapId": 101030200,
+        "dossierMapId": 10004070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 11,
+        "spotY": -104,
+        "type": 1,
+        "mapNumbers": [
+          101030300
+        ],
+        "firstMapId": 101030300,
+        "dossierMapId": 10004060
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -15,
+        "spotY": -113,
+        "type": 1,
+        "mapNumbers": [
+          101030400
+        ],
+        "firstMapId": 101030400,
+        "dossierMapId": 10004050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -74,
+        "spotY": -149,
+        "type": 0,
+        "mapNumbers": [
+          102000000,
+          102000001,
+          102000002,
+          102000003
+        ],
+        "firstMapId": 102000000,
+        "dossierMapId": 10004000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -35,
+        "spotY": -123,
+        "type": 1,
+        "mapNumbers": [
+          101040000
+        ],
+        "firstMapId": 101040000,
+        "dossierMapId": 10004040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -117,
+        "spotY": -119,
+        "type": 1,
+        "mapNumbers": [
+          102010000
+        ],
+        "firstMapId": 102010000,
+        "dossierMapId": 10004010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -119,
+        "spotY": -96,
+        "type": 1,
+        "mapNumbers": [
+          102020000
+        ],
+        "firstMapId": 102020000,
+        "dossierMapId": 10004020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -135,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          102030000
+        ],
+        "firstMapId": 102030000,
+        "dossierMapId": 10004030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -159,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          102040000
+        ],
+        "firstMapId": 102040000,
+        "dossierMapId": 10003080
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -185,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          102050000
+        ],
+        "firstMapId": 102050000,
+        "dossierMapId": 10003070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -201,
+        "spotY": -14,
+        "type": 1,
+        "mapNumbers": [
+          103010000
+        ],
+        "firstMapId": 103010000,
+        "dossierMapId": 10003010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -204,
+        "spotY": 11,
+        "type": 1,
+        "mapNumbers": [
+          103020000
+        ],
+        "firstMapId": 103020000,
+        "dossierMapId": 10003020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -206,
+        "spotY": 33,
+        "type": 1,
+        "mapNumbers": [
+          103020100
+        ],
+        "firstMapId": 103020100,
+        "dossierMapId": 10003030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -189,
+        "spotY": 52,
+        "type": 1,
+        "mapNumbers": [
+          103020200
+        ],
+        "firstMapId": 103020200,
+        "dossierMapId": 10003040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -224,
+        "spotY": -51,
+        "type": 0,
+        "mapNumbers": [
+          103000000,
+          103000001,
+          103000102,
+          103000103,
+          103000104,
+          103000105,
+          103000200,
+          103000201,
+          103000202,
+          103000002,
+          103000003,
+          103000004,
+          103000005,
+          103000006,
+          193000000,
+          103000100,
+          103000101
+        ],
+        "firstMapId": 103000000,
+        "dossierMapId": 10003000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -163,
+        "spotY": 47,
+        "type": 1,
+        "mapNumbers": [
+          103030000
+        ],
+        "firstMapId": 103030000,
+        "dossierMapId": 10003050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -134,
+        "spotY": 59,
+        "type": 1,
+        "mapNumbers": [
+          104010000
+        ],
+        "firstMapId": 104010000,
+        "dossierMapId": 10000020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -125,
+        "spotY": 85,
+        "type": 1,
+        "mapNumbers": [
+          104020000
+        ],
+        "firstMapId": 104020000,
+        "dossierMapId": 10001030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -114,
+        "spotY": 115,
+        "type": 1,
+        "mapNumbers": [
+          104030000
+        ],
+        "firstMapId": 104030000,
+        "dossierMapId": 10001020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -80,
+        "spotY": 139,
+        "type": 1,
+        "mapNumbers": [
+          104040000
+        ],
+        "firstMapId": 104040000,
+        "dossierMapId": 10001010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -215,
+        "spotY": 101,
+        "type": 1,
+        "mapNumbers": [
+          104000100
+        ],
+        "firstMapId": 104000100,
+        "dossierMapId": 10000010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -192,
+        "spotY": 86,
+        "type": 1,
+        "mapNumbers": [
+          104000200
+        ],
+        "firstMapId": 104000200,
+        "dossierMapId": 10000011
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -170,
+        "spotY": 87,
+        "type": 1,
+        "mapNumbers": [
+          104000300
+        ],
+        "firstMapId": 104000300,
+        "dossierMapId": 10000012
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -145,
+        "spotY": 77,
+        "type": 1,
+        "mapNumbers": [
+          104000400
+        ],
+        "firstMapId": 104000400,
+        "dossierMapId": 10000013
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -78,
+        "spotY": -99,
+        "type": 1,
+        "mapNumbers": [
+          106000000
+        ],
+        "firstMapId": 106000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -219,
+        "spotY": 140,
+        "type": 0,
+        "mapNumbers": [
+          104000000,
+          104000001,
+          104000002,
+          104000003,
+          104000004
+        ],
+        "firstMapId": 104000000,
+        "dossierMapId": 10000000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -91,
+        "spotY": -76,
+        "type": 1,
+        "mapNumbers": [
+          106000100
+        ],
+        "firstMapId": 106000100,
+        "dossierMapId": 10004110
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -101,
+        "spotY": -49,
+        "type": 1,
+        "mapNumbers": [
+          106000200
+        ],
+        "firstMapId": 106000200,
+        "dossierMapId": 10004120
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -84,
+        "spotY": -27,
+        "type": 1,
+        "mapNumbers": [
+          106000300
+        ],
+        "firstMapId": 106000300,
+        "dossierMapId": 10004121
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -32,
+        "spotY": 107,
+        "type": 1,
+        "mapNumbers": [
+          106010000
+        ],
+        "firstMapId": 106010000,
+        "dossierMapId": 10001090
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -41,
+        "spotY": 85,
+        "type": 1,
+        "mapNumbers": [
+          106010100
+        ],
+        "firstMapId": 106010100,
+        "dossierMapId": 10001100
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -177,
+        "spotY": -48,
+        "type": 1,
+        "mapNumbers": [
+          107000000
+        ],
+        "firstMapId": 107000000,
+        "dossierMapId": 10003090
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -151,
+        "spotY": -43,
+        "type": 1,
+        "mapNumbers": [
+          107000100
+        ],
+        "firstMapId": 107000100,
+        "dossierMapId": 10003091
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -131,
+        "spotY": -16,
+        "type": 1,
+        "mapNumbers": [
+          107000200
+        ],
+        "firstMapId": 107000200,
+        "dossierMapId": 10003092
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -123,
+        "spotY": 9,
+        "type": 1,
+        "mapNumbers": [
+          107000300
+        ],
+        "firstMapId": 107000300,
+        "dossierMapId": 10003093
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -103,
+        "spotY": 24,
+        "type": 1,
+        "mapNumbers": [
+          107000400
+        ],
+        "firstMapId": 107000400,
+        "dossierMapId": 10003094
+      },
+      {
+        "title": null,
+        "description": "Victoria Island Dungeon",
+        "spotX": -47,
+        "spotY": 26,
+        "type": 2,
+        "mapNumbers": [
+          105030000,
+          105040000,
+          105040306,
+          105040400,
+          105040401,
+          105040402,
+          105050500,
+          105050100,
+          105050200,
+          105050300,
+          105050400,
+          105050000,
+          105040100,
+          105060000,
+          105060100,
+          105070000,
+          105070001,
+          105070002,
+          105070100,
+          105070200,
+          105070300,
+          105070400,
+          105080000,
+          105040200,
+          105090000,
+          105090100,
+          105090200,
+          105090300,
+          105090301,
+          105090310,
+          105090311,
+          105090312,
+          105090400,
+          105090500,
+          105040300,
+          105090600,
+          105090700,
+          105090800,
+          105090900,
+          105040301,
+          105040302,
+          105040303,
+          105040304,
+          105040305
+        ],
+        "firstMapId": 105030000,
+        "dossierMapId": 10005020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 238,
+        "spotY": 96,
+        "type": 0,
+        "mapNumbers": [
+          110000000
+        ],
+        "firstMapId": 110000000,
+        "dossierMapId": 10007000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 266,
+        "spotY": 86,
+        "type": 1,
+        "mapNumbers": [
+          110010000
+        ],
+        "firstMapId": 110010000,
+        "dossierMapId": 10007010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 279,
+        "spotY": 70,
+        "type": 1,
+        "mapNumbers": [
+          110020000
+        ],
+        "firstMapId": 110020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 272,
+        "spotY": 46,
+        "type": 1,
+        "mapNumbers": [
+          110030000
+        ],
+        "firstMapId": 110030000,
+        "dossierMapId": 10007030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 247,
+        "spotY": 42,
+        "type": 1,
+        "mapNumbers": [
+          110040000
+        ],
+        "firstMapId": 110040000,
+        "dossierMapId": 10007040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 62,
+        "spotY": -72,
+        "type": 1,
+        "mapNumbers": [
+          101030101
+        ],
+        "firstMapId": 101030101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 89,
+        "spotY": -83,
+        "type": 1,
+        "mapNumbers": [
+          101030102
+        ],
+        "firstMapId": 101030102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 92,
+        "spotY": -60,
+        "type": 1,
+        "mapNumbers": [
+          101030103
+        ],
+        "firstMapId": 101030103,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 84,
+        "spotY": -36,
+        "type": 1,
+        "mapNumbers": [
+          101030104
+        ],
+        "firstMapId": 101030104,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 96,
+        "spotY": -18,
+        "type": 1,
+        "mapNumbers": [
+          101030105
+        ],
+        "firstMapId": 101030105,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 22,
+        "spotY": 141,
+        "type": 1,
+        "mapNumbers": [
+          100010000
+        ],
+        "firstMapId": 100010000,
+        "dossierMapId": 10001060
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 120,
+        "spotY": -29,
+        "type": 1,
+        "mapNumbers": [
+          101030106
+        ],
+        "firstMapId": 101030106,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 131,
+        "spotY": -48,
+        "type": 1,
+        "mapNumbers": [
+          101030107
+        ],
+        "firstMapId": 101030107,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 131,
+        "spotY": -72,
+        "type": 1,
+        "mapNumbers": [
+          101030108
+        ],
+        "firstMapId": 101030108,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 123,
+        "spotY": -99,
+        "type": 1,
+        "mapNumbers": [
+          101030109
+        ],
+        "firstMapId": 101030109,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 46,
+        "spotY": 32,
+        "type": 1,
+        "mapNumbers": [
+          101010101
+        ],
+        "firstMapId": 101010101,
+        "dossierMapId": 10002061
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 31,
+        "spotY": 39,
+        "type": 1,
+        "mapNumbers": [
+          101010102
+        ],
+        "firstMapId": 101010102,
+        "dossierMapId": 10002062
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 12,
+        "spotY": 31,
+        "type": 1,
+        "mapNumbers": [
+          101010103
+        ],
+        "firstMapId": 101010103,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -139,
+        "spotY": -111,
+        "type": 1,
+        "mapNumbers": [
+          102020100
+        ],
+        "firstMapId": 102020100,
+        "dossierMapId": 10004021
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -168,
+        "spotY": -117,
+        "type": 1,
+        "mapNumbers": [
+          102020200
+        ],
+        "firstMapId": 102020200,
+        "dossierMapId": 10004022
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -197,
+        "spotY": -128,
+        "type": 1,
+        "mapNumbers": [
+          102020300
+        ],
+        "firstMapId": 102020300,
+        "dossierMapId": 10004023
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to #cHenesys Pig Farm#.",
+        "description": "The Rain-Forest East of Henesys",
+        "spotX": 34,
+        "spotY": 119,
+        "type": 1,
+        "mapNumbers": [
+          100020000
+        ],
+        "firstMapId": 100020000,
+        "dossierMapId": 10001070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -173,
+        "spotY": 26,
+        "type": 1,
+        "mapNumbers": [
+          103030100
+        ],
+        "firstMapId": 103030100,
+        "dossierMapId": 10003051
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -171,
+        "spotY": 6,
+        "type": 1,
+        "mapNumbers": [
+          103030200
+        ],
+        "firstMapId": 103030200,
+        "dossierMapId": 10003052
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -76,
+        "spotY": 115,
+        "type": 1,
+        "mapNumbers": [
+          104040001
+        ],
+        "firstMapId": 104040001,
+        "dossierMapId": 10001011
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -84,
+        "spotY": 91,
+        "type": 1,
+        "mapNumbers": [
+          104040002
+        ],
+        "firstMapId": 104040002,
+        "dossierMapId": 10001012
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -70,
+        "spotY": -69,
+        "type": 1,
+        "mapNumbers": [
+          106000101
+        ],
+        "firstMapId": 106000101,
+        "dossierMapId": 10004111
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -42,
+        "spotY": -71,
+        "type": 1,
+        "mapNumbers": [
+          106000110
+        ],
+        "firstMapId": 106000110,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -15,
+        "spotY": -68,
+        "type": 1,
+        "mapNumbers": [
+          106000120
+        ],
+        "firstMapId": 106000120,
+        "dossierMapId": 10004113
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 2,
+        "spotY": -55,
+        "type": 1,
+        "mapNumbers": [
+          106000130
+        ],
+        "firstMapId": 106000130,
+        "dossierMapId": 10004114
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 3,
+        "spotY": -32,
+        "type": 1,
+        "mapNumbers": [
+          106000140
+        ],
+        "firstMapId": 106000140,
+        "dossierMapId": 10004115
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -5,
+        "spotY": -133,
+        "type": 1,
+        "mapNumbers": [
+          101030401
+        ],
+        "firstMapId": 101030401,
+        "dossierMapId": 10004051
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 40,
+        "spotY": 95,
+        "type": 1,
+        "mapNumbers": [
+          100030000
+        ],
+        "firstMapId": 100030000,
+        "dossierMapId": 10001080
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 13,
+        "spotY": -137,
+        "type": 1,
+        "mapNumbers": [
+          101030402
+        ],
+        "firstMapId": 101030402,
+        "dossierMapId": 10004052
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 33,
+        "spotY": -134,
+        "type": 1,
+        "mapNumbers": [
+          101030403
+        ],
+        "firstMapId": 101030403,
+        "dossierMapId": 10004053
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 52,
+        "spotY": -131,
+        "type": 1,
+        "mapNumbers": [
+          101030404
+        ],
+        "firstMapId": 101030404,
+        "dossierMapId": 10004054
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 68,
+        "spotY": -137,
+        "type": 1,
+        "mapNumbers": [
+          101030405
+        ],
+        "firstMapId": 101030405,
+        "dossierMapId": 10004055
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 59,
+        "spotY": -155,
+        "type": 1,
+        "mapNumbers": [
+          101030406
+        ],
+        "firstMapId": 101030406,
+        "dossierMapId": 10004056
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 186,
+        "spotY": -11,
+        "type": 3,
+        "mapNumbers": [
+          101000300,
+          101000301
+        ],
+        "firstMapId": 101000300,
+        "dossierMapId": 10002090
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -41,
+        "spotY": 159,
+        "type": 3,
+        "mapNumbers": [
+          100000100,
+          100000101,
+          100000102,
+          100000103,
+          100000104,
+          100000105
+        ],
+        "firstMapId": 100000100,
+        "dossierMapId": 10001040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -10,
+        "spotY": 159,
+        "type": 3,
+        "mapNumbers": [
+          100000200,
+          100000201,
+          100000202,
+          100000203
+        ],
+        "firstMapId": 100000200,
+        "dossierMapId": 10001050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 71,
+        "spotY": 107,
+        "type": 3,
+        "mapNumbers": [
+          120010000
+        ],
+        "firstMapId": 120010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 161,
+        "spotY": 158,
+        "type": 0,
+        "mapNumbers": [
+          120000000,
+          120000100,
+          120000301,
+          120000101,
+          120000102,
+          120000103,
+          120000104,
+          120000200,
+          120000201,
+          120000202,
+          120000300
+        ],
+        "firstMapId": 120000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 55,
+        "spotY": 76,
+        "type": 1,
+        "mapNumbers": [
+          100040000,
+          100040001,
+          100040002,
+          100040003,
+          100040004
+        ],
+        "firstMapId": 100040000,
+        "dossierMapId": 10002030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 145,
+        "spotY": 73,
+        "type": 3,
+        "mapNumbers": [
+          101000400
+        ],
+        "firstMapId": 101000400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -104,
+        "spotY": 167,
+        "type": 2,
+        "mapNumbers": [
+          106020000,
+          106020100,
+          106020600,
+          106020601,
+          106020700,
+          106020800,
+          106020900,
+          106021000,
+          106021001,
+          106021100,
+          106021200,
+          106021201,
+          106020200,
+          106021300,
+          106021400,
+          106021500,
+          106021501,
+          106021600,
+          106021700,
+          106020300,
+          106020400,
+          106020401,
+          106020402,
+          106020403,
+          106020500,
+          106020501
+        ],
+        "firstMapId": 106020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -238,
+        "spotY": -89,
+        "type": 2,
+        "mapNumbers": [
+          103040000,
+          103040100,
+          103040301,
+          103040302,
+          103040303,
+          103040400,
+          103040101,
+          103040102,
+          103040103,
+          103040200,
+          103040201,
+          103040202,
+          103040203,
+          103040300
+        ],
+        "firstMapId": 103040000,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap031": {
+    "name": "WorldMap031",
+    "image": "/images/worldmaps/WorldMap031.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": 1,
+        "spotY": -161,
+        "type": 1,
+        "mapNumbers": [
+          220050300
+        ],
+        "firstMapId": 220050300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -227,
+        "spotY": -160,
+        "type": 1,
+        "mapNumbers": [
+          220060000
+        ],
+        "firstMapId": 220060000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 112,
+        "spotY": 161,
+        "type": 1,
+        "mapNumbers": [
+          220070400
+        ],
+        "firstMapId": 220070400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": 160,
+        "type": 1,
+        "mapNumbers": [
+          220080000
+        ],
+        "firstMapId": 220080000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -2,
+        "spotY": 36,
+        "type": 1,
+        "mapNumbers": [
+          220080001
+        ],
+        "firstMapId": 220080001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -226,
+        "spotY": -52,
+        "type": 1,
+        "mapNumbers": [
+          220060100
+        ],
+        "firstMapId": 220060100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -227,
+        "spotY": 56,
+        "type": 1,
+        "mapNumbers": [
+          220060200
+        ],
+        "firstMapId": 220060200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -228,
+        "spotY": 162,
+        "type": 1,
+        "mapNumbers": [
+          220060300
+        ],
+        "firstMapId": 220060300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -114,
+        "spotY": 161,
+        "type": 1,
+        "mapNumbers": [
+          220060400
+        ],
+        "firstMapId": 220060400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 224,
+        "spotY": -160,
+        "type": 1,
+        "mapNumbers": [
+          220070000
+        ],
+        "firstMapId": 220070000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 223,
+        "spotY": -53,
+        "type": 1,
+        "mapNumbers": [
+          220070100
+        ],
+        "firstMapId": 220070100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 223,
+        "spotY": 55,
+        "type": 1,
+        "mapNumbers": [
+          220070200
+        ],
+        "firstMapId": 220070200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 224,
+        "spotY": 161,
+        "type": 1,
+        "mapNumbers": [
+          220070300
+        ],
+        "firstMapId": 220070300,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap011": {
+    "name": "WorldMap011",
+    "image": "/images/worldmaps/WorldMap011.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -81,
+        "spotY": -24,
+        "type": 1,
+        "mapNumbers": [
+          120000100
+        ],
+        "firstMapId": 120000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -180,
+        "spotY": -10,
+        "type": 1,
+        "mapNumbers": [
+          120000101
+        ],
+        "firstMapId": 120000101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -142,
+        "spotY": -35,
+        "type": 1,
+        "mapNumbers": [
+          120000102
+        ],
+        "firstMapId": 120000102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -105,
+        "spotY": -59,
+        "type": 1,
+        "mapNumbers": [
+          120000103
+        ],
+        "firstMapId": 120000103,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -43,
+        "spotY": -102,
+        "type": 1,
+        "mapNumbers": [
+          120000104
+        ],
+        "firstMapId": 120000104,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -3,
+        "spotY": 33,
+        "type": 1,
+        "mapNumbers": [
+          120000200
+        ],
+        "firstMapId": 120000200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -122,
+        "spotY": 67,
+        "type": 1,
+        "mapNumbers": [
+          120000201
+        ],
+        "firstMapId": 120000201,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 64,
+        "spotY": -76,
+        "type": 1,
+        "mapNumbers": [
+          120000202
+        ],
+        "firstMapId": 120000202,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 79,
+        "spotY": 83,
+        "type": 1,
+        "mapNumbers": [
+          120000300
+        ],
+        "firstMapId": 120000300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 106,
+        "spotY": 1,
+        "type": 1,
+        "mapNumbers": [
+          120000301
+        ],
+        "firstMapId": 120000301,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap142": {
+    "name": "WorldMap142",
+    "image": "/images/worldmaps/WorldMap142.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -120,
+        "spotY": 32,
+        "type": 0,
+        "mapNumbers": [
+          682000305,
+          682000405,
+          682000505,
+          682000605
+        ],
+        "firstMapId": 682000305,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -118,
+        "spotY": 111,
+        "type": 0,
+        "mapNumbers": [
+          682000304,
+          682000404,
+          682000504,
+          682000604
+        ],
+        "firstMapId": 682000304,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 120,
+        "spotY": 171,
+        "type": 0,
+        "mapNumbers": [
+          682000302,
+          682000402,
+          682000502,
+          682000602
+        ],
+        "firstMapId": 682000302,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -69,
+        "spotY": -41,
+        "type": 0,
+        "mapNumbers": [
+          682000900
+        ],
+        "firstMapId": 682000900,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -107,
+        "spotY": 167,
+        "type": 0,
+        "mapNumbers": [
+          682000306,
+          682000406,
+          682000506,
+          682000606
+        ],
+        "firstMapId": 682000306,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 2,
+        "spotY": 169,
+        "type": 0,
+        "mapNumbers": [
+          682000100
+        ],
+        "firstMapId": 682000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 3,
+        "spotY": 114,
+        "type": 0,
+        "mapNumbers": [
+          682000300,
+          682000400,
+          682000500,
+          682000600
+        ],
+        "firstMapId": 682000300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 5,
+        "spotY": 45,
+        "type": 0,
+        "mapNumbers": [
+          682000800
+        ],
+        "firstMapId": 682000800,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 55,
+        "spotY": -27,
+        "type": 0,
+        "mapNumbers": [
+          682000200
+        ],
+        "firstMapId": 682000200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 151,
+        "spotY": 28,
+        "type": 0,
+        "mapNumbers": [
+          682000301,
+          682000401,
+          682000501,
+          682000601
+        ],
+        "firstMapId": 682000301,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 145,
+        "spotY": 115,
+        "type": 0,
+        "mapNumbers": [
+          682000303,
+          682000403,
+          682000503,
+          682000603
+        ],
+        "firstMapId": 682000303,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap040": {
+    "name": "WorldMap040",
+    "image": "/images/worldmaps/WorldMap040.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": -47,
+        "type": 0,
+        "mapNumbers": [
+          230000000,
+          230000001,
+          230000002,
+          230000003
+        ],
+        "firstMapId": 230000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -233,
+        "spotY": 99,
+        "type": 1,
+        "mapNumbers": [
+          230010000
+        ],
+        "firstMapId": 230010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 174,
+        "spotY": -145,
+        "type": 1,
+        "mapNumbers": [
+          230020201
+        ],
+        "firstMapId": 230020201,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 196,
+        "spotY": 16,
+        "type": 1,
+        "mapNumbers": [
+          230020300
+        ],
+        "firstMapId": 230020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 233,
+        "spotY": 39,
+        "type": 1,
+        "mapNumbers": [
+          230030000
+        ],
+        "firstMapId": 230030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 252,
+        "spotY": 76,
+        "type": 1,
+        "mapNumbers": [
+          230030100
+        ],
+        "firstMapId": 230030100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 163,
+        "spotY": 154,
+        "type": 1,
+        "mapNumbers": [
+          230030101
+        ],
+        "firstMapId": 230030101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 264,
+        "spotY": 108,
+        "type": 1,
+        "mapNumbers": [
+          230030200
+        ],
+        "firstMapId": 230030200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -126,
+        "spotY": 49,
+        "type": 1,
+        "mapNumbers": [
+          230040000
+        ],
+        "firstMapId": 230040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -87,
+        "spotY": 101,
+        "type": 1,
+        "mapNumbers": [
+          230040100
+        ],
+        "firstMapId": 230040100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -6,
+        "spotY": 129,
+        "type": 1,
+        "mapNumbers": [
+          230040400
+        ],
+        "firstMapId": 230040400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -76,
+        "spotY": 178,
+        "type": 1,
+        "mapNumbers": [
+          230040410
+        ],
+        "firstMapId": 230040410,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -229,
+        "spotY": 55,
+        "type": 1,
+        "mapNumbers": [
+          230010100
+        ],
+        "firstMapId": 230010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -147,
+        "spotY": 178,
+        "type": 1,
+        "mapNumbers": [
+          230040420
+        ],
+        "firstMapId": 230040420,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 119,
+        "spotY": 14,
+        "type": 1,
+        "mapNumbers": [
+          230040200
+        ],
+        "firstMapId": 230040200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 117,
+        "spotY": 84,
+        "type": 1,
+        "mapNumbers": [
+          230040300
+        ],
+        "firstMapId": 230040300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -227,
+        "spotY": 11,
+        "type": 1,
+        "mapNumbers": [
+          230010200
+        ],
+        "firstMapId": 230010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -179,
+        "spotY": -142,
+        "type": 1,
+        "mapNumbers": [
+          230010201
+        ],
+        "firstMapId": 230010201,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -192,
+        "spotY": -20,
+        "type": 1,
+        "mapNumbers": [
+          230010300
+        ],
+        "firstMapId": 230010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -150,
+        "spotY": -31,
+        "type": 1,
+        "mapNumbers": [
+          230010400
+        ],
+        "firstMapId": 230010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 156,
+        "spotY": -56,
+        "type": 1,
+        "mapNumbers": [
+          230020000
+        ],
+        "firstMapId": 230020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 195,
+        "spotY": -54,
+        "type": 1,
+        "mapNumbers": [
+          230020100
+        ],
+        "firstMapId": 230020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 202,
+        "spotY": -19,
+        "type": 1,
+        "mapNumbers": [
+          230020200
+        ],
+        "firstMapId": 230020200,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap051": {
+    "name": "WorldMap051",
+    "image": "/images/worldmaps/WorldMap051.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -7,
+        "spotY": 125,
+        "type": 0,
+        "mapNumbers": [
+          240070000
+        ],
+        "firstMapId": 240070000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -177,
+        "spotY": 91,
+        "type": 1,
+        "mapNumbers": [
+          240070100,
+          240070101,
+          240070102
+        ],
+        "firstMapId": 240070100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 203,
+        "spotY": 74,
+        "type": 1,
+        "mapNumbers": [
+          240070200,
+          240070201,
+          240070202,
+          240070203
+        ],
+        "firstMapId": 240070200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 167,
+        "spotY": -55,
+        "type": 1,
+        "mapNumbers": [
+          240070300,
+          240070301,
+          240070302,
+          240070303
+        ],
+        "firstMapId": 240070300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -169,
+        "spotY": -28,
+        "type": 1,
+        "mapNumbers": [
+          240070400,
+          240070401,
+          240070402,
+          240070403
+        ],
+        "firstMapId": 240070400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -243,
+        "spotY": -98,
+        "type": 1,
+        "mapNumbers": [
+          240070500,
+          240070501,
+          240070502,
+          240070503
+        ],
+        "firstMapId": 240070500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 10,
+        "spotY": -140,
+        "type": 1,
+        "mapNumbers": [
+          240070600,
+          240070601,
+          240070602,
+          240070603
+        ],
+        "firstMapId": 240070600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -7,
+        "spotY": 198,
+        "type": 1,
+        "mapNumbers": [
+          240070010,
+          240070020,
+          240070030,
+          240070040,
+          240070050,
+          240070060
+        ],
+        "firstMapId": 240070010,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap090": {
+    "name": "WorldMap090",
+    "image": "/images/worldmaps/WorldMap090.png",
+    "width": 640,
+    "height": 470,
+    "originX": 322,
+    "originY": 236,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": 160,
+        "spotY": 45,
+        "type": 0,
+        "mapNumbers": [
+          130000000
+        ],
+        "firstMapId": 130000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 83,
+        "spotY": 13,
+        "type": 1,
+        "mapNumbers": [
+          130000100
+        ],
+        "firstMapId": 130000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -141,
+        "spotY": -69,
+        "type": 1,
+        "mapNumbers": [
+          130010200
+        ],
+        "firstMapId": 130010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -117,
+        "spotY": -94,
+        "type": 1,
+        "mapNumbers": [
+          130010210
+        ],
+        "firstMapId": 130010210,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -169,
+        "spotY": -40,
+        "type": 1,
+        "mapNumbers": [
+          130010220
+        ],
+        "firstMapId": 130010220,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -164,
+        "spotY": -77,
+        "type": 1,
+        "mapNumbers": [
+          130020000
+        ],
+        "firstMapId": 130020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Forest of Beginning",
+        "spotX": 250,
+        "spotY": 122,
+        "type": 1,
+        "mapNumbers": [
+          130030000
+        ],
+        "firstMapId": 130030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 211,
+        "spotY": 104,
+        "type": 1,
+        "mapNumbers": [
+          130030005
+        ],
+        "firstMapId": 130030005,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 173,
+        "spotY": 78,
+        "type": 1,
+        "mapNumbers": [
+          130030006
+        ],
+        "firstMapId": 130030006,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 18,
+        "spotY": -20,
+        "type": 1,
+        "mapNumbers": [
+          130000200
+        ],
+        "firstMapId": 130000200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 117,
+        "spotY": -113,
+        "type": 1,
+        "mapNumbers": [
+          130000210
+        ],
+        "firstMapId": 130000210,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -57,
+        "spotY": -30,
+        "type": 1,
+        "mapNumbers": [
+          130010000
+        ],
+        "firstMapId": 130010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -14,
+        "spotY": -69,
+        "type": 1,
+        "mapNumbers": [
+          130010010
+        ],
+        "firstMapId": 130010010,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -99,
+        "spotY": -2,
+        "type": 1,
+        "mapNumbers": [
+          130010020
+        ],
+        "firstMapId": 130010020,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -89,
+        "spotY": -52,
+        "type": 1,
+        "mapNumbers": [
+          130010100
+        ],
+        "firstMapId": 130010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -67,
+        "spotY": -75,
+        "type": 1,
+        "mapNumbers": [
+          130010110
+        ],
+        "firstMapId": 130010110,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -123,
+        "spotY": -26,
+        "type": 1,
+        "mapNumbers": [
+          130010120
+        ],
+        "firstMapId": 130010120,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap030": {
+    "name": "WorldMap030",
+    "image": "/images/worldmaps/WorldMap030.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [
+      {
+        "toolTip": "Lowest Floor of Clocktower",
+        "linksTo": "WorldMap031",
+        "image": "/images/worldmaps/WorldMap030-link-0.png",
+        "width": 147,
+        "height": 101,
+        "originX": 76,
+        "originY": -49
+      }
+    ],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": -114,
+        "type": 0,
+        "mapNumbers": [
+          220000000,
+          220000001,
+          220000002,
+          220000003,
+          220000004,
+          220000005,
+          220000006
+        ],
+        "firstMapId": 220000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -176,
+        "spotY": -71,
+        "type": 1,
+        "mapNumbers": [
+          220010000,
+          220010001
+        ],
+        "firstMapId": 220010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 144,
+        "spotY": -61,
+        "type": 1,
+        "mapNumbers": [
+          220010900
+        ],
+        "firstMapId": 220010900,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 173,
+        "spotY": -72,
+        "type": 1,
+        "mapNumbers": [
+          220011000,
+          220011001
+        ],
+        "firstMapId": 220011000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -150,
+        "spotY": -38,
+        "type": 1,
+        "mapNumbers": [
+          220020000
+        ],
+        "firstMapId": 220020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -106,
+        "spotY": -27,
+        "type": 1,
+        "mapNumbers": [
+          220020100
+        ],
+        "firstMapId": 220020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -59,
+        "spotY": -22,
+        "type": 1,
+        "mapNumbers": [
+          220020200
+        ],
+        "firstMapId": 220020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -2,
+        "spotY": -20,
+        "type": 1,
+        "mapNumbers": [
+          220020300
+        ],
+        "firstMapId": 220020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 53,
+        "spotY": -21,
+        "type": 1,
+        "mapNumbers": [
+          220020400
+        ],
+        "firstMapId": 220020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 101,
+        "spotY": -27,
+        "type": 1,
+        "mapNumbers": [
+          220020500
+        ],
+        "firstMapId": 220020500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 147,
+        "spotY": -39,
+        "type": 1,
+        "mapNumbers": [
+          220020600
+        ],
+        "firstMapId": 220020600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -123,
+        "spotY": -6,
+        "type": 1,
+        "mapNumbers": [
+          220030000
+        ],
+        "firstMapId": 220030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -147,
+        "spotY": -60,
+        "type": 1,
+        "mapNumbers": [
+          220010100
+        ],
+        "firstMapId": 220010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -71,
+        "spotY": 4,
+        "type": 1,
+        "mapNumbers": [
+          220030100
+        ],
+        "firstMapId": 220030100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": 7,
+        "type": 1,
+        "mapNumbers": [
+          220030200
+        ],
+        "firstMapId": 220030200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 66,
+        "spotY": 4,
+        "type": 1,
+        "mapNumbers": [
+          220030300
+        ],
+        "firstMapId": 220030300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 117,
+        "spotY": -5,
+        "type": 1,
+        "mapNumbers": [
+          220030400
+        ],
+        "firstMapId": 220030400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -106,
+        "spotY": 19,
+        "type": 1,
+        "mapNumbers": [
+          220040000
+        ],
+        "firstMapId": 220040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -49,
+        "spotY": 29,
+        "type": 1,
+        "mapNumbers": [
+          220040100
+        ],
+        "firstMapId": 220040100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": 32,
+        "type": 1,
+        "mapNumbers": [
+          220040200
+        ],
+        "firstMapId": 220040200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 47,
+        "spotY": 29,
+        "type": 1,
+        "mapNumbers": [
+          220040300
+        ],
+        "firstMapId": 220040300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 92,
+        "spotY": 21,
+        "type": 1,
+        "mapNumbers": [
+          220040400
+        ],
+        "firstMapId": 220040400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -42,
+        "spotY": 53,
+        "type": 1,
+        "mapNumbers": [
+          220050000
+        ],
+        "firstMapId": 220050000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -112,
+        "spotY": -54,
+        "type": 1,
+        "mapNumbers": [
+          220010200
+        ],
+        "firstMapId": 220010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -1,
+        "spotY": 56,
+        "type": 1,
+        "mapNumbers": [
+          220050100
+        ],
+        "firstMapId": 220050100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 33,
+        "spotY": 52,
+        "type": 1,
+        "mapNumbers": [
+          220050200
+        ],
+        "firstMapId": 220050200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Clock Tower Bottom Fl.",
+        "spotX": -2,
+        "spotY": 84,
+        "type": 2,
+        "mapNumbers": [
+          220050300,
+          220060000,
+          220070400,
+          220080000,
+          220080001,
+          220060100,
+          220060200,
+          220060300,
+          220060400,
+          220070000,
+          220070100,
+          220070200,
+          220070300
+        ],
+        "firstMapId": 220050300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -219,
+        "spotY": 100,
+        "type": 0,
+        "mapNumbers": [
+          221000000,
+          221000001,
+          221000100,
+          221000200,
+          221000300,
+          221000400
+        ],
+        "firstMapId": 221000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -230,
+        "spotY": 130,
+        "type": 1,
+        "mapNumbers": [
+          221030000
+        ],
+        "firstMapId": 221030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -212,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          221030100
+        ],
+        "firstMapId": 221030100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -181,
+        "spotY": 147,
+        "type": 1,
+        "mapNumbers": [
+          221030200
+        ],
+        "firstMapId": 221030200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -149,
+        "spotY": 147,
+        "type": 1,
+        "mapNumbers": [
+          221030300
+        ],
+        "firstMapId": 221030300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -119,
+        "spotY": 151,
+        "type": 1,
+        "mapNumbers": [
+          221030400
+        ],
+        "firstMapId": 221030400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -91,
+        "spotY": 147,
+        "type": 1,
+        "mapNumbers": [
+          221030500
+        ],
+        "firstMapId": 221030500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -76,
+        "spotY": -49,
+        "type": 1,
+        "mapNumbers": [
+          220010300
+        ],
+        "firstMapId": 220010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -83,
+        "spotY": 127,
+        "type": 1,
+        "mapNumbers": [
+          221030600
+        ],
+        "firstMapId": 221030600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -204,
+        "spotY": 127,
+        "type": 1,
+        "mapNumbers": [
+          221040000
+        ],
+        "firstMapId": 221040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -182,
+        "spotY": 112,
+        "type": 1,
+        "mapNumbers": [
+          221040100
+        ],
+        "firstMapId": 221040100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -166,
+        "spotY": 91,
+        "type": 1,
+        "mapNumbers": [
+          221040200
+        ],
+        "firstMapId": 221040200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -148,
+        "spotY": 74,
+        "type": 1,
+        "mapNumbers": [
+          221040300
+        ],
+        "firstMapId": 221040300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -125,
+        "spotY": 74,
+        "type": 1,
+        "mapNumbers": [
+          221040400
+        ],
+        "firstMapId": 221040400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 224,
+        "spotY": 96,
+        "type": 0,
+        "mapNumbers": [
+          222000000,
+          222000001
+        ],
+        "firstMapId": 222000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 181,
+        "spotY": 100,
+        "type": 1,
+        "mapNumbers": [
+          222010000
+        ],
+        "firstMapId": 222010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 186,
+        "spotY": 128,
+        "type": 1,
+        "mapNumbers": [
+          222010001
+        ],
+        "firstMapId": 222010001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 218,
+        "spotY": 142,
+        "type": 1,
+        "mapNumbers": [
+          222010002
+        ],
+        "firstMapId": 222010002,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -41,
+        "spotY": -47,
+        "type": 1,
+        "mapNumbers": [
+          220010400
+        ],
+        "firstMapId": 220010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 154,
+        "spotY": 86,
+        "type": 1,
+        "mapNumbers": [
+          222010100
+        ],
+        "firstMapId": 222010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 147,
+        "spotY": 116,
+        "type": 1,
+        "mapNumbers": [
+          222010101
+        ],
+        "firstMapId": 222010101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 157,
+        "spotY": 152,
+        "type": 1,
+        "mapNumbers": [
+          222010102
+        ],
+        "firstMapId": 222010102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 114,
+        "spotY": 90,
+        "type": 1,
+        "mapNumbers": [
+          222010200
+        ],
+        "firstMapId": 222010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 106,
+        "spotY": 122,
+        "type": 1,
+        "mapNumbers": [
+          222010201
+        ],
+        "firstMapId": 222010201,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 79,
+        "spotY": 101,
+        "type": 1,
+        "mapNumbers": [
+          222010300,
+          222010310
+        ],
+        "firstMapId": 222010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 61,
+        "spotY": 127,
+        "type": 1,
+        "mapNumbers": [
+          222010400
+        ],
+        "firstMapId": 222010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 221,
+        "spotY": -106,
+        "type": 1,
+        "mapNumbers": [
+          222020300
+        ],
+        "firstMapId": 222020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 220,
+        "spotY": -63,
+        "type": 1,
+        "mapNumbers": [
+          222020200
+        ],
+        "firstMapId": 222020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 220,
+        "spotY": 14,
+        "type": 1,
+        "mapNumbers": [
+          222020100
+        ],
+        "firstMapId": 222020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -2,
+        "spotY": -47,
+        "type": 1,
+        "mapNumbers": [
+          220010500
+        ],
+        "firstMapId": 220010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 218,
+        "spotY": 66,
+        "type": 1,
+        "mapNumbers": [
+          222020000
+        ],
+        "firstMapId": 222020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 100th fl. ~ 101st fl.",
+        "spotX": -224,
+        "spotY": -108,
+        "type": 1,
+        "mapNumbers": [
+          221024400,
+          221024500
+        ],
+        "firstMapId": 221024400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 91st fl. ~ 99th fl.",
+        "spotX": -224,
+        "spotY": -76,
+        "type": 1,
+        "mapNumbers": [
+          221024300,
+          221024200,
+          221024100,
+          221024000,
+          221023900,
+          221023800,
+          221023700,
+          221023600,
+          221023500
+        ],
+        "firstMapId": 221024300,
+        "dossierMapId": null
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to #cDrummer Bunny's Lair#.",
+        "description": "Eos Tower 71st fl. ~ 90th fl.",
+        "spotX": -223,
+        "spotY": -51,
+        "type": 1,
+        "mapNumbers": [
+          221023400,
+          221023300,
+          221023200,
+          221023100,
+          221023000,
+          221022900
+        ],
+        "firstMapId": 221023400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 56th fl. ~ 70th fl.",
+        "spotX": -222,
+        "spotY": -27,
+        "type": 1,
+        "mapNumbers": [
+          221022800,
+          221022700,
+          221022600,
+          221022500,
+          221022400,
+          221022300
+        ],
+        "firstMapId": 221022800,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 41st fl. ~ 55th fl.",
+        "spotX": -221,
+        "spotY": 4,
+        "type": 1,
+        "mapNumbers": [
+          221022200,
+          221022100,
+          221022000,
+          221021900,
+          221021800,
+          221021700
+        ],
+        "firstMapId": 221022200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 21st fl. ~ 40th fl.",
+        "spotX": -220,
+        "spotY": 29,
+        "type": 1,
+        "mapNumbers": [
+          221021600,
+          221021500,
+          221021400,
+          221021300,
+          221021200,
+          221021100
+        ],
+        "firstMapId": 221021600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Eos Tower 1st fl. ~ 20th fl.",
+        "spotX": -219,
+        "spotY": 71,
+        "type": 1,
+        "mapNumbers": [
+          221021000,
+          221020900,
+          221020000,
+          221020800,
+          221020700,
+          221020600,
+          221020500,
+          221020400,
+          221020300,
+          221020200,
+          221020100
+        ],
+        "firstMapId": 221021000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -71,
+        "spotY": -115,
+        "type": 3,
+        "mapNumbers": [
+          220000300,
+          220000301,
+          220000302,
+          220000303,
+          220000304,
+          220000305,
+          220000306,
+          220000307
+        ],
+        "firstMapId": 220000300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -126,
+        "spotY": -113,
+        "type": 3,
+        "mapNumbers": [
+          220000400
+        ],
+        "firstMapId": 220000400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 38,
+        "spotY": -47,
+        "type": 1,
+        "mapNumbers": [
+          220010600
+        ],
+        "firstMapId": 220010600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 126,
+        "spotY": -113,
+        "type": 3,
+        "mapNumbers": [
+          220000500
+        ],
+        "firstMapId": 220000500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 53,
+        "spotY": -126,
+        "type": 3,
+        "mapNumbers": [
+          220000100,
+          220000110,
+          220000111
+        ],
+        "firstMapId": 220000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 73,
+        "spotY": -50,
+        "type": 1,
+        "mapNumbers": [
+          220010700
+        ],
+        "firstMapId": 220010700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 109,
+        "spotY": -54,
+        "type": 1,
+        "mapNumbers": [
+          220010800
+        ],
+        "firstMapId": 220010800,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap012": {
+    "name": "WorldMap012",
+    "image": "/images/worldmaps/WorldMap012.png",
+    "width": 640,
+    "height": 469,
+    "originX": 320,
+    "originY": 236,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -104,
+        "spotY": -95,
+        "type": 0,
+        "mapNumbers": [
+          105040300
+        ],
+        "firstMapId": 105040300,
+        "dossierMapId": 10005000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -204,
+        "spotY": -154,
+        "type": 1,
+        "mapNumbers": [
+          107000500
+        ],
+        "firstMapId": 107000500,
+        "dossierMapId": 10005030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -203,
+        "spotY": 103,
+        "type": 1,
+        "mapNumbers": [
+          105040305
+        ],
+        "firstMapId": 105040305,
+        "dossierMapId": 10005054
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -106,
+        "spotY": 7,
+        "type": 1,
+        "mapNumbers": [
+          105050000
+        ],
+        "firstMapId": 105050000,
+        "dossierMapId": 10005060
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cCave of Mushrooms#.",
+        "description": "Ant Tunnel II",
+        "spotX": -86,
+        "spotY": 19,
+        "type": 1,
+        "mapNumbers": [
+          105050100
+        ],
+        "firstMapId": 105050100,
+        "dossierMapId": 10005061
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -75,
+        "spotY": 35,
+        "type": 1,
+        "mapNumbers": [
+          105050200
+        ],
+        "firstMapId": 105050200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -84,
+        "spotY": 52,
+        "type": 1,
+        "mapNumbers": [
+          105050300
+        ],
+        "firstMapId": 105050300,
+        "dossierMapId": 10005063
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -90,
+        "spotY": 70,
+        "type": 1,
+        "mapNumbers": [
+          105050400
+        ],
+        "firstMapId": 105050400,
+        "dossierMapId": 10005064
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -75,
+        "spotY": 86,
+        "type": 1,
+        "mapNumbers": [
+          105060000
+        ],
+        "firstMapId": 105060000,
+        "dossierMapId": 10005065
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -59,
+        "spotY": 103,
+        "type": 1,
+        "mapNumbers": [
+          105060100
+        ],
+        "firstMapId": 105060100,
+        "dossierMapId": 10005066
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -43,
+        "spotY": 120,
+        "type": 1,
+        "mapNumbers": [
+          105070000
+        ],
+        "firstMapId": 105070000,
+        "dossierMapId": 10005067
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -18,
+        "spotY": 127,
+        "type": 1,
+        "mapNumbers": [
+          105070001
+        ],
+        "firstMapId": 105070001,
+        "dossierMapId": 10005070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -184,
+        "spotY": -141,
+        "type": 1,
+        "mapNumbers": [
+          105030000
+        ],
+        "firstMapId": 105030000,
+        "dossierMapId": 10005020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 13,
+        "spotY": 125,
+        "type": 1,
+        "mapNumbers": [
+          105070100
+        ],
+        "firstMapId": 105070100,
+        "dossierMapId": 10005071
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 37,
+        "spotY": 132,
+        "type": 1,
+        "mapNumbers": [
+          105070200
+        ],
+        "firstMapId": 105070200,
+        "dossierMapId": 10005072
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 59,
+        "spotY": 140,
+        "type": 1,
+        "mapNumbers": [
+          105070300
+        ],
+        "firstMapId": 105070300,
+        "dossierMapId": 10005073
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 83,
+        "spotY": 139,
+        "type": 1,
+        "mapNumbers": [
+          105070400
+        ],
+        "firstMapId": 105070400,
+        "dossierMapId": 10005074
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 97,
+        "spotY": 120,
+        "type": 1,
+        "mapNumbers": [
+          105080000
+        ],
+        "firstMapId": 105080000,
+        "dossierMapId": 10005075
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 112,
+        "spotY": 104,
+        "type": 1,
+        "mapNumbers": [
+          105090000
+        ],
+        "firstMapId": 105090000,
+        "dossierMapId": 10005076
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 126,
+        "spotY": 87,
+        "type": 1,
+        "mapNumbers": [
+          105090100
+        ],
+        "firstMapId": 105090100,
+        "dossierMapId": 10005077
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 132,
+        "spotY": 74,
+        "type": 1,
+        "mapNumbers": [
+          105090200
+        ],
+        "firstMapId": 105090200,
+        "dossierMapId": 10005080
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 131,
+        "spotY": 46,
+        "type": 1,
+        "mapNumbers": [
+          105090300
+        ],
+        "firstMapId": 105090300,
+        "dossierMapId": 10005090
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 131,
+        "spotY": 13,
+        "type": 1,
+        "mapNumbers": [
+          105090301
+        ],
+        "firstMapId": 105090301,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -208,
+        "spotY": -117,
+        "type": 1,
+        "mapNumbers": [
+          105040000
+        ],
+        "firstMapId": 105040000,
+        "dossierMapId": 10005010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 151,
+        "spotY": 39,
+        "type": 1,
+        "mapNumbers": [
+          105090310
+        ],
+        "firstMapId": 105090310,
+        "dossierMapId": null
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cDrake's Blue Cave#.",
+        "description": "Drake's Blue Cave",
+        "spotX": 170,
+        "spotY": 18,
+        "type": 1,
+        "mapNumbers": [
+          105090311
+        ],
+        "firstMapId": 105090311,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 170,
+        "spotY": -7,
+        "type": 1,
+        "mapNumbers": [
+          105090312
+        ],
+        "firstMapId": 105090312,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 154,
+        "spotY": 76,
+        "type": 1,
+        "mapNumbers": [
+          105090400
+        ],
+        "firstMapId": 105090400,
+        "dossierMapId": 10005100
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 182,
+        "spotY": 62,
+        "type": 1,
+        "mapNumbers": [
+          105090500
+        ],
+        "firstMapId": 105090500,
+        "dossierMapId": 10005101
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 194,
+        "spotY": 40,
+        "type": 1,
+        "mapNumbers": [
+          105090600
+        ],
+        "firstMapId": 105090600,
+        "dossierMapId": 10005102
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 204,
+        "spotY": 16,
+        "type": 1,
+        "mapNumbers": [
+          105090700
+        ],
+        "firstMapId": 105090700,
+        "dossierMapId": 10005103
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 213,
+        "spotY": -5,
+        "type": 1,
+        "mapNumbers": [
+          105090800
+        ],
+        "firstMapId": 105090800,
+        "dossierMapId": 10005104
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 225,
+        "spotY": -23,
+        "type": 1,
+        "mapNumbers": [
+          105090900
+        ],
+        "firstMapId": 105090900,
+        "dossierMapId": 10005105
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -234,
+        "spotY": -73,
+        "type": 1,
+        "mapNumbers": [
+          105040100
+        ],
+        "firstMapId": 105040100,
+        "dossierMapId": 10005011
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -273,
+        "spotY": -47,
+        "type": 1,
+        "mapNumbers": [
+          105040200
+        ],
+        "firstMapId": 105040200,
+        "dossierMapId": 10005012
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -157,
+        "spotY": -51,
+        "type": 1,
+        "mapNumbers": [
+          105040301
+        ],
+        "firstMapId": 105040301,
+        "dossierMapId": 10005050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -204,
+        "spotY": -33,
+        "type": 1,
+        "mapNumbers": [
+          105040302
+        ],
+        "firstMapId": 105040302,
+        "dossierMapId": 10005051
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -263,
+        "spotY": -11,
+        "type": 1,
+        "mapNumbers": [
+          105040303
+        ],
+        "firstMapId": 105040303,
+        "dossierMapId": 10005052
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cGolem's Castle Ruins#.",
+        "description": "Sleepy Dungeon IV",
+        "spotX": -230,
+        "spotY": 68,
+        "type": 1,
+        "mapNumbers": [
+          105040304
+        ],
+        "firstMapId": 105040304,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap": {
+    "name": "WorldMap",
+    "image": "/images/worldmaps/WorldMap.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [
+      {
+        "toolTip": "Maple Island",
+        "linksTo": "WorldMap000",
+        "image": "/images/worldmaps/WorldMap-link-0.png",
+        "width": 63,
+        "height": 49,
+        "originX": 208,
+        "originY": 189
+      },
+      {
+        "toolTip": "Victoria Island",
+        "linksTo": "WorldMap010",
+        "image": "/images/worldmaps/WorldMap-link-1.png",
+        "width": 133,
+        "height": 121,
+        "originX": 302,
+        "originY": 144
+      },
+      {
+        "toolTip": "Rien",
+        "linksTo": "WorldMap100",
+        "image": "/images/worldmaps/WorldMap-link-2.png",
+        "width": 75,
+        "height": 97,
+        "originX": 303,
+        "originY": 44
+      },
+      {
+        "toolTip": "Elnath Mts.",
+        "linksTo": "WorldMap020",
+        "image": "/images/worldmaps/WorldMap-link-3.png",
+        "width": 278,
+        "height": 217,
+        "originX": 94,
+        "originY": 125
+      },
+      {
+        "toolTip": "Ludus Lake",
+        "linksTo": "WorldMap030",
+        "image": "/images/worldmaps/WorldMap-link-4.png",
+        "width": 155,
+        "height": 120,
+        "originX": 130,
+        "originY": 24
+      },
+      {
+        "toolTip": "Aqua Road",
+        "linksTo": "WorldMap040",
+        "image": "/images/worldmaps/WorldMap-link-5.png",
+        "width": 109,
+        "height": 140,
+        "originX": 173,
+        "originY": 96
+      },
+      {
+        "toolTip": "Minar Forest",
+        "linksTo": "WorldMap050",
+        "image": "/images/worldmaps/WorldMap-link-6.png",
+        "width": 262,
+        "height": 254,
+        "originX": 282,
+        "originY": 34
+      },
+      {
+        "toolTip": "Mureung",
+        "linksTo": "WorldMap060",
+        "image": "/images/worldmaps/WorldMap-link-7.png",
+        "width": 176,
+        "height": 406,
+        "originX": -132,
+        "originY": 222
+      },
+      {
+        "toolTip": "Nihal Desert",
+        "linksTo": "WorldMap070",
+        "image": "/images/worldmaps/WorldMap-link-8.png",
+        "width": 230,
+        "height": 175,
+        "originX": 52,
+        "originY": -60
+      },
+      {
+        "toolTip": "Temple of Time",
+        "linksTo": "WorldMap080",
+        "image": "/images/worldmaps/WorldMap-link-9.png",
+        "width": 134,
+        "height": 130,
+        "originX": 313,
+        "originY": -76
+      },
+      {
+        "toolTip": "Ereve",
+        "linksTo": "WorldMap090",
+        "image": "/images/worldmaps/WorldMap-link-10.png",
+        "width": 96,
+        "height": 86,
+        "originX": 168,
+        "originY": 179
+      }
+    ],
+    "maps": [
+      {
+        "title": "An island for the beginners. It's the home of all beginners stepping into the world of MapleStory for the very first time.",
+        "description": "Maple Island",
+        "spotX": -178,
+        "spotY": -169,
+        "type": 3,
+        "mapNumbers": [
+          0,
+          10000,
+          1000003,
+          1010000,
+          1010100,
+          1010200,
+          1010300,
+          1010400,
+          2000000,
+          2000001,
+          20000,
+          30000,
+          30001,
+          40000,
+          50000,
+          1000000,
+          1000001,
+          1000002
+        ],
+        "firstMapId": 0,
+        "dossierMapId": 20
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -230,
+        "spotY": -67,
+        "type": 3,
+        "mapNumbers": [
+          100000000,
+          100000001,
+          100000202,
+          100000203,
+          100010000,
+          100020000,
+          100030000,
+          104020000,
+          104030000,
+          104040000,
+          104040001,
+          104040002,
+          100000100,
+          106010000,
+          106010100,
+          100000101,
+          100000102,
+          100000103,
+          100000104,
+          100000105,
+          100000200,
+          100000201
+        ],
+        "firstMapId": 100000000,
+        "dossierMapId": 10001000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 85,
+        "spotY": -28,
+        "type": 3,
+        "mapNumbers": [
+          211000000,
+          211000001,
+          200081900,
+          200082000,
+          200082100,
+          200082200,
+          200082300,
+          211000200,
+          211010000,
+          211020000,
+          211030000,
+          211040000,
+          211000100,
+          211040100,
+          211040200,
+          211040300,
+          211040400,
+          211040500,
+          211040600,
+          211040700,
+          211040800,
+          211040900,
+          211041000,
+          211000100,
+          211041100,
+          211041200,
+          211041300,
+          211041400,
+          211041500,
+          211041600,
+          211041700,
+          211041800,
+          211041900,
+          211042000,
+          211000101,
+          211042100,
+          211042200,
+          211042300,
+          211042400,
+          211050000,
+          211000102,
+          200081500,
+          200081600,
+          200081700,
+          200081800
+        ],
+        "firstMapId": 211000000,
+        "dossierMapId": 20001000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -51,
+        "spotY": 7,
+        "type": 3,
+        "mapNumbers": [
+          220000000,
+          220000001,
+          220000300,
+          220000301,
+          220000302,
+          220000303,
+          220000304,
+          220000305,
+          220000306,
+          220000307,
+          220000400,
+          220000500,
+          220000002,
+          220010000,
+          220010100,
+          220010200,
+          220010300,
+          220010400,
+          220010500,
+          220010600,
+          220010700,
+          220010800,
+          220010900,
+          220000003,
+          220011000,
+          220020000,
+          220020100,
+          220020200,
+          220020300,
+          220020400,
+          220020500,
+          220020600,
+          220030000,
+          220030100,
+          220000004,
+          220030200,
+          220030300,
+          220030400,
+          220040000,
+          220040100,
+          220040200,
+          220040300,
+          220040400,
+          220050000,
+          220050100,
+          220000005,
+          220050200,
+          220050300,
+          220060000,
+          220060100,
+          220060200,
+          220060300,
+          220060400,
+          220070000,
+          220070100,
+          220070200,
+          220000006,
+          220070300,
+          220070400,
+          220080000,
+          220080001,
+          221022300,
+          221022400,
+          221022500,
+          221022600,
+          221022700,
+          221022800,
+          220000100,
+          221022900,
+          221023000,
+          221023100,
+          221023200,
+          221023300,
+          221023400,
+          221023500,
+          221023600,
+          221023700,
+          221023800,
+          220000110,
+          221023900,
+          221024000,
+          221024100,
+          221024200,
+          221024300,
+          221024400,
+          221024500,
+          222020200,
+          222020300,
+          220000111
+        ],
+        "firstMapId": 220000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -83,
+        "spotY": 41,
+        "type": 3,
+        "mapNumbers": [
+          221000000,
+          221000001,
+          221020400,
+          221020500,
+          221020600,
+          221020700,
+          221020800,
+          221020900,
+          221021000,
+          221021100,
+          221021200,
+          221021300,
+          221000100,
+          221021400,
+          221021500,
+          221021600,
+          221021700,
+          221021800,
+          221021900,
+          221022000,
+          221030000,
+          221030100,
+          221030200,
+          221000200,
+          221030300,
+          221030400,
+          221030500,
+          221030600,
+          221030600,
+          221040000,
+          221040100,
+          221040200,
+          221040300,
+          221040400,
+          221000300,
+          221000400,
+          221020000,
+          221020100,
+          221020200,
+          221020300
+        ],
+        "firstMapId": 221000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -17,
+        "spotY": 41,
+        "type": 3,
+        "mapNumbers": [
+          222000000,
+          222000001,
+          222010300,
+          222010400,
+          222020000,
+          222020100,
+          222010000,
+          222010001,
+          222010002,
+          222010100,
+          222010101,
+          222010102,
+          222010200,
+          222010201
+        ],
+        "firstMapId": 222000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -112,
+        "spotY": 169,
+        "type": 3,
+        "mapNumbers": [
+          240000000,
+          240000001,
+          240010000,
+          240010100,
+          240010200,
+          240010300,
+          240010400,
+          240010500,
+          240010600,
+          240010700,
+          240010800,
+          240010900,
+          240000002,
+          240011000,
+          240020000,
+          240020100,
+          240020101,
+          240020102,
+          240020200,
+          240020300,
+          240020400,
+          240020401,
+          240020402,
+          240000003,
+          240020500,
+          240030000,
+          240030100,
+          240030101,
+          240030102,
+          240030200,
+          240030300,
+          240040000,
+          240040100,
+          240040200,
+          240000004,
+          240040300,
+          240040400,
+          240040500,
+          240040510,
+          240040511,
+          240040520,
+          240040521,
+          240040600,
+          240040700,
+          240050000,
+          240000005,
+          240050100,
+          240050101,
+          240050102,
+          240050103,
+          240050104,
+          240050105,
+          240050200,
+          240050300,
+          240050310,
+          240050400,
+          240000006,
+          240050500,
+          240060000,
+          240060100,
+          240060200,
+          240070000,
+          240070010,
+          240070020,
+          240070030,
+          240070040,
+          240070050,
+          240000100,
+          240070060,
+          240070100,
+          240070101,
+          240070102,
+          240070200,
+          240070201,
+          240070202,
+          240070203,
+          240070300,
+          240070301,
+          240000110,
+          240070302,
+          240070303,
+          240070400,
+          240070401,
+          240070402,
+          240070403,
+          240070500,
+          240070501,
+          240070502,
+          240070503,
+          240000111,
+          240070600,
+          240070601,
+          240070602,
+          240070603
+        ],
+        "firstMapId": 240000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 239,
+        "spotY": 27,
+        "type": 3,
+        "mapNumbers": [
+          250000000,
+          250000001,
+          250010302,
+          250010303,
+          250010304,
+          250010400,
+          250010500,
+          250010501,
+          250010502,
+          250010503,
+          250010600,
+          250010700,
+          250000002,
+          250020000,
+          250020100,
+          250020200,
+          250020300,
+          250000003,
+          250000100,
+          250010000,
+          250010100,
+          250010200,
+          250010300,
+          250010301
+        ],
+        "firstMapId": 250000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 216,
+        "spotY": 125,
+        "type": 3,
+        "mapNumbers": [
+          251000000,
+          251010000,
+          251010100,
+          251010200,
+          251010300,
+          251010400,
+          251010401,
+          251010402,
+          251010403,
+          251010500
+        ],
+        "firstMapId": 251000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -5,
+        "spotY": 175,
+        "type": 3,
+        "mapNumbers": [
+          260000000,
+          260000100,
+          260000207,
+          260000300,
+          260000301,
+          260000302,
+          260000303,
+          260010000,
+          260010100,
+          260010200,
+          260010300,
+          260010400,
+          260000110,
+          260010500,
+          260010600,
+          260010700,
+          260020000,
+          260020100,
+          260020200,
+          260020300,
+          260020400,
+          926010000,
+          260000200,
+          260000201,
+          260000202,
+          260000203,
+          260000204,
+          260000205,
+          260000206
+        ],
+        "firstMapId": 260000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 97,
+        "spotY": 111,
+        "type": 3,
+        "mapNumbers": [
+          261000000,
+          260020500,
+          261000020,
+          261000021,
+          261010000,
+          261010001,
+          261010002,
+          261010003,
+          261010100,
+          261010101,
+          261010102,
+          261010103,
+          260020600,
+          261020000,
+          261020100,
+          261020200,
+          261020300,
+          261020400,
+          261020500,
+          261020600,
+          261020700,
+          260020610,
+          260020620,
+          260020700,
+          261000001,
+          261000002,
+          261000010,
+          261000011
+        ],
+        "firstMapId": 261000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -207,
+        "spotY": -52,
+        "type": 3,
+        "mapNumbers": [
+          120000000,
+          120010000,
+          120000300,
+          120000301,
+          120000100,
+          120000101,
+          120000102,
+          120000103,
+          120000104,
+          120000200,
+          120000201,
+          120000202
+        ],
+        "firstMapId": 120000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -204,
+        "spotY": -93,
+        "type": 3,
+        "mapNumbers": [
+          101000000,
+          101000001,
+          100040003,
+          100040004,
+          100040100,
+          100050000,
+          101010000,
+          101010100,
+          101010101,
+          101010102,
+          101010103,
+          101020000,
+          101000002,
+          101020001,
+          101020002,
+          101020003,
+          101020004,
+          101020005,
+          101020006,
+          101020007,
+          101020008,
+          101020009,
+          101020010,
+          101000003,
+          101000200,
+          101000300,
+          101000301,
+          100040000,
+          100040001,
+          100040002
+        ],
+        "firstMapId": 101000000,
+        "dossierMapId": 10002000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -268,
+        "spotY": 121,
+        "type": 3,
+        "mapNumbers": [
+          270000100,
+          270000000,
+          270010400,
+          270010410,
+          270010500,
+          270020000,
+          270020100,
+          270020110,
+          270020200,
+          270020210,
+          270020211,
+          270020300,
+          270010000,
+          270020310,
+          270020400,
+          270020410,
+          270020500,
+          270030000,
+          270030100,
+          270030110,
+          270030200,
+          270030210,
+          270030300,
+          270010100,
+          270030310,
+          270030400,
+          270030410,
+          270030411,
+          270030500,
+          270040000,
+          270050000,
+          270010110,
+          270010111,
+          270010200,
+          270010210,
+          270010300,
+          270010310
+        ],
+        "firstMapId": 270000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -123,
+        "spotY": -136,
+        "type": 3,
+        "mapNumbers": [
+          130000000,
+          130000100,
+          130010200,
+          130010210,
+          130010220,
+          130020000,
+          130030000,
+          130030005,
+          130030006,
+          130000200,
+          130000210,
+          130010000,
+          130010010,
+          130010020,
+          130010100,
+          130010110,
+          130010120
+        ],
+        "firstMapId": 130000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -266,
+        "spotY": 10,
+        "type": 3,
+        "mapNumbers": [
+          140000000,
+          140000001,
+          140020200,
+          140020300,
+          140030000,
+          140090100,
+          140090200,
+          140090300,
+          140090400,
+          140090500,
+          140010110,
+          140090000,
+          140000010,
+          140000011,
+          140000012,
+          140010000,
+          140010100,
+          140010200,
+          140020000,
+          140020100
+        ],
+        "firstMapId": 140000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -250,
+        "spotY": -124,
+        "type": 3,
+        "mapNumbers": [
+          102000000,
+          102000001,
+          101030105,
+          101030106,
+          101030107,
+          101030108,
+          101030109,
+          101030200,
+          101030300,
+          101030400,
+          101030401,
+          101030402,
+          102000002,
+          101030403,
+          101030404,
+          101030405,
+          101030406,
+          101040000,
+          102010000,
+          102020000,
+          102020100,
+          102020200,
+          102020300,
+          102000003,
+          102030000,
+          106000000,
+          106000100,
+          106000101,
+          106000110,
+          106000120,
+          106000130,
+          106000140,
+          106000200,
+          106000300,
+          101030000,
+          101030100,
+          101030101,
+          101030102,
+          101030103,
+          101030104
+        ],
+        "firstMapId": 102000000,
+        "dossierMapId": 10004000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -273,
+        "spotY": -99,
+        "type": 3,
+        "mapNumbers": [
+          103000000,
+          103000001,
+          103000103,
+          103000104,
+          103000105,
+          103000200,
+          103000201,
+          103000202,
+          102040000,
+          102050000,
+          103010000,
+          103020000,
+          103000002,
+          103020100,
+          103020200,
+          103030000,
+          103030100,
+          103030200,
+          107000000,
+          107000100,
+          107000200,
+          107000300,
+          107000400,
+          103000003,
+          103040000,
+          103040100,
+          103040101,
+          103040102,
+          103040103,
+          103040200,
+          103040201,
+          103040202,
+          103040203,
+          103040300,
+          103000004,
+          103040301,
+          103040302,
+          103040303,
+          103040400,
+          103000005,
+          103000006,
+          103000100,
+          103000101,
+          103000102
+        ],
+        "firstMapId": 103000000,
+        "dossierMapId": 10003000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -271,
+        "spotY": -64,
+        "type": 3,
+        "mapNumbers": [
+          104000000,
+          104000001,
+          104000002,
+          104000003,
+          104000100,
+          104000200,
+          104000300,
+          104000400,
+          104010000,
+          104000004
+        ],
+        "firstMapId": 104000000,
+        "dossierMapId": 10000000
+      },
+      {
+        "title": null,
+        "description": "Victoria Island Center Dungeon",
+        "spotX": -240,
+        "spotY": -95,
+        "type": 3,
+        "mapNumbers": [
+          105040300,
+          105040400,
+          105040303,
+          105040304,
+          105040305,
+          105050000,
+          105050100,
+          105050200,
+          105050300,
+          105050400,
+          105060000,
+          105060100,
+          105040401,
+          105070000,
+          105070001,
+          105070002,
+          105070100,
+          105070200,
+          105070300,
+          105070400,
+          105080000,
+          105090000,
+          105090100,
+          105040402,
+          105090200,
+          105090300,
+          105090301,
+          105090310,
+          105090311,
+          105090312,
+          105090400,
+          105090500,
+          105090600,
+          105090700,
+          105030000,
+          105090800,
+          105090900,
+          107000500,
+          105040000,
+          105040100,
+          105040200,
+          105040301,
+          105040302
+        ],
+        "firstMapId": 105040300,
+        "dossierMapId": 10005000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -185,
+        "spotY": -71,
+        "type": 3,
+        "mapNumbers": [
+          110000000,
+          110010000,
+          110020000,
+          110030000,
+          110040000
+        ],
+        "firstMapId": 110000000,
+        "dossierMapId": 10007000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -125,
+        "spotY": -61,
+        "type": 3,
+        "mapNumbers": [
+          230000000,
+          230000001,
+          230020000,
+          230020100,
+          230020200,
+          230020201,
+          230020300,
+          230030000,
+          230030100,
+          230030101,
+          230030200,
+          230040000,
+          230000002,
+          230040100,
+          230040200,
+          230040300,
+          230040400,
+          230040410,
+          230040420,
+          230000003,
+          230010000,
+          230010100,
+          230010200,
+          230010201,
+          230010300,
+          230010400
+        ],
+        "firstMapId": 230000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -16,
+        "spotY": -86,
+        "type": 3,
+        "mapNumbers": [
+          200000000,
+          200000001,
+          200000130,
+          200000131,
+          200000132,
+          200000140,
+          200000141,
+          200000150,
+          200000151,
+          200000152,
+          200000200,
+          200000201,
+          200000002,
+          200000202,
+          200000203,
+          200000300,
+          200000301,
+          200010000,
+          200010100,
+          200010110,
+          200010111,
+          200010120,
+          200010121,
+          200000100,
+          200010130,
+          200010131,
+          200010200,
+          200010300,
+          200010301,
+          200010302,
+          200020000,
+          200030000,
+          200040000,
+          200050000,
+          200000110,
+          200060000,
+          200070000,
+          200080000,
+          200080100,
+          200080200,
+          200080300,
+          200080400,
+          200080500,
+          200080600,
+          200080700,
+          200000111,
+          200080800,
+          200080900,
+          200081000,
+          200081100,
+          200081200,
+          200081300,
+          200081400,
+          200000112,
+          200000120,
+          200000121,
+          200000122
+        ],
+        "firstMapId": 200000000,
+        "dossierMapId": 20000000
+      }
+    ]
+  },
+  "WorldMap050": {
+    "name": "WorldMap050",
+    "image": "/images/worldmaps/WorldMap050.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [
+      {
+        "toolTip": "Neo City",
+        "linksTo": "WorldMap051",
+        "image": "/images/worldmaps/WorldMap050-link-0.png",
+        "width": 82,
+        "height": 107,
+        "originX": -237,
+        "originY": 221
+      }
+    ],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": 157,
+        "spotY": -160,
+        "type": 0,
+        "mapNumbers": [
+          240000000,
+          240000001,
+          240000002,
+          240000003,
+          240000004,
+          240000005,
+          240000006,
+          240000100,
+          240000110,
+          240000111
+        ],
+        "firstMapId": 240000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 49,
+        "spotY": -135,
+        "type": 1,
+        "mapNumbers": [
+          240010000
+        ],
+        "firstMapId": 240010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 265,
+        "spotY": -69,
+        "type": 1,
+        "mapNumbers": [
+          240010900
+        ],
+        "firstMapId": 240010900,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 250,
+        "spotY": -127,
+        "type": 1,
+        "mapNumbers": [
+          240011000
+        ],
+        "firstMapId": 240011000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 92,
+        "spotY": -25,
+        "type": 1,
+        "mapNumbers": [
+          240020000
+        ],
+        "firstMapId": 240020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 104,
+        "spotY": 76,
+        "type": 1,
+        "mapNumbers": [
+          240020100
+        ],
+        "firstMapId": 240020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 133,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          240020101,
+          240020102
+        ],
+        "firstMapId": 240020101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 186,
+        "spotY": 103,
+        "type": 1,
+        "mapNumbers": [
+          240020200
+        ],
+        "firstMapId": 240020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 214,
+        "spotY": 28,
+        "type": 1,
+        "mapNumbers": [
+          240020300
+        ],
+        "firstMapId": 240020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 202,
+        "spotY": -52,
+        "type": 1,
+        "mapNumbers": [
+          240020400
+        ],
+        "firstMapId": 240020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 167,
+        "spotY": -25,
+        "type": 1,
+        "mapNumbers": [
+          240020401,
+          240020402
+        ],
+        "firstMapId": 240020401,
+        "dossierMapId": null
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cRound Table of Kentaurus#.",
+        "description": "Battlefield of Fire and Water",
+        "spotX": 134,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          240020500
+        ],
+        "firstMapId": 240020500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 32,
+        "spotY": -62,
+        "type": 1,
+        "mapNumbers": [
+          240010100
+        ],
+        "firstMapId": 240010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -8,
+        "spotY": 142,
+        "type": 1,
+        "mapNumbers": [
+          240030000
+        ],
+        "firstMapId": 240030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -58,
+        "spotY": 167,
+        "type": 1,
+        "mapNumbers": [
+          240030100
+        ],
+        "firstMapId": 240030100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -83,
+        "spotY": 132,
+        "type": 1,
+        "mapNumbers": [
+          240030101
+        ],
+        "firstMapId": 240030101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -6,
+        "spotY": 182,
+        "type": 1,
+        "mapNumbers": [
+          240030102
+        ],
+        "firstMapId": 240030102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -88,
+        "spotY": 169,
+        "type": 1,
+        "mapNumbers": [
+          240030200
+        ],
+        "firstMapId": 240030200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -117,
+        "spotY": 161,
+        "type": 1,
+        "mapNumbers": [
+          240030300
+        ],
+        "firstMapId": 240030300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -142,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          240040000
+        ],
+        "firstMapId": 240040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -174,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          240040100
+        ],
+        "firstMapId": 240040100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -219,
+        "spotY": 92,
+        "type": 1,
+        "mapNumbers": [
+          240040200,
+          240040201
+        ],
+        "firstMapId": 240040200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -223,
+        "spotY": 188,
+        "type": 1,
+        "mapNumbers": [
+          240040300,
+          240040301
+        ],
+        "firstMapId": 240040300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 44,
+        "spotY": 3,
+        "type": 1,
+        "mapNumbers": [
+          240010200
+        ],
+        "firstMapId": 240010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -263,
+        "spotY": 138,
+        "type": 1,
+        "mapNumbers": [
+          240040400
+        ],
+        "firstMapId": 240040400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -255,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          240040500
+        ],
+        "firstMapId": 240040500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -228,
+        "spotY": -41,
+        "type": 1,
+        "mapNumbers": [
+          240040510
+        ],
+        "firstMapId": 240040510,
+        "dossierMapId": null
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cRevivifying Memory#.",
+        "description": "The Dragon Nest Left Behind",
+        "spotX": -148,
+        "spotY": -68,
+        "type": 1,
+        "mapNumbers": [
+          240040511
+        ],
+        "firstMapId": 240040511,
+        "dossierMapId": null
+      },
+      {
+        "title": "A dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cNewtie Conservation Area#.",
+        "description": "Destroyed Dragon Nest",
+        "spotX": -183,
+        "spotY": 49,
+        "type": 1,
+        "mapNumbers": [
+          240040520
+        ],
+        "firstMapId": 240040520,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -96,
+        "spotY": 36,
+        "type": 1,
+        "mapNumbers": [
+          240040521
+        ],
+        "firstMapId": 240040521,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -62,
+        "spotY": -18,
+        "type": 1,
+        "mapNumbers": [
+          240040600
+        ],
+        "firstMapId": 240040600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -44,
+        "spotY": -44,
+        "type": 1,
+        "mapNumbers": [
+          240040700
+        ],
+        "firstMapId": 240040700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Cave of Life",
+        "spotX": -53,
+        "spotY": -69,
+        "type": 2,
+        "mapNumbers": [
+          240050000,
+          240050100,
+          240050400,
+          240050500,
+          240060000,
+          240060100,
+          240060200,
+          240050101,
+          240050102,
+          240050103,
+          240050104,
+          240050105,
+          240050200,
+          240050300,
+          240050310
+        ],
+        "firstMapId": 240050000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Tera Forest (Neo City)",
+        "spotX": 275,
+        "spotY": -141,
+        "type": 2,
+        "mapNumbers": [
+          240070000,
+          240070010,
+          240070200,
+          240070201,
+          240070202,
+          240070203,
+          240070300,
+          240070301,
+          240070302,
+          240070303,
+          240070400,
+          240070401,
+          240070020,
+          240070402,
+          240070403,
+          240070500,
+          240070501,
+          240070502,
+          240070503,
+          240070600,
+          240070601,
+          240070602,
+          240070603,
+          240070030,
+          240070040,
+          240070050,
+          240070060,
+          240070100,
+          240070101,
+          240070102
+        ],
+        "firstMapId": 240070000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 48,
+        "spotY": 62,
+        "type": 1,
+        "mapNumbers": [
+          240010300
+        ],
+        "firstMapId": 240010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 37,
+        "spotY": 119,
+        "type": 1,
+        "mapNumbers": [
+          240010400
+        ],
+        "firstMapId": 240010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 108,
+        "spotY": 159,
+        "type": 1,
+        "mapNumbers": [
+          240010500
+        ],
+        "firstMapId": 240010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 199,
+        "spotY": 163,
+        "type": 1,
+        "mapNumbers": [
+          240010600
+        ],
+        "firstMapId": 240010600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 259,
+        "spotY": 108,
+        "type": 1,
+        "mapNumbers": [
+          240010700
+        ],
+        "firstMapId": 240010700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 257,
+        "spotY": -2,
+        "type": 1,
+        "mapNumbers": [
+          240010800
+        ],
+        "firstMapId": 240010800,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap000": {
+    "name": "WorldMap000",
+    "image": "/images/worldmaps/WorldMap000.png",
+    "width": 640,
+    "height": 452,
+    "originX": 320,
+    "originY": 226,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -180,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          10000
+        ],
+        "firstMapId": 10000,
+        "dossierMapId": 20
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -131,
+        "spotY": -89,
+        "type": 1,
+        "mapNumbers": [
+          20000
+        ],
+        "firstMapId": 20000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -117,
+        "spotY": -52,
+        "type": 1,
+        "mapNumbers": [
+          30000,
+          30001
+        ],
+        "firstMapId": 30000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -108,
+        "spotY": -16,
+        "type": 1,
+        "mapNumbers": [
+          40000
+        ],
+        "firstMapId": 40000,
+        "dossierMapId": 1001
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -74,
+        "spotY": -5,
+        "type": 1,
+        "mapNumbers": [
+          50000
+        ],
+        "firstMapId": 50000,
+        "dossierMapId": 1002
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -19,
+        "spotY": -6,
+        "type": 0,
+        "mapNumbers": [
+          1000000,
+          1000001,
+          1000002,
+          1000003
+        ],
+        "firstMapId": 1000000,
+        "dossierMapId": 1010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 7,
+        "spotY": 15,
+        "type": 1,
+        "mapNumbers": [
+          1010000,
+          1010100,
+          1010200,
+          1010300,
+          1010400
+        ],
+        "firstMapId": 1010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 50,
+        "spotY": 37,
+        "type": 1,
+        "mapNumbers": [
+          1020000
+        ],
+        "firstMapId": 1020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 76,
+        "spotY": 74,
+        "type": 0,
+        "mapNumbers": [
+          2000000,
+          2000001
+        ],
+        "firstMapId": 2000000,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap060": {
+    "name": "WorldMap060",
+    "image": "/images/worldmaps/WorldMap060.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": 138,
+        "spotY": -101,
+        "type": 0,
+        "mapNumbers": [
+          250000000,
+          250000001,
+          250000002,
+          250000003
+        ],
+        "firstMapId": 250000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 60,
+        "spotY": -74,
+        "type": 1,
+        "mapNumbers": [
+          250010000
+        ],
+        "firstMapId": 250010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 209,
+        "spotY": -55,
+        "type": 1,
+        "mapNumbers": [
+          250020100
+        ],
+        "firstMapId": 250020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 207,
+        "spotY": -21,
+        "type": 1,
+        "mapNumbers": [
+          250020200
+        ],
+        "firstMapId": 250020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 233,
+        "spotY": 4,
+        "type": 1,
+        "mapNumbers": [
+          250020300
+        ],
+        "firstMapId": 250020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 178,
+        "spotY": 125,
+        "type": 0,
+        "mapNumbers": [
+          251000000
+        ],
+        "firstMapId": 251000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 139,
+        "spotY": 131,
+        "type": 1,
+        "mapNumbers": [
+          251010000
+        ],
+        "firstMapId": 251010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 102,
+        "spotY": 111,
+        "type": 1,
+        "mapNumbers": [
+          251010100
+        ],
+        "firstMapId": 251010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 19,
+        "spotY": 136,
+        "type": 1,
+        "mapNumbers": [
+          251010200
+        ],
+        "firstMapId": 251010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -46,
+        "spotY": 147,
+        "type": 1,
+        "mapNumbers": [
+          251010300
+        ],
+        "firstMapId": 251010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -82,
+        "spotY": 116,
+        "type": 1,
+        "mapNumbers": [
+          251010400
+        ],
+        "firstMapId": 251010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -131,
+        "spotY": 108,
+        "type": 1,
+        "mapNumbers": [
+          251010500
+        ],
+        "firstMapId": 251010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 27,
+        "spotY": -53,
+        "type": 1,
+        "mapNumbers": [
+          250010100
+        ],
+        "firstMapId": 250010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -147,
+        "spotY": 179,
+        "type": 1,
+        "mapNumbers": [
+          251010401,
+          251010404
+        ],
+        "firstMapId": 251010401,
+        "dossierMapId": null
+      },
+      {
+        "title": "A mini dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cPillage of Treasure Island#.",
+        "description": "Red-Nose Pirate Den 2",
+        "spotX": -177,
+        "spotY": 171,
+        "type": 1,
+        "mapNumbers": [
+          251010402
+        ],
+        "firstMapId": 251010402,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -202,
+        "spotY": 155,
+        "type": 1,
+        "mapNumbers": [
+          251010403
+        ],
+        "firstMapId": 251010403,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -57,
+        "spotY": -87,
+        "type": 1,
+        "mapNumbers": [
+          250010301
+        ],
+        "firstMapId": 250010301,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -73,
+        "spotY": -97,
+        "type": 1,
+        "mapNumbers": [
+          250010302
+        ],
+        "firstMapId": 250010302,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -91,
+        "spotY": -104,
+        "type": 1,
+        "mapNumbers": [
+          250010303
+        ],
+        "firstMapId": 250010303,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -125,
+        "spotY": -9,
+        "type": 1,
+        "mapNumbers": [
+          250010501
+        ],
+        "firstMapId": 250010501,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -98,
+        "spotY": 10,
+        "type": 1,
+        "mapNumbers": [
+          250010502
+        ],
+        "firstMapId": 250010502,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -107,
+        "spotY": 40,
+        "type": 1,
+        "mapNumbers": [
+          250010503
+        ],
+        "firstMapId": 250010503,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 161,
+        "spotY": -101,
+        "type": 3,
+        "mapNumbers": [
+          250000100
+        ],
+        "firstMapId": 250000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -13,
+        "spotY": -54,
+        "type": 1,
+        "mapNumbers": [
+          250010200
+        ],
+        "firstMapId": 250010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 212,
+        "spotY": 87,
+        "type": 3,
+        "mapNumbers": [
+          251000100
+        ],
+        "firstMapId": 251000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -102,
+        "spotY": -119,
+        "type": 1,
+        "mapNumbers": [
+          250010304
+        ],
+        "firstMapId": 250010304,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -57,
+        "spotY": -68,
+        "type": 1,
+        "mapNumbers": [
+          250010300
+        ],
+        "firstMapId": 250010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -104,
+        "spotY": -35,
+        "type": 1,
+        "mapNumbers": [
+          250010400
+        ],
+        "firstMapId": 250010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -150,
+        "spotY": -25,
+        "type": 1,
+        "mapNumbers": [
+          250010500
+        ],
+        "firstMapId": 250010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -194,
+        "spotY": 9,
+        "type": 1,
+        "mapNumbers": [
+          250010600
+        ],
+        "firstMapId": 250010600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -194,
+        "spotY": 54,
+        "type": 1,
+        "mapNumbers": [
+          250010700
+        ],
+        "firstMapId": 250010700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 210,
+        "spotY": -87,
+        "type": 1,
+        "mapNumbers": [
+          250020000
+        ],
+        "firstMapId": 250020000,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap013": {
+    "name": "WorldMap013",
+    "image": "/images/worldmaps/WorldMap013.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 236,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": 5,
+        "spotY": 183,
+        "type": 0,
+        "mapNumbers": [
+          103040000
+        ],
+        "firstMapId": 103040000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -103,
+        "spotY": 62,
+        "type": 1,
+        "mapNumbers": [
+          103040100
+        ],
+        "firstMapId": 103040100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 1,
+        "spotY": -103,
+        "type": 1,
+        "mapNumbers": [
+          103040301
+        ],
+        "firstMapId": 103040301,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 131,
+        "spotY": -129,
+        "type": 1,
+        "mapNumbers": [
+          103040302
+        ],
+        "firstMapId": 103040302,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 0,
+        "spotY": -155,
+        "type": 1,
+        "mapNumbers": [
+          103040303
+        ],
+        "firstMapId": 103040303,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -4,
+        "spotY": -200,
+        "type": 1,
+        "mapNumbers": [
+          103040400
+        ],
+        "firstMapId": 103040400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 3,
+        "spotY": 89,
+        "type": 1,
+        "mapNumbers": [
+          103040101
+        ],
+        "firstMapId": 103040101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 103,
+        "spotY": 62,
+        "type": 1,
+        "mapNumbers": [
+          103040102
+        ],
+        "firstMapId": 103040102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 5,
+        "spotY": 36,
+        "type": 1,
+        "mapNumbers": [
+          103040103
+        ],
+        "firstMapId": 103040103,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -82,
+        "spotY": -30,
+        "type": 1,
+        "mapNumbers": [
+          103040200
+        ],
+        "firstMapId": 103040200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 1,
+        "spotY": -6,
+        "type": 1,
+        "mapNumbers": [
+          103040201
+        ],
+        "firstMapId": 103040201,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 81,
+        "spotY": -31,
+        "type": 1,
+        "mapNumbers": [
+          103040202
+        ],
+        "firstMapId": 103040202,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 0,
+        "spotY": -62,
+        "type": 1,
+        "mapNumbers": [
+          103040203
+        ],
+        "firstMapId": 103040203,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -124,
+        "spotY": -128,
+        "type": 1,
+        "mapNumbers": [
+          103040300
+        ],
+        "firstMapId": 103040300,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap021": {
+    "name": "WorldMap021",
+    "image": "/images/worldmaps/WorldMap021.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -221,
+        "spotY": -124,
+        "type": 1,
+        "mapNumbers": [
+          211040300
+        ],
+        "firstMapId": 211040300,
+        "dossierMapId": 20001042
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -196,
+        "spotY": -103,
+        "type": 1,
+        "mapNumbers": [
+          211040400
+        ],
+        "firstMapId": 211040400,
+        "dossierMapId": 20001043
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -80,
+        "spotY": 196,
+        "type": 1,
+        "mapNumbers": [
+          211041300
+        ],
+        "firstMapId": 211041300,
+        "dossierMapId": 20001062
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -20,
+        "spotY": 181,
+        "type": 1,
+        "mapNumbers": [
+          211041400
+        ],
+        "firstMapId": 211041400,
+        "dossierMapId": 20001063
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 84,
+        "spotY": 128,
+        "type": 1,
+        "mapNumbers": [
+          211041500
+        ],
+        "firstMapId": 211041500,
+        "dossierMapId": 20001064
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 116,
+        "spotY": 127,
+        "type": 1,
+        "mapNumbers": [
+          211041600
+        ],
+        "firstMapId": 211041600,
+        "dossierMapId": 20001065
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 142,
+        "spotY": 102,
+        "type": 1,
+        "mapNumbers": [
+          211041700
+        ],
+        "firstMapId": 211041700,
+        "dossierMapId": 20001066
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 160,
+        "spotY": 84,
+        "type": 1,
+        "mapNumbers": [
+          211041800
+        ],
+        "firstMapId": 211041800,
+        "dossierMapId": 20001067
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 177,
+        "spotY": 50,
+        "type": 1,
+        "mapNumbers": [
+          211041900
+        ],
+        "firstMapId": 211041900,
+        "dossierMapId": 20001070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 159,
+        "spotY": 30,
+        "type": 1,
+        "mapNumbers": [
+          211042000
+        ],
+        "firstMapId": 211042000,
+        "dossierMapId": 20001071
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 169,
+        "spotY": 3,
+        "type": 1,
+        "mapNumbers": [
+          211042100
+        ],
+        "firstMapId": 211042100,
+        "dossierMapId": 20001072
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 186,
+        "spotY": -19,
+        "type": 1,
+        "mapNumbers": [
+          211042200
+        ],
+        "firstMapId": 211042200,
+        "dossierMapId": 20001074
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -170,
+        "spotY": -83,
+        "type": 1,
+        "mapNumbers": [
+          211040500
+        ],
+        "firstMapId": 211040500,
+        "dossierMapId": 20001050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 164,
+        "spotY": -34,
+        "type": 1,
+        "mapNumbers": [
+          211042300
+        ],
+        "firstMapId": 211042300,
+        "dossierMapId": 20001075
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 175,
+        "spotY": -66,
+        "type": 1,
+        "mapNumbers": [
+          211042400
+        ],
+        "firstMapId": 211042400,
+        "dossierMapId": null
+      },
+      {
+        "title": "A powerful organism bestowed in darkness is waiting for you.",
+        "description": null,
+        "spotX": 187,
+        "spotY": -109,
+        "type": 1,
+        "mapNumbers": [
+          280030000
+        ],
+        "firstMapId": 280030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -138,
+        "spotY": -61,
+        "type": 1,
+        "mapNumbers": [
+          211040600
+        ],
+        "firstMapId": 211040600,
+        "dossierMapId": 20001051
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -138,
+        "spotY": -29,
+        "type": 1,
+        "mapNumbers": [
+          211040700
+        ],
+        "firstMapId": 211040700,
+        "dossierMapId": 20001052
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -193,
+        "spotY": 11,
+        "type": 1,
+        "mapNumbers": [
+          211040800
+        ],
+        "firstMapId": 211040800,
+        "dossierMapId": 20001053
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -187,
+        "spotY": 60,
+        "type": 1,
+        "mapNumbers": [
+          211040900
+        ],
+        "firstMapId": 211040900,
+        "dossierMapId": 20001054
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -161,
+        "spotY": 95,
+        "type": 1,
+        "mapNumbers": [
+          211041000
+        ],
+        "firstMapId": 211041000,
+        "dossierMapId": 20001055
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -170,
+        "spotY": 143,
+        "type": 1,
+        "mapNumbers": [
+          211041100
+        ],
+        "firstMapId": 211041100,
+        "dossierMapId": 20001060
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -121,
+        "spotY": 165,
+        "type": 1,
+        "mapNumbers": [
+          211041200
+        ],
+        "firstMapId": 211041200,
+        "dossierMapId": 20001061
+      }
+    ]
+  },
+  "WorldMap140": {
+    "name": "WorldMap140",
+    "image": "/images/worldmaps/WorldMap140.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -118,
+        "spotY": 70,
+        "type": 0,
+        "mapNumbers": [
+          680000000,
+          680000001,
+          680000401,
+          680000002,
+          680000003,
+          680000100,
+          680000110,
+          680000200,
+          680000210,
+          680000300,
+          680000400
+        ],
+        "firstMapId": 680000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -45,
+        "spotY": 79,
+        "type": 1,
+        "mapNumbers": [
+          680010000
+        ],
+        "firstMapId": 680010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 8,
+        "spotY": 34,
+        "type": 1,
+        "mapNumbers": [
+          680010100
+        ],
+        "firstMapId": 680010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 24,
+        "spotY": -25,
+        "type": 1,
+        "mapNumbers": [
+          670000100
+        ],
+        "firstMapId": 670000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 49,
+        "spotY": -87,
+        "type": 1,
+        "mapNumbers": [
+          670000200
+        ],
+        "firstMapId": 670000200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 107,
+        "spotY": -121,
+        "type": 1,
+        "mapNumbers": [
+          670010000
+        ],
+        "firstMapId": 670010000,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap100": {
+    "name": "WorldMap100",
+    "image": "/images/worldmaps/WorldMap100.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -210,
+        "spotY": 87,
+        "type": 0,
+        "mapNumbers": [
+          140000000,
+          140000001,
+          140000010,
+          140000011,
+          140000012
+        ],
+        "firstMapId": 140000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -168,
+        "spotY": -8,
+        "type": 1,
+        "mapNumbers": [
+          140010000
+        ],
+        "firstMapId": 140010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -115,
+        "spotY": -64,
+        "type": 1,
+        "mapNumbers": [
+          140010100,
+          140010110
+        ],
+        "firstMapId": 140010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -64,
+        "spotY": -89,
+        "type": 1,
+        "mapNumbers": [
+          140010200
+        ],
+        "firstMapId": 140010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -26,
+        "spotY": -111,
+        "type": 1,
+        "mapNumbers": [
+          140030000
+        ],
+        "firstMapId": 140030000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -126,
+        "spotY": 67,
+        "type": 1,
+        "mapNumbers": [
+          140020000
+        ],
+        "firstMapId": 140020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -65,
+        "spotY": 101,
+        "type": 1,
+        "mapNumbers": [
+          140020100,
+          140020110
+        ],
+        "firstMapId": 140020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 6,
+        "spotY": 116,
+        "type": 1,
+        "mapNumbers": [
+          140020200
+        ],
+        "firstMapId": 140020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 54,
+        "spotY": 80,
+        "type": 1,
+        "mapNumbers": [
+          140020300
+        ],
+        "firstMapId": 140020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": "Cold Forest",
+        "spotX": -102,
+        "spotY": -30,
+        "type": 1,
+        "mapNumbers": [
+          140090000,
+          140090100,
+          140090200,
+          140090300,
+          140090400,
+          140090500
+        ],
+        "firstMapId": 140090000,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap020": {
+    "name": "WorldMap020",
+    "image": "/images/worldmaps/WorldMap020.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [
+      {
+        "toolTip": "Dead Mine",
+        "linksTo": "WorldMap021",
+        "image": "/images/worldmaps/WorldMap020-link-0.png",
+        "width": 129,
+        "height": 104,
+        "originX": -182,
+        "originY": -15
+      }
+    ],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -193,
+        "spotY": -141,
+        "type": 0,
+        "mapNumbers": [
+          200000000,
+          200000001,
+          200000002
+        ],
+        "firstMapId": 200000000,
+        "dossierMapId": 20000000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -83,
+        "spotY": -138,
+        "type": 1,
+        "mapNumbers": [
+          200010000
+        ],
+        "firstMapId": 200010000,
+        "dossierMapId": 20000050
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 233,
+        "spotY": -128,
+        "type": 1,
+        "mapNumbers": [
+          200010300
+        ],
+        "firstMapId": 200010300,
+        "dossierMapId": 20000055
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 256,
+        "spotY": -171,
+        "type": 1,
+        "mapNumbers": [
+          200010301
+        ],
+        "firstMapId": 200010301,
+        "dossierMapId": 20000056
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 252,
+        "spotY": -80,
+        "type": 1,
+        "mapNumbers": [
+          200010302
+        ],
+        "firstMapId": 200010302,
+        "dossierMapId": 20000057
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -62,
+        "spotY": -84,
+        "type": 1,
+        "mapNumbers": [
+          200020000
+        ],
+        "firstMapId": 200020000,
+        "dossierMapId": 20000080
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -51,
+        "spotY": -38,
+        "type": 1,
+        "mapNumbers": [
+          200030000
+        ],
+        "firstMapId": 200030000,
+        "dossierMapId": 20000081
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 0,
+        "spotY": -12,
+        "type": 1,
+        "mapNumbers": [
+          200040000
+        ],
+        "firstMapId": 200040000,
+        "dossierMapId": 20000082
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 58,
+        "spotY": -8,
+        "type": 1,
+        "mapNumbers": [
+          200050000
+        ],
+        "firstMapId": 200050000,
+        "dossierMapId": 20000084
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 116,
+        "spotY": -7,
+        "type": 1,
+        "mapNumbers": [
+          200060000
+        ],
+        "firstMapId": 200060000,
+        "dossierMapId": 20000086
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 164,
+        "spotY": -16,
+        "type": 1,
+        "mapNumbers": [
+          200070000
+        ],
+        "firstMapId": 200070000,
+        "dossierMapId": 20000087
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 209,
+        "spotY": -34,
+        "type": 1,
+        "mapNumbers": [
+          200080000
+        ],
+        "firstMapId": 200080000,
+        "dossierMapId": 20000088
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 1,
+        "spotY": -126,
+        "type": 1,
+        "mapNumbers": [
+          200010100
+        ],
+        "firstMapId": 200010100,
+        "dossierMapId": 20000051
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -187,
+        "spotY": -74,
+        "type": 1,
+        "mapNumbers": [
+          200080100,
+          200080101
+        ],
+        "firstMapId": 200080100,
+        "dossierMapId": 20000090
+      },
+      {
+        "title": null,
+        "description": "Orbis Tower 8th Floor - 20th Floor",
+        "spotX": -187,
+        "spotY": 0,
+        "type": 1,
+        "mapNumbers": [
+          200080200,
+          200080300,
+          200081200,
+          200081300,
+          200081400,
+          200080400,
+          200080500,
+          200080600,
+          200080700,
+          200080800,
+          200080900,
+          200081000,
+          200081100
+        ],
+        "firstMapId": 200080200,
+        "dossierMapId": 20000096
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -188,
+        "spotY": 126,
+        "type": 1,
+        "mapNumbers": [
+          200082200
+        ],
+        "firstMapId": 200082200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -188,
+        "spotY": 159,
+        "type": 1,
+        "mapNumbers": [
+          200082300,
+          200082301
+        ],
+        "firstMapId": 200082300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -157,
+        "spotY": 99,
+        "type": 1,
+        "mapNumbers": [
+          211000200
+        ],
+        "firstMapId": 211000200,
+        "dossierMapId": 20001020
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -90,
+        "spotY": 120,
+        "type": 0,
+        "mapNumbers": [
+          211000000,
+          211000001
+        ],
+        "firstMapId": 211000000,
+        "dossierMapId": 20001000
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -35,
+        "spotY": 151,
+        "type": 1,
+        "mapNumbers": [
+          211010000
+        ],
+        "firstMapId": 211010000,
+        "dossierMapId": 20001030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 3,
+        "spotY": 180,
+        "type": 1,
+        "mapNumbers": [
+          211020000
+        ],
+        "firstMapId": 211020000,
+        "dossierMapId": 20001031
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 62,
+        "spotY": 173,
+        "type": 1,
+        "mapNumbers": [
+          211030000
+        ],
+        "firstMapId": 211030000,
+        "dossierMapId": 20001032
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 60,
+        "spotY": 119,
+        "type": 1,
+        "mapNumbers": [
+          211040000
+        ],
+        "firstMapId": 211040000,
+        "dossierMapId": 20001033
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 54,
+        "spotY": -170,
+        "type": 1,
+        "mapNumbers": [
+          200010110
+        ],
+        "firstMapId": 200010110,
+        "dossierMapId": 20000052
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 32,
+        "spotY": 115,
+        "type": 1,
+        "mapNumbers": [
+          211050000
+        ],
+        "firstMapId": 211050000,
+        "dossierMapId": 20001035
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 122,
+        "spotY": 107,
+        "type": 1,
+        "mapNumbers": [
+          211040100
+        ],
+        "firstMapId": 211040100,
+        "dossierMapId": 20001040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 186,
+        "spotY": 112,
+        "type": 1,
+        "mapNumbers": [
+          211040200
+        ],
+        "firstMapId": 211040200,
+        "dossierMapId": 20001041
+      },
+      {
+        "title": null,
+        "description": "El Nath Dungeon",
+        "spotX": 245,
+        "spotY": 95,
+        "type": 2,
+        "mapNumbers": [
+          211040300,
+          211040400,
+          211041200,
+          211041300,
+          211041400,
+          211041500,
+          211041600,
+          211041700,
+          211041800,
+          211041900,
+          211042000,
+          211042100,
+          211040401,
+          211042200,
+          211042300,
+          211042400,
+          211040500,
+          211040600,
+          211040700,
+          211040800,
+          211040900,
+          211041000,
+          211041100
+        ],
+        "firstMapId": 211040300,
+        "dossierMapId": 20001042
+      },
+      {
+        "title": null,
+        "description": "Orbis Tower 1st Floor - 7nd Floor",
+        "spotX": -187,
+        "spotY": 61,
+        "type": 1,
+        "mapNumbers": [
+          200081500,
+          200081600,
+          200081700,
+          200081800,
+          200081900,
+          200082000,
+          200082100
+        ],
+        "firstMapId": 200081500,
+        "dossierMapId": 20000100
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -148,
+        "spotY": -177,
+        "type": 3,
+        "mapNumbers": [
+          200000100,
+          200000110,
+          200000140,
+          200000141,
+          200000150,
+          200000151,
+          200000152,
+          200000111,
+          200000112,
+          200000120,
+          200000121,
+          200000122,
+          200000130,
+          200000131,
+          200000132
+        ],
+        "firstMapId": 200000100,
+        "dossierMapId": 20000011
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -214,
+        "spotY": -134,
+        "type": 3,
+        "mapNumbers": [
+          200000200,
+          200000201,
+          200000202,
+          200000203
+        ],
+        "firstMapId": 200000200,
+        "dossierMapId": 20000030
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -257,
+        "spotY": -148,
+        "type": 3,
+        "mapNumbers": [
+          200000300,
+          200000301
+        ],
+        "firstMapId": 200000300,
+        "dossierMapId": 20000040
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -65,
+        "spotY": 109,
+        "type": 3,
+        "mapNumbers": [
+          211000100,
+          211000101,
+          211000102
+        ],
+        "firstMapId": 211000100,
+        "dossierMapId": 20001010
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 115,
+        "spotY": -171,
+        "type": 1,
+        "mapNumbers": [
+          200010111
+        ],
+        "firstMapId": 200010111,
+        "dossierMapId": 20000053
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 64,
+        "spotY": -125,
+        "type": 1,
+        "mapNumbers": [
+          200010120
+        ],
+        "firstMapId": 200010120,
+        "dossierMapId": 20000060
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 105,
+        "spotY": -125,
+        "type": 1,
+        "mapNumbers": [
+          200010121
+        ],
+        "firstMapId": 200010121,
+        "dossierMapId": 20000061
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 50,
+        "spotY": -84,
+        "type": 1,
+        "mapNumbers": [
+          200010130
+        ],
+        "firstMapId": 200010130,
+        "dossierMapId": 20000070
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 122,
+        "spotY": -84,
+        "type": 1,
+        "mapNumbers": [
+          200010131
+        ],
+        "firstMapId": 200010131,
+        "dossierMapId": 20000071
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 163,
+        "spotY": -128,
+        "type": 1,
+        "mapNumbers": [
+          200010200
+        ],
+        "firstMapId": 200010200,
+        "dossierMapId": 20000054
+      }
+    ]
+  },
+  "WorldMap141": {
+    "name": "WorldMap141",
+    "image": "/images/worldmaps/WorldMap141.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -215,
+        "spotY": -144,
+        "type": 0,
+        "mapNumbers": [
+          610020006
+        ],
+        "firstMapId": 610020006,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -247,
+        "spotY": -106,
+        "type": 1,
+        "mapNumbers": [
+          610020005
+        ],
+        "firstMapId": 610020005,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -57,
+        "spotY": -19,
+        "type": 1,
+        "mapNumbers": [
+          610010200,
+          610010201,
+          610010202
+        ],
+        "firstMapId": 610010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 9,
+        "spotY": -27,
+        "type": 1,
+        "mapNumbers": [
+          610010001
+        ],
+        "firstMapId": 610010001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -37,
+        "spotY": 49,
+        "type": 0,
+        "mapNumbers": [
+          682000000
+        ],
+        "firstMapId": 682000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 50,
+        "spotY": 25,
+        "type": 1,
+        "mapNumbers": [
+          610010000
+        ],
+        "firstMapId": 610010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 83,
+        "spotY": 105,
+        "type": 0,
+        "mapNumbers": [
+          600020000,
+          600020100,
+          600020200,
+          600020300,
+          600020400,
+          600020500,
+          600020600
+        ],
+        "firstMapId": 600020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 161,
+        "spotY": 137,
+        "type": 0,
+        "mapNumbers": [
+          600010001,
+          600010002,
+          600000000,
+          600000001
+        ],
+        "firstMapId": 600010001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 238,
+        "spotY": 30,
+        "type": 1,
+        "mapNumbers": [
+          600010100
+        ],
+        "firstMapId": 600010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 287,
+        "spotY": 2,
+        "type": 1,
+        "mapNumbers": [
+          600010300
+        ],
+        "firstMapId": 600010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 206,
+        "spotY": -15,
+        "type": 1,
+        "mapNumbers": [
+          600010200
+        ],
+        "firstMapId": 600010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 189,
+        "spotY": -57,
+        "type": 1,
+        "mapNumbers": [
+          600010400
+        ],
+        "firstMapId": 600010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -261,
+        "spotY": -79,
+        "type": 1,
+        "mapNumbers": [
+          610020003
+        ],
+        "firstMapId": 610020003,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 233,
+        "spotY": -94,
+        "type": 1,
+        "mapNumbers": [
+          600010500
+        ],
+        "firstMapId": 600010500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 187,
+        "spotY": -129,
+        "type": 1,
+        "mapNumbers": [
+          600010600
+        ],
+        "firstMapId": 600010600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -97,
+        "spotY": 116,
+        "type": 1,
+        "mapNumbers": [
+          600020100
+        ],
+        "firstMapId": 600020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -137,
+        "spotY": 116,
+        "type": 1,
+        "mapNumbers": [
+          600020300
+        ],
+        "firstMapId": 600020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -137,
+        "spotY": 146,
+        "type": 1,
+        "mapNumbers": [
+          600020200
+        ],
+        "firstMapId": 600020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -176,
+        "spotY": 146,
+        "type": 1,
+        "mapNumbers": [
+          600020600
+        ],
+        "firstMapId": 600020600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -137,
+        "spotY": 177,
+        "type": 1,
+        "mapNumbers": [
+          600020400
+        ],
+        "firstMapId": 600020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -176,
+        "spotY": 177,
+        "type": 1,
+        "mapNumbers": [
+          600020500
+        ],
+        "firstMapId": 600020500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -208,
+        "spotY": -95,
+        "type": 1,
+        "mapNumbers": [
+          610020004
+        ],
+        "firstMapId": 610020004,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -219,
+        "spotY": -70,
+        "type": 1,
+        "mapNumbers": [
+          610020002
+        ],
+        "firstMapId": 610020002,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -162,
+        "spotY": -42,
+        "type": 1,
+        "mapNumbers": [
+          610020001
+        ],
+        "firstMapId": 610020001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -197,
+        "spotY": -18,
+        "type": 1,
+        "mapNumbers": [
+          610020000
+        ],
+        "firstMapId": 610020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -125,
+        "spotY": -2,
+        "type": 1,
+        "mapNumbers": [
+          610010005
+        ],
+        "firstMapId": 610010005,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -176,
+        "spotY": 39,
+        "type": 1,
+        "mapNumbers": [
+          610010004
+        ],
+        "firstMapId": 610010004,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -88,
+        "spotY": 21,
+        "type": 1,
+        "mapNumbers": [
+          610010002
+        ],
+        "firstMapId": 610010002,
+        "dossierMapId": null
+      }
+    ]
+  },
+  "WorldMap070": {
+    "name": "WorldMap070",
+    "image": "/images/worldmaps/WorldMap070.png",
+    "width": 640,
+    "height": 470,
+    "originX": 320,
+    "originY": 235,
+    "links": [],
+    "maps": [
+      {
+        "title": null,
+        "description": null,
+        "spotX": -158,
+        "spotY": 40,
+        "type": 0,
+        "mapNumbers": [
+          260000000
+        ],
+        "firstMapId": 260000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -187,
+        "spotY": 2,
+        "type": 3,
+        "mapNumbers": [
+          260000100,
+          260000110
+        ],
+        "firstMapId": 260000100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -37,
+        "spotY": 55,
+        "type": 1,
+        "mapNumbers": [
+          260010600
+        ],
+        "firstMapId": 260010600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -88,
+        "spotY": 33,
+        "type": 1,
+        "mapNumbers": [
+          260010700
+        ],
+        "firstMapId": 260010700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -221,
+        "spotY": -42,
+        "type": 1,
+        "mapNumbers": [
+          260020000
+        ],
+        "firstMapId": 260020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -186,
+        "spotY": -75,
+        "type": 1,
+        "mapNumbers": [
+          260020100
+        ],
+        "firstMapId": 260020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -131,
+        "spotY": -70,
+        "type": 1,
+        "mapNumbers": [
+          260020200
+        ],
+        "firstMapId": 260020200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -75,
+        "spotY": -67,
+        "type": 1,
+        "mapNumbers": [
+          260020300
+        ],
+        "firstMapId": 260020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -36,
+        "spotY": -96,
+        "type": 1,
+        "mapNumbers": [
+          260020400
+        ],
+        "firstMapId": 260020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 2,
+        "spotY": -129,
+        "type": 1,
+        "mapNumbers": [
+          260020500
+        ],
+        "firstMapId": 260020500,
+        "dossierMapId": null
+      },
+      {
+        "title": "A dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cHill of Sandstorms#.",
+        "description": "Sahel Desert II",
+        "spotX": 48,
+        "spotY": -138,
+        "type": 1,
+        "mapNumbers": [
+          260020600
+        ],
+        "firstMapId": 260020600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 15,
+        "spotY": -177,
+        "type": 1,
+        "mapNumbers": [
+          260020610
+        ],
+        "firstMapId": 260020610,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -161,
+        "spotY": 69,
+        "type": 3,
+        "mapNumbers": [
+          260000200,
+          260000201,
+          260000202,
+          260000203,
+          260000204,
+          260000205,
+          260000206,
+          260000207
+        ],
+        "firstMapId": 260000200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 65,
+        "spotY": -92,
+        "type": 1,
+        "mapNumbers": [
+          260020620
+        ],
+        "firstMapId": 260020620,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 104,
+        "spotY": -143,
+        "type": 1,
+        "mapNumbers": [
+          260020700
+        ],
+        "firstMapId": 260020700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 191,
+        "spotY": -141,
+        "type": 0,
+        "mapNumbers": [
+          261000000,
+          261000001,
+          261000002,
+          261000010,
+          261000011,
+          261000020,
+          261000021
+        ],
+        "firstMapId": 261000000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 118,
+        "spotY": 110,
+        "type": 1,
+        "mapNumbers": [
+          261010000
+        ],
+        "firstMapId": 261010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 70,
+        "spotY": 72,
+        "type": 1,
+        "mapNumbers": [
+          261010001
+        ],
+        "firstMapId": 261010001,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 70,
+        "spotY": 110,
+        "type": 1,
+        "mapNumbers": [
+          261010002
+        ],
+        "firstMapId": 261010002,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 165,
+        "spotY": 110,
+        "type": 1,
+        "mapNumbers": [
+          261010003
+        ],
+        "firstMapId": 261010003,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 118,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          261010100
+        ],
+        "firstMapId": 261010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 70,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          261010101
+        ],
+        "firstMapId": 261010101,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 118,
+        "spotY": 189,
+        "type": 1,
+        "mapNumbers": [
+          261010102
+        ],
+        "firstMapId": 261010102,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -158,
+        "spotY": 13,
+        "type": 3,
+        "mapNumbers": [
+          260000300,
+          260000301,
+          260000302,
+          260000303
+        ],
+        "firstMapId": 260000300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 165,
+        "spotY": 149,
+        "type": 1,
+        "mapNumbers": [
+          261010103
+        ],
+        "firstMapId": 261010103,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 210,
+        "spotY": 7,
+        "type": 1,
+        "mapNumbers": [
+          261020000
+        ],
+        "firstMapId": 261020000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 161,
+        "spotY": -32,
+        "type": 1,
+        "mapNumbers": [
+          261020100
+        ],
+        "firstMapId": 261020100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 161,
+        "spotY": 7,
+        "type": 1,
+        "mapNumbers": [
+          261020200
+        ],
+        "firstMapId": 261020200,
+        "dossierMapId": null
+      },
+      {
+        "title": "A dungeon where you can hunt alone or with your party members. There is a portal that leads to the #cFatal Error#.",
+        "description": "Lab Area C-1",
+        "spotX": 161,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          261020300
+        ],
+        "firstMapId": 261020300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 210,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          261020400
+        ],
+        "firstMapId": 261020400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 257,
+        "spotY": 45,
+        "type": 1,
+        "mapNumbers": [
+          261020500
+        ],
+        "firstMapId": 261020500,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 257,
+        "spotY": 7,
+        "type": 1,
+        "mapNumbers": [
+          261020600
+        ],
+        "firstMapId": 261020600,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": 257,
+        "spotY": -32,
+        "type": 1,
+        "mapNumbers": [
+          261020700
+        ],
+        "firstMapId": 261020700,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -228,
+        "spotY": 38,
+        "type": 1,
+        "mapNumbers": [
+          260010000
+        ],
+        "firstMapId": 260010000,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -276,
+        "spotY": 77,
+        "type": 1,
+        "mapNumbers": [
+          260010100
+        ],
+        "firstMapId": 260010100,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -252,
+        "spotY": 129,
+        "type": 1,
+        "mapNumbers": [
+          260010200
+        ],
+        "firstMapId": 260010200,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -188,
+        "spotY": 144,
+        "type": 1,
+        "mapNumbers": [
+          260010300
+        ],
+        "firstMapId": 260010300,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -118,
+        "spotY": 124,
+        "type": 1,
+        "mapNumbers": [
+          260010400
+        ],
+        "firstMapId": 260010400,
+        "dossierMapId": null
+      },
+      {
+        "title": null,
+        "description": null,
+        "spotX": -61,
+        "spotY": 105,
+        "type": 1,
+        "mapNumbers": [
+          260010500
+        ],
+        "firstMapId": 260010500,
+        "dossierMapId": null
+      }
+    ]
+  }
+}

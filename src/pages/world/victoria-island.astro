@@ -1,0 +1,647 @@
+---
+/**
+ * /world/victoria-island - the editorial deep dive on VI.
+ *
+ * Joins curated content (src/data/victoria-island.ts) against the
+ * live datamine (maps/npcs/mobs/quests dossiers) so counts and
+ * cross-links stay accurate as content grows. Editorial data lives
+ * in the .ts file - this page is presentation only.
+ *
+ * Structure:
+ *   1. Hero + region stats
+ *   2. Leveling arc (1 -> 70+)
+ *   3. Town-by-town sections (themed per region)
+ *   4. Cross-region highlights (Florina, Cave Fairies, KPQ, FM)
+ *   5. Continue-exploring links (raw worldmap, mob catalog, etc.)
+ *
+ * The individual town themes cascade via inline `style="--accent..."`
+ * on the section headers, not by swapping BaseLayout's theme prop -
+ * we want the PAGE theme fixed (henesys - VI's dominant vibe) but
+ * each town section accent-colored locally.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Sprite from "../../components/Sprite.astro";
+import {
+	victoriaTowns,
+	victoriaIslandHighlights,
+	levelingArc,
+} from "../../data/victoria-island";
+import mapDossiers from "../../data/db/maps.json";
+import npcDossiers from "../../data/db/npcs.json";
+import mobDossiers from "../../data/db/mobs.json";
+import questDossiers from "../../data/db/quests.json";
+import {
+	mapThumbnailSrcs,
+	mobSpriteSrcs,
+	npcSpriteUrl,
+	themePlaceholderUrl,
+} from "../../lib/maplestory-cdn";
+
+// ==================== Lookups ====================
+// Build once at frontmatter time so per-town rendering is O(town)
+// not O(town * dossiers). Keys are lowercased for case-insensitive
+// name lookups (data authors may write "Green Mushroom" vs client
+// files' exact casing).
+const mapByName = new Map<string, typeof mapDossiers[0]>();
+for (const m of mapDossiers) if (m.name) mapByName.set(m.name.toLowerCase(), m);
+
+const npcByName = new Map<string, typeof npcDossiers[0]>();
+for (const n of npcDossiers) if (n.name) npcByName.set(n.name.toLowerCase(), n);
+
+const mobByName = new Map<string, typeof mobDossiers[0]>();
+for (const m of mobDossiers) if (m.name) mobByName.set(m.name.toLowerCase(), m);
+
+const questByName = new Map<string, typeof questDossiers[0]>();
+for (const q of questDossiers) if (q.name) questByName.set(q.name.toLowerCase(), q);
+
+// ==================== Region-wide stats ====================
+// Sum every VI/MI-region dossier from the live data so hero numbers
+// stay honest even as we add entries.
+const viMaps = mapDossiers.filter(
+	(m) => m.region === "Victoria Island" || m.region === "Maple Island",
+);
+const viMapIds = new Set(viMaps.map((m) => m.id));
+const viNpcs = npcDossiers.filter((n) =>
+	(n.mapsInhabited ?? []).some((mi) => viMapIds.has(mi.mapId)),
+);
+const viQuests = questDossiers.filter(
+	(q) => q.region === "Victoria Island" || q.region === "Maple Island",
+);
+
+const totalStats = {
+	towns: victoriaTowns.length,
+	maps: viMaps.length,
+	npcs: viNpcs.length,
+	quests: viQuests.length,
+};
+
+// Resolve each town's map dossier once so we can pull real minimap
+// URLs + live counts (no dupes across sections).
+function townDossier(mapId: number) {
+	return mapDossiers.find((m) => m.id === mapId) ?? null;
+}
+---
+
+<BaseLayout
+	title="Victoria Island Deep Dive - Liven's Classic Maple Guide"
+	description={`The complete Victoria Island guide - ${totalStats.towns} towns, ${totalStats.maps} maps, ${totalStats.npcs} NPCs, ${totalStats.quests} quests. Leveling path, class towns, hunting grounds, and the Sleepywood dungeon.`}
+	currentPath="/world"
+	theme="henesys"
+	decorations={true}
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<a href="/world">&larr; World Map</a>
+		<span class="crumbs__sep" aria-hidden="true">&middot;</span>
+		<span aria-current="page">Victoria Island</span>
+	</nav>
+
+	<!-- ============================================================ -->
+	<header class="vi-hero">
+		<span class="eyebrow">Regional deep dive</span>
+		<h1>Victoria Island</h1>
+		<p class="lede">
+			The mainland every MapleStory adventure passes through. Six major
+			towns (four of them class hubs), the Sleepywood dungeon system,
+			the Ant Tunnels, and every route between - laid out end to end
+			for anyone leveling from 1 to 70+.
+		</p>
+		<div class="vi-hero__stats">
+			<div class="stat"><strong>{totalStats.towns}</strong><span>towns covered</span></div>
+			<div class="stat"><strong>{totalStats.maps}</strong><span>maps documented</span></div>
+			<div class="stat"><strong>{totalStats.npcs}</strong><span>NPCs on the mainland</span></div>
+			<div class="stat"><strong>{totalStats.quests}</strong><span>quests region-tagged VI/MI</span></div>
+		</div>
+	</header>
+
+	<nav class="town-jump" aria-label="Jump to town">
+		{victoriaTowns.map((t) => (
+			<a href={`#${t.slug}`} class:list={["town-jump__pill", `town-jump__pill--${t.theme}`]}>
+				{t.name} <em>Lv {t.levelRange[0]}-{t.levelRange[1]}</em>
+			</a>
+		))}
+	</nav>
+
+	<!-- ============================================================ -->
+	<section class="leveling-arc" aria-labelledby="leveling-heading">
+		<h2 id="leveling-heading" class="section-title">Leveling arc: 1 to 70+</h2>
+		<p class="section-lede">
+			The recommended path for a player who's never left the island.
+			Grinding hard, expect ~1 hour per band in the low ranges and
+			multi-day pushes past 40. Party quests and mob-hunt quests
+			shorten every band substantially.
+		</p>
+		<ol class="arc-list">
+			{levelingArc.map((step, i) => (
+				<li class="arc-step">
+					<span class="arc-step__band">{step.band}</span>
+					<div class="arc-step__body">
+						<strong>{step.town}</strong>
+						<p>{step.activity}</p>
+					</div>
+					<span class="arc-step__ordinal">{i + 1}</span>
+				</li>
+			))}
+		</ol>
+	</section>
+
+	<!-- ============================================================ -->
+	{victoriaTowns.map((town) => {
+		const dossier = townDossier(town.mapId);
+		const liveNpcCount = dossier?.npcs?.length ?? 0;
+		const liveQuestCount = dossier?.questsHere?.length ?? 0;
+		return (
+			<section
+				id={town.slug}
+				class:list={["town-section", `town-section--${town.theme}`]}
+			>
+				<header class="town-section__head">
+					<div class="town-section__title-row">
+						<h2>{town.name}</h2>
+						{town.classTag && (
+							<span class="town-section__class-tag">
+								{town.classTag} class town
+							</span>
+						)}
+						<span class="town-section__lv-tag">
+							Lv {town.levelRange[0]}-{town.levelRange[1]}
+						</span>
+					</div>
+					<p class="town-section__tagline">{town.tagline}</p>
+				</header>
+
+				<div class="town-section__grid">
+					<div class="town-section__minimap">
+						{dossier && (
+							<a href={`/maps/${dossier.id}`}>
+								<Sprite
+									srcs={mapThumbnailSrcs(dossier.id, dossier.wzId)}
+									alt={`${town.name} minimap`}
+									placeholder={themePlaceholderUrl(town.theme)}
+									loading="lazy"
+								/>
+							</a>
+						)}
+					</div>
+
+					<div class="town-section__blurb">
+						<p>{town.blurb}</p>
+						<p class="town-section__live-stats">
+							Live dossier:
+							{dossier && <> <a href={`/maps/${dossier.id}`}>{dossier.name}</a> - </>}
+							{liveNpcCount} NPC{liveNpcCount === 1 ? "" : "s"},
+							{" "}{liveQuestCount} quest{liveQuestCount === 1 ? "" : "s"} start here.
+						</p>
+						<a class="town-section__deep-link" href={`/world/victoria-island/${town.slug}`}>
+							Full {town.name} dossier &rarr;
+						</a>
+					</div>
+				</div>
+
+				<div class="town-columns">
+					{/* -------- Signature NPCs -------- */}
+					<div class="town-column">
+						<h3 class="town-column__title">Signature NPCs</h3>
+						<ul class="npc-list">
+							{town.signatureNpcs.map((name) => {
+								const n = npcByName.get(name.toLowerCase());
+								if (!n) return <li class="npc-list__unknown">{name}</li>;
+								const spriteUrl = npcSpriteUrl(n.wzId, n.name);
+								return (
+									<li class="npc-list__item">
+										{spriteUrl && (
+											<img class="npc-list__sprite" src={spriteUrl} alt="" loading="lazy" onerror="this.style.visibility='hidden'" />
+										)}
+										<a href={`/npcs/${n.id}`}>{n.name}</a>
+										<span class="npc-list__meta">
+											{n.mapsInhabited?.length ?? 0} map{n.mapsInhabited?.length === 1 ? "" : "s"} &middot; {n.questsGiven?.length ?? 0} quest{n.questsGiven?.length === 1 ? "" : "s"}
+										</span>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+
+					{/* -------- Notable mobs -------- */}
+					<div class="town-column">
+						<h3 class="town-column__title">Notable mobs</h3>
+						<ul class="mob-list">
+							{town.notableMobs.map((name) => {
+								const mob = mobByName.get(name.toLowerCase());
+								if (!mob) return <li class="mob-list__unknown">{name}</li>;
+								return (
+									<li class="mob-list__item">
+										<Sprite
+											class="mob-list__sprite"
+											srcs={mobSpriteSrcs(mob.id, mob.wzId)}
+											alt=""
+											placeholder={themePlaceholderUrl(town.theme)}
+											height="36"
+										/>
+										<a href={`/mobs/${mob.id}`}>{mob.name}</a>
+										{mob.level != null && <span class="mob-list__lv">Lv {mob.level}</span>}
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+
+					{/* -------- Signature quests -------- */}
+					<div class="town-column">
+						<h3 class="town-column__title">Signature quests</h3>
+						{town.signatureQuests.length === 0 ? (
+							<p class="town-column__empty">Ferry stop only - no headline quests originate here.</p>
+						) : (
+							<ul class="quest-list">
+								{town.signatureQuests.map((qname) => {
+									const q = questByName.get(qname.toLowerCase());
+									if (!q) return <li class="quest-list__unknown">{qname}</li>;
+									return (
+										<li class="quest-list__item">
+											<a href={`/quests/${q.id}`}>{q.name}</a>
+											{q.levelMin != null && <span class="quest-list__lv">Lv {q.levelMin}+</span>}
+											<span class="quest-list__giver">{q.npcName ?? "-"}</span>
+										</li>
+									);
+								})}
+							</ul>
+						)}
+					</div>
+
+					{/* -------- Hunting maps -------- */}
+					<div class="town-column">
+						<h3 class="town-column__title">Recommended hunts</h3>
+						<ul class="hunt-list">
+							{town.huntingMaps.map((h) => {
+								const m = mapByName.get(h.name.toLowerCase());
+								return (
+									<li class="hunt-list__item">
+										{m ? (
+											<a href={`/maps/${m.id}`}><strong>{h.name}</strong></a>
+										) : (
+											<strong>{h.name}</strong>
+										)}
+										<span class="hunt-list__note">{h.note}</span>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+
+					{/* -------- Landmarks -------- */}
+					<div class="town-column town-column--wide">
+						<h3 class="town-column__title">Landmarks in town</h3>
+						<ul class="landmark-list">
+							{town.landmarks.map((l) => <li>{l}</li>)}
+						</ul>
+					</div>
+				</div>
+			</section>
+		);
+	})}
+
+	<!-- ============================================================ -->
+	<section class="highlights">
+		<h2 class="section-title">Cross-region highlights</h2>
+		<p class="section-lede">
+			Zones and features that don't cleanly belong to one town but shape the whole VI experience.
+		</p>
+		<div class="highlight-grid">
+			{victoriaIslandHighlights.map((h) => (
+				<article class="highlight-card">
+					<h3>{h.title}</h3>
+					<p>{h.blurb}</p>
+				</article>
+			))}
+		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section class="continue">
+		<h2 class="section-title">Keep exploring</h2>
+		<div class="continue-grid">
+			<a class="continue-card" href="/world/WorldMap010">
+				<strong>Raw worldmap view</strong>
+				<span>Every pin on the Victoria Island client-file map.</span>
+			</a>
+			<a class="continue-card" href="/maps">
+				<strong>All map dossiers</strong>
+				<span>Full-page detail for any of {viMaps.length}+ VI maps.</span>
+			</a>
+			<a class="continue-card" href="/mobs">
+				<strong>Mob catalog</strong>
+				<span>Every mob including drops, spawn maps, quest cross-refs.</span>
+			</a>
+			<a class="continue-card" href="/npcs">
+				<strong>NPC directory</strong>
+				<span>Every NPC on the island, who they give quests for, where they stand.</span>
+			</a>
+			<a class="continue-card" href="/quests">
+				<strong>Quest tracker</strong>
+				<span>All {viQuests.length} VI-tagged quests with cross-referenced chains.</span>
+			</a>
+			<a class="continue-card" href="/hall-of-fame#victoria-island">
+				<strong>Victoria Island Hall of Fame</strong>
+				<span>Legendary event items with VI ties.</span>
+			</a>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.crumbs {
+		margin: 1rem 0 0.5rem;
+		font-size: 0.9rem;
+	}
+	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+
+	.eyebrow {
+		display: inline-block; font-size: 0.75rem; font-weight: 700;
+		letter-spacing: 0.08em; text-transform: uppercase;
+		color: var(--accent-primary);
+	}
+
+	/* -------- Hero -------- */
+	.vi-hero {
+		padding: 1.75rem 2rem 1.5rem;
+		background: linear-gradient(135deg, #fefaf0 0%, #f5efd8 100%);
+		border: 2px solid var(--accent-secondary-border, #b77a2d);
+		border-radius: 14px;
+		margin: 0 0 1.5rem;
+	}
+	.vi-hero h1 {
+		font-size: 2.4rem;
+		margin: 0.3rem 0 0.5rem;
+		color: var(--accent-primary);
+	}
+	.lede {
+		font-size: 1.05rem; line-height: 1.6; max-width: 46rem;
+		color: var(--text-secondary, #4a3a1a);
+	}
+	.vi-hero__stats {
+		display: flex; flex-wrap: wrap; gap: 1.25rem;
+		margin-top: 1.25rem;
+	}
+	.stat {
+		display: flex; flex-direction: column;
+		background: rgba(255,255,255,0.7);
+		padding: 0.7rem 1rem; border-radius: 8px;
+		border: 1px solid #d9c9a0; min-width: 8rem;
+	}
+	.stat strong { font-size: 1.6rem; color: var(--accent-primary); line-height: 1; }
+	.stat span { font-size: 0.75rem; color: #6a5a3a; margin-top: 0.2rem; }
+
+	/* -------- Jump nav -------- */
+	.town-jump {
+		display: flex; flex-wrap: wrap; gap: 0.5rem;
+		margin: 0 0 2rem;
+	}
+	.town-jump__pill {
+		display: inline-flex; align-items: baseline; gap: 0.4rem;
+		padding: 0.4rem 0.9rem;
+		background: #fff;
+		border: 2px solid var(--pill-color, #ccc);
+		border-radius: 999px;
+		text-decoration: none; color: inherit;
+		font-weight: 600;
+		transition: background 0.15s, transform 0.1s;
+	}
+	.town-jump__pill:hover { transform: translateY(-1px); background: var(--pill-color, #eee); color: #fff; }
+	.town-jump__pill em { font-style: normal; font-size: 0.75rem; color: #6a5a3a; }
+	.town-jump__pill:hover em { color: rgba(255,255,255,0.85); }
+	.town-jump__pill--henesys    { --pill-color: #46784b; }
+	.town-jump__pill--ellinia    { --pill-color: #3a7050; }
+	.town-jump__pill--perion     { --pill-color: #b8460e; }
+	.town-jump__pill--kerning    { --pill-color: #c084fc; }
+	.town-jump__pill--lith       { --pill-color: #2a7595; }
+	.town-jump__pill--sleepywood { --pill-color: #7a9070; }
+
+	/* -------- Section titles -------- */
+	.section-title {
+		font-size: 1.5rem;
+		margin: 0 0 0.4rem;
+		color: var(--accent-primary);
+		border-left: 4px solid var(--accent-primary);
+		padding-left: 0.75rem;
+	}
+	.section-lede { color: var(--text-secondary); margin: 0 0 1rem; max-width: 42rem; }
+
+	/* -------- Leveling arc -------- */
+	.leveling-arc { margin: 2rem 0 2.5rem; }
+	.arc-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.5rem; }
+	.arc-step {
+		display: grid;
+		grid-template-columns: 5rem 1fr 2rem;
+		align-items: center; gap: 1rem;
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card, #d9c9a0);
+		border-left: 4px solid var(--accent-primary, #b8460e);
+		border-radius: 8px;
+		padding: 0.6rem 1rem;
+	}
+	.arc-step__band {
+		font-family: ui-monospace, Consolas, monospace;
+		font-weight: 700; font-size: 0.95rem;
+		color: var(--accent-primary);
+		text-align: center;
+	}
+	.arc-step__body strong { display: block; font-size: 0.95rem; margin-bottom: 0.15rem; }
+	.arc-step__body p { margin: 0; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.4; }
+	.arc-step__ordinal {
+		font-size: 1.5rem; color: #d9c9a0; text-align: right;
+		font-family: ui-monospace, Consolas, monospace;
+	}
+
+	/* -------- Town section -------- */
+	.town-section {
+		margin: 3rem 0;
+		padding: 1.5rem;
+		border-radius: 14px;
+		border: 2px solid var(--town-accent, #b77a2d);
+		background: var(--town-bg, #fefaf0);
+	}
+	.town-section--henesys    { --town-accent: #46784b; --town-bg: #f4f8ec; }
+	.town-section--ellinia    { --town-accent: #3a7050; --town-bg: #eaf1de; }
+	.town-section--perion     { --town-accent: #b8460e; --town-bg: #fdefd8; }
+	.town-section--kerning    { --town-accent: #a855f7; --town-bg: #f2e6ff; }
+	.town-section--lith       { --town-accent: #2a7595; --town-bg: #e2eef4; }
+	.town-section--sleepywood { --town-accent: #7a9070; --town-bg: #eeeadc; }
+
+	.town-section__head { margin-bottom: 1rem; }
+	.town-section__title-row {
+		display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap;
+	}
+	.town-section__title-row h2 {
+		font-size: 1.85rem; margin: 0; color: var(--town-accent);
+	}
+	.town-section__class-tag {
+		font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+		text-transform: uppercase; padding: 0.2rem 0.6rem;
+		background: var(--town-accent); color: #fff; border-radius: 999px;
+	}
+	.town-section__lv-tag {
+		font-size: 0.75rem; font-weight: 600;
+		padding: 0.15rem 0.55rem; background: rgba(0,0,0,0.06);
+		color: #4a3a1a; border-radius: 4px;
+	}
+	.town-section__tagline {
+		font-style: italic; margin: 0.4rem 0 0; color: #4a3a1a; font-size: 1rem;
+	}
+
+	.town-section__grid {
+		display: grid;
+		grid-template-columns: 12rem 1fr;
+		gap: 1.25rem;
+		margin-bottom: 1.25rem;
+		align-items: start;  /* prevent tall minimap from stretching blurb */
+	}
+	.town-section__minimap {
+		max-height: 14rem;
+		overflow: hidden;
+		border-radius: 6px;
+		border: 2px solid var(--town-accent);
+		background: rgba(0,0,0,0.03);
+	}
+	.town-section__minimap img {
+		width: 100%; height: auto;
+		display: block;
+		image-rendering: pixelated;
+	}
+	/* Constrain blurb column so long minimaps can't push text out
+	 * of its grid cell. `min-width: 0` fixes the classic grid-item
+	 * overflow bug on Chromium. */
+	.town-section__blurb { min-width: 0; }
+	.town-section__blurb p { margin: 0 0 0.5rem; line-height: 1.55; }
+	.town-section__live-stats { font-size: 0.85rem; color: #6a5a3a; }
+	.town-section__deep-link {
+		display: inline-block; margin-top: 0.4rem;
+		font-weight: 700; font-size: 0.9rem;
+		color: var(--town-accent);
+		text-decoration: none;
+		padding: 0.35rem 0.75rem;
+		background: rgba(255,255,255,0.7);
+		border: 2px solid var(--town-accent);
+		border-radius: 999px;
+		transition: background 0.15s, color 0.15s;
+	}
+	.town-section__deep-link:hover {
+		background: var(--town-accent); color: #fff;
+	}
+
+	.town-columns {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1rem;
+	}
+	.town-column {
+		background: rgba(255,255,255,0.6);
+		border: 1px solid rgba(0,0,0,0.08);
+		border-radius: 8px;
+		padding: 0.75rem 0.9rem;
+	}
+	.town-column--wide { grid-column: 1 / -1; }
+	.town-column__title {
+		font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em;
+		color: var(--town-accent); margin: 0 0 0.6rem;
+	}
+	.town-column__empty { font-size: 0.85rem; color: #6a5a3a; font-style: italic; margin: 0; }
+
+	.npc-list, .mob-list, .quest-list, .hunt-list, .landmark-list {
+		list-style: none; padding: 0; margin: 0;
+	}
+	.npc-list__item, .mob-list__item {
+		display: flex; align-items: center; gap: 0.5rem;
+		padding: 0.3rem 0; border-bottom: 1px dashed rgba(0,0,0,0.08);
+	}
+	.npc-list__item:last-child, .mob-list__item:last-child { border-bottom: none; }
+	.npc-list__sprite, .mob-list__sprite {
+		width: 32px; height: 32px; object-fit: contain;
+		image-rendering: pixelated;
+	}
+	.npc-list__meta, .mob-list__lv, .quest-list__lv, .quest-list__giver {
+		font-size: 0.78rem; color: #6a5a3a; margin-left: auto;
+	}
+	.npc-list__unknown, .mob-list__unknown, .quest-list__unknown {
+		color: #a08060; font-size: 0.88rem; padding: 0.3rem 0;
+		font-style: italic;
+	}
+
+	.quest-list__item {
+		display: flex; gap: 0.5rem; align-items: center;
+		padding: 0.3rem 0; border-bottom: 1px dashed rgba(0,0,0,0.08); font-size: 0.9rem;
+	}
+	.quest-list__item:last-child { border-bottom: none; }
+	.quest-list__item a {
+		flex: 1;
+		color: var(--town-accent);
+		font-weight: 500;
+	}
+	.quest-list__item a:hover { text-decoration: underline; }
+	.quest-list__giver { flex: 0 0 auto; font-size: 0.78rem; }
+
+	/* Apply the same accent-link treatment to all cross-linked names
+	 * in the town section so quests, hunts, and NPCs read as clearly
+	 * clickable (default theme link color was too subtle). */
+	.npc-list__item a, .hunt-list__item a, .mob-list__item a {
+		color: var(--town-accent);
+		font-weight: 500;
+		text-decoration: none;
+	}
+	.npc-list__item a:hover, .hunt-list__item a:hover, .mob-list__item a:hover {
+		text-decoration: underline;
+	}
+
+	.hunt-list__item {
+		display: flex; flex-direction: column;
+		padding: 0.4rem 0;
+		border-bottom: 1px dashed rgba(0,0,0,0.08);
+	}
+	.hunt-list__item:last-child { border-bottom: none; }
+	.hunt-list__note { font-size: 0.8rem; color: #6a5a3a; margin-top: 0.15rem; line-height: 1.4; }
+
+	.landmark-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.landmark-list li {
+		background: rgba(0,0,0,0.05);
+		padding: 0.2rem 0.55rem;
+		border-radius: 4px;
+		font-size: 0.82rem;
+	}
+
+	/* -------- Highlights + continue -------- */
+	.highlights, .continue { margin: 2.5rem 0; }
+	.highlight-grid, .continue-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: 0.9rem;
+	}
+	.highlight-card {
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card, #d9c9a0);
+		border-left: 4px solid var(--accent-primary, #b8460e);
+		border-radius: 8px; padding: 0.9rem 1rem;
+	}
+	.highlight-card h3 { font-size: 1.05rem; margin: 0 0 0.3rem; color: var(--accent-primary); }
+	.highlight-card p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); }
+
+	.continue-card {
+		display: flex; flex-direction: column;
+		background: #fff; border: 1px solid var(--border-card);
+		border-radius: 8px; padding: 0.75rem 1rem;
+		text-decoration: none; color: inherit;
+		transition: transform 0.1s, border-color 0.1s;
+	}
+	.continue-card:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.continue-card strong { color: var(--accent-primary); }
+	.continue-card span { font-size: 0.82rem; color: #6a5a3a; margin-top: 0.2rem; }
+
+	/* -------- Mobile -------- */
+	@media (max-width: 640px) {
+		.vi-hero { padding: 1.25rem 1rem 1rem; }
+		.vi-hero h1 { font-size: 1.8rem; }
+		.town-section { padding: 1rem; }
+		.town-section__grid { grid-template-columns: 1fr; }
+		.town-section__minimap img { max-width: 100%; }
+		.arc-step { grid-template-columns: 4rem 1fr; }
+		.arc-step__ordinal { display: none; }
+	}
+</style>

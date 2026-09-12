@@ -1,0 +1,197 @@
+---
+/**
+ * ItemRewardStrip - a compact grid of item reward cards.
+ *
+ * Rationale: Sprint 60 revealed that our citizenship + crafting guides
+ * describe unique reward items (Henesys/Kerning earrings + resident
+ * chairs, Weaponcrafting/Woodcrafting Kits) without ever SHOWING them.
+ * Text-only guides for visual-first game items is a discovery gap.
+ *
+ * This strip resolves item IDs against `items.json`, pulls the
+ * canonical name, and renders a sprite via the standard
+ * <Sprite> fallback chain. Each card deep-links to the item's
+ * auto-generated detail page at `/items/{id}` (see /items/[item].astro).
+ *
+ * Usage:
+ *   <ItemRewardStrip
+ *     title="Citizenship reward items"
+ *     lede="These four are the only ways to get these vanity items."
+ *     itemIds={[1032021, 1032022, 3010009, 3010010]}
+ *   />
+ *
+ * Missing item IDs are silently skipped (a warning goes to console in
+ * dev) so a bad ID in one guide doesn't break the page.
+ */
+
+import itemDossiers from "../data/db/items.json";
+import Sprite from "./Sprite.astro";
+import { itemIconUrl } from "../lib/maplestory-cdn";
+
+// IMPORTANT (Sprint 60 postmortem): use `itemIconUrl` DIRECTLY,
+// not `itemIconSrcs`. The latter puts maplestory.io first in the
+// fallback chain, which renders v83-GMS-era sprites - visually
+// wrong for CoT2 datamine items (Wooden Sword became a metal
+// sword, Weaponcrafting Kit became a pink potion, Iron Knuckle
+// became a blue mage glove, etc). MeowDB is the source-of-truth
+// CDN for our items.json because it extracts icons from the same
+// CoT client dump our items.json was generated from.
+// If MeowDB 404s for a specific item, <Sprite> hides gracefully -
+// which is what we want, since "no sprite" beats "wrong sprite".
+
+interface Props {
+	title: string;
+	lede?: string;
+	itemIds: number[];
+	// Optional per-item note keyed by item id, e.g. "10,000 mesos"
+	// or "Weekly rotation" - shown as a small badge under the name.
+	notes?: Record<number, string>;
+}
+
+const { title, lede, itemIds, notes = {} } = Astro.props;
+
+// Resolve item IDs against the dossier. Warn (dev-only) on misses
+// but keep rendering the rest so a typo in one row doesn't hide
+// the whole strip.
+type Dossier = (typeof itemDossiers)[number];
+const dossierById = new Map<number, Dossier>(
+	itemDossiers.map((d) => [d.id, d as Dossier]),
+);
+
+const resolvedItems = itemIds
+	.map((id) => {
+		const d = dossierById.get(id);
+		if (!d) {
+			// eslint-disable-next-line no-console
+			console.warn(`[ItemRewardStrip] Item id ${id} not in items.json`);
+			return null;
+		}
+		return { id, dossier: d, note: notes[id] };
+	})
+	.filter((x): x is NonNullable<typeof x> => x !== null);
+---
+
+{resolvedItems.length > 0 && (
+	<section class="reward-strip" aria-labelledby={`reward-strip-${title.replace(/\s+/g, "-").toLowerCase()}`}>
+		<h3
+			id={`reward-strip-${title.replace(/\s+/g, "-").toLowerCase()}`}
+			class="reward-strip__title"
+		>
+			{title}
+		</h3>
+		{lede && <p class="reward-strip__lede">{lede}</p>}
+		<div class="reward-strip__grid">
+			{resolvedItems.map(({ id, dossier, note }) => (
+				<a class="reward-item" href={`/items/${id}`}>
+					<div class="reward-item__sprite">
+						<Sprite
+							srcs={[itemIconUrl(id)]}
+							alt={`${dossier.name} icon`}
+						/>
+					</div>
+					<div class="reward-item__body">
+						<span class="reward-item__name">{dossier.name}</span>
+						{note && <span class="reward-item__note">{note}</span>}
+						<span class="reward-item__cta">Item details &rarr;</span>
+					</div>
+				</a>
+			))}
+		</div>
+	</section>
+)}
+
+<style>
+	.reward-strip {
+		margin: 1.75rem 0;
+		padding: 1.1rem 1.25rem;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.6rem;
+	}
+
+	.reward-strip__title {
+		margin: 0 0 0.3rem;
+		font-size: 1.05rem;
+		color: var(--text-heading);
+		letter-spacing: 0.02em;
+	}
+
+	.reward-strip__lede {
+		margin: 0 0 0.9rem;
+		font-size: 0.9rem;
+		color: var(--text-body);
+		max-width: 60ch;
+		line-height: 1.5;
+	}
+
+	.reward-strip__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: 0.7rem;
+	}
+
+	.reward-item {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.65rem 0.8rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.45rem;
+		text-decoration: none;
+		color: inherit;
+		transition: transform 0.12s, border-color 0.12s;
+	}
+
+	.reward-item:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+	}
+
+	.reward-item__sprite {
+		flex: 0 0 auto;
+		width: 3rem;
+		height: 3rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: color-mix(in srgb, var(--accent-primary) 8%, transparent);
+		border-radius: 0.3rem;
+	}
+
+	.reward-item__sprite :global(img) {
+		max-width: 100%;
+		max-height: 100%;
+		image-rendering: pixelated;
+		object-fit: contain;
+	}
+
+	.reward-item__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+		min-width: 0;
+	}
+
+	.reward-item__name {
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: var(--text-heading);
+		line-height: 1.25;
+	}
+
+	.reward-item__note {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		font-weight: 500;
+	}
+
+	.reward-item__cta {
+		font-size: 0.75rem;
+		color: var(--accent-primary);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-top: 0.15rem;
+	}
+</style>

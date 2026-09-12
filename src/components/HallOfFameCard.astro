@@ -1,0 +1,193 @@
+---
+/**
+ * <HallOfFameCard>
+ *
+ * Card for a single legendary/legacy MapleStory item on the Hall of
+ * Fame page. Sprite loads from maplestory.io via wzId (with a themed
+ * placeholder fallback), plus tier pill, event provenance, and blurb.
+ */
+
+import type { LegacyItem } from "../data/hallOfFame";
+import { WISHLIST_META } from "../data/hallOfFame";
+import { itemIconSrcs, themePlaceholderUrl } from "../lib/maplestory-cdn";
+import Sprite from "./Sprite.astro";
+
+interface Props {
+	item: LegacyItem;
+	// Theme used for the placeholder sprite when the icon URL 404s.
+	// Defaults to henesys to match the /hall-of-fame page theme.
+	theme?: string;
+}
+
+const { item, theme = "henesys" } = Astro.props;
+const meta = WISHLIST_META[item.tier];
+// Single source of truth via the shared helper (maplestory.io
+// primary, MeowDB fallback). Empty chain -> Sprite renders the
+// themed placeholder directly.
+const spriteChain = item.wzId ? itemIconSrcs(item.wzId) : [];
+---
+
+<article class:list={["legacy-card", `legacy-card--${item.tier}`]}>
+	<div class="legacy-card__icon">
+		<Sprite
+			srcs={spriteChain}
+			alt={`${item.name} sprite`}
+			placeholder={themePlaceholderUrl(theme)}
+			loading="lazy"
+		/>
+	</div>
+	<div class="legacy-card__body">
+		<header class="legacy-card__head">
+			<h3 class="legacy-card__name">{item.name}</h3>
+			<span
+				class="legacy-card__tier"
+				style={`background: ${meta.accent}; color: #fff;`}
+				title={meta.description}
+			>
+				{meta.label}
+			</span>
+		</header>
+		<div class="legacy-card__meta">
+			<span class="legacy-card__badge">{item.category}</span>
+			<span class="legacy-card__badge">{item.event}</span>
+			<span class="legacy-card__badge">{item.years}</span>
+			<span class="legacy-card__badge legacy-card__badge--server">{item.server}</span>
+		</div>
+		<p class="legacy-card__blurb">{item.blurb}</p>
+		{item.tierNote && (
+			<p class="legacy-card__note">
+				<strong>{meta.label}:</strong> {item.tierNote}
+			</p>
+		)}
+		{item.victoriaIslandTie && (
+			<p class="legacy-card__vi">
+				<strong>Victoria Island tie:</strong> {item.victoriaIslandTie}
+			</p>
+		)}
+	</div>
+</article>
+
+<style>
+	.legacy-card {
+		display: flex;
+		gap: 1rem;
+		background: var(--surface-card, #fffdf7);
+		border: 1px solid var(--border-card, #d9c9a0);
+		border-radius: 10px;
+		padding: 1rem;
+		transition: transform 0.15s, box-shadow 0.15s;
+	}
+
+	.legacy-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+	}
+
+	.legacy-card--confirmed {
+		border-color: #2e5d31;
+		border-width: 2px;
+	}
+
+	.legacy-card__icon {
+		flex: 0 0 72px;
+		width: 72px;
+		height: 72px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f6efd8;
+		border: 1px solid #e0d0a0;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.legacy-card__icon img {
+		max-width: 60px;
+		max-height: 60px;
+		image-rendering: pixelated;
+	}
+
+	.legacy-card__body {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.legacy-card__head {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.35rem;
+	}
+
+	.legacy-card__name {
+		font-size: 1.1rem;
+		margin: 0;
+		color: var(--text-primary, #2a1e00);
+	}
+
+	.legacy-card__tier {
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.15rem 0.55rem;
+		border-radius: 999px;
+	}
+
+	.legacy-card__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.legacy-card__badge {
+		font-size: 0.78rem;
+		background: #f0e8d0;
+		color: #5a4a2a;
+		padding: 0.1rem 0.45rem;
+		border-radius: 4px;
+	}
+
+	.legacy-card__badge--server {
+		background: #d0e0f0;
+		color: #2a4a6a;
+	}
+
+	.legacy-card__blurb {
+		font-size: 0.88rem;
+		line-height: 1.45;
+		margin: 0 0 0.5rem;
+		color: var(--text-secondary, #4a3a1a);
+	}
+
+	.legacy-card__note {
+		font-size: 0.8rem;
+		background: #fff6e0;
+		border-left: 3px solid var(--accent-primary, #b8460e);
+		padding: 0.4rem 0.6rem;
+		margin: 0.5rem 0 0;
+		color: #4a3a1a;
+	}
+
+	.legacy-card__vi {
+		font-size: 0.78rem;
+		color: #4a5f4a;
+		font-style: italic;
+		margin: 0.4rem 0 0;
+		padding-left: 0.5rem;
+		border-left: 2px solid #7a9070;
+	}
+
+	@media (max-width: 480px) {
+		.legacy-card {
+			flex-direction: column;
+		}
+		.legacy-card__icon {
+			flex: 0 0 auto;
+			width: 60px;
+			height: 60px;
+		}
+	}
+</style>
