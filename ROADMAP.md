@@ -396,6 +396,68 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 72.3 - Internet Archive BGM fetch + fix cascade:**
+  Liven asked whether we could source the client BGMs from
+  public archives instead of extracting from his own client.
+  Answer: yes, mostly. Web-retriever scouted the Internet
+  Archive and found `MapleStoryOST` (306 MB, 92 MP3s uploaded
+  2023-08). Cross-referenced the item's metadata API against
+  our 31 WZ-canonical paths - 20 direct matches after
+  reconciling case, spacing, and one filename typo.
+
+  Wrote scripts/fetch-ia-bgms.mjs to pull the 20 matches with
+  a polite UA + 300ms delay between requests. Files placed
+  directly at their WZ paths (public/audio/bgm/Bgm00/FloralLife.mp3
+  etc.). 56 MB total on disk. Idempotent (skips existing files).
+
+  Added .gitignore entries for `public/audio/bgm/**/*.mp3` and
+  `*.wav`, preserving the README exclusion. Files ship to
+  Cloudflare Pages via wrangler but never touch the public
+  GitHub mirror.
+
+  **Three bugs surfaced by the deploy (all fixed):**
+
+  1. Astro build didn't detect the newly-added files. Root cause:
+     src/data/audio-catalog.ts used `fileURLToPath(import.meta.url)`
+     to resolve the audio directory, but Vite rewrites module URLs
+     during bundling so the path pointed at a hoisted/bundled
+     location that doesn't exist. Switched to `process.cwd()`
+     which is always the project root under `npm run build`.
+
+  2. Jukebox controller threw before wiring click delegates.
+     Root cause: Sprint 72's HTML refactor split the flat
+     `<ol id="jb-list">` into per-section `<ol>`s, but the
+     controller still did `getElementById("jb-list")` and
+     dereferenced the null. Switched click delegation +
+     button lookups to document scope; a track button is
+     uniquely identified by its `[data-index]` attribute
+     regardless of which section wraps it.
+
+  3. Same-track re-click restarted playback instead of pausing.
+     Root cause: the pause branch guarded on
+     `currentIndex === index`, but that counter was fragile
+     (async play() promise, indexing changed when client BGMs
+     joined the tracks array). Rewrote loadAndPlay to derive
+     "is this the current track" from `$audio.src` directly
+     - it's ground truth regardless of counter state. Bonus:
+     now correctly resumes from the paused position instead
+     of restarting from 0 on a paused-track click.
+
+  **Coverage:** 20 of 31 tracks now playable. 11 gaps
+  documented in the fetch script - Liven can extract those
+  from his own client's Sound.wz to close out.
+
+  **Bugs I now assume as landmines for the future:**
+  - Astro's Vite scoping / URL rewriting breaks `import.meta.url`
+    for build-time filesystem access. Use `process.cwd()`.
+  - HTML markup refactors that add/remove IDs used by inline
+    scripts fail silently in production without an SSR failure.
+    Prefer document-scope delegation with class/data selectors
+    over ID lookups.
+  - Any state derived from an integer counter should also be
+    verifiable from a source of truth. If it can be, cross-check
+    against ground truth before branching.
+
   **Sprint 72 - Client BGM catalog + hunting-map recommender:**
   Two threads, both extending Sprint 71 features.
 

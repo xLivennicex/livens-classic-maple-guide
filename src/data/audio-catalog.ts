@@ -33,15 +33,22 @@
 
 import mapsRaw from "./db/maps.json";
 import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 
 // Directory where extracted client BGMs live (or should live).
 // Frontmatter uses fs.existsSync against this to decide whether
 // each track is playable in this deployment. Never accessed from
 // the browser - path is resolved once at build time.
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const AUDIO_ROOT = resolve(__dirname, "../../public/audio/bgm");
+//
+// Sprint 72.3 fix: originally used `import.meta.url` + relative
+// paths, but Astro's Vite bundler rewrites module URLs during
+// build, so `fileURLToPath(import.meta.url)` pointed at a
+// bundled/hoisted location - not `src/data/`. Every fs.existsSync
+// returned false and every track rendered as "awaiting upload"
+// even after files were on disk. `process.cwd()` is always the
+// project root when running via `npm run build`, so this works
+// regardless of how the module gets bundled.
+const AUDIO_ROOT = resolve(process.cwd(), "public/audio/bgm");
 
 interface RawMap {
 	id: number;

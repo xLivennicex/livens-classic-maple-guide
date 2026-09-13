@@ -278,7 +278,15 @@ const tracksJson = JSON.stringify(tracks);
 	);
 
 	const $audio = document.getElementById("jb-audio") as HTMLAudioElement;
-	const $list = document.getElementById("jb-list")!;
+	// Sprint 72.3 fix: Sprint 72 split the flat <ol id="jb-list">
+	// into per-section <ol>s (Fan Compositions, then per-region
+	// subgroups for client BGMs). The single-list ID lookup then
+	// returned null and the controller threw before wiring click
+	// handlers. Delegate from document instead - the [data-index]
+	// selector already scopes the click target to actual track
+	// buttons, and every button carries a unique index across all
+	// sections so the tracks[] lookup is unambiguous.
+	const $tracksRoot: Document | HTMLElement = document;
 	const $nowTitle = document.getElementById("now-playing-title")!;
 	const $nowCredit = document.getElementById("now-playing-credit")!;
 	const $btnPause = document.getElementById("btn-pause") as HTMLButtonElement;
@@ -307,18 +315,38 @@ const tracksJson = JSON.stringify(tracks);
 	$audio.loop = $loop.checked;
 
 	// ---- Play / stop lifecycle ----
+	// Sprint 72.3 fix: previous version compared `currentIndex ===
+	// index` to detect same-track re-clicks. That variable was
+	// occasionally out of sync (async play() promise, indexing
+	// changed when client BGMs joined the list), so re-clicks
+	// restarted playback instead of pausing. Derive the "is this
+	// the current track" decision from $audio.src directly - it's
+	// always the ground truth regardless of how the counter got
+	// there. URL comparison uses new URL(..., location.href).href
+	// because <audio>.src is always an absolute URL, but tracks
+	// use "/audio/..." relative paths.
+	function isCurrentTrack(t: { src: string }): boolean {
+		if (!$audio.src) return false;
+		return $audio.src === new URL(t.src, location.href).href;
+	}
+
 	function loadAndPlay(index: number): void {
 		const t = tracks[index];
 		if (!t) return;
-		if (currentIndex === index && !$audio.paused) {
-			// Second click on the currently-playing track = pause.
-			$audio.pause();
+
+		if (isCurrentTrack(t)) {
+			// Same track: toggle pause/resume.
+			if ($audio.paused) {
+				$audio.play().catch((err) => console.warn("Jukebox resume failed:", err));
+			} else {
+				$audio.pause();
+			}
+			currentIndex = index;
 			return;
 		}
-		if (currentIndex !== index) {
-			// New track - swap src and reset position.
-			$audio.src = t.src;
-		}
+
+		// New track: swap src, reset position, play.
+		$audio.src = t.src;
 		currentIndex = index;
 		$audio.play().catch((err) => {
 			// Browsers may block if the user hasn't interacted; the
@@ -333,7 +361,7 @@ const tracksJson = JSON.stringify(tracks);
 
 	function syncPlayingUI(): void {
 		// Highlight the currently-playing row + set pause button enabled.
-		const buttons = $list.querySelectorAll<HTMLButtonElement>("[data-index]");
+		const buttons = $tracksRoot.querySelectorAll<HTMLButtonElement>("[data-index]");
 		buttons.forEach((btn) => {
 			const idx = Number(btn.dataset.index);
 			const active = idx === currentIndex && !$audio.paused;
@@ -346,7 +374,7 @@ const tracksJson = JSON.stringify(tracks);
 	}
 
 	// ---- Event wiring ----
-	$list.addEventListener("click", (e) => {
+	$tracksRoot.addEventListener("click", (e) => {
 		const target = e.target as HTMLElement;
 		const btn = target.closest<HTMLButtonElement>("[data-index]");
 		if (!btn) return;

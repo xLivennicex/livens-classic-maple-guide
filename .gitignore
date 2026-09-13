@@ -27,6 +27,15 @@ pnpm-debug.log*
 .tmp/
 tmp-icons/
 
+# Sprint 72.3: client-extracted BGMs. Rights belong to NEXON;
+# preservation posture means files live locally + on Cloudflare
+# Pages only, never in the public GitHub mirror. README stays so
+# the drop-zone instructions remain visible in the repo.
+public/audio/bgm/**/*.mp3
+public/audio/bgm/**/*.wav
+public/audio/bgm/**/*.ogg
+!public/audio/bgm/README.md
+
 # Wrangler cache
 .wrangler/
 
