@@ -396,6 +396,22 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 70.1 - Deploy branch fix (hotfix):**
+  Comments were "live" on preview but not on production because
+  Cloudflare Pages had `master` as its production branch, while
+  we renamed local git to `main` for the GitHub push. All deploys
+  since the rename were landing on Preview.
+
+  Fix: added `--branch=master` to the npm `deploy` script so
+  wrangler explicitly targets CF's production branch regardless
+  of local git branch name. Confirmed live: Giscus script now
+  present in production HTML at
+  https://livens-classic-maple.pages.dev/blog/*.
+
+  Long-term option: rename CF Pages production branch to `main`
+  in the dashboard so git-branch and CF-branch match. Punted -
+  the current explicit-flag approach is fine and self-documenting.
+
   **Sprint 70 - Giscus comments LIVE + GitHub repo bootstrap:**
   Two-birds sprint. Set up the project's canonical GitHub home
   AND activated blog comments in one motion.
