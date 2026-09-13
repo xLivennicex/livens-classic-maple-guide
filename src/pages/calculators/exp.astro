@@ -21,6 +21,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import mobs from "../../data/db/mobs.json";
 import { EXP_TO_NEXT, LEVEL_CAP, isLevelVerified } from "../../data/exp-table";
+import { HUNT_MAPS } from "../../data/hunt-recommender";
 
 interface MobStats {
 	level: number;
@@ -55,6 +56,13 @@ const mobsJson = JSON.stringify(combatMobs);
 // Ship only the range of EXP values the client actually needs (1-199).
 // Skip the 200 cap check on client - JS handles bounds naturally.
 const expTableJson = JSON.stringify(EXP_TO_NEXT);
+
+// Sprint 72: slim hunt-map projection for the client recommender.
+// Ships ~50-80 KB gzipped. Each map keeps only the fields the
+// scoring function actually reads (name/region/level range +
+// mob list with per-mob EXP, count, and defenses). Empty maps
+// were already filtered upstream in hunt-recommender.ts.
+const huntMapsJson = JSON.stringify(HUNT_MAPS);
 
 // Preselect a sensible mob so the first paint isn't empty. Orange
 // Mushroom is the canonical "low-level EXP mob" everyone knows.
@@ -136,6 +144,22 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 				<span class="calc-field__hint">Server events + Holy Symbol stack. Default 1.0 = base rate.</span>
 			</label>
 
+			{/* Sprint 72: class picker drives the map recommender.
+			    Physical classes (warrior/bowman/thief) penalize
+			    high physical defense; magician penalizes magic
+			    defense; beginner has no class fit adjustment. */}
+			<label class="calc-field">
+				<span class="calc-field__label">Class (for recommendations)</span>
+				<select id="input-class">
+					<option value="beginner">Beginner</option>
+					<option value="warrior">Warrior</option>
+					<option value="magician">Magician</option>
+					<option value="bowman">Bowman</option>
+					<option value="thief">Thief</option>
+				</select>
+				<span class="calc-field__hint">Affects which maps get recommended based on mob defenses.</span>
+			</label>
+
 			<div class="calc-target">
 				<h3 class="calc-target__h">Optional: hours to reach Lv...</h3>
 				<input
@@ -182,6 +206,24 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 
 			<p id="out-accuracy" class="calc-accuracy">-</p>
 
+			{/* Sprint 72: map/mob recommender. Populated by JS on
+			    every level/class change. Shows top 5 farming maps
+			    with primary mob, level range, and EXP density. */}
+			<section class="calc-rec">
+				<h3 class="calc-rec__h">Recommended farming maps</h3>
+				<p class="calc-rec__lede">
+					Best 5 maps for your level + class, ranked by
+					class-adjusted EXP density.
+				</p>
+				<ol class="calc-rec__list" id="calc-rec-list">
+					<!-- Populated by JS -->
+				</ol>
+				<p id="calc-rec-empty" class="calc-rec__empty" hidden>
+					No maps match your level range. Try nudging your
+					level up or down by 3-5.
+				</p>
+			</section>
+
 			<details class="calc-details">
 				<summary>How this is calculated</summary>
 				<ul>
@@ -203,6 +245,7 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	<script id="mobs-data" type="application/json" is:inline set:html={mobsJson}></script>
 	<script id="exp-table-data" type="application/json" is:inline set:html={expTableJson}></script>
 	<script id="default-mob-data" type="application/json" is:inline set:html={JSON.stringify(defaultMob)}></script>
+	<script id="hunt-maps-data" type="application/json" is:inline set:html={huntMapsJson}></script>
 </BaseLayout>
 
 <script>
@@ -230,6 +273,33 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		document.getElementById("default-mob-data")!.textContent ?? "null",
 	) ?? undefined;
 
+	// Sprint 72: hunt-map dataset for the recommender panel.
+	interface HuntMob {
+		id: number;
+		name: string;
+		count: number;
+		stats: {
+			level: number;
+			exp: number;
+			physicalDefense: number;
+			magicDefense: number;
+			isBoss: boolean;
+		};
+	}
+	interface HuntMap {
+		id: number;
+		name: string;
+		region: string;
+		minLvl: number;
+		maxLvl: number;
+		mobs: HuntMob[];
+		totalMobs: number;
+		totalRawExp: number;
+	}
+	const huntMaps: HuntMap[] = JSON.parse(
+		document.getElementById("hunt-maps-data")!.textContent ?? "[]",
+	);
+
 	// Keep the verified-cutoff in lockstep with VERIFIED_1_TO_30 in
 	// src/data/exp-table.ts. If the module extends the verified
 	// range, bump this constant. Cheaper than shipping isLevelVerified()
@@ -243,6 +313,9 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	const $mult = document.getElementById("input-multiplier") as HTMLInputElement;
 	const $target = document.getElementById("input-target-level") as HTMLInputElement;
 
+	const $class = document.getElementById("input-class") as HTMLSelectElement;
+	const $recList = document.getElementById("calc-rec-list")!;
+	const $recEmpty = document.getElementById("calc-rec-empty")!;
 	const $summary = document.getElementById("calc-mob-summary")!;
 	const $expHour = document.getElementById("out-exp-hour")!;
 	const $expTnl = document.getElementById("out-exp-tnl")!;
@@ -362,12 +435,107 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		}
 	}
 
+	// ============================================================
+	// Sprint 72: map/mob recommender
+	// ============================================================
+	type CharClass = "beginner" | "warrior" | "magician" | "bowman" | "thief";
+
+	function classMult(mob: HuntMob, klass: CharClass): number {
+		if (klass === "beginner") return 1;
+		const def = klass === "magician" ? mob.stats.magicDefense : mob.stats.physicalDefense;
+		const penalty = Math.min(0.5, def / 400);
+		return 1 - penalty;
+	}
+
+	function scoreMap(map: HuntMap, level: number, klass: CharClass): number {
+		let score = 0;
+		for (const mob of map.mobs) {
+			if (mob.stats.isBoss) continue;
+			score += mob.stats.exp * mob.count * classMult(mob, klass);
+		}
+		const mapAvg = (map.minLvl + map.maxLvl) / 2;
+		const gap = Math.abs(level - mapAvg);
+		const penalty = Math.max(0.4, 1 - gap * 0.05);
+		return score * penalty;
+	}
+
+	function primaryMob(map: HuntMap, klass: CharClass): HuntMob | undefined {
+		// The "primary" mob is the one contributing the most
+		// class-adjusted EXP to the map's total. Shown in the
+		// card so the reader knows the character of the map at a
+		// glance.
+		let best: HuntMob | undefined;
+		let bestScore = -Infinity;
+		for (const m of map.mobs) {
+			if (m.stats.isBoss) continue;
+			const s = m.stats.exp * m.count * classMult(m, klass);
+			if (s > bestScore) { bestScore = s; best = m; }
+		}
+		return best;
+	}
+
+	function renderRecommendations(): void {
+		const level = Math.max(1, Math.min(199, Math.floor(Number($level.value) || 1)));
+		const klass = ($class.value || "beginner") as CharClass;
+
+		// Filter to maps that overlap the character's efficient
+		// hunting band. Same asymmetric window as the module scorer:
+		// wider on the top end, tighter on the bottom.
+		const candidates = huntMaps.filter((m) => {
+			if (m.minLvl === 0 && m.maxLvl === 0) return false;
+			return level >= m.minLvl - 3 && level <= m.maxLvl + 5;
+		});
+
+		const ranked = candidates
+			.map((m) => ({ map: m, score: scoreMap(m, level, klass) }))
+			.sort((a, b) => b.score - a.score)
+			.slice(0, 5);
+
+		$recList.innerHTML = "";
+		if (ranked.length === 0) {
+			$recEmpty.hidden = false;
+			return;
+		}
+		$recEmpty.hidden = true;
+
+		for (const { map, score } of ranked) {
+			const prim = primaryMob(map, klass);
+			const li = document.createElement("li");
+			li.className = "calc-rec__card";
+			li.innerHTML = `
+				<a href="/maps/${map.id}" class="calc-rec__mapname">${escapeHtml(map.name)}</a>
+				<div class="calc-rec__meta">
+					<span class="calc-rec__region">${escapeHtml(map.region)}</span>
+					<span class="calc-rec__lvlrange">Lv ${map.minLvl}${map.minLvl === map.maxLvl ? "" : "-" + map.maxLvl}</span>
+				</div>
+				${prim ? `
+					<div class="calc-rec__primary">
+						Primary: <strong>${escapeHtml(prim.name)}</strong>
+						(${prim.stats.exp} EXP x ${prim.count} spawn${prim.count === 1 ? "" : "s"})
+					</div>
+				` : ""}
+				<div class="calc-rec__score">
+					Score ${Math.round(score).toLocaleString()}
+					- ${map.totalMobs} mobs on map
+				</div>
+			`;
+			$recList.appendChild(li);
+		}
+	}
+
+	function escapeHtml(s: string): string {
+		return s.replace(/[&<>"']/g, (c) => ({
+			"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+		}[c] ?? c));
+	}
+
 	// ---- Wire up ----
 	populateMobList("");
 	if (defaultMob) {
 		$mobSel.value = String(defaultMob.id);
 	}
 	recompute();
+	renderRecommendations();
 
 	$mobSearch.addEventListener("input", () => {
 		populateMobList($mobSearch.value);
@@ -375,8 +543,13 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	});
 	$mobSel.addEventListener("change", recompute);
 	for (const el of [$level, $kpm, $mult, $target]) {
-		el.addEventListener("input", recompute);
+		el.addEventListener("input", () => {
+			recompute();
+			// Level changes also affect the recommender.
+			if (el === $level) renderRecommendations();
+		});
 	}
+	$class.addEventListener("change", renderRecommendations);
 </script>
 
 <style>
@@ -559,5 +732,89 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	.calc-details ul {
 		margin: 0.4rem 0;
 		padding-left: 1.2rem;
+	}
+
+	/* Sprint 72: recommendation cards. Compact, click-through
+	   cards linking to the map dossier. Scored highest -> lowest
+	   top to bottom; primary mob highlighted so the reader
+	   instantly grasps the character of the map. */
+	.calc-rec {
+		margin-top: 1.2rem;
+		padding-top: 1rem;
+		border-top: 1px dashed var(--border-card);
+	}
+	.calc-rec__h {
+		margin: 0 0 0.3rem;
+		font-size: 0.95rem;
+		color: var(--text-heading);
+	}
+	.calc-rec__lede {
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		margin: 0 0 0.75rem;
+	}
+	.calc-rec__list {
+		list-style: none;
+		padding: 0; margin: 0;
+		display: flex; flex-direction: column;
+		gap: 0.45rem;
+		counter-reset: rec;
+	}
+	.calc-rec__card {
+		position: relative;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 6px;
+		padding: 0.6rem 0.85rem 0.6rem 2.2rem;
+		counter-increment: rec;
+	}
+	.calc-rec__card::before {
+		content: counter(rec);
+		position: absolute;
+		left: 0.7rem;
+		top: 0.6rem;
+		font-family: monospace;
+		font-weight: 700;
+		color: var(--accent-primary);
+	}
+	.calc-rec__mapname {
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: var(--text-heading);
+		text-decoration: none;
+	}
+	.calc-rec__mapname:hover { text-decoration: underline; }
+	.calc-rec__meta {
+		display: flex;
+		gap: 0.75rem;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		margin-top: 0.15rem;
+	}
+	.calc-rec__region {
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+	}
+	.calc-rec__primary {
+		font-size: 0.82rem;
+		color: var(--text-body);
+		margin-top: 0.3rem;
+	}
+	.calc-rec__score {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		margin-top: 0.2rem;
+		font-family: monospace;
+	}
+	.calc-rec__empty {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		font-style: italic;
+		padding: 0.7rem;
+		background: var(--bg-cloud);
+		border-radius: 6px;
+		margin: 0;
 	}
 </style>

@@ -22,19 +22,42 @@
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { themeAudio, type ThemeName } from "../data/audio";
+import { CLIENT_BGM_CATALOG, groupByRegion } from "../data/audio-catalog";
 
-// Filter out null entries (themes with no track yet - e.g. ellinia).
-// Attach the theme key so the client can pick a matching background
-// accent when a track is playing.
-const tracks = Object.entries(themeAudio)
+// Fan-composition tracks (community-made, no license concerns).
+// These are what MusicPlayer plays on themed pages site-wide.
+const fanTracks = Object.entries(themeAudio)
 	.filter(([, t]) => t !== null)
 	.map(([theme, t]) => ({
 		theme: theme as ThemeName,
 		src: t!.src,
 		title: t!.title,
 		credit: t!.credit ?? null,
+		kind: "fan" as const,
 	}));
 
+// Client-extracted BGM catalog. Grouped by region for a
+// virtual-tour reading order. `available` is true only when the
+// actual audio file was on disk at build time (see
+// src/data/audio-catalog.ts for the copyright caveat).
+const clientBgmGroups = groupByRegion();
+const clientBgmCount = CLIENT_BGM_CATALOG.length;
+const clientBgmAvailable = CLIENT_BGM_CATALOG.filter((t) => t.available).length;
+
+// Combined list for the client controller. Only PLAYABLE tracks
+// ship - unavailable client BGMs render in the DOM as info-only
+// rows without click handlers. Cheaper than shipping the whole
+// catalog to the JS layer.
+const tracks = [
+	...fanTracks,
+	...CLIENT_BGM_CATALOG.filter((t) => t.available).map((t) => ({
+		theme: (t.region.toLowerCase().includes("maple") ? "lith" : "henesys") as ThemeName,
+		src: t.src,
+		title: t.title,
+		credit: `Client BGM - ${t.wzPath}`,
+		kind: "client" as const,
+	})),
+];
 const tracksJson = JSON.stringify(tracks);
 ---
 
@@ -99,55 +122,130 @@ const tracksJson = JSON.stringify(tracks);
 
 	<audio id="jb-audio" preload="none"></audio>
 
-	<!-- Track list. Each row is a self-contained "card" the user
-	     clicks to start playback. Uses <ol> for semantic ordering
-	     since the tracks have a stable order in themeAudio. -->
-	<ol class="jb-list" id="jb-list">
-		{tracks.map((t, i) => (
-			<li>
-				<button
-					type="button"
-					class={`jb-track jb-track--${t.theme}`}
-					data-src={t.src}
-					data-index={i}
-					data-title={t.title}
-					data-credit={t.credit ?? ""}
-					data-theme={t.theme}
-				>
-					<span class="jb-track__index">{String(i + 1).padStart(2, "0")}</span>
-					<span class="jb-track__glyph" aria-hidden="true">
-						<span class="jb-track__glyph-play">&#9654;</span>
-						<span class="jb-track__glyph-pause">&#10073;&#10073;</span>
-					</span>
-					<span class="jb-track__body">
-						<strong class="jb-track__title">{t.title}</strong>
-						<span class="jb-track__meta">
-							<span class="jb-track__theme">{t.theme}</span>
-							{t.credit && <span class="jb-track__credit"> - {t.credit}</span>}
+	<!-- Section 1: fan compositions. These are guaranteed-playable
+	     tracks with no licensing concerns; they're also what
+	     MusicPlayer plays on themed pages site-wide. -->
+	<section class="jb-section">
+		<h2 class="jb-section__h">Fan compositions</h2>
+		<p class="jb-section__lede">
+			Community-made tracks inspired by MapleStory zones. Play
+			site-wide via the floating music button in the corner.
+		</p>
+		<ol class="jb-list">
+			{fanTracks.map((t, i) => (
+				<li>
+					<button
+						type="button"
+						class={`jb-track jb-track--${t.theme}`}
+						data-src={t.src}
+						data-index={i}
+						data-title={t.title}
+						data-credit={t.credit ?? ""}
+					>
+						<span class="jb-track__index">{String(i + 1).padStart(2, "0")}</span>
+						<span class="jb-track__glyph" aria-hidden="true">
+							<span class="jb-track__glyph-play">&#9654;</span>
+							<span class="jb-track__glyph-pause">&#10073;&#10073;</span>
 						</span>
-					</span>
-				</button>
-			</li>
-		))}
-	</ol>
+						<span class="jb-track__body">
+							<strong class="jb-track__title">{t.title}</strong>
+							<span class="jb-track__meta">
+								<span class="jb-track__theme">{t.theme}</span>
+								{t.credit && <span class="jb-track__credit"> - {t.credit}</span>}
+							</span>
+						</span>
+					</button>
+				</li>
+			))}
+		</ol>
+	</section>
 
-	<!-- Empty-slot placeholder for themes without tracks. Honest
-	     rather than hiding the gap - reader can see where content
-	     is coming and how much is here. -->
+	<!-- Section 2: client-extracted BGMs, grouped by region.
+	     Composed by Sound Team ASOB for NEXON in the 2003-2008
+	     era. If a track's audio file wasn't uploaded to this
+	     deployment, its row shows a "not available" label instead
+	     of a play button. -->
+	<section class="jb-section">
+		<h2 class="jb-section__h">Client-extracted BGMs</h2>
+		<p class="jb-section__lede">
+			The originals - composed by <strong>Sound Team ASOB</strong>
+			for NEXON, drawn from the v83 client datamine. Catalog
+			derived from {clientBgmCount} unique BGM paths across
+			the 426-map dataset.
+			<strong>{clientBgmAvailable} of {clientBgmCount}</strong>
+			are hosted here right now; the rest are catalogued but
+			awaiting file upload.
+		</p>
+
+		<p class="jb-legal">
+			BGM compositions belong to NEXON. Files hosted here (if any)
+			are for archival / preservation reference in support of a
+			fan guide for MapleStory Classic. Files can be removed on
+			request from the rights holder.
+		</p>
+
+		{clientBgmGroups.map((group) => (
+			<div class="jb-region">
+				<h3 class="jb-region__h">{group.region}</h3>
+				<ol class="jb-list jb-list--compact">
+					{group.tracks.map((t) => {
+						const globalIndex = t.available
+							? fanTracks.length + [...CLIENT_BGM_CATALOG].filter((x) => x.available).findIndex((x) => x.wzPath === t.wzPath)
+							: -1;
+						return (
+							<li>
+								{t.available ? (
+									<button
+										type="button"
+										class="jb-track jb-track--client"
+										data-src={t.src}
+										data-index={globalIndex}
+										data-title={t.title}
+										data-credit={`Client BGM - ${t.wzPath}`}
+									>
+										<span class="jb-track__glyph" aria-hidden="true">
+											<span class="jb-track__glyph-play">&#9654;</span>
+											<span class="jb-track__glyph-pause">&#10073;&#10073;</span>
+										</span>
+										<span class="jb-track__body">
+											<strong class="jb-track__title">{t.title}</strong>
+											<span class="jb-track__meta">
+												<code>{t.wzPath}</code>
+												<span class="jb-track__credit"> - used on {t.mapCount} map{t.mapCount === 1 ? "" : "s"}</span>
+											</span>
+										</span>
+									</button>
+								) : (
+									<div class="jb-track jb-track--missing" aria-disabled="true">
+										<span class="jb-track__glyph" aria-hidden="true">&#8858;</span>
+										<span class="jb-track__body">
+											<strong class="jb-track__title">{t.title}</strong>
+											<span class="jb-track__meta">
+												<code>{t.wzPath}</code>
+												<span class="jb-track__credit"> - awaiting upload</span>
+											</span>
+										</span>
+									</div>
+								)}
+							</li>
+						);
+					})}
+				</ol>
+			</div>
+		))}
+	</section>
+
+	<!-- Empty-slot placeholder for themes without fan tracks. -->
 	{Object.entries(themeAudio).filter(([, t]) => t === null).length > 0 && (
 		<section class="jb-empty">
-			<p class="eyebrow eyebrow--muted">Coming soon</p>
+			<p class="eyebrow eyebrow--muted">Fan-composition backlog</p>
 			<ul class="jb-empty__list">
 				{Object.entries(themeAudio)
 					.filter(([, t]) => t === null)
 					.map(([theme]) => (
-						<li>{theme} - waiting on a track submission</li>
+						<li>{theme} - waiting on a fan track submission</li>
 					))}
 			</ul>
-			<p class="jb-empty__note">
-				Have a fan composition to submit? Ping via the community
-				channels linked in the footer.
-			</p>
 		</section>
 	)}
 
@@ -467,5 +565,63 @@ const tracksJson = JSON.stringify(tracks);
 		margin: 0.4rem 0 0;
 		font-size: 0.85rem;
 		color: var(--text-muted);
+	}
+
+	/* Sprint 72: sectioning + client BGM catalog styles. Sections
+	   separate fan compositions (curated) from client-extracted
+	   BGMs (auto-catalogued from datamine). Region subgroups within
+	   the client section give the catalog a virtual-tour feel. */
+	.jb-section { margin: 1.75rem 0; }
+	.jb-section__h {
+		margin: 0 0 0.4rem;
+		font-size: 1.25rem;
+		color: var(--text-heading);
+	}
+	.jb-section__lede {
+		margin: 0 0 1rem;
+		color: var(--text-body);
+		line-height: 1.55;
+	}
+	.jb-legal {
+		background: var(--bg-cloud);
+		border-left: 3px solid var(--text-muted);
+		padding: 0.55rem 0.85rem;
+		font-size: 0.82rem;
+		color: var(--text-body);
+		margin: 0 0 1.1rem;
+		border-radius: 4px;
+	}
+	.jb-region { margin-bottom: 1.4rem; }
+	.jb-region__h {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		margin: 0 0 0.55rem;
+		padding-bottom: 0.35rem;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.jb-list--compact { gap: 0.35rem; }
+	.jb-list--compact .jb-track {
+		grid-template-columns: 1.6rem 1fr;
+		padding: 0.6rem 0.85rem;
+	}
+	.jb-track--client { border-left-color: #b8730e; }
+	.jb-track--missing {
+		display: grid;
+		grid-template-columns: 1.6rem 1fr;
+		align-items: center; gap: 0.85rem;
+		padding: 0.6rem 0.85rem;
+		background: color-mix(in srgb, var(--bg-cloud) 60%, transparent);
+		border: 1px dashed var(--border-card);
+		border-radius: 8px;
+		color: var(--text-muted);
+	}
+	.jb-track__meta code {
+		font-size: 0.75rem;
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+		padding: 0.05rem 0.35rem;
+		border-radius: 3px;
 	}
 </style>

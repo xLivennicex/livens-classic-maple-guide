@@ -396,6 +396,72 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 72 - Client BGM catalog + hunting-map recommender:**
+  Two threads, both extending Sprint 71 features.
+
+  **Client BGM catalog infrastructure:**
+  New src/data/audio-catalog.ts derives the unique BGM list
+  from maps.json's `bgm` field (31 tracks across 426 maps).
+  Each entry knows its WZ path (e.g. Bgm00/FloralLife), its
+  human-friendly title, its majority region, its map-count,
+  and whether the actual audio file exists at
+  public/audio/bgm/{path}.mp3 (checked via fs.existsSync at
+  build time - unavailable tracks show as "awaiting upload"
+  in the jukebox rather than 404-ing on click).
+
+  Extended scripts/transcode-audio.mjs to walk the audio
+  directory recursively so BGMs dropped in
+  public/audio/bgm/Bgm00/*.wav get auto-transcoded to MP3
+  when running `npm run transcode:audio`. Preserves directory
+  structure in the output.
+
+  Rewrote /jukebox into two sections: "Fan compositions"
+  (existing 5 tracks, still what MusicPlayer plays site-wide)
+  and "Client-extracted BGMs" (auto-catalogued, grouped by
+  region, with WZ path shown in the meta line for debugging).
+  Added a jb-legal callout under the client section noting
+  NEXON's rights to the compositions.
+
+  Created public/audio/bgm/README.md with the drop-zone
+  instructions - explains file layout expectations, transcode
+  workflow, and .gitignore recommendation. Zero config file
+  to maintain; drop files in, run build, done.
+
+  **Hunting-map recommender in EXP calculator:**
+  New src/data/hunt-recommender.ts builds a slim HUNT_MAPS
+  projection: each of ~330 farming maps reduced to just the
+  fields the scorer reads (id, name, region, mob level range,
+  and per-mob entries with EXP, count, and defenses). Filters
+  out boss-only maps (PQ chambers etc.). Ships as ~50-80 KB
+  JSON handoff.
+
+  Added a Class dropdown (Beginner/Warrior/Magician/Bowman/Thief)
+  to the calculator inputs. New "Recommended farming maps"
+  panel in the outputs shows top 5 maps for the current
+  (level, class) pair. Each card: map name (linked to
+  /maps/{id}), region, level range, primary mob callout, and
+  a raw score for transparency.
+
+  Scoring is straightforward:
+  - Class multiplier: physical classes penalize physical
+    defense; magician penalizes magic defense; beginner has
+    no penalty. Sigmoid-capped at 50% so no map scores 0.
+  - Level match window: char level must fall in
+    [mobLevelRange.min - 3, mobLevelRange.max + 5]. Asymmetric
+    because over-leveling stays viable longer than under-leveling.
+  - Level-gap soft penalty: 5% per level of gap from map avg,
+    floor 0.4. Keeps level-appropriate maps ranked above
+    high-density-but-too-high-level ones.
+
+  Recompute is O(candidates x mobs-per-map) on every level or
+  class change - ~5,000 operations, sub-millisecond.
+
+  **Deferred to future sprints:**
+  - Mesos/drop-rate recommender (needs verified drop data)
+  - Party EXP split modeling
+  - Damage calculator (weapon speed + WA/M.ATT depth)
+  - Per-map MusicPlayer override (currently theme-based)
+
   **Sprint 71 - Backgrounds, Jukebox, EXP calculator (+ honest emote pivot):**
   Four-request sprint with one honest reality check.
 

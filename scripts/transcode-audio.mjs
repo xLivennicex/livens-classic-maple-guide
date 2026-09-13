@@ -16,7 +16,7 @@
 
 import { execFileSync } from "node:child_process";
 import { readdirSync, statSync, existsSync, unlinkSync } from "node:fs";
-import { join, resolve, basename } from "node:path";
+import { join, resolve, basename, relative } from "node:path";
 import ffmpegPath from "ffmpeg-static";
 
 const AUDIO_DIR = resolve("public/audio");
@@ -28,23 +28,42 @@ if (!existsSync(AUDIO_DIR)) {
 	process.exit(1);
 }
 
-const wavs = readdirSync(AUDIO_DIR).filter((f) => f.toLowerCase().endsWith(".wav"));
-if (wavs.length === 0) {
+// Sprint 72: walk the audio directory recursively so client-extracted
+// BGMs in public/audio/bgm/Bgm00/*.wav (etc.) also get transcoded.
+// Previously only the flat top-level directory was scanned. Ignores
+// files that don't end in .wav (case-insensitive).
+function walkWavs(dir) {
+	const out = [];
+	for (const entry of readdirSync(dir, { withFileTypes: true })) {
+		const full = join(dir, entry.name);
+		if (entry.isDirectory()) {
+			out.push(...walkWavs(full));
+		} else if (entry.isFile() && entry.name.toLowerCase().endsWith(".wav")) {
+			out.push(full);
+		}
+	}
+	return out;
+}
+
+const wavPaths = walkWavs(AUDIO_DIR);
+if (wavPaths.length === 0) {
 	console.log("No .wav files to transcode. Nothing to do.");
 	process.exit(0);
 }
 
-console.log(`Found ${wavs.length} .wav file(s) in public/audio/.`);
+console.log(`Found ${wavPaths.length} .wav file(s) under public/audio/ (recursive).`);
 console.log(`Bitrate: ${BITRATE} MP3, stereo. ffmpeg binary: ${ffmpegPath}\n`);
 
 let totalBefore = 0;
 let totalAfter = 0;
 const results = [];
 
-for (const wav of wavs) {
-	const wavPath = join(AUDIO_DIR, wav);
-	const mp3Name = wav.replace(/\.wav$/i, ".mp3");
-	const mp3Path = join(AUDIO_DIR, mp3Name);
+for (const wavPath of wavPaths) {
+	// Preserve the .wav's directory structure for the output .mp3.
+	// e.g. public/audio/bgm/Bgm00/FloralLife.wav -> .mp3 in same dir.
+	const wav = relative(AUDIO_DIR, wavPath);
+	const mp3Path = wavPath.replace(/\.wav$/i, ".mp3");
+	const mp3Name = relative(AUDIO_DIR, mp3Path);
 	const wavStat = statSync(wavPath);
 
 	if (existsSync(mp3Path) && statSync(mp3Path).mtimeMs > wavStat.mtimeMs) {
