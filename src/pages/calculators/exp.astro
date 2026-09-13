@@ -295,6 +295,7 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		mobs: HuntMob[];
 		totalMobs: number;
 		totalRawExp: number;
+		primaryMobLvl: number;
 	}
 	const huntMaps: HuntMap[] = JSON.parse(
 		document.getElementById("hunt-maps-data")!.textContent ?? "[]",
@@ -478,12 +479,15 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		const level = Math.max(1, Math.min(199, Math.floor(Number($level.value) || 1)));
 		const klass = ($class.value || "beginner") as CharClass;
 
-		// Filter to maps that overlap the character's efficient
-		// hunting band. Same asymmetric window as the module scorer:
-		// wider on the top end, tighter on the bottom.
+		// Sprint 72.1: anchor filter on the primary mob's level
+		// rather than the map's spawn-range extremes. Fixes the
+		// Lv 10 -> Sleepy Dungeon V bug where wide-range maps
+		// technically included the character's level but the actual
+		// farming target was way overleveled.
 		const candidates = huntMaps.filter((m) => {
-			if (m.minLvl === 0 && m.maxLvl === 0) return false;
-			return level >= m.minLvl - 3 && level <= m.maxLvl + 5;
+			if (m.primaryMobLvl === 0) return false;
+			const gap = m.primaryMobLvl - level;
+			return gap >= -6 && gap <= 4;
 		});
 
 		const ranked = candidates
@@ -737,30 +741,37 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	/* Sprint 72: recommendation cards. Compact, click-through
 	   cards linking to the map dossier. Scored highest -> lowest
 	   top to bottom; primary mob highlighted so the reader
-	   instantly grasps the character of the map. */
-	.calc-rec {
+	   instantly grasps the character of the map.
+
+	   Sprint 72.1 fix: all .calc-rec__* rules use :global() because
+	   the cards are injected via innerHTML at runtime, which means
+	   they don't get Astro's data-astro-cid-* scoping attribute.
+	   Scoped CSS was silently no-matching (uppercase region label
+	   didn't apply in prod even with !important). :global() opts
+	   these specific rules out of the scoping pass. */
+	:global(.calc-rec) {
 		margin-top: 1.2rem;
 		padding-top: 1rem;
 		border-top: 1px dashed var(--border-card);
 	}
-	.calc-rec__h {
+	:global(.calc-rec__h) {
 		margin: 0 0 0.3rem;
 		font-size: 0.95rem;
 		color: var(--text-heading);
 	}
-	.calc-rec__lede {
+	:global(.calc-rec__lede) {
 		font-size: 0.82rem;
 		color: var(--text-muted);
 		margin: 0 0 0.75rem;
 	}
-	.calc-rec__list {
+	:global(.calc-rec__list) {
 		list-style: none;
 		padding: 0; margin: 0;
 		display: flex; flex-direction: column;
 		gap: 0.45rem;
 		counter-reset: rec;
 	}
-	.calc-rec__card {
+	:global(.calc-rec__card) {
 		position: relative;
 		background: var(--bg-cloud);
 		border: 1px solid var(--border-card);
@@ -769,7 +780,7 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		padding: 0.6rem 0.85rem 0.6rem 2.2rem;
 		counter-increment: rec;
 	}
-	.calc-rec__card::before {
+	:global(.calc-rec__card::before) {
 		content: counter(rec);
 		position: absolute;
 		left: 0.7rem;
@@ -778,37 +789,37 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		font-weight: 700;
 		color: var(--accent-primary);
 	}
-	.calc-rec__mapname {
+	:global(.calc-rec__mapname) {
 		font-weight: 600;
 		font-size: 0.95rem;
 		color: var(--text-heading);
 		text-decoration: none;
 	}
-	.calc-rec__mapname:hover { text-decoration: underline; }
-	.calc-rec__meta {
+	:global(.calc-rec__mapname:hover) { text-decoration: underline; }
+	:global(.calc-rec__meta) {
 		display: flex;
 		gap: 0.75rem;
 		font-size: 0.78rem;
 		color: var(--text-muted);
 		margin-top: 0.15rem;
 	}
-	.calc-rec__region {
+	:global(.calc-rec__region) {
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		font-weight: 600;
 	}
-	.calc-rec__primary {
+	:global(.calc-rec__primary) {
 		font-size: 0.82rem;
 		color: var(--text-body);
 		margin-top: 0.3rem;
 	}
-	.calc-rec__score {
+	:global(.calc-rec__score) {
 		font-size: 0.75rem;
 		color: var(--text-muted);
 		margin-top: 0.2rem;
 		font-family: monospace;
 	}
-	.calc-rec__empty {
+	:global(.calc-rec__empty) {
 		font-size: 0.85rem;
 		color: var(--text-muted);
 		font-style: italic;

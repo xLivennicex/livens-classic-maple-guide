@@ -50,6 +50,15 @@ export interface HuntMap {
 	// Pre-computed sums that keep the client cheap on every input change.
 	totalMobs: number;
 	totalRawExp: number;   // sum of (mob.exp * mob.count) - not class-adjusted
+	// Sprint 72.1: level of the highest-EXP-contributing non-boss mob.
+	// Anchors the "is this map appropriate for the character" check,
+	// which was previously based on min/max mobLevelRange - that gave
+	// false positives on maps where a low-level entry mob co-exists
+	// with high-level trash (Sleepy Dungeon V has Lv 6 to Lv 58 spawns,
+	// but the farming-primary mob is Lv 47). Ranking on primary mob
+	// level makes the recommender surface maps where the primary target
+	// is actually within reach of the character.
+	primaryMobLvl: number;
 }
 
 interface RawMob {
@@ -114,6 +123,20 @@ export const HUNT_MAPS: readonly HuntMap[] = (mapsRaw as RawMap[])
 		if (mobs.every((mb) => mb.stats.isBoss)) return null;
 		const totalMobs = mobs.reduce((s, mb) => s + mb.count, 0);
 		const totalRawExp = mobs.reduce((s, mb) => s + mb.stats.exp * mb.count, 0);
+		// Primary mob = the highest raw-EXP contributor (exp * count).
+		// Class-adjusted primary can differ per lookup, but for the
+		// stable dataset we use raw contribution so pre-baked ordering
+		// still holds up regardless of who's asking.
+		let primaryLvl = 0;
+		let primaryContribution = -1;
+		for (const mb of mobs) {
+			if (mb.stats.isBoss) continue;
+			const contrib = mb.stats.exp * mb.count;
+			if (contrib > primaryContribution) {
+				primaryContribution = contrib;
+				primaryLvl = mb.stats.level;
+			}
+		}
 		return {
 			id: m.id,
 			name: m.name,
@@ -123,6 +146,7 @@ export const HUNT_MAPS: readonly HuntMap[] = (mapsRaw as RawMap[])
 			mobs,
 			totalMobs,
 			totalRawExp,
+			primaryMobLvl: primaryLvl,
 		};
 	})
 	.filter((m): m is HuntMap => m !== null);
@@ -158,10 +182,15 @@ export function classMultiplier(mob: HuntMob, klass: CharacterClass): number {
  * than the lower.
  */
 export function levelMatch(map: HuntMap, characterLevel: number): boolean {
-	if (map.minLvl === 0 && map.maxLvl === 0) return false; // unknown range
-	const low = map.minLvl - 3;
-	const high = map.maxLvl + 5;
-	return characterLevel >= low && characterLevel <= high;
+	// Sprint 72.1: anchor on primary mob level, not map range. Maps
+	// with wide spawn tables (Lv 6 trash + Lv 58 elites) previously
+	// slipped through the range check for characters at both ends.
+	// Anchoring on the primary mob keeps recommendations sensible.
+	if (map.primaryMobLvl === 0) return false;
+	const gap = map.primaryMobLvl - characterLevel;
+	// Under-leveled by up to 4 is fine (easy kills); over-leveled by
+	// up to 6 is workable but starts pushing damage/accuracy limits.
+	return gap >= -6 && gap <= 4;
 }
 
 /**
