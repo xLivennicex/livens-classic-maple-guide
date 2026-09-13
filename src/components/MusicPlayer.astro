@@ -3,21 +3,54 @@
 //
 //  - Reads the active theme from <html data-theme="..."> and looks up
 //    the matching track in src/data/audio.ts.
+//  - Sprint 73: if the caller passes `mapId`, look up the map's
+//    actual client BGM (from audio-catalog); if that file is
+//    available on disk, prefer it over the theme fan-track. Falls
+//    back gracefully when the map has no BGM or the client file
+//    isn't hosted yet.
 //  - Muted by default (browsers block autoplay-with-sound anyway).
 //  - Clicking the button toggles playback; preference is stored in
 //    localStorage so the choice sticks across navigations.
 //  - When theme changes (new page load with different theme), swaps to
 //    the new track and RESPECTS the user's prior on/off preference.
-//  - If a theme has no track (null), the button hides.
+//  - If a theme has no track (null) AND no map override, the button
+//    hides.
 
 import { themeAudio } from "../data/audio";
+import { bgmForMap } from "../data/audio-catalog";
+
+interface Props {
+	// If set, tries to play the client-extracted BGM for this map ID
+	// instead of the theme fan-track. Only meaningful on /maps/[id]
+	// pages. Silently falls through to theme audio if the file
+	// isn't hosted on this deployment.
+	mapId?: number;
+}
+const { mapId } = Astro.props;
+
+// Resolve the map BGM at build time. Only pass a non-null value to
+// the client if the file actually exists on disk - the client script
+// can then trust `data-map-bgm` as ground truth without needing its
+// own catalog lookup.
+const mapBgm = mapId != null ? bgmForMap(mapId) : null;
+const mapBgmData = mapBgm && mapBgm.available ? {
+	src: mapBgm.src,
+	title: mapBgm.title,
+	credit: `Client BGM - ${mapBgm.wzPath}`,
+} : null;
+const mapBgmJson = mapBgmData ? JSON.stringify(mapBgmData) : null;
 
 // Serialize the full audio map into a data-attribute so the client
 // script can look up tracks by theme without another network trip.
 const audioMapJson = JSON.stringify(themeAudio);
 ---
 
-<div id="music-player" class="music-player" data-audio-map={audioMapJson}>
+<div
+	id="music-player"
+	class="music-player"
+	data-audio-map={audioMapJson}
+	data-map-bgm={mapBgmJson}
+>
 	<audio id="music-player-audio" loop preload="none"></audio>
 
 	<button
@@ -66,9 +99,25 @@ const audioMapJson = JSON.stringify(themeAudio);
 
 		const audioMap = JSON.parse(container.dataset.audioMap ?? "{}") as Record<string, AudioTrack | null>;
 		const theme = document.documentElement.dataset.theme ?? "henesys";
-		const track = audioMap[theme];
 
-		// No track for this theme? Leave the button hidden.
+		// Sprint 73: map BGM takes precedence over the theme
+		// fan-track. Set at build time on /maps/[id] pages when the
+		// actual client BGM file is on disk. Null everywhere else -
+		// harmless JSON.parse safeguard.
+		let track: AudioTrack | null = null;
+		if (container.dataset.mapBgm) {
+			try {
+				track = JSON.parse(container.dataset.mapBgm) as AudioTrack;
+			} catch {
+				// Malformed data attribute is a build bug, not a
+				// runtime concern; fall through to theme fallback.
+			}
+		}
+		if (!track) {
+			track = audioMap[theme];
+		}
+
+		// No track available at all? Leave the button hidden.
 		if (!track) return;
 
 		audio.src = track.src;

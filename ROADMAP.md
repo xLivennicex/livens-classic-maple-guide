@@ -396,6 +396,79 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 73 - Per-map MusicPlayer override + damage/mesos calcs:**
+  Three-feature sprint. All shipped in a single build cycle.
+
+  **Per-map MusicPlayer override:**
+  Extended MusicPlayer.astro to accept an optional `mapId` prop.
+  When set, it calls bgmForMap(mapId) at build time; if the map's
+  BGM file exists on disk (Sprint 72.3 established the file naming
+  convention), the client-side script prefers it over the theme
+  fan-track. Falls through to theme audio gracefully when the
+  file isn't hosted.
+
+  BaseLayout gained a `bgmMapId?: number` prop that map dossier
+  pages (/maps/[id]) now pass. Every other page continues playing
+  the theme fan-track. Verified: Henesys map -> plays FloralLife
+  client BGM; Hunting Ground I (BGM not hosted) -> falls back
+  to henesys.mp3 fan track; /jobs page -> plays henesys.mp3
+  (no map override attempted).
+
+  Build time went from ~20s to ~80s because MusicPlayer now runs
+  a build-time BGM lookup on all ~426 map pages. Acceptable
+  tradeoff for the immersion gain; if it grows further, precompute
+  a Map<mapId, BgmEntry> lookup once at module load.
+
+  **src/data/damage-formulas.ts:**
+  New module with v83-canonical damage formulas. Exports
+  WEAPON_TYPES (14 weapon types with STR/DEX/LUK primary +
+  multiplier), DamageInputs/DamageOutput types, and calcDamage()
+  that routes to physical or magic based on weapon type. Wand
+  and Staff walk the magic path (MATT-squared scaling);
+  everything else physical.
+
+  Formula documentation is inline in the module - post-def
+  reduction is `max(1, damage - PDef*0.5)` for physical,
+  `damage - MDef*0.6` for magic. Min bound derived from
+  mastery: `Min = Max * ((Mastery*0.9 + 10) / 100)`.
+
+  Same honesty posture as EXP table: community-consensus formulas,
+  +/- 5-10% expected variance vs in-game numbers until CoT 2
+  Founder's Access lets us verify (Oct 6).
+
+  **/calculators/damage:**
+  Full inputs (weapon type, primary/secondary stat, WA, skill %,
+  mastery slider, target mob picker, PDef, MDef). Outputs both
+  pre-def and post-def values as min/max/avg triples. Picking
+  a mob from the search auto-fills defenses. Stat labels update
+  dynamically when weapon changes (STR->INT for wand, etc.).
+
+  **/calculators/mesos:**
+  KPM, meso per kill, drop rate slider, meso mult, potion cost,
+  savings goal, session length. Outputs gross/net mesos/hr,
+  session total, hours-to-goal, sessions-to-goal.
+
+  v83 formulas: gross/hr = KPM * 60 * MesoPerKill * (DropRate/100)
+  * MesoMult. Net/hr subtracts potion drain. Auto-fill for
+  meso-per-kill uses `level * 1.5` when a mob is picked.
+
+  Hotfix during sprint: compact number formatter (17.6k, 1.2m)
+  wasn't handling negative values (net income when pots exceed
+  income displayed as raw `-12450` while positive rendered as
+  `17.6k`). Fixed to preserve sign around compact abbreviation.
+  Also stopped flooring session total to 0 - showing "-12.5k
+  this session" is more honest than false break-even.
+
+  **Nav updates:**
+  Content dropdown now has: Quests, Party Quests, Items,
+  EXP Calculator, Damage Calculator, Mesos Calculator.
+
+  **Deferred to future sprints:**
+  - CoT 2 Founder's Access verification pass (all formulas)
+  - Party EXP/meso split (existing calc addition)
+  - Damage-per-second calculator (attack speed, skill cooldowns)
+  - Drop rate calculator (needs verified drop tables from CoT 2)
+
   **Sprint 72.3 - Internet Archive BGM fetch + fix cascade:**
   Liven asked whether we could source the client BGMs from
   public archives instead of extracting from his own client.

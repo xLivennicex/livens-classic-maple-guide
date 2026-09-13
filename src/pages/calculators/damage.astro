@@ -1,0 +1,452 @@
+---
+/**
+ * /calculators/damage - v83-canonical damage calculator.
+ *
+ * Same accuracy posture as /calculators/exp: formulas are the
+ * best community consensus for v83; CoT 2 Founder's Access will
+ * let us verify and tighten anything that's off. UI carries an
+ * honest disclaimer noting the +/- 5-10% variance expected until
+ * the Oct 6 verification pass.
+ *
+ * Weapon type controls the primary/secondary stat labels AND
+ * whether we walk the physical or magic damage path (wand/staff
+ * are magic; everything else physical).
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import mobs from "../../data/db/mobs.json";
+import { WEAPON_TYPES } from "../../data/damage-formulas";
+
+// Same slim mob projection as the EXP calc uses for its target
+// selector - id, name, level, defenses. Filters out mobs with no
+// combat stats (NPCs, event mobs).
+interface RawMob {
+	id: number;
+	name: string;
+	stats: {
+		level: number;
+		physicalDefense: number;
+		magicDefense: number;
+	} | null;
+}
+const combatMobs = (mobs as RawMob[])
+	.filter((m) => m.stats && m.stats.level > 0)
+	.map((m) => ({
+		id: m.id,
+		name: m.name,
+		level: m.stats!.level,
+		pdef: m.stats!.physicalDefense,
+		mdef: m.stats!.magicDefense,
+	}))
+	.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
+	.slice(0, 500); // client-side <select> caps at ~500 for responsiveness
+
+const mobsJson = JSON.stringify(combatMobs);
+const weaponEntries = Object.entries(WEAPON_TYPES).map(([id, w]) => ({
+	id, ...w,
+}));
+const weaponsJson = JSON.stringify(weaponEntries);
+---
+
+<BaseLayout
+	title="Damage calculator - Liven's Classic Maple Guide"
+	description="v83-canonical damage calculator. Estimate min/max/avg damage for any weapon + stat combo, factoring in mastery, skill %, and target defense."
+	theme="perion"
+	currentPath="/calculators/damage"
+>
+	<nav class="crumbs">
+		<a href="/">Home</a>
+		<span class="crumbs__sep">&middot;</span>
+		<a href="/calculators/exp">Calculators</a>
+		<span class="crumbs__sep">&middot;</span>
+		<span>Damage</span>
+	</nav>
+
+	<header class="calc-hero">
+		<p class="eyebrow">Calculator</p>
+		<h1>Damage estimator</h1>
+		<p class="lede">
+			v83 damage math with weapon-type multipliers, mastery
+			scaling, and defense reduction. Pick a target mob to
+			auto-populate its defenses.
+		</p>
+	</header>
+
+	<div class="calc-grid">
+		<section class="calc-inputs">
+			<h2 class="calc-inputs__h">Your setup</h2>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Weapon type</span>
+				<select id="input-weapon">
+					{weaponEntries.map((w) => (
+						<option value={w.id}>{w.label}</option>
+					))}
+				</select>
+				<span class="calc-field__hint">
+					Wand and Staff walk the magic formula (MATT-squared
+					scaling). Everything else is physical.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label" id="label-primary">Primary stat (STR)</span>
+				<input type="number" id="input-primary" min="4" max="999" value="80" />
+				<span class="calc-field__hint">
+					Your primary stat total INCLUDING equipment bonuses.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label" id="label-secondary">Secondary stat (DEX)</span>
+				<input type="number" id="input-secondary" min="4" max="999" value="25" />
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label" id="label-wa">Weapon attack</span>
+				<input type="number" id="input-wa" min="1" max="200" value="45" />
+				<span class="calc-field__hint">
+					Weapon's WA stat. For magic classes, this is MATT.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Skill damage %</span>
+				<input type="number" id="input-skill" min="100" max="500" value="100" step="10" />
+				<span class="calc-field__hint">
+					100 = basic attack. First-job skills usually land
+					150-200%; 2nd-job specials go 250-400%.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Weapon mastery %</span>
+				<input type="range" id="input-mastery" min="0" max="90" value="10" step="10" />
+				<output id="output-mastery">10</output><span>%</span>
+				<span class="calc-field__hint">
+					0 for beginners; ~20% at early 1st job; 60% maxed
+					1st-job mastery; 90% maxed 2nd-job SP-invested.
+				</span>
+			</label>
+
+			<h3 class="calc-inputs__subh">Target</h3>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Target mob (optional)</span>
+				<input type="search" id="input-mob-search" placeholder="type to filter..." />
+				<select id="input-mob-sel" size="6">
+					<!-- Populated by JS -->
+				</select>
+				<span class="calc-field__hint">
+					Picking a mob auto-fills the defense inputs below.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Physical defense</span>
+				<input type="number" id="input-pdef" min="0" max="9999" value="0" />
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Magic defense</span>
+				<input type="number" id="input-mdef" min="0" max="9999" value="0" />
+			</label>
+		</section>
+
+		<section class="calc-outputs">
+			<h2 class="calc-outputs__h">Damage</h2>
+
+			<div class="calc-result-grid">
+				<div class="calc-result">
+					<span class="calc-result__label">Max (before def)</span>
+					<span class="calc-result__value" id="out-max">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Min (before def)</span>
+					<span class="calc-result__value" id="out-min">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Average</span>
+					<span class="calc-result__value" id="out-avg">-</span>
+				</div>
+			</div>
+
+			<h3 class="calc-outputs__subh">After target defense</h3>
+			<div class="calc-result-grid">
+				<div class="calc-result calc-result--emphasis">
+					<span class="calc-result__label">Max hit</span>
+					<span class="calc-result__value" id="out-postdef-max">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Min hit</span>
+					<span class="calc-result__value" id="out-postdef-min">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Average hit</span>
+					<span class="calc-result__value" id="out-postdef-avg">-</span>
+				</div>
+			</div>
+
+			<p class="calc-accuracy calc-accuracy--warn">
+				<strong>Note:</strong> v83 damage formulas are community-
+				reverse-engineered; expect +/- 5-10% variance vs in-game
+				numbers until the CoT 2 verification pass (Oct 6+).
+				Great for build planning, not min-maxing to the point.
+			</p>
+
+			<details class="calc-details">
+				<summary>How this is calculated</summary>
+				<p><strong>Physical:</strong> Max = ((Primary * mult) + Secondary) * WA / 100, then * SkillDmg%. Min = Max * ((Mastery * 0.9 + 10) / 100). Post-def = max(1, dmg - (PDef * 0.5)).</p>
+				<p><strong>Magic:</strong> Max = (MATT^2 / 1000) + MATT + (INT * Skill%/100). Same mastery-derived min bound. Post-def uses MDef * 0.6 reduction.</p>
+				<p>Weapon multipliers per type: 1H sword 4.0, 2H sword 4.6, 1H axe 4.4, 2H axe 4.8, polearm 5.0, spear 3.0, dagger 4.0, claw 3.6, bow 3.4, crossbow 3.6.</p>
+			</details>
+		</section>
+	</div>
+
+	<script id="mobs-data" type="application/json" is:inline set:html={mobsJson}></script>
+	<script id="weapons-data" type="application/json" is:inline set:html={weaponsJson}></script>
+</BaseLayout>
+
+<script>
+	// Client controller. Kept in one file for easy iteration; if
+	// it grows past ~200 lines, factor into a module import.
+	interface Mob { id: number; name: string; level: number; pdef: number; mdef: number; }
+	interface Weapon { id: string; label: string; mult: number; primary: string; secondary: string; }
+
+	const mobs: Mob[] = JSON.parse(document.getElementById("mobs-data")!.textContent ?? "[]");
+	const weapons: Weapon[] = JSON.parse(document.getElementById("weapons-data")!.textContent ?? "[]");
+	const weaponById = new Map(weapons.map((w) => [w.id, w]));
+
+	const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+	const $weapon = $<HTMLSelectElement>("input-weapon");
+	const $primary = $<HTMLInputElement>("input-primary");
+	const $secondary = $<HTMLInputElement>("input-secondary");
+	const $wa = $<HTMLInputElement>("input-wa");
+	const $skill = $<HTMLInputElement>("input-skill");
+	const $mastery = $<HTMLInputElement>("input-mastery");
+	const $masteryOut = $<HTMLOutputElement>("output-mastery");
+	const $pdef = $<HTMLInputElement>("input-pdef");
+	const $mdef = $<HTMLInputElement>("input-mdef");
+	const $mobSearch = $<HTMLInputElement>("input-mob-search");
+	const $mobSel = $<HTMLSelectElement>("input-mob-sel");
+	const $lblPrimary = $<HTMLElement>("label-primary");
+	const $lblSecondary = $<HTMLElement>("label-secondary");
+	const $lblWa = $<HTMLElement>("label-wa");
+
+	function statLabel(k: string): string {
+		return { str: "STR", dex: "DEX", luk: "LUK", int: "INT" }[k] ?? k.toUpperCase();
+	}
+
+	function updateStatLabels(): void {
+		const w = weaponById.get($weapon.value);
+		if (!w) return;
+		$lblPrimary.textContent = `Primary stat (${statLabel(w.primary)})`;
+		$lblSecondary.textContent = `Secondary stat (${statLabel(w.secondary)})`;
+		$lblWa.textContent = w.primary === "int" ? "Magic attack (MATT)" : "Weapon attack";
+	}
+
+	function populateMobList(filter: string): void {
+		const f = filter.trim().toLowerCase();
+		const filtered = f
+			? mobs.filter((m) => m.name.toLowerCase().includes(f))
+			: mobs;
+		$mobSel.innerHTML = "";
+		for (const m of filtered.slice(0, 300)) {
+			const opt = document.createElement("option");
+			opt.value = String(m.id);
+			opt.textContent = `Lv ${m.level} - ${m.name} (PDef ${m.pdef}, MDef ${m.mdef})`;
+			opt.dataset.pdef = String(m.pdef);
+			opt.dataset.mdef = String(m.mdef);
+			$mobSel.appendChild(opt);
+		}
+	}
+
+	function applyMob(): void {
+		const opt = $mobSel.selectedOptions[0];
+		if (!opt) return;
+		$pdef.value = opt.dataset.pdef ?? "0";
+		$mdef.value = opt.dataset.mdef ?? "0";
+		recompute();
+	}
+
+	function recompute(): void {
+		const w = weaponById.get($weapon.value);
+		if (!w) return;
+		const primary = Math.max(0, Number($primary.value) || 0);
+		const secondary = Math.max(0, Number($secondary.value) || 0);
+		const wa = Math.max(0, Number($wa.value) || 0);
+		const skillPct = Math.max(0, Number($skill.value) || 100);
+		const masteryPct = Math.max(0, Math.min(90, Number($mastery.value) || 0));
+		const pdef = Math.max(0, Number($pdef.value) || 0);
+		const mdef = Math.max(0, Number($mdef.value) || 0);
+
+		$masteryOut.value = String(masteryPct);
+
+		const isMagic = w.primary === "int";
+		let max: number;
+		if (isMagic) {
+			const mattSquared = (wa * wa) / 1000;
+			max = mattSquared + wa + (primary * skillPct / 100);
+		} else {
+			const base = (primary * w.mult + secondary) * wa / 100;
+			max = base * (skillPct / 100);
+		}
+		const minBound = ((masteryPct * 0.9) + 10) / 100;
+		const min = max * minBound;
+		const avg = (max + min) / 2;
+		const defRed = isMagic ? mdef * 0.6 : pdef * 0.5;
+
+		const out = (n: number) => Math.max(1, Math.floor(n));
+		const fmt = (n: number) => n.toLocaleString();
+
+		$("out-max").textContent = fmt(Math.floor(max));
+		$("out-min").textContent = fmt(Math.floor(min));
+		$("out-avg").textContent = fmt(Math.floor(avg));
+		$("out-postdef-max").textContent = fmt(out(max - defRed));
+		$("out-postdef-min").textContent = fmt(out(min - defRed));
+		$("out-postdef-avg").textContent = fmt(out(avg - defRed));
+	}
+
+	// Wire up
+	populateMobList("");
+	updateStatLabels();
+	recompute();
+	$weapon.addEventListener("change", () => { updateStatLabels(); recompute(); });
+	$mobSearch.addEventListener("input", () => populateMobList($mobSearch.value));
+	$mobSel.addEventListener("change", applyMob);
+	for (const el of [$primary, $secondary, $wa, $skill, $mastery, $pdef, $mdef]) {
+		el.addEventListener("input", recompute);
+	}
+</script>
+
+<style>
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs__sep { margin: 0 0.35rem; }
+
+	.calc-hero { margin-bottom: 1.5rem; }
+	.calc-hero .lede { color: var(--text-body); line-height: 1.55; max-width: 55rem; }
+
+	.calc-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+	}
+	@media (max-width: 780px) {
+		.calc-grid { grid-template-columns: 1fr; }
+	}
+
+	.calc-inputs, .calc-outputs {
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 10px;
+		padding: 1.1rem 1.3rem;
+	}
+	.calc-inputs__h, .calc-outputs__h {
+		margin: 0 0 0.9rem;
+		font-size: 1.05rem;
+		color: var(--text-heading);
+	}
+	.calc-inputs__subh, .calc-outputs__subh {
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		margin: 1.1rem 0 0.5rem;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--border-card);
+	}
+
+	.calc-field {
+		display: block;
+		margin-bottom: 0.85rem;
+	}
+	.calc-field__label {
+		display: block;
+		font-weight: 600;
+		font-size: 0.87rem;
+		color: var(--text-primary);
+		margin-bottom: 0.25rem;
+	}
+	.calc-field input, .calc-field select {
+		width: 100%;
+		padding: 0.45rem 0.6rem;
+		border: 1px solid var(--border-card);
+		border-radius: 5px;
+		font-size: 0.92rem;
+		background: var(--bg-cloud);
+	}
+	.calc-field input[type="range"] {
+		padding: 0;
+	}
+	.calc-field__hint {
+		display: block;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		margin-top: 0.25rem;
+	}
+	.calc-field output {
+		display: inline-block;
+		font-family: monospace;
+		font-weight: 700;
+		margin-right: 0.2rem;
+	}
+
+	.calc-result-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 0.6rem;
+		margin-bottom: 0.6rem;
+	}
+	.calc-result {
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 6px;
+		padding: 0.55rem 0.7rem;
+		text-align: center;
+	}
+	.calc-result--emphasis {
+		background: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-cloud));
+		border-color: var(--accent-primary);
+	}
+	.calc-result__label {
+		display: block;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+	}
+	.calc-result__value {
+		display: block;
+		font-size: 1.35rem;
+		font-weight: 700;
+		font-family: monospace;
+		color: var(--text-heading);
+		margin-top: 0.15rem;
+	}
+
+	.calc-accuracy {
+		margin-top: 1rem;
+		padding: 0.6rem 0.85rem;
+		font-size: 0.83rem;
+		border-radius: 5px;
+	}
+	.calc-accuracy--warn {
+		background: rgb(255 244 220);
+		color: rgb(109 68 8);
+		border-left: 3px solid rgb(200 140 20);
+	}
+
+	.calc-details {
+		margin-top: 1rem;
+		font-size: 0.85rem;
+		color: var(--text-body);
+	}
+	.calc-details summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+	.calc-details p { margin: 0.4rem 0; }
+</style>

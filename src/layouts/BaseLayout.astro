@@ -32,6 +32,11 @@ interface Props {
 	// background so every page ships a proper og:image without the
 	// caller having to think about it.
 	image?: string;
+	// Sprint 73: if set, the floating MusicPlayer plays THIS map's
+	// actual client BGM (from the datamine) instead of the theme
+	// fan-track. Only meaningful on /maps/[id] pages. Falls through
+	// to theme audio if the BGM file isn't hosted on this deployment.
+	bgmMapId?: number;
 }
 
 // Theme -> preview image mapping. All existing themes have a matching
@@ -153,6 +158,6 @@ const canonicalUrl = Astro.site
 			</p>
 		</footer>
 
-		<MusicPlayer />
+		<MusicPlayer mapId={Astro.props.bgmMapId} />
 	</body>
 </html>

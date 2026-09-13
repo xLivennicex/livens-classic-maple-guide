@@ -1,0 +1,388 @@
+---
+/**
+ * /calculators/mesos - meso-income estimator.
+ *
+ * v83 meso drop mechanics (community consensus):
+ *  - Non-boss mobs drop mesos on ~60-70% of kills.
+ *  - Average per-kill drop (when it drops) scales roughly with
+ *    mob level: level * 1.5 is a reasonable default coefficient.
+ *  - Boss mobs drop much larger stacks; excluded from the
+ *    auto-fill list to keep grind estimates honest.
+ *
+ * Same posture as the other calculators: planning tool, not
+ * min-maxing oracle. CoT 2 launch data will let us tighten
+ * the coefficient once observed rates settle.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import mobs from "../../data/db/mobs.json";
+
+interface RawMob {
+	id: number;
+	name: string;
+	stats: {
+		level: number;
+		exp: number;
+		isBoss: boolean | null;
+	} | null;
+}
+const grindMobs = (mobs as RawMob[])
+	.filter((m) => m.stats && m.stats.exp > 0 && !m.stats.isBoss)
+	.map((m) => ({
+		id: m.id,
+		name: m.name,
+		level: m.stats!.level,
+	}))
+	.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
+	.slice(0, 500);
+
+const mobsJson = JSON.stringify(grindMobs);
+---
+
+<BaseLayout
+	title="Mesos calculator - Liven's Classic Maple Guide"
+	description="Estimate meso income per hour based on kill rate, target mob, drop rate, and potion drain. Includes hours-to-goal for saving up for a big purchase."
+	theme="kerning"
+	currentPath="/calculators/mesos"
+>
+	<nav class="crumbs">
+		<a href="/">Home</a>
+		<span class="crumbs__sep">&middot;</span>
+		<a href="/calculators/exp">Calculators</a>
+		<span class="crumbs__sep">&middot;</span>
+		<span>Mesos</span>
+	</nav>
+
+	<header class="calc-hero">
+		<p class="eyebrow">Calculator</p>
+		<h1>Meso income estimator</h1>
+		<p class="lede">
+			How long until you can afford that Zakum helm? Punch in
+			your grind rate, and we'll math out the meso-per-hour and
+			hours-to-goal.
+		</p>
+	</header>
+
+	<div class="calc-grid">
+		<section class="calc-inputs">
+			<h2 class="calc-inputs__h">Your grind</h2>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Kills per minute</span>
+				<input type="number" id="input-kpm" min="1" max="500" value="30" step="1" />
+				<span class="calc-field__hint">
+					Beginner grind ~15-25 KPM; 2nd-job AoE grind ~40-80.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Target mob (optional)</span>
+				<input type="search" id="input-mob-search" placeholder="type to filter..." />
+				<select id="input-mob-sel" size="6">
+					<!-- Populated by JS -->
+				</select>
+				<span class="calc-field__hint">
+					Picking a mob auto-fills the meso-per-kill estimate
+					based on its level.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Meso per kill (avg when it drops)</span>
+				<input type="number" id="input-meso-per-kill" min="0" max="9999" value="15" />
+				<span class="calc-field__hint">
+					Rough v83 formula: mob level * 1.5. Override if
+					your in-game observations differ.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Drop rate %</span>
+				<input type="range" id="input-drop-rate" min="10" max="100" value="65" step="5" />
+				<output id="output-drop-rate">65</output><span>%</span>
+				<span class="calc-field__hint">
+					v83 default ~65% for regular mobs. Higher on events
+					or with Meso Up buffs.
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Meso multiplier</span>
+				<input type="number" id="input-meso-mult" min="0.5" max="5" value="1.0" step="0.1" />
+				<span class="calc-field__hint">
+					Server events + Meso Up buffs stack. 1.0 = base rate.
+				</span>
+			</label>
+
+			<h3 class="calc-inputs__subh">Costs</h3>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Potion cost per minute (mesos)</span>
+				<input type="number" id="input-pot-cost" min="0" max="99999" value="0" step="10" />
+				<span class="calc-field__hint">
+					Mage MP-drain? 1st-job attacker with HP pots? Include
+					here to see net income. 0 for pot-free grinds.
+				</span>
+			</label>
+
+			<h3 class="calc-inputs__subh">Goal</h3>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Savings goal (mesos)</span>
+				<input type="number" id="input-goal" min="0" max="9999999999" value="1000000" step="100000" />
+				<span class="calc-field__hint">
+					1M / 10M / 100M - what are you saving for?
+				</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Session length (minutes)</span>
+				<input type="number" id="input-session" min="1" max="600" value="60" step="15" />
+			</label>
+		</section>
+
+		<section class="calc-outputs">
+			<h2 class="calc-outputs__h">Income</h2>
+
+			<div class="calc-result-grid">
+				<div class="calc-result">
+					<span class="calc-result__label">Gross mesos/hr</span>
+					<span class="calc-result__value" id="out-gross-hr">-</span>
+				</div>
+				<div class="calc-result calc-result--emphasis">
+					<span class="calc-result__label">Net mesos/hr</span>
+					<span class="calc-result__value" id="out-net-hr">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Mesos this session</span>
+					<span class="calc-result__value" id="out-session-total">-</span>
+				</div>
+			</div>
+
+			<h3 class="calc-outputs__subh">Time to goal</h3>
+			<div class="calc-result-grid">
+				<div class="calc-result calc-result--emphasis">
+					<span class="calc-result__label">Hours to goal</span>
+					<span class="calc-result__value" id="out-hours-to-goal">-</span>
+				</div>
+				<div class="calc-result">
+					<span class="calc-result__label">Sessions to goal</span>
+					<span class="calc-result__value" id="out-sessions-to-goal">-</span>
+				</div>
+			</div>
+
+			<p class="calc-accuracy calc-accuracy--warn">
+				<strong>Note:</strong> v83 meso mechanics are community
+				consensus; drop rate and level->meso coefficient are
+				approximate. CoT 2 launch will let us tighten these
+				once observed rates settle. Good for goal-planning,
+				not for min-maxing to the meso.
+			</p>
+
+			<details class="calc-details">
+				<summary>How this is calculated</summary>
+				<p><strong>Gross/hr</strong> = KPM * 60 * MesoPerKill * (DropRate/100) * MesoMult</p>
+				<p><strong>Net/hr</strong> = Gross/hr - (PotCost * 60)</p>
+				<p><strong>Session total</strong> = Net/hr * (SessionMin / 60)</p>
+				<p><strong>Hours to goal</strong> = Goal / Net/hr (returns infinity if net/hr <= 0 - i.e. pots cost more than you earn)</p>
+			</details>
+		</section>
+	</div>
+
+	<script id="mobs-data" type="application/json" is:inline set:html={mobsJson}></script>
+</BaseLayout>
+
+<script>
+	interface Mob { id: number; name: string; level: number; }
+	const mobs: Mob[] = JSON.parse(document.getElementById("mobs-data")!.textContent ?? "[]");
+	const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+	const $kpm = $<HTMLInputElement>("input-kpm");
+	const $mesoPerKill = $<HTMLInputElement>("input-meso-per-kill");
+	const $dropRate = $<HTMLInputElement>("input-drop-rate");
+	const $dropRateOut = $<HTMLOutputElement>("output-drop-rate");
+	const $mesoMult = $<HTMLInputElement>("input-meso-mult");
+	const $potCost = $<HTMLInputElement>("input-pot-cost");
+	const $goal = $<HTMLInputElement>("input-goal");
+	const $session = $<HTMLInputElement>("input-session");
+	const $mobSearch = $<HTMLInputElement>("input-mob-search");
+	const $mobSel = $<HTMLSelectElement>("input-mob-sel");
+
+	function populateMobList(filter: string): void {
+		const f = filter.trim().toLowerCase();
+		const filtered = f ? mobs.filter((m) => m.name.toLowerCase().includes(f)) : mobs;
+		$mobSel.innerHTML = "";
+		for (const m of filtered.slice(0, 300)) {
+			const opt = document.createElement("option");
+			opt.value = String(m.id);
+			opt.textContent = `Lv ${m.level} - ${m.name}`;
+			opt.dataset.level = String(m.level);
+			$mobSel.appendChild(opt);
+		}
+	}
+
+	function applyMob(): void {
+		const opt = $mobSel.selectedOptions[0];
+		if (!opt) return;
+		const lvl = Number(opt.dataset.level) || 1;
+		// v83 formula: level * 1.5. Round to nearest int for
+		// readability - meso drops are always integer stacks in-game.
+		$mesoPerKill.value = String(Math.round(lvl * 1.5));
+		recompute();
+	}
+
+	function fmt(n: number): string {
+		if (!isFinite(n)) return "never";
+		// Sprint 73 fix: preserve sign when abbreviating, otherwise
+		// negative net (pots > income) rendered as raw digits while
+		// positive rendered as compact k/m/b - visually inconsistent.
+		const sign = n < 0 ? "-" : "";
+		const abs = Math.abs(n);
+		if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "b";
+		if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "m";
+		if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "k";
+		return String(Math.floor(n));
+	}
+
+	function recompute(): void {
+		const kpm = Math.max(0, Number($kpm.value) || 0);
+		const mpk = Math.max(0, Number($mesoPerKill.value) || 0);
+		const drop = Math.max(0, Math.min(100, Number($dropRate.value) || 0));
+		const mult = Math.max(0, Number($mesoMult.value) || 1);
+		const pot = Math.max(0, Number($potCost.value) || 0);
+		const goal = Math.max(0, Number($goal.value) || 0);
+		const session = Math.max(1, Number($session.value) || 60);
+
+		$dropRateOut.value = String(drop);
+
+		const grossHr = kpm * 60 * mpk * (drop / 100) * mult;
+		const netHr = grossHr - (pot * 60);
+		const sessionTotal = netHr * (session / 60);
+		// Guard against divide-by-zero and negative net (pots eat
+		// the profit). "never" reads honestly - the grind doesn't
+		// converge if you're losing money per hour.
+		const hoursToGoal = netHr > 0 ? goal / netHr : Infinity;
+		const sessionsToGoal = netHr > 0 ? hoursToGoal / (session / 60) : Infinity;
+
+		$("out-gross-hr").textContent = fmt(grossHr);
+		$("out-net-hr").textContent = fmt(netHr);
+		// Sprint 73 fix: don't floor session total to 0 when net is
+		// negative - showing "-12.5k" honestly says "you lost mesos
+		// this hour" instead of falsely reading break-even.
+		$("out-session-total").textContent = fmt(sessionTotal);
+		$("out-hours-to-goal").textContent = isFinite(hoursToGoal)
+			? hoursToGoal.toFixed(1) + " h"
+			: "never";
+		$("out-sessions-to-goal").textContent = isFinite(sessionsToGoal)
+			? Math.ceil(sessionsToGoal).toString()
+			: "never";
+	}
+
+	// Wire up
+	populateMobList("");
+	recompute();
+	$mobSearch.addEventListener("input", () => populateMobList($mobSearch.value));
+	$mobSel.addEventListener("change", applyMob);
+	for (const el of [$kpm, $mesoPerKill, $dropRate, $mesoMult, $potCost, $goal, $session]) {
+		el.addEventListener("input", recompute);
+	}
+</script>
+
+<style>
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs__sep { margin: 0 0.35rem; }
+
+	.calc-hero { margin-bottom: 1.5rem; }
+	.calc-hero .lede { color: var(--text-body); line-height: 1.55; max-width: 55rem; }
+
+	.calc-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+	}
+	@media (max-width: 780px) { .calc-grid { grid-template-columns: 1fr; } }
+
+	.calc-inputs, .calc-outputs {
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 10px;
+		padding: 1.1rem 1.3rem;
+	}
+	.calc-inputs__h, .calc-outputs__h {
+		margin: 0 0 0.9rem;
+		font-size: 1.05rem;
+		color: var(--text-heading);
+	}
+	.calc-inputs__subh, .calc-outputs__subh {
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		margin: 1.1rem 0 0.5rem;
+		padding-top: 0.7rem;
+		border-top: 1px solid var(--border-card);
+	}
+
+	.calc-field { display: block; margin-bottom: 0.85rem; }
+	.calc-field__label {
+		display: block; font-weight: 600; font-size: 0.87rem;
+		color: var(--text-primary); margin-bottom: 0.25rem;
+	}
+	.calc-field input, .calc-field select {
+		width: 100%; padding: 0.45rem 0.6rem;
+		border: 1px solid var(--border-card); border-radius: 5px;
+		font-size: 0.92rem; background: var(--bg-cloud);
+	}
+	.calc-field input[type="range"] { padding: 0; }
+	.calc-field__hint {
+		display: block; font-size: 0.78rem;
+		color: var(--text-muted); margin-top: 0.25rem;
+	}
+	.calc-field output {
+		display: inline-block; font-family: monospace;
+		font-weight: 700; margin-right: 0.2rem;
+	}
+
+	.calc-result-grid {
+		display: grid; grid-template-columns: 1fr 1fr 1fr;
+		gap: 0.6rem; margin-bottom: 0.6rem;
+	}
+	.calc-result {
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 6px; padding: 0.55rem 0.7rem; text-align: center;
+	}
+	.calc-result--emphasis {
+		background: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-cloud));
+		border-color: var(--accent-primary);
+	}
+	.calc-result__label {
+		display: block; font-size: 0.72rem;
+		text-transform: uppercase; letter-spacing: 0.05em;
+		color: var(--text-muted);
+	}
+	.calc-result__value {
+		display: block; font-size: 1.35rem; font-weight: 700;
+		font-family: monospace; color: var(--text-heading);
+		margin-top: 0.15rem;
+	}
+
+	.calc-accuracy {
+		margin-top: 1rem; padding: 0.6rem 0.85rem;
+		font-size: 0.83rem; border-radius: 5px;
+	}
+	.calc-accuracy--warn {
+		background: rgb(255 244 220); color: rgb(109 68 8);
+		border-left: 3px solid rgb(200 140 20);
+	}
+
+	.calc-details {
+		margin-top: 1rem; font-size: 0.85rem;
+		color: var(--text-body);
+	}
+	.calc-details summary {
+		cursor: pointer; font-weight: 600; color: var(--text-primary);
+	}
+	.calc-details p { margin: 0.4rem 0; }
+</style>
