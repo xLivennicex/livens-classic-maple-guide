@@ -1,0 +1,563 @@
+---
+/**
+ * /calculators/exp - EXP/hour + time-to-level calculator.
+ *
+ * User picks a mob from the datamine, sets their kill rate + level,
+ * and the calculator returns EXP/hour, time to next level, and %
+ * of a level per hour. Numbers below Lv 30 are canonical v83; above
+ * Lv 30 the calculator flags the result as "approximate" (see
+ * src/data/exp-table.ts).
+ *
+ * Interactivity is a tiny client script - no framework, no build
+ * step. Mob catalog is serialized once as JSON and the client filters
+ * it in-memory. ~4,300 mobs, but only those with stats.exp > 0
+ * (~2,800) are shipped, ~120 KB of JSON before gzip.
+ *
+ * Frontmatter's job: filter mobs.json to the meaningful subset and
+ * hand it to the client script. Level curve import lets us render
+ * the initial "hours to next level" line without a client roundtrip.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import mobs from "../../data/db/mobs.json";
+import { EXP_TO_NEXT, LEVEL_CAP, isLevelVerified } from "../../data/exp-table";
+
+interface MobStats {
+	level: number;
+	exp: number;
+	isBoss?: boolean | null;
+	maxHP?: number;
+}
+
+interface RawMob {
+	id: number;
+	name: string;
+	stats: MobStats | null;
+}
+
+// Filter out mobs with no EXP payoff and mobs missing stats blocks.
+// Sort by level ascending so the dropdown reads naturally low-to-high.
+// Bosses are kept - a "how long to grind Zakum" answer has value even
+// if it's a joke. Clamp name length to avoid runaway select widths.
+const combatMobs = (mobs as RawMob[])
+	.filter((m) => m.stats && m.stats.exp > 0)
+	.map((m) => ({
+		id: m.id,
+		name: m.name,
+		level: m.stats!.level,
+		exp: m.stats!.exp,
+		hp: m.stats!.maxHP ?? 0,
+		isBoss: !!m.stats!.isBoss,
+	}))
+	.sort((a, b) => a.level - b.level || a.exp - b.exp);
+
+const mobsJson = JSON.stringify(combatMobs);
+// Ship only the range of EXP values the client actually needs (1-199).
+// Skip the 200 cap check on client - JS handles bounds naturally.
+const expTableJson = JSON.stringify(EXP_TO_NEXT);
+
+// Preselect a sensible mob so the first paint isn't empty. Orange
+// Mushroom is the canonical "low-level EXP mob" everyone knows.
+const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
+	?? combatMobs[Math.floor(combatMobs.length / 4)]; // fallback: quarter into the list
+---
+
+<BaseLayout
+	title="EXP Calculator - Liven's Classic Maple Guide"
+	description="Calculate EXP per hour, kills to next level, and grind time estimates for any MapleStory Classic mob. Uses v83-canonical EXP curve; results above Lv 30 flagged as approximate pending CoT 2 verification."
+	currentPath="/calculators/exp"
+	theme="henesys"
+	decorations={false}
+>
+	<div class="hero-plate">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a href="/">Home</a>
+			<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
+			<span aria-current="page">EXP Calculator</span>
+		</nav>
+
+		<header class="calc-hero">
+			<span class="eyebrow">Grind planner</span>
+			<h1>EXP Calculator</h1>
+			<p class="lede">
+				Pick a mob, enter your kill rate, and see EXP/hour and
+				time to level. Numbers pull from the v83 datamine.
+				<strong>Lv 1-30 uses canonical v83 EXP values;</strong>
+				higher levels use an extrapolated growth curve pending
+				CoT 2 Founder's Access verification.
+			</p>
+		</header>
+	</div>
+
+	<div class="calc-grid">
+		<!-- ============ Inputs (left) ============ -->
+		<section class="calc-inputs">
+			<h2 class="calc-inputs__h">Your situation</h2>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Your level</span>
+				<input
+					type="number" id="input-level"
+					min="1" max={LEVEL_CAP - 1} value="10" step="1"
+					aria-describedby="hint-level"
+				/>
+				<span id="hint-level" class="calc-field__hint">Level 1 to {LEVEL_CAP - 1} (cap is {LEVEL_CAP})</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Kills per minute</span>
+				<input
+					type="number" id="input-kpm"
+					min="1" max="600" value="30" step="1"
+					aria-describedby="hint-kpm"
+				/>
+				<span id="hint-kpm" class="calc-field__hint">Realistic warrior: 20-40. Mage/archer mob: 40-80.</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">Mob</span>
+				<input
+					type="text" id="input-mob-search"
+					placeholder="Search e.g. orange mushroom, wild boar"
+					autocomplete="off"
+				/>
+				<select id="input-mob" size="8" aria-label="Mob selection">
+					<!-- Populated by JS from mobsJson -->
+				</select>
+				<span class="calc-field__hint">{combatMobs.length.toLocaleString()} EXP-granting mobs loaded from the datamine</span>
+			</label>
+
+			<label class="calc-field">
+				<span class="calc-field__label">EXP multiplier</span>
+				<input
+					type="number" id="input-multiplier"
+					min="0.1" max="10" value="1.0" step="0.1"
+				/>
+				<span class="calc-field__hint">Server events + Holy Symbol stack. Default 1.0 = base rate.</span>
+			</label>
+
+			<div class="calc-target">
+				<h3 class="calc-target__h">Optional: hours to reach Lv...</h3>
+				<input
+					type="number" id="input-target-level"
+					min="2" max={LEVEL_CAP} value="30" step="1"
+				/>
+			</div>
+		</section>
+
+		<!-- ============ Outputs (right) ============ -->
+		<section class="calc-outputs">
+			<h2 class="calc-outputs__h">Results</h2>
+
+			<div class="calc-mob-summary" id="calc-mob-summary" aria-live="polite">
+				<!-- Populated by JS with mob level/EXP/HP -->
+			</div>
+
+			<dl class="calc-result">
+				<div class="calc-result__row">
+					<dt>EXP per hour</dt>
+					<dd id="out-exp-hour">-</dd>
+				</div>
+				<div class="calc-result__row">
+					<dt>EXP to next level</dt>
+					<dd id="out-exp-tnl">-</dd>
+				</div>
+				<div class="calc-result__row">
+					<dt>Kills to next level</dt>
+					<dd id="out-kills-tnl">-</dd>
+				</div>
+				<div class="calc-result__row">
+					<dt>Time to next level</dt>
+					<dd id="out-time-tnl">-</dd>
+				</div>
+				<div class="calc-result__row">
+					<dt>Percent per hour</dt>
+					<dd id="out-pct-hour">-</dd>
+				</div>
+				<div class="calc-result__row">
+					<dt>Hours to reach target</dt>
+					<dd id="out-time-target">-</dd>
+				</div>
+			</dl>
+
+			<p id="out-accuracy" class="calc-accuracy">-</p>
+
+			<details class="calc-details">
+				<summary>How this is calculated</summary>
+				<ul>
+					<li>EXP/hour = mob EXP x kills/minute x 60 x multiplier</li>
+					<li>Kills to next = EXP to next / (mob EXP x multiplier), rounded up</li>
+					<li>Time to next = kills to next / (kills/minute)</li>
+					<li>Percent per hour = EXP/hour / EXP to next * 100</li>
+					<li>Hours to target sums the EXP-to-next values across every level from current to target, then divides by EXP/hour</li>
+				</ul>
+				<p>
+					Party splits, drop mesos, and elite/monster park bonuses
+					aren't modeled yet. If you want those, ping in the
+					jukebox thread or the site's Giscus comments.
+				</p>
+			</details>
+		</section>
+	</div>
+
+	<script id="mobs-data" type="application/json" is:inline set:html={mobsJson}></script>
+	<script id="exp-table-data" type="application/json" is:inline set:html={expTableJson}></script>
+	<script id="default-mob-data" type="application/json" is:inline set:html={JSON.stringify(defaultMob)}></script>
+</BaseLayout>
+
+<script>
+	/**
+	 * EXP calculator client. All state is derived from the form
+	 * inputs on every recompute - no cached "last result" that
+	 * could drift out of sync. Cheap enough at this scale.
+	 */
+	interface Mob {
+		id: number;
+		name: string;
+		level: number;
+		exp: number;
+		hp: number;
+		isBoss: boolean;
+	}
+
+	const mobs: Mob[] = JSON.parse(
+		document.getElementById("mobs-data")!.textContent ?? "[]",
+	);
+	const expTable: number[] = JSON.parse(
+		document.getElementById("exp-table-data")!.textContent ?? "[]",
+	);
+	const defaultMob: Mob | undefined = JSON.parse(
+		document.getElementById("default-mob-data")!.textContent ?? "null",
+	) ?? undefined;
+
+	// Keep the verified-cutoff in lockstep with VERIFIED_1_TO_30 in
+	// src/data/exp-table.ts. If the module extends the verified
+	// range, bump this constant. Cheaper than shipping isLevelVerified()
+	// to the client just for a boolean.
+	const VERIFIED_MAX = 30;
+
+	const $level = document.getElementById("input-level") as HTMLInputElement;
+	const $kpm = document.getElementById("input-kpm") as HTMLInputElement;
+	const $mobSel = document.getElementById("input-mob") as HTMLSelectElement;
+	const $mobSearch = document.getElementById("input-mob-search") as HTMLInputElement;
+	const $mult = document.getElementById("input-multiplier") as HTMLInputElement;
+	const $target = document.getElementById("input-target-level") as HTMLInputElement;
+
+	const $summary = document.getElementById("calc-mob-summary")!;
+	const $expHour = document.getElementById("out-exp-hour")!;
+	const $expTnl = document.getElementById("out-exp-tnl")!;
+	const $killsTnl = document.getElementById("out-kills-tnl")!;
+	const $timeTnl = document.getElementById("out-time-tnl")!;
+	const $pctHour = document.getElementById("out-pct-hour")!;
+	const $timeTarget = document.getElementById("out-time-target")!;
+	const $accuracy = document.getElementById("out-accuracy")!;
+
+	// ---- Mob dropdown population + search filter ----
+	function populateMobList(query: string): void {
+		const q = query.trim().toLowerCase();
+		// Cap at 300 options to keep the select responsive on mobile.
+		// Search narrows the list well before the cap matters.
+		const filtered = q === ""
+			? mobs.slice(0, 300)
+			: mobs.filter((m) => m.name.toLowerCase().includes(q)).slice(0, 300);
+		$mobSel.innerHTML = "";
+		for (const m of filtered) {
+			const opt = document.createElement("option");
+			opt.value = String(m.id);
+			opt.textContent = `Lv ${m.level} - ${m.name} (${m.exp} EXP)`;
+			if (m.isBoss) opt.textContent += " [boss]";
+			$mobSel.appendChild(opt);
+		}
+		if ($mobSel.options.length > 0) $mobSel.selectedIndex = 0;
+	}
+
+	function currentMob(): Mob | undefined {
+		const id = Number($mobSel.value);
+		return mobs.find((m) => m.id === id);
+	}
+
+	// ---- Formatting helpers ----
+	function fmtInt(n: number): string {
+		return Math.round(n).toLocaleString();
+	}
+	function fmtTime(minutes: number): string {
+		if (!isFinite(minutes) || minutes <= 0) return "-";
+		if (minutes < 1) return `${Math.round(minutes * 60)}s`;
+		if (minutes < 60) return `${minutes.toFixed(1)}m`;
+		const hours = minutes / 60;
+		if (hours < 24) return `${hours.toFixed(1)}h`;
+		const days = hours / 24;
+		return `${days.toFixed(1)}d`;
+	}
+
+	// ---- Main compute pass ----
+	function recompute(): void {
+		const level = Math.max(1, Math.min(199, Math.floor(Number($level.value) || 1)));
+		const kpm = Math.max(0, Number($kpm.value) || 0);
+		const mult = Math.max(0, Number($mult.value) || 1);
+		const target = Math.max(level + 1, Math.min(200, Math.floor(Number($target.value) || (level + 1))));
+		const mob = currentMob();
+
+		if (!mob) {
+			$summary.textContent = "Pick a mob to see results.";
+			return;
+		}
+
+		// Mob summary card
+		$summary.innerHTML = `
+			<div class="calc-mob-summary__title">${mob.name}</div>
+			<div class="calc-mob-summary__meta">
+				Lv ${mob.level} - ${mob.exp.toLocaleString()} EXP - ${mob.hp.toLocaleString()} HP
+				${mob.isBoss ? '<span class="calc-mob-summary__badge">boss</span>' : ""}
+			</div>
+		`;
+
+		const expPerKill = mob.exp * mult;
+		const expHour = expPerKill * kpm * 60;
+		const expTnl = expTable[level - 1] ?? 0;
+
+		$expHour.textContent = fmtInt(expHour);
+		$expTnl.textContent = expTnl > 0 ? fmtInt(expTnl) : "(level cap)";
+
+		if (expPerKill > 0 && expTnl > 0) {
+			const killsTnl = Math.ceil(expTnl / expPerKill);
+			const minsTnl = killsTnl / Math.max(kpm, 0.0001);
+			$killsTnl.textContent = fmtInt(killsTnl);
+			$timeTnl.textContent = fmtTime(minsTnl);
+			$pctHour.textContent = expHour > 0
+				? `${((expHour / expTnl) * 100).toFixed(1)}%`
+				: "-";
+		} else {
+			$killsTnl.textContent = "-";
+			$timeTnl.textContent = "-";
+			$pctHour.textContent = "-";
+		}
+
+		// Hours-to-target: sum EXP required across level -> target,
+		// divide by EXP/hour. This is the "how long is the grind"
+		// answer the user actually wants when planning a play
+		// session.
+		if (target > level && expHour > 0) {
+			let totalExp = 0;
+			for (let lv = level; lv < target && lv < 200; lv++) {
+				totalExp += expTable[lv - 1] ?? 0;
+			}
+			const hoursTarget = totalExp / expHour;
+			$timeTarget.textContent = fmtTime(hoursTarget * 60);
+		} else {
+			$timeTarget.textContent = "-";
+		}
+
+		// Confidence flag. Warn if any level in the current-to-next
+		// range is outside the verified band.
+		if (level > VERIFIED_MAX) {
+			$accuracy.textContent = "Note: Lv " + VERIFIED_MAX + "+ EXP values are extrapolated from the v83 canonical curve, not hand-verified. Treat time estimates as ballpark until CoT 2 verification.";
+			$accuracy.className = "calc-accuracy calc-accuracy--warn";
+		} else if (target > VERIFIED_MAX) {
+			$accuracy.textContent = "Note: your target level (" + target + ") is above the verified band. Time-to-target estimate uses extrapolated values.";
+			$accuracy.className = "calc-accuracy calc-accuracy--warn";
+		} else {
+			$accuracy.textContent = "Numbers use canonical v83 EXP values for this level range.";
+			$accuracy.className = "calc-accuracy calc-accuracy--ok";
+		}
+	}
+
+	// ---- Wire up ----
+	populateMobList("");
+	if (defaultMob) {
+		$mobSel.value = String(defaultMob.id);
+	}
+	recompute();
+
+	$mobSearch.addEventListener("input", () => {
+		populateMobList($mobSearch.value);
+		recompute();
+	});
+	$mobSel.addEventListener("change", recompute);
+	for (const el of [$level, $kpm, $mult, $target]) {
+		el.addEventListener("input", recompute);
+	}
+</script>
+
+<style>
+	.hero-plate {
+		background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+		padding: 1.3rem 1.5rem;
+		border-radius: 10px;
+		border: 1px solid var(--border-card);
+		margin-bottom: 1.5rem;
+	}
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs__sep { margin: 0 0.35rem; }
+	.calc-hero h1 { margin: 0.3rem 0; }
+	.calc-hero .lede { max-width: 55rem; line-height: 1.6; color: var(--text-body); }
+
+	.calc-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: 1.25rem;
+	}
+	@media (max-width: 820px) {
+		.calc-grid { grid-template-columns: 1fr; }
+	}
+
+	.calc-inputs, .calc-outputs {
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 10px;
+		padding: 1.1rem 1.2rem;
+	}
+	.calc-inputs__h, .calc-outputs__h {
+		margin: 0 0 0.85rem;
+		font-size: 1rem;
+		color: var(--text-heading);
+	}
+
+	.calc-field {
+		display: block;
+		margin-bottom: 0.95rem;
+	}
+	.calc-field__label {
+		display: block;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 0.3rem;
+	}
+	.calc-field input[type="number"],
+	.calc-field input[type="text"] {
+		width: 100%;
+		padding: 0.5rem 0.65rem;
+		border: 1px solid var(--border-card);
+		border-radius: 6px;
+		background: #fff;
+		font: inherit;
+	}
+	.calc-field select {
+		width: 100%;
+		padding: 0.3rem;
+		margin-top: 0.4rem;
+		border: 1px solid var(--border-card);
+		border-radius: 6px;
+		background: #fff;
+		font: inherit;
+	}
+	.calc-field__hint {
+		display: block;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		margin-top: 0.3rem;
+	}
+
+	.calc-target {
+		margin-top: 1.2rem;
+		padding-top: 1rem;
+		border-top: 1px dashed var(--border-card);
+	}
+	.calc-target__h {
+		font-size: 0.85rem;
+		font-weight: 600;
+		margin: 0 0 0.4rem;
+		color: var(--text-primary);
+	}
+	.calc-target input {
+		width: 100%;
+		padding: 0.5rem 0.65rem;
+		border: 1px solid var(--border-card);
+		border-radius: 6px;
+		background: #fff;
+		font: inherit;
+	}
+
+	.calc-mob-summary {
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 8px;
+		padding: 0.7rem 0.85rem;
+		margin-bottom: 1rem;
+	}
+	.calc-mob-summary__title {
+		font-weight: 700;
+		font-size: 1rem;
+		color: var(--text-heading);
+	}
+	.calc-mob-summary__meta {
+		font-size: 0.85rem;
+		color: var(--text-body);
+		margin-top: 0.15rem;
+	}
+	.calc-mob-summary__badge {
+		display: inline-block;
+		background: var(--accent-primary);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		padding: 0.1rem 0.4rem;
+		border-radius: 4px;
+		margin-left: 0.35rem;
+		letter-spacing: 0.05em;
+	}
+
+	.calc-result {
+		margin: 0;
+		padding: 0;
+		display: flex; flex-direction: column;
+		gap: 0.4rem;
+	}
+	.calc-result__row {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 0.55rem 0.75rem;
+		background: var(--bg-cloud);
+		border-radius: 6px;
+	}
+	.calc-result__row dt {
+		font-size: 0.85rem;
+		color: var(--text-body);
+	}
+	.calc-result__row dd {
+		margin: 0;
+		font-family: monospace;
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: var(--text-heading);
+		text-align: right;
+	}
+
+	.calc-accuracy {
+		margin: 0.85rem 0 0;
+		font-size: 0.82rem;
+		padding: 0.55rem 0.75rem;
+		border-radius: 6px;
+	}
+	.calc-accuracy--ok {
+		background: color-mix(in srgb, #46784b 15%, var(--bg-cloud));
+		color: #2d5232;
+		border-left: 3px solid #46784b;
+	}
+	.calc-accuracy--warn {
+		background: color-mix(in srgb, #b8730e 15%, var(--bg-cloud));
+		color: #6d4408;
+		border-left: 3px solid #b8730e;
+	}
+
+	.calc-details {
+		margin-top: 1rem;
+		font-size: 0.85rem;
+		color: var(--text-body);
+	}
+	.calc-details summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--text-primary);
+		padding: 0.4rem 0;
+	}
+	.calc-details ul {
+		margin: 0.4rem 0;
+		padding-left: 1.2rem;
+	}
+</style>

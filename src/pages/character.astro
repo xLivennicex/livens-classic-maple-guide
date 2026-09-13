@@ -135,6 +135,28 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 				</select>
 			</div>
 
+			{/* Sprint 71: Background picker. Backgrounds are pure CSS
+			    (not baked into the maplestory.io render URL), so they
+			    render instantly with no API round-trip. Options span
+			    transparent -> town-photo backgrounds -> theme-color
+			    fills. State persists via URL param `bg` and
+			    localStorage alongside the equipment build. */}
+			<div class="bg-row" role="group" aria-label="Background">
+				<span class="bg-row__label">Background</span>
+				<div class="bg-swatches" id="bg-swatches">
+					<button type="button" class="bg-swatch bg-swatch--none" data-bg="none" title="Transparent"><span class="sr-only">None</span></button>
+					<button type="button" class="bg-swatch" data-bg="henesys" style="background-image:url(/images/henesys-background.png)" title="Henesys"><span class="sr-only">Henesys</span></button>
+					<button type="button" class="bg-swatch" data-bg="ellinia" style="background-image:url(/images/ellinia-background.png)" title="Ellinia"><span class="sr-only">Ellinia</span></button>
+					<button type="button" class="bg-swatch" data-bg="perion" style="background-image:url(/images/perion-background.png)" title="Perion"><span class="sr-only">Perion</span></button>
+					<button type="button" class="bg-swatch" data-bg="kerning" style="background-image:url(/images/kerning-background.png)" title="Kerning City"><span class="sr-only">Kerning City</span></button>
+					<button type="button" class="bg-swatch" data-bg="lith" style="background-image:url(/images/lith-background.png)" title="Lith Harbor"><span class="sr-only">Lith Harbor</span></button>
+					<button type="button" class="bg-swatch" data-bg="sleepywood" style="background-image:url(/images/sleepywood-background.png)" title="Sleepywood"><span class="sr-only">Sleepywood</span></button>
+					<button type="button" class="bg-swatch bg-swatch--color" data-bg="sky" style="background:linear-gradient(180deg, #a8d4f0 0%, #d8ecfa 100%)" title="Sky gradient"><span class="sr-only">Sky</span></button>
+					<button type="button" class="bg-swatch bg-swatch--color" data-bg="sunset" style="background:linear-gradient(180deg, #ffb46b 0%, #ff7a3d 100%)" title="Sunset"><span class="sr-only">Sunset</span></button>
+					<button type="button" class="bg-swatch bg-swatch--color" data-bg="night" style="background:linear-gradient(180deg, #1c2b4d 0%, #3a4a75 100%)" title="Night"><span class="sr-only">Night</span></button>
+				</div>
+			</div>
+
 			<div class="cust-actions">
 				<button type="button" class="btn btn--primary" data-action="share">
 					Share build
@@ -155,6 +177,21 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 				Cold-cache renders can take ~3s (Cloudflare warm-up).
 				If the sprite fails, click Reset then re-equip - the API
 				sometimes 502s on obscure item combos.
+			</p>
+
+			{/* Sprint 71: honest note on the emote request. Verified
+			    across three query-param variations and two game regions
+			    (GMS/83, KMST/1114) that maplestory.io's render endpoint
+			    ignores the emote/emotion/expression parameter and always
+			    returns the default face frame. Different personalities
+			    are available via the Face slot itself - each face ID
+			    has its own baked-in expression. */}
+			<p class="preview-help preview-help--note">
+				<strong>About emotes:</strong> classic MapleStory's
+				F1-F7 emotes aren't renderable through our sprite API -
+				it only serves the default face frame. Facial variety
+				lives in the <em>Face</em> tab; each face ID has its
+				own permanent expression.
 			</p>
 		</aside>
 
@@ -286,10 +323,22 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 	const DEFAULTS = JSON.parse(document.getElementById("defaults-data").textContent);
 	const SLOTS = JSON.parse(document.getElementById("slots-data").textContent);
 
+	// Sprint 71: allowlist of legal background keys, kept in lockstep
+	// with the [data-bg="..."] values in the swatch buttons. Set
+	// lookup is O(1) and prevents CSS-injection from a hostile
+	// ?bg= URL param.
+	const BG_OPTIONS = new Set([
+		"none",
+		"henesys", "ellinia", "perion", "kerning", "lith", "sleepywood",
+		"sky", "sunset", "night",
+	]);
+
 	// ---- DOM refs ----
 	const $preview = document.getElementById("character-preview");
 	const $loading = document.getElementById("preview-loading");
 	const $stance  = document.getElementById("stance-select");
+	const $bgSwatches = document.getElementById("bg-swatches");
+	const $previewFrame = document.querySelector(".cust-preview__frame");
 	const $search  = document.getElementById("item-search");
 	const $grid    = document.getElementById("item-grid");
 	const $summary = document.getElementById("build-summary");
@@ -322,12 +371,19 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 	renderGrid();
 	renderSummary();
 	renderPreview();
+	applyBackground();
 	wireEvents();
 
 	// ---- Functions ----
 	function readInitialState() {
 		// URL params take precedence (shared links). Fall back to
 		// localStorage (returning users), then defaults.
+		//
+		// Sprint 71: background is a first-class part of the state
+		// (string key, not an item ID) so it rides the same URL +
+		// localStorage pipeline as the equipment. String allowlist
+		// enforced via BG_OPTIONS - any unknown value falls back to
+		// "none" to prevent CSS injection from a hostile URL param.
 		const params = new URLSearchParams(location.search);
 		const fromUrl = {};
 		let hasUrl = false;
@@ -335,12 +391,18 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 			const v = params.get(s.key);
 			if (v && /^\d+$/.test(v)) { fromUrl[s.key] = Number(v); hasUrl = true; }
 		}
-		if (hasUrl) return { ...DEFAULTS, ...fromUrl };
+		const bgParam = params.get("bg");
+		if (bgParam && BG_OPTIONS.has(bgParam)) { fromUrl.background = bgParam; hasUrl = true; }
+		if (hasUrl) return { ...DEFAULTS, background: "none", ...fromUrl };
 		try {
 			const saved = localStorage.getItem(STORAGE_KEY);
-			if (saved) return { ...DEFAULTS, ...JSON.parse(saved) };
+			if (saved) {
+				const parsed = JSON.parse(saved);
+				if (parsed.background && !BG_OPTIONS.has(parsed.background)) parsed.background = "none";
+				return { ...DEFAULTS, background: "none", ...parsed };
+			}
 		} catch (e) { /* localStorage disabled - ok */ }
-		return { ...DEFAULTS };
+		return { ...DEFAULTS, background: "none" };
 	}
 
 	function persist() {
@@ -350,6 +412,7 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 		for (const s of SLOTS) {
 			if (state[s.key] != null) params.set(s.key, String(state[s.key]));
 		}
+		if (state.background && state.background !== "none") params.set("bg", state.background);
 		history.replaceState(null, "", "?" + params.toString());
 	}
 
@@ -372,6 +435,28 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 			}, 1500);
 		};
 		$preview.src = url;
+	}
+
+	/**
+	 * Sprint 71: apply the currently-selected background to the
+	 * preview frame. Kept separate from renderPreview() because
+	 * background changes don't require a re-render of the sprite
+	 * (no API call), just a CSS class swap. Also updates the
+	 * pressed state on the swatch buttons so the UI stays in sync.
+	 */
+	function applyBackground() {
+		const bg = BG_OPTIONS.has(state.background) ? state.background : "none";
+		// Data attribute on the frame drives the CSS variant. All
+		// visual styling lives in the stylesheet (see .cust-preview__frame[data-bg=...])
+		// so we don't compute inline styles here.
+		if ($previewFrame) $previewFrame.setAttribute("data-bg", bg);
+		if ($bgSwatches) {
+			for (const btn of $bgSwatches.querySelectorAll("[data-bg]")) {
+				const active = btn.getAttribute("data-bg") === bg;
+				btn.classList.toggle("bg-swatch--active", active);
+				btn.setAttribute("aria-pressed", active ? "true" : "false");
+			}
+		}
 	}
 
 	function renderTabs() {
@@ -568,11 +653,16 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 	}
 
 	function reset() {
-		state = Object.assign({}, DEFAULTS);
+		// Sprint 71: reset also clears the background back to "none".
+		// DEFAULTS doesn't include a background field (it lives in
+		// character-slots.ts and is equipment-only), so we assign
+		// it explicitly here rather than pollute DEFAULTS.
+		state = Object.assign({}, DEFAULTS, { background: "none" });
 		persist();
 		renderGrid();
 		renderSummary();
 		renderPreview();
+		applyBackground();
 	}
 
 	async function share() {
@@ -658,6 +748,20 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 			renderGrid();
 		});
 		$stance.addEventListener("change", renderPreview);
+		// Sprint 71: swatch clicks update state.background, persist,
+		// and re-apply. Event-delegated so we only bind one listener
+		// no matter how many swatches we add later.
+		if ($bgSwatches) {
+			$bgSwatches.addEventListener("click", function (e) {
+				const btn = e.target.closest("[data-bg]");
+				if (!btn) return;
+				const bg = btn.getAttribute("data-bg");
+				if (!BG_OPTIONS.has(bg)) return;
+				state.background = bg;
+				applyBackground();
+				persist();
+			});
+		}
 		$summary.addEventListener("click", function (e) {
 			const chip = e.target.closest("[data-jump-slot]");
 			if (!chip) return;
@@ -763,7 +867,80 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 		border-radius: 8px;
 		margin-bottom: 0.75rem;
 		overflow: hidden;
+		background-size: cover;
+		background-position: center;
 	}
+	/* Sprint 71: background variants driven by data-bg attribute.
+	   "none" keeps the original diagonal-stripe pattern (default).
+	   Town variants use image files that already exist in
+	   /public/images/. Color variants use gradients. All variants
+	   override background-image/color; the [data-bg="none"] block
+	   restores the default. */
+	.cust-preview__frame[data-bg="none"] {
+		background:
+			linear-gradient(180deg, rgba(255,255,255,0.9), rgba(230,240,220,0.85)),
+			repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0 4px, transparent 4px 8px);
+	}
+	.cust-preview__frame[data-bg="henesys"]    { background-image: url(/images/henesys-background.png); }
+	.cust-preview__frame[data-bg="ellinia"]    { background-image: url(/images/ellinia-background.png); }
+	.cust-preview__frame[data-bg="perion"]     { background-image: url(/images/perion-background.png); }
+	.cust-preview__frame[data-bg="kerning"]    { background-image: url(/images/kerning-background.png); }
+	.cust-preview__frame[data-bg="lith"]       { background-image: url(/images/lith-background.png); }
+	.cust-preview__frame[data-bg="sleepywood"] { background-image: url(/images/sleepywood-background.png); }
+	.cust-preview__frame[data-bg="sky"]    { background: linear-gradient(180deg, #a8d4f0 0%, #d8ecfa 100%); }
+	.cust-preview__frame[data-bg="sunset"] { background: linear-gradient(180deg, #ffb46b 0%, #ff7a3d 100%); }
+	.cust-preview__frame[data-bg="night"]  { background: linear-gradient(180deg, #1c2b4d 0%, #3a4a75 100%); }
+
+	/* Sprint 71: horizontal swatch strip. Row scrolls if the
+	   swatches overflow (skinny mobile viewports). Each swatch is
+	   a 32x32 square with a subtle border; active state gets a
+	   colored ring. sr-only spans preserve accessible labels. */
+	.bg-row {
+		display: flex; align-items: center; gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+	.bg-row__label {
+		font-size: 0.85rem; font-weight: 600;
+		color: var(--text-primary);
+		flex-shrink: 0;
+	}
+	.bg-swatches {
+		display: flex; gap: 0.35rem;
+		overflow-x: auto;
+		padding: 0.15rem;
+		scrollbar-width: thin;
+	}
+	.bg-swatch {
+		flex: 0 0 auto;
+		width: 32px; height: 32px;
+		border: 1px solid var(--border-card);
+		border-radius: 5px;
+		background-size: cover;
+		background-position: center;
+		cursor: pointer;
+		padding: 0;
+		transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+	}
+	.bg-swatch:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.bg-swatch--active {
+		border-color: var(--accent-primary);
+		box-shadow: 0 0 0 2px var(--accent-primary);
+	}
+	.bg-swatch--none {
+		background:
+			linear-gradient(180deg, rgba(255,255,255,0.9), rgba(230,240,220,0.85)),
+			repeating-linear-gradient(45deg, rgba(0,0,0,0.08) 0 3px, transparent 3px 6px);
+	}
+	.bg-swatch--color { /* gradient set inline */ }
+
+	/* Sprint 71: emote-limitation note. Subtle dashed border so it
+	   reads as a caveat, not a callout. */
+	.preview-help--note {
+		border-top: 1px dashed var(--border-card);
+		padding-top: 0.55rem;
+		margin-top: 0.55rem;
+	}
+	.preview-help--note strong { color: var(--text-primary); }
 	#character-preview {
 		image-rendering: pixelated;
 		max-height: 10rem;

@@ -1,0 +1,471 @@
+---
+/**
+ * /jukebox - dedicated full-page BGM browser.
+ *
+ * Distinct from the floating <MusicPlayer /> widget which plays the
+ * page's theme track on any page. This page is the CATALOG - it shows
+ * every track in themeAudio, lets the user pick any one to play,
+ * shows credit/attribution, and offers loop + auto-advance.
+ *
+ * Only one track plays at a time (starting a new one stops the
+ * previous). Uses a single <audio> element that swaps src rather
+ * than spinning up N elements. That keeps memory constant no matter
+ * how many tracks we add.
+ *
+ * Design notes:
+ *   - No autoplay on page load (browsers block it anyway).
+ *   - Volume + play state persist to localStorage across sessions.
+ *   - Auto-advance defaults ON; if you disable it we honor the choice.
+ *   - Loop and auto-advance are mutually exclusive - looping means
+ *     one track forever, auto-advance means walk through the list.
+ */
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { themeAudio, type ThemeName } from "../data/audio";
+
+// Filter out null entries (themes with no track yet - e.g. ellinia).
+// Attach the theme key so the client can pick a matching background
+// accent when a track is playing.
+const tracks = Object.entries(themeAudio)
+	.filter(([, t]) => t !== null)
+	.map(([theme, t]) => ({
+		theme: theme as ThemeName,
+		src: t!.src,
+		title: t!.title,
+		credit: t!.credit ?? null,
+	}));
+
+const tracksJson = JSON.stringify(tracks);
+---
+
+<BaseLayout
+	title="Jukebox - Liven's Classic Maple Guide"
+	description="Browse and play every background music track curated for Liven's Classic Maple Guide. Fan compositions inspired by MapleStory zones."
+	currentPath="/jukebox"
+	theme="henesys"
+	decorations={false}
+>
+	<div class="hero-plate">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a href="/">Home</a>
+			<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
+			<span aria-current="page">Jukebox</span>
+		</nav>
+
+		<header class="jb-hero">
+			<span class="eyebrow">Community jukebox</span>
+			<h1>Jukebox</h1>
+			<p class="lede">
+				Fan compositions inspired by classic MapleStory zones.
+				Original tracks belong to NEXON and aren't hosted here;
+				what you're listening to is community-made homage.
+				Click any track to start it - one plays at a time.
+			</p>
+		</header>
+	</div>
+
+	<!-- Now playing bar - sticky at the top of the track list so it
+	     stays visible while you scroll a long catalog. -->
+	<section class="jb-now-playing" aria-live="polite" id="now-playing-bar">
+		<div class="jb-now-playing__meta">
+			<span class="eyebrow eyebrow--muted">Now playing</span>
+			<strong id="now-playing-title">Nothing yet - pick a track below</strong>
+			<span class="jb-now-playing__credit" id="now-playing-credit"></span>
+		</div>
+		<div class="jb-now-playing__controls">
+			<button type="button" class="jb-btn" id="btn-pause" aria-label="Pause" disabled>
+				<span aria-hidden="true">||</span>
+			</button>
+			<label class="jb-vol">
+				<span class="sr-only">Volume</span>
+				<span class="jb-vol__icon" aria-hidden="true">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+						<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon>
+						<path d="M15.5 8.5 a 5 5 0 0 1 0 7"></path>
+					</svg>
+				</span>
+				<input type="range" id="volume" min="0" max="100" value="60" />
+			</label>
+			<label class="jb-toggle">
+				<input type="checkbox" id="autoadvance" checked />
+				<span>Auto-advance</span>
+			</label>
+			<label class="jb-toggle">
+				<input type="checkbox" id="loop" />
+				<span>Loop track</span>
+			</label>
+		</div>
+	</section>
+
+	<audio id="jb-audio" preload="none"></audio>
+
+	<!-- Track list. Each row is a self-contained "card" the user
+	     clicks to start playback. Uses <ol> for semantic ordering
+	     since the tracks have a stable order in themeAudio. -->
+	<ol class="jb-list" id="jb-list">
+		{tracks.map((t, i) => (
+			<li>
+				<button
+					type="button"
+					class={`jb-track jb-track--${t.theme}`}
+					data-src={t.src}
+					data-index={i}
+					data-title={t.title}
+					data-credit={t.credit ?? ""}
+					data-theme={t.theme}
+				>
+					<span class="jb-track__index">{String(i + 1).padStart(2, "0")}</span>
+					<span class="jb-track__glyph" aria-hidden="true">
+						<span class="jb-track__glyph-play">&#9654;</span>
+						<span class="jb-track__glyph-pause">&#10073;&#10073;</span>
+					</span>
+					<span class="jb-track__body">
+						<strong class="jb-track__title">{t.title}</strong>
+						<span class="jb-track__meta">
+							<span class="jb-track__theme">{t.theme}</span>
+							{t.credit && <span class="jb-track__credit"> - {t.credit}</span>}
+						</span>
+					</span>
+				</button>
+			</li>
+		))}
+	</ol>
+
+	<!-- Empty-slot placeholder for themes without tracks. Honest
+	     rather than hiding the gap - reader can see where content
+	     is coming and how much is here. -->
+	{Object.entries(themeAudio).filter(([, t]) => t === null).length > 0 && (
+		<section class="jb-empty">
+			<p class="eyebrow eyebrow--muted">Coming soon</p>
+			<ul class="jb-empty__list">
+				{Object.entries(themeAudio)
+					.filter(([, t]) => t === null)
+					.map(([theme]) => (
+						<li>{theme} - waiting on a track submission</li>
+					))}
+			</ul>
+			<p class="jb-empty__note">
+				Have a fan composition to submit? Ping via the community
+				channels linked in the footer.
+			</p>
+		</section>
+	)}
+
+	<script id="jb-tracks-data" type="application/json" is:inline set:html={tracksJson}></script>
+</BaseLayout>
+
+<script>
+	/**
+	 * Jukebox client controller.
+	 *
+	 * State kept dead simple: which track index is loaded, is it
+	 * playing, current volume. Persistence via localStorage under
+	 * the "livens-jukebox-*" namespace.
+	 */
+	interface Track {
+		theme: string;
+		src: string;
+		title: string;
+		credit: string | null;
+	}
+
+	const STORAGE = {
+		volume: "livens-jukebox-volume",
+		autoAdvance: "livens-jukebox-autoadvance",
+		loop: "livens-jukebox-loop",
+	};
+
+	const tracks: Track[] = JSON.parse(
+		document.getElementById("jb-tracks-data")!.textContent ?? "[]",
+	);
+
+	const $audio = document.getElementById("jb-audio") as HTMLAudioElement;
+	const $list = document.getElementById("jb-list")!;
+	const $nowTitle = document.getElementById("now-playing-title")!;
+	const $nowCredit = document.getElementById("now-playing-credit")!;
+	const $btnPause = document.getElementById("btn-pause") as HTMLButtonElement;
+	const $volume = document.getElementById("volume") as HTMLInputElement;
+	const $autoAdvance = document.getElementById("autoadvance") as HTMLInputElement;
+	const $loop = document.getElementById("loop") as HTMLInputElement;
+
+	let currentIndex = -1; // -1 = nothing loaded
+
+	// ---- Persistence: restore user preferences on load ----
+	try {
+		const v = localStorage.getItem(STORAGE.volume);
+		if (v !== null) $volume.value = v;
+	} catch {}
+	try {
+		const aa = localStorage.getItem(STORAGE.autoAdvance);
+		if (aa !== null) $autoAdvance.checked = aa === "1";
+	} catch {}
+	try {
+		const lp = localStorage.getItem(STORAGE.loop);
+		if (lp !== null) $loop.checked = lp === "1";
+	} catch {}
+
+	// Apply initial volume + loop mode to the <audio> element.
+	$audio.volume = Number($volume.value) / 100;
+	$audio.loop = $loop.checked;
+
+	// ---- Play / stop lifecycle ----
+	function loadAndPlay(index: number): void {
+		const t = tracks[index];
+		if (!t) return;
+		if (currentIndex === index && !$audio.paused) {
+			// Second click on the currently-playing track = pause.
+			$audio.pause();
+			return;
+		}
+		if (currentIndex !== index) {
+			// New track - swap src and reset position.
+			$audio.src = t.src;
+		}
+		currentIndex = index;
+		$audio.play().catch((err) => {
+			// Browsers may block if the user hasn't interacted; the
+			// click on this button IS interaction so this should
+			// succeed. Log for debugging cold-cache errors.
+			console.warn("Jukebox play failed:", err);
+		});
+		$nowTitle.textContent = t.title;
+		$nowCredit.textContent = t.credit ? `${t.theme} - ${t.credit}` : t.theme;
+		syncPlayingUI();
+	}
+
+	function syncPlayingUI(): void {
+		// Highlight the currently-playing row + set pause button enabled.
+		const buttons = $list.querySelectorAll<HTMLButtonElement>("[data-index]");
+		buttons.forEach((btn) => {
+			const idx = Number(btn.dataset.index);
+			const active = idx === currentIndex && !$audio.paused;
+			btn.classList.toggle("jb-track--playing", active);
+			btn.setAttribute("aria-pressed", active ? "true" : "false");
+		});
+		$btnPause.disabled = currentIndex === -1;
+		$btnPause.textContent = $audio.paused ? "\u25B6" : "\u2223\u2223";
+		$btnPause.setAttribute("aria-label", $audio.paused ? "Resume" : "Pause");
+	}
+
+	// ---- Event wiring ----
+	$list.addEventListener("click", (e) => {
+		const target = e.target as HTMLElement;
+		const btn = target.closest<HTMLButtonElement>("[data-index]");
+		if (!btn) return;
+		loadAndPlay(Number(btn.dataset.index));
+	});
+
+	$btnPause.addEventListener("click", () => {
+		if (currentIndex === -1) return;
+		if ($audio.paused) $audio.play().catch(() => {});
+		else $audio.pause();
+	});
+
+	$volume.addEventListener("input", () => {
+		$audio.volume = Number($volume.value) / 100;
+		try { localStorage.setItem(STORAGE.volume, $volume.value); } catch {}
+	});
+
+	$autoAdvance.addEventListener("change", () => {
+		try { localStorage.setItem(STORAGE.autoAdvance, $autoAdvance.checked ? "1" : "0"); } catch {}
+	});
+
+	$loop.addEventListener("change", () => {
+		$audio.loop = $loop.checked;
+		try { localStorage.setItem(STORAGE.loop, $loop.checked ? "1" : "0"); } catch {}
+	});
+
+	// Audio element events keep the UI in sync when playback state
+	// changes for any reason (network stall, end of track, etc.).
+	$audio.addEventListener("play", syncPlayingUI);
+	$audio.addEventListener("pause", syncPlayingUI);
+	$audio.addEventListener("ended", () => {
+		// Loop is handled natively by the <audio loop> attribute.
+		// If auto-advance is on and we're not looping, walk to the
+		// next track and continue playback.
+		if (!$loop.checked && $autoAdvance.checked && tracks.length > 1) {
+			loadAndPlay((currentIndex + 1) % tracks.length);
+		} else {
+			syncPlayingUI();
+		}
+	});
+</script>
+
+<style>
+	.hero-plate {
+		background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+		padding: 1.3rem 1.5rem;
+		border-radius: 10px;
+		border: 1px solid var(--border-card);
+		margin-bottom: 1.5rem;
+	}
+	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+	.crumbs a { color: var(--accent-primary); text-decoration: none; }
+	.crumbs__sep { margin: 0 0.35rem; }
+
+	.jb-hero h1 { margin: 0.3rem 0; }
+	.jb-hero .lede {
+		max-width: 55rem;
+		color: var(--text-body);
+		line-height: 1.6;
+		margin: 0.4rem 0 0;
+	}
+	.eyebrow--muted { color: var(--text-muted); }
+
+	/* Sticky "now playing" bar - stays pinned as the reader scrolls
+	   through a long catalog. Layout collapses to a single column on
+	   narrow viewports so buttons don't wrap awkwardly. */
+	.jb-now-playing {
+		position: sticky;
+		top: 0.5rem;
+		z-index: 5;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1rem;
+		align-items: center;
+		padding: 0.85rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 10px;
+		margin-bottom: 1rem;
+	}
+	.jb-now-playing__meta { display: flex; flex-direction: column; min-width: 0; }
+	.jb-now-playing__meta strong {
+		font-size: 1rem;
+		color: var(--text-heading);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.jb-now-playing__credit {
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.jb-now-playing__controls {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		flex-wrap: wrap;
+	}
+	@media (max-width: 640px) {
+		.jb-now-playing {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.jb-btn {
+		width: 40px; height: 40px;
+		border-radius: 6px;
+		border: 1px solid var(--border-card);
+		background: var(--bg-cloud);
+		font-size: 0.95rem;
+		font-family: monospace;
+		cursor: pointer;
+		transition: border-color 0.15s, background 0.15s;
+	}
+	.jb-btn:hover:not(:disabled) { border-color: var(--accent-primary); }
+	.jb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+	.jb-vol {
+		display: flex; align-items: center; gap: 0.4rem;
+		color: var(--text-muted);
+	}
+	.jb-vol input { width: 100px; }
+
+	.jb-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.85rem;
+		color: var(--text-body);
+		cursor: pointer;
+	}
+
+	/* Track list. Each row is a full-width button styled to look
+	   like a card. Left-border-color accent picks up the track's
+	   theme so the catalog reads as multi-region at a glance. */
+	.jb-list {
+		list-style: none;
+		padding: 0; margin: 0;
+		display: flex; flex-direction: column;
+		gap: 0.5rem;
+	}
+	.jb-list li { margin: 0; }
+	.jb-track {
+		display: grid;
+		grid-template-columns: 2.4rem 1.6rem 1fr;
+		align-items: center; gap: 0.85rem;
+		width: 100%;
+		padding: 0.85rem 1.1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 8px;
+		font: inherit; text-align: left; cursor: pointer;
+		transition: transform 0.15s, border-color 0.15s, background 0.15s;
+	}
+	.jb-track:hover { transform: translateY(-1px); border-color: var(--accent-primary); }
+	.jb-track--playing {
+		background: color-mix(in srgb, var(--accent-primary) 12%, var(--surface-card));
+	}
+
+	/* Theme accent stripes - keep in sync with victoriaTheme
+	   union in src/data/victoria-island.ts. */
+	.jb-track--henesys    { border-left-color: #46784b; }
+	.jb-track--ellinia    { border-left-color: #5b7db4; }
+	.jb-track--perion     { border-left-color: #b8730e; }
+	.jb-track--kerning    { border-left-color: #7a4cb5; }
+	.jb-track--lith       { border-left-color: #3d7cc0; }
+	.jb-track--sleepywood { border-left-color: #7a4a2e; }
+
+	.jb-track__index {
+		font-family: monospace;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		text-align: right;
+	}
+	.jb-track__glyph {
+		font-size: 1rem;
+		color: var(--accent-primary);
+		text-align: center;
+	}
+	.jb-track__glyph-pause { display: none; }
+	.jb-track--playing .jb-track__glyph-play { display: none; }
+	.jb-track--playing .jb-track__glyph-pause { display: inline; }
+
+	.jb-track__body { display: flex; flex-direction: column; min-width: 0; }
+	.jb-track__title {
+		font-size: 1rem;
+		color: var(--text-heading);
+	}
+	.jb-track__meta {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+	.jb-track__theme {
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-weight: 600;
+	}
+
+	.jb-empty {
+		margin-top: 1.75rem;
+		padding: 1rem 1.2rem;
+		background: var(--bg-cloud);
+		border: 1px dashed var(--border-card);
+		border-radius: 8px;
+	}
+	.jb-empty__list {
+		list-style: disc inside;
+		padding: 0; margin: 0.4rem 0;
+		color: var(--text-body);
+	}
+	.jb-empty__note {
+		margin: 0.4rem 0 0;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+</style>

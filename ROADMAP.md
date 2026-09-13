@@ -396,6 +396,70 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 71 - Backgrounds, Jukebox, EXP calculator (+ honest emote pivot):**
+  Four-request sprint with one honest reality check.
+
+  **Emote request - technical limitation documented:**
+  User asked for MapleStory-style emotes in the character
+  customizer. Verified across three query-param variations
+  (emotion/expression/emote/face) and two game regions
+  (GMS/83, KMST/1114) that maplestory.io's character render
+  endpoint IGNORES the emote parameter and always returns the
+  default face frame - all responses hash-identical.
+  Added an honest note on the character page pointing users to
+  the Face slot for facial variety (each face ID has its own
+  baked-in permanent expression).
+
+  **Character page - background picker:**
+  Added a 10-swatch horizontal picker below the Pose selector.
+  6 town backgrounds (Henesys, Ellinia, Perion, Kerning City,
+  Lith Harbor, Sleepywood - files already existed in
+  /public/images/), 3 gradient variants (sky, sunset, night),
+  1 transparent default. Pure CSS - no re-render of the sprite,
+  no maplestory.io round-trip. State persists via URL param
+  `?bg=...` and localStorage alongside the equipment build.
+  Allowlist validation on both read paths prevents CSS injection
+  from a hostile URL param.
+
+  **/jukebox page - full BGM catalog:**
+  Dedicated page listing all 5 fan-composition BGM tracks
+  from src/data/audio.ts. Sticky "now playing" bar with volume,
+  loop, and auto-advance controls. Track rows use theme-colored
+  left borders matching each track's origin region. Only one
+  track plays at a time (starting a new one stops the previous).
+  Preferences (volume, loop, auto-advance) persist to
+  localStorage. Empty-slot placeholder honestly shows themes
+  that don't have a track yet (currently ellinia).
+
+  **/calculators/exp - EXP-per-hour + time-to-level:**
+  New calculator lets users pick a mob from the datamine, set
+  their kill rate + level, and see EXP/hour, kills to next,
+  time to next, percent per hour, and hours to a target level.
+  Search box filters the ~2,800 EXP-granting mobs by name.
+  Confidence flag: results at Lv 30 and below show a green
+  "canonical v83" note; Lv 31+ shows an orange "extrapolated
+  from v83 growth curve, pending CoT 2 verification" note.
+
+  **src/data/exp-table.ts:**
+  New module with the v83 EXP-to-next-level curve. Lv 1-30
+  hand-verified against community sources; Lv 31-199 generated
+  via the ratio (1.15x) observed in the verified range. Exports
+  isLevelVerified() so consumers can flag approximate answers.
+  Honest about the seam - CoT 2 launch data will let us
+  populate the full verified table.
+
+  **Nav updates:**
+  Jukebox added to the Play group (alongside Character); EXP
+  Calculator added to the Content group (alongside Items).
+
+  Deferred to future sprints (mentioned to user):
+  - Damage calculator (needs weapon/skill/formula depth)
+  - Mesos calculator (needs drop rate data)
+  - Party EXP split modeling
+  - More jukebox tracks (waiting on submissions)
+  - Face Personality grouping if Liven wants deeper emote-adjacent
+    exploration
+
   **Sprint 70.1 - Deploy branch fix (hotfix):**
   Comments were "live" on preview but not on production because
   Cloudflare Pages had `master` as its production branch, while
