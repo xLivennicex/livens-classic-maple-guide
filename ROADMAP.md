@@ -396,6 +396,45 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 70 - Giscus comments LIVE + GitHub repo bootstrap:**
+  Two-birds sprint. Set up the project's canonical GitHub home
+  AND activated blog comments in one motion.
+
+  **GitHub repo bootstrap:**
+  - Local git repo had ~5 old commits but was ~15 sprints
+    behind reality (60+ untracked files spanning Sprint 10-69).
+  - Added tmp-icons/ to .gitignore (scratch png files from
+    character catalog work).
+  - Snapshot commit "Sprint 69 snapshot: full site state..."
+    (350 files staged) as the modern baseline. Per-sprint
+    reconstruction would have been error-prone; ROADMAP.md
+    already has the changelog.
+  - Created public repo xLivennicex/livens-classic-maple-guide
+    via `gh repo create`. Cloudflare Pages deploys stay direct-
+    upload for now (no CI wire-up yet).
+  - `git remote add origin` + `git push -u origin main`.
+
+  **Giscus comments live:**
+  - Enabled repo Discussions via `gh api PATCH /repos/... -f
+    has_discussions=true`.
+  - Fetched repoId + auto-created category IDs via GraphQL.
+    Used the auto-created "Announcements" category rather than
+    hand-creating a "Blog Comments" category (GitHub's GraphQL
+    API doesn't expose createDiscussionCategory; label is
+    purely cosmetic since Giscus uses categoryId).
+  - Liven manually installed the Giscus GitHub App on the repo
+    (browser-only OAuth flow, no CLI workaround exists - REST
+    endpoint requires the token to already be authed AS an app).
+  - Flipped enabled: false -> true in src/config/giscus.ts.
+    Comments.astro now renders the live widget on every blog
+    post instead of the "coming soon" placeholder.
+
+  Design principle honored: Comments.astro's placeholder branch
+  stays intact. If the Giscus app is ever uninstalled or the
+  config values become stale, flip enabled back to false and
+  the site degrades gracefully instead of showing a broken
+  widget.
+
   **Sprint 69 - Item detail beef-up + town lore & activities:**
   Two-part content + polish sprint. Item pages get concrete
   reader-value upgrades; every Victoria Island town gets

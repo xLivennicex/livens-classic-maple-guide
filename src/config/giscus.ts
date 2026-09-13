@@ -51,15 +51,21 @@ export interface GiscusConfig {
 	loading: "lazy" | "eager";
 }
 
-// NOTE: repo/repoId/category/categoryId are placeholders until the
-// GitHub side is configured (see the six-step guide above). When
-// `enabled` is false, Comments.astro renders a placeholder instead.
+// Sprint 70: LIVE. Configured against xLivennicex/livens-classic-maple-guide
+// on GitHub. Category is "Announcements" (auto-created by GitHub when
+// Discussions is enabled) - functionally identical to a hand-named
+// "Blog Comments" category. The category name is purely cosmetic; Giscus
+// uses categoryId (below) for the actual API call.
+//
+// Giscus GitHub App installed on the repo 2026-09-12. If someone
+// uninstalls the app, flip `enabled` back to false to hide the widget
+// (Comments.astro renders a friendly placeholder in that case).
 export const GISCUS_CONFIG: GiscusConfig = {
-	enabled: false,
-	repo: "livencodes/livens-classic-maple-guide",
-	repoId: "REPLACE_ME_WITH_REPO_ID",
-	category: "Blog Comments",
-	categoryId: "REPLACE_ME_WITH_CATEGORY_ID",
+	enabled: true,
+	repo: "xLivennicex/livens-classic-maple-guide",
+	repoId: "R_kgDOUYdwdA",
+	category: "Announcements",
+	categoryId: "DIC_kwDOUYdwdM4DFeeJ",
 	mapping: "pathname",
 	strict: "0",
 	reactionsEnabled: "1",
