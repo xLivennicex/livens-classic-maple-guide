@@ -1,0 +1,193 @@
+---
+/**
+ * <MobHitEffect /> - client-side "hit acknowledgment" for mob sprites.
+ *
+ * Include this component ONCE on any page that renders mob sprites.
+ * It wires a global click handler that finds any <img> with a
+ * `data-mob-wz-id` attribute and, on click, does three things:
+ *
+ *   1. Flashes the sprite white (CSS filter animation, 250ms)
+ *   2. Swaps the sprite src to maplestory.io's /render/hit1 endpoint
+ *      for the same 250ms window, then swaps back. First click on a
+ *      given mob triggers the browser to fetch hit1; subsequent
+ *      clicks are instant (browser cache).
+ *   3. Spawns a floating damage number at the click position (classic
+ *      MapleStory yellow-outlined white text, floats up + fades)
+ *
+ * Zero-config: any mob sprite with a data-mob-wz-id attribute gets
+ * the treatment. Sprites without a wzId (the 9 mobs where the
+ * datamine lacks it) get the CSS flash + damage number but no
+ * sprite swap - graceful degradation.
+ *
+ * The event handler uses capture-phase click delegation on document,
+ * so it works for sprites injected dynamically (search filters,
+ * pagination, etc.) without needing to re-wire.
+ *
+ * Behavior with parent <a> links: on the homepage /mobs tile, the
+ * sprite lives inside an <a href="/mobs">. We stopPropagation() so
+ * clicking the sprite plays the hit effect without navigating - the
+ * user has to click the title/description to browse. On the /mobs
+ * table this is moot (rows aren't links).
+ */
+---
+
+<script>
+	// Config: keep tunable constants at the top so future-Liven
+	// can adjust the "game feel" without digging through logic.
+	const FLASH_MS = 250;
+	const DAMAGE_LIFETIME_MS = 900;
+	const CDN_ROOT = "https://maplestory.io/api/GMS/83";
+
+	// Track originalSrc per-image so double-clicks during the flash
+	// window don't corrupt the "return to stand" swap.
+	const originalSrcs = new WeakMap<HTMLImageElement, string>();
+	const pendingRestore = new WeakMap<HTMLImageElement, number>();
+
+	function playHitEffect(img: HTMLImageElement, clientX: number, clientY: number): void {
+		// --- 1. CSS flash animation ---
+		// Remove-then-add so rapid re-clicks retrigger the animation
+		// from frame 0 instead of ignoring the class-add on already-
+		// classed elements.
+		img.classList.remove("mob-hit-flash");
+		// Force reflow so the animation restarts.
+		void img.offsetWidth;
+		img.classList.add("mob-hit-flash");
+		window.setTimeout(() => img.classList.remove("mob-hit-flash"), FLASH_MS);
+
+		// --- 2. Sprite src swap (if wzId available) ---
+		const wzId = img.dataset.mobWzId;
+		if (wzId && wzId !== "") {
+			if (!originalSrcs.has(img)) {
+				originalSrcs.set(img, img.src);
+			}
+			const original = originalSrcs.get(img)!;
+			img.src = `${CDN_ROOT}/mob/${wzId}/render/hit1`;
+			// Cancel any queued restore from a previous click - the
+			// new one supersedes.
+			const prev = pendingRestore.get(img);
+			if (prev) window.clearTimeout(prev);
+			const timer = window.setTimeout(() => {
+				img.src = original;
+				pendingRestore.delete(img);
+			}, FLASH_MS);
+			pendingRestore.set(img, timer);
+		}
+
+		// --- 3. Floating damage number ---
+		spawnDamageNumber(clientX, clientY);
+	}
+
+	function spawnDamageNumber(x: number, y: number): void {
+		const el = document.createElement("span");
+		el.className = "mob-damage-number";
+		el.textContent = formatDamage(randomDamage());
+		// Random slight horizontal drift (-15..+15px) so rapid clicks
+		// don't stack numbers on top of each other and read as a
+		// combo shower instead.
+		const drift = (Math.random() - 0.5) * 30;
+		el.style.left = `${x + drift}px`;
+		el.style.top = `${y}px`;
+		document.body.appendChild(el);
+		window.setTimeout(() => el.remove(), DAMAGE_LIFETIME_MS);
+	}
+
+	function randomDamage(): number {
+		// Weighted to make big hits feel rarer - most rolls in
+		// 100-800, occasional 1000+ crit for dopamine.
+		const roll = Math.random();
+		if (roll < 0.05) return Math.floor(Math.random() * 3000) + 1500; // 1500-4500 rare crit
+		if (roll < 0.25) return Math.floor(Math.random() * 500) + 500;   // 500-1000
+		return Math.floor(Math.random() * 400) + 100;                    // 100-500 common
+	}
+
+	function formatDamage(n: number): string {
+		return n.toLocaleString();
+	}
+
+	// Capture-phase delegation on document. Fires BEFORE any parent
+	// <a> click handler, letting us stopPropagation on links.
+	document.addEventListener("click", (e) => {
+		const target = e.target as HTMLElement;
+		if (!(target instanceof HTMLImageElement)) return;
+		if (!target.dataset.mobWzId && target.dataset.mobWzId !== "") {
+			// Also allow opt-in via data-mob-hit for future
+			// sprite-less hit targets (e.g. mob names alone).
+			if (!target.hasAttribute("data-mob-hit")) return;
+		}
+		// If we're inside a link, don't navigate on sprite click.
+		const parentLink = target.closest("a");
+		if (parentLink) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		playHitEffect(target, e.clientX, e.clientY);
+	}, true);
+</script>
+
+<style is:global>
+	/* Cursor hint that these sprites are interactive. Crosshair
+	   sells the "you can hit this" affordance instantly. */
+	img[data-mob-wz-id] { cursor: crosshair; }
+	img[data-mob-hit]:not([data-mob-wz-id]) { cursor: crosshair; }
+
+	/* White-flash + subtle scale-punch on hit. Uses filter for the
+	   flash because it composites cleanly over pixel-art sprites
+	   (opacity would leak the background through transparent
+	   regions of the sprite; filter: brightness pumps existing
+	   pixels without touching alpha). */
+	.mob-hit-flash {
+		animation: mob-hit-flash 250ms ease-out;
+	}
+	@keyframes mob-hit-flash {
+		0%   { filter: brightness(1) contrast(1); transform: scale(1); }
+		30%  { filter: brightness(3) contrast(0.3) saturate(0); transform: scale(1.15); }
+		60%  { filter: brightness(1.5) contrast(0.8); transform: scale(0.98); }
+		100% { filter: brightness(1) contrast(1); transform: scale(1); }
+	}
+
+	/* Classic MS-style damage number: bold yellow-to-white gradient
+	   with a thick black outline, floats up, fades out. Fixed
+	   positioning + pointer-events:none so it never blocks another
+	   click. z-index puts it above the site chrome. */
+	.mob-damage-number {
+		position: fixed;
+		z-index: 9999;
+		transform: translate(-50%, -50%);
+		pointer-events: none;
+		font-family: "Arial Black", "Impact", sans-serif;
+		font-weight: 900;
+		font-size: 1.4rem;
+		color: #fff8b0;
+		background: linear-gradient(180deg, #fff8b0 0%, #ffcc22 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		text-shadow:
+			2px 2px 0 #000,
+			-2px 2px 0 #000,
+			2px -2px 0 #000,
+			-2px -2px 0 #000,
+			0 3px 0 #000;
+		/* Fallback outline for browsers that skip -webkit-text-stroke */
+		-webkit-text-stroke: 1px #000;
+		animation: mob-damage-float 900ms ease-out forwards;
+		user-select: none;
+		white-space: nowrap;
+	}
+	@keyframes mob-damage-float {
+		0%   { opacity: 0; transform: translate(-50%, 10px) scale(0.4); }
+		15%  { opacity: 1; transform: translate(-50%, -8px) scale(1.3); }
+		30%  {              transform: translate(-50%, -18px) scale(1.0); }
+		100% { opacity: 0; transform: translate(-50%, -70px) scale(0.9); }
+	}
+
+	/* Extra-rare-crit variant: red-orange gradient, bigger.
+	   Not currently wired (all damage uses .mob-damage-number)
+	   but scaffolded for a future "crit" pass. */
+	.mob-damage-number--crit {
+		font-size: 2rem;
+		background: linear-gradient(180deg, #ff8844 0%, #cc2222 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+	}
+</style>

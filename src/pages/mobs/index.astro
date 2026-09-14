@@ -17,6 +17,7 @@ import indexData from "../../data/db/index.json";
 import generatedAt from "../../data/db/generated-at.json";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
+import MobHitEffect from "../../components/MobHitEffect.astro";
 
 const { mobs } = indexData;
 mobs.sort((a, b) => a.id - b.id);
@@ -107,6 +108,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 								alt=""
 								height="40"
 								placeholder={themePlaceholderUrl("sleepywood")}
+								mobWzId={mob.wzId ?? null}
 							/>
 						</td>
 						<td class="col-id">
@@ -230,6 +232,9 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 			applySort();
 		})();
 	</script>
+
+	{/* Sprint 76: click any mob sprite -> hit1 render + damage number */}
+	<MobHitEffect />
 </BaseLayout>
 
 <style>

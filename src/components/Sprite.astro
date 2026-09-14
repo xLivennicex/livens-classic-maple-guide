@@ -38,6 +38,11 @@ interface Props {
 	// themed silhouette SVG under /images/placeholders/. Omit to
 	// keep the legacy behavior (hide the image on total failure).
 	placeholder?: string;
+	// Sprint 76: opt-in identifier for the MobHitEffect handler.
+	// When set, the rendered <img> carries data-mob-wz-id="{n}"
+	// which the global click delegate uses to swap to /render/hit1
+	// on click. See src/components/MobHitEffect.astro.
+	mobWzId?: number | null;
 }
 
 const {
@@ -48,6 +53,7 @@ const {
 	width,
 	height,
 	placeholder,
+	mobWzId,
 } = Astro.props;
 
 // Filter out null/undefined so bad inputs don't break the chain.
@@ -93,6 +99,7 @@ const onerror = primary ? buildOnError(fallbacks) : undefined;
 		width={width}
 		height={height}
 		onerror={onerror}
+		data-mob-wz-id={mobWzId != null ? String(mobWzId) : undefined}
 	/>
 ) : placeholder ? (
 	<img
@@ -102,5 +109,6 @@ const onerror = primary ? buildOnError(fallbacks) : undefined;
 		loading={loading}
 		width={width}
 		height={height}
+		data-mob-wz-id={mobWzId != null ? String(mobWzId) : undefined}
 	/>
 ) : null}

@@ -396,6 +396,65 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 76 - Clickable mob sprites with hit acknowledgment:**
+  Liven's ask: "click the mob sprite -> use the damage sprite to
+  acknowledge our click, then apply to every mob on /mobs tab."
+
+  Turns out maplestory.io exposes /render/hit1 alongside /render/stand
+  for every mob (verified: Orange Mushroom hit1 = 2779 bytes real
+  sprite). So we can do the authentic thing: swap the sprite src to
+  the actual game-data "getting hit" frame on click, then swap back.
+
+  **src/components/MobHitEffect.astro:**
+  New script-only component (no rendered markup) with a global
+  capture-phase click delegate on document. Any <img> carrying
+  data-mob-wz-id="{n}" gets three effects on click:
+
+  1. CSS white-flash + scale-punch animation (250ms, uses filter:
+     brightness/contrast/saturate rather than opacity so it
+     composites cleanly over transparent-alpha pixel sprites)
+  2. src swap to /render/hit1 URL for the same 250ms, then reverts
+     to the original stand sprite. Browser caches hit1 after first
+     click for instant subsequent hits. Uses WeakMaps to track
+     originalSrc and pendingRestore timers per-img so rapid
+     re-clicks don't corrupt the swap-back state.
+  3. Floating damage number spawned at click position - classic
+     MapleStory yellow-to-white gradient with thick black outline
+     (Arial Black weight 900), rises 70px + fades over 900ms.
+     Random 100-500 common, 500-1000 uncommon (25%), 1500-4500
+     rare crit (5%). Small horizontal drift on spawn so rapid
+     clicks don't stack numbers - reads as a combo shower instead.
+
+  **Sprite.astro extension:**
+  Added optional mobWzId prop that forwards to data-mob-wz-id on
+  the rendered img. Null-safe, defaults to no attribute (so
+  existing callers are unaffected).
+
+  **Wiring:**
+  - Homepage: reference tile config gained mobWzId=1210102 for
+    the Mobs tile (Orange Mushroom). Component included at end
+    of BaseLayout.
+  - /mobs table: every sprite in the 195-row table gets its wzId
+    forwarded. Component included at end of page.
+
+  **UX details:**
+  - Sprite gets cursor: crosshair via CSS - instant affordance
+    that "you can hit this"
+  - On homepage the sprite is inside <a href="/mobs">; click
+    delegate stopPropagation()s so clicking the sprite plays
+    the effect without navigating away. Title/description still
+    navigate normally.
+  - On /mobs page sprites aren't inside links, so click is
+    pure no-op-besides-effect.
+  - Mobs without a wzId (9 in our data) get the CSS flash +
+    damage number but no sprite swap. Graceful degradation.
+
+  **Kitten verified:** 250-sample damage distribution audit
+  (6.4% crits, spec was 5%; all integers; all >= 1000 comma-
+  formatted). 8 rapid clicks spawned 8 damage numbers with
+  correct horizontal drift, no stacking, no timer race
+  conditions on sprite restore. Zero bugs found.
+
   **Sprint 75 - Homepage reference tiles: emoji -> real v83 sprites:**
   Liven noticed the 6-tile "Reference database" grid on the
   homepage still used generic Unicode emoji (map, house,

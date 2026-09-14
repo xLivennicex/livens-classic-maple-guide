@@ -11,6 +11,7 @@ import Countdown from "../components/Countdown.astro";
 import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
 import HomeCarousel from "../components/HomeCarousel.astro";
 import Sprite from "../components/Sprite.astro";
+import MobHitEffect from "../components/MobHitEffect.astro";
 import {
 	mobSpriteSrcs,
 	npcSpriteSrcs,
@@ -59,6 +60,10 @@ const referenceTiles = [
 		desc: "Combat stats + drop tables + spawn locations. Sortable, searchable.",
 		sprites: mobSpriteSrcs(9, 1210102),
 		fallbackEmoji: "\u{1F479}",
+		// Sprint 76: wz id for the hit-effect handler. Clicking
+		// the sprite plays hit1 animation + damage number instead
+		// of navigating. Rest of the card still navigates.
+		mobWzId: 1210102,
 	},
 	{
 		href: "/npcs", name: "NPCs", count: generatedAt.npcCount,
@@ -310,6 +315,7 @@ const prepChecklist = [
 								alt=""
 								class="ref-card__sprite"
 								loading="eager"
+								mobWzId={t.mobWzId ?? null}
 							/>
 						) : (
 							<span class="ref-card__emoji">{t.fallbackEmoji}</span>
@@ -345,6 +351,10 @@ const prepChecklist = [
 			</p>
 		</InfoCard>
 	</section>
+
+	{/* Sprint 76: global mob-sprite click handler. Only affects
+	    <img>s carrying data-mob-wz-id. */}
+	<MobHitEffect />
 </BaseLayout>
 
 <style>
