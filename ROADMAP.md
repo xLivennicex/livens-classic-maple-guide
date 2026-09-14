@@ -396,6 +396,67 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 74 - Drop rate calculator:**
+  Datamine has drop tables (via mobs.json's `drops` field) with
+  a `score` field per drop entry - integer rating from -1 to 12
+  that orders items by relative frequency. NOT a raw percentage
+  (v83 client encodes weights, not rates - actual rates depend
+  on server tuning).
+
+  Built a community-consensus mapping in src/data/drop-rates.ts
+  (score 12 -> ~40%, score 1 -> ~0.5%, etc.). Calibrated against
+  known references: Snail Shell at score 10 has famously been
+  ~30% drop rate across preservation servers. Curve is roughly
+  geometric and monotonic. Real CoT 2 rates will vary and can
+  be overridden per-lookup via a custom-% input.
+
+  **src/data/drop-index.ts:**
+  Slim client projection with TWO indexes derived from mobs.json
+  in one pass: forward (mob -> drops sorted by score desc) and
+  reverse (item -> mobs that drop it, sorted by score desc then
+  mob level asc). ~150-250 KB gzipped. Exposes 159 mobs with
+  drops, 461 unique items, 940 total entries.
+
+  **/calculators/drops - dual-mode UI:**
+  Tab 1 "Farm a mob": pick a mob, see its full drop table with
+  score-mapped %; click a drop for detailed probability math.
+  Tab 2 "Hunt for an item": pick an item, see all mobs sorted
+  best-first; click a source for same probability panel.
+
+  Each drop table row is a color-tinted "loot card" (green for
+  Very Common, blue Common, purple Uncommon, orange Rare, red
+  Very Rare, grey Extremely Rare). Reads like Diablo loot at
+  a glance.
+
+  Probability panel: effective rate (with drop mult), expected
+  kills, expected time (KPM-scaled), and kills-for-probability
+  tiles at 50/90/99%. Includes an honest note about RNG variance
+  and the meaning of "50%" (half of players still grinding at
+  that mark).
+
+  **Negative binomial math for target drops > 1:**
+  Sprint 74.1 fix caught during verification: kills-for-probability
+  tiles were using geometric CDF (correct for k=1 drop) but not
+  scaling when the user set target drops higher. Implemented full
+  negative binomial via Lanczos lgamma + binomial CDF + bisection.
+  Fast path for k=1 (closed form), bisection for k>1 accurate up
+  to ~500 drops without precision loss.
+
+  **UI/UX fixes during verification:**
+  - Mode-scope hiding wasn't picking up on tab switch. Root
+    cause: relying on `hidden` attribute alone was fragile in
+    Astro's SSR + hydration ordering. Fixed with explicit
+    `style.display` toggle alongside the attribute + a stable
+    `.drops-mode-scope--{mob,item}` class marker.
+
+  **Deferred:**
+  - Boss-loot mode (higher-quality tables, need boss-specific
+    kill rate assumptions)
+  - Best-farming-map recommendation for a target item (cross-
+    reference the drop source with map spawn data from Sprint 72)
+  - Drop rate confidence intervals (once we have real CoT 2 data
+    to compare against the score-based estimates)
+
   **Sprint 73 - Per-map MusicPlayer override + damage/mesos calcs:**
   Three-feature sprint. All shipped in a single build cycle.
 
