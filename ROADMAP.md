@@ -421,6 +421,19 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   during verification; swapped to Chief Gray's Sign for
   visual consistency with the other item-icon tiles.
 
+  **Sprint 75.2:** Liven's eye caught that the Return Scroll icon
+  (originally used for the Quests tile) actually reads more like
+  a "rolled-up map" than a "quest scroll" - so we moved Return
+  Scroll to Maps (replacing Chief Gray's Sign) and asked for a
+  quest board NPC for Quests. Turns out v83's only board-type
+  NPC (Community Board, id 235/431) has no wzId AND no meowdb
+  sprite (404 across every slug I tried: community-board,
+  bulletin-board, quest-board, notice-board, etc.). Went with
+  Chief Stan (wzId 1012003) as the next-best: Amherst tutorial
+  NPC who gives every classic player their first quest. Portrait
+  sprite (bearded chief in green pointy hat) confirmed 200 OK
+  on both meowdb and maplestory.io.
+
   Every tile uses the Sprite component's onerror fallback chain
   (primary CDN -> alt CDN -> emoji glyph) so a CDN outage
   degrades gracefully rather than showing broken-image icons.

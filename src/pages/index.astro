@@ -47,13 +47,11 @@ const referenceTiles = [
 	{
 		href: "/maps", name: "Maps", count: generatedAt.mapCount,
 		desc: "Every map indexed with mob spawns, NPC lists, and portal links.",
-		// Sprint 75.1 fix: minimap thumbnails are ~5:1 aspect
-		// banners; rendering one in a 40x40 icon slot squashed
-		// Henesys to a 7px sliver. Swapped to Chief Gray's Sign
-		// (item 4000149) - a 32x32 signpost icon, thematically
-		// perfect for "browse the world's maps" and visually
-		// consistent with the other item-icon tiles.
-		sprites: itemIconSrcs(4000149),
+		// Sprint 75.2: Liven's eye caught that the Return Scroll
+		// icon (originally for Quests) reads as "rolled-up map"
+		// more than "quest scroll" - so we swap it here for the
+		// Maps tile. Perfect visual metaphor for browsing places.
+		sprites: itemIconSrcs(2030000),
 		fallbackEmoji: "\u{1F3D8}",
 	},
 	{
@@ -71,7 +69,15 @@ const referenceTiles = [
 	{
 		href: "/quests", name: "Quests", count: generatedAt.questCount,
 		desc: "Chain length, level range, giver NPC, rewards.",
-		sprites: itemIconSrcs(2030000),
+		// Sprint 75.2: Liven asked for "quest board NPC" for this
+		// tile. Turns out v83's only board-type NPC (Community
+		// Board, id 235/431) has no wzId AND no meowdb sprite,
+		// so we go for the next-best classic quest metaphor:
+		// Chief Stan (wzId 1012003) - the Amherst tutorial NPC
+		// who gives every new player their first quest. He IS
+		// the quest-giver of classic MapleStory. Portrait sprite
+		// (bearded chief in green hat) fits the 40x40 slot great.
+		sprites: npcSpriteSrcs(1012003, "Chief Stan"),
 		fallbackEmoji: "\u{1F4DC}",
 	},
 	{
