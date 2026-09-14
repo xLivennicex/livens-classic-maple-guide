@@ -10,27 +10,76 @@ import StatusBadge from "../components/StatusBadge.astro";
 import Countdown from "../components/Countdown.astro";
 import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
 import HomeCarousel from "../components/HomeCarousel.astro";
+import Sprite from "../components/Sprite.astro";
+import {
+	mobSpriteSrcs,
+	npcSpriteSrcs,
+	itemIconSrcs,
+} from "../lib/maplestory-cdn";
 import { countdownTargets } from "../data/launch";
 import generatedAt from "../data/db/generated-at.json";
 
 // Reference-database tile config. Kept as a static array so ordering
 // + copy is trivially reorderable and reads at-a-glance. Counts pull
 // from generated-at.json (5-key JSON, no dossier bundles imported).
-// Emoji rather than image assets: zero request cost, universally
-// legible, matches the informal Liven voice.
+//
+// Sprint 75: emoji icons replaced with real v83-era sprites. Each
+// tile picks a canonical representative from its collection:
+//   - Mobs: Orange Mushroom (id 9, wzId 1210102) - iconic v83 mob
+//   - NPCs: Roger (id 3, wzId 2000) - starter NPC on Maple Island
+//   - Quests: Return Scroll icon (item 2030000) - most evocative
+//     of "adventure/questing" among available item icons
+//   - Items: Zakum Helmet (1002180) - v83 endgame trophy item
+//   - Maps: Henesys minimap (100000000) - most-visited town
+//   - World map: static SVG globe (no single canonical map sprite;
+//     inline SVG keeps request count at zero and scales cleanly)
+//
+// The Sprite component's fallback chain handles CDN outages -
+// tile falls back to its previous emoji if all sprite URLs fail.
 const referenceTiles = [
-	{ href: "/world", icon: "🗺️", name: "World map", count: null,
-	  desc: "Visual atlas - click a region pin to jump to that map's dossier." },
-	{ href: "/maps", icon: "🏘️", name: "Maps", count: generatedAt.mapCount,
-	  desc: "Every map indexed with mob spawns, NPC lists, and portal links." },
-	{ href: "/mobs", icon: "👹", name: "Mobs", count: generatedAt.mobCount,
-	  desc: "Combat stats + drop tables + spawn locations. Sortable, searchable." },
-	{ href: "/npcs", icon: "🧙", name: "NPCs", count: generatedAt.npcCount,
-	  desc: "Where they stand, what quests they hand out." },
-	{ href: "/quests", icon: "📜", name: "Quests", count: generatedAt.questCount,
-	  desc: "Chain length, level range, giver NPC, rewards." },
-	{ href: "/items", icon: "💎", name: "Items", count: generatedAt.itemCount,
-	  desc: "Every icon, stat, and price from the datamine." },
+	{
+		href: "/world", name: "World map", count: null,
+		desc: "Visual atlas - click a region pin to jump to that map's dossier.",
+		// World map has no single canonical sprite; leave sprites
+		// empty so the emoji fallback (SVG globe) renders.
+		sprites: [] as string[], fallbackEmoji: "\u{1F5FA}",
+	},
+	{
+		href: "/maps", name: "Maps", count: generatedAt.mapCount,
+		desc: "Every map indexed with mob spawns, NPC lists, and portal links.",
+		// Sprint 75.1 fix: minimap thumbnails are ~5:1 aspect
+		// banners; rendering one in a 40x40 icon slot squashed
+		// Henesys to a 7px sliver. Swapped to Chief Gray's Sign
+		// (item 4000149) - a 32x32 signpost icon, thematically
+		// perfect for "browse the world's maps" and visually
+		// consistent with the other item-icon tiles.
+		sprites: itemIconSrcs(4000149),
+		fallbackEmoji: "\u{1F3D8}",
+	},
+	{
+		href: "/mobs", name: "Mobs", count: generatedAt.mobCount,
+		desc: "Combat stats + drop tables + spawn locations. Sortable, searchable.",
+		sprites: mobSpriteSrcs(9, 1210102),
+		fallbackEmoji: "\u{1F479}",
+	},
+	{
+		href: "/npcs", name: "NPCs", count: generatedAt.npcCount,
+		desc: "Where they stand, what quests they hand out.",
+		sprites: npcSpriteSrcs(2000, "Roger"),
+		fallbackEmoji: "\u{1F9D9}",
+	},
+	{
+		href: "/quests", name: "Quests", count: generatedAt.questCount,
+		desc: "Chain length, level range, giver NPC, rewards.",
+		sprites: itemIconSrcs(2030000),
+		fallbackEmoji: "\u{1F4DC}",
+	},
+	{
+		href: "/items", name: "Items", count: generatedAt.itemCount,
+		desc: "Every icon, stat, and price from the datamine.",
+		sprites: itemIconSrcs(1002180),
+		fallbackEmoji: "\u{1F48E}",
+	},
 ];
 
 // Both grids source directly from content collections so they stay
@@ -243,7 +292,23 @@ const prepChecklist = [
 		<div class="ref-grid">
 			{referenceTiles.map((t) => (
 				<a class="ref-card" href={t.href}>
-					<span class="ref-card__icon" aria-hidden="true">{t.icon}</span>
+					{/* Sprint 75: prefer real sprite if we have one;
+					    fall back to emoji glyph if the sprite list is
+					    empty (World map has no canonical single sprite)
+					    OR if every URL in the chain 404s (Sprite's
+					    onerror ladder handles that automatically). */}
+					<span class="ref-card__icon" aria-hidden="true">
+						{t.sprites.length > 0 ? (
+							<Sprite
+								srcs={t.sprites}
+								alt=""
+								class="ref-card__sprite"
+								loading="eager"
+							/>
+						) : (
+							<span class="ref-card__emoji">{t.fallbackEmoji}</span>
+						)}
+					</span>
 					<div class="ref-card__body">
 						<div class="ref-card__title-row">
 							<h3 class="ref-card__name">{t.name}</h3>
@@ -450,7 +515,23 @@ const prepChecklist = [
 	.ref-card__icon {
 		font-size: 1.75rem; line-height: 1;
 		flex-shrink: 0;
+		width: 40px; height: 40px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
+	/* Sprint 75: sprite render. Pixel-art nearest-neighbor scaling
+	   preserves the crispness of v83-era 32-64px sprites. Objects
+	   contain within the 40px box so wide sprites (bosses, minimaps)
+	   don't blow out the card layout. */
+	.ref-card__icon :global(.ref-card__sprite) {
+		max-width: 40px;
+		max-height: 40px;
+		object-fit: contain;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+	}
+	.ref-card__emoji { font-size: 1.75rem; line-height: 1; }
 	.ref-card__body { flex: 1; min-width: 0; }
 	.ref-card__title-row {
 		display: flex; align-items: baseline; justify-content: space-between;

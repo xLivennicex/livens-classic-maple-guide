@@ -396,6 +396,37 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 75 - Homepage reference tiles: emoji -> real v83 sprites:**
+  Liven noticed the 6-tile "Reference database" grid on the
+  homepage still used generic Unicode emoji (map, house,
+  ogre, wizard, scroll, gem). Swapped in canonical v83
+  sprites from the datamine:
+
+  - Mobs -> Orange Mushroom (id 9, wzId 1210102) - THE iconic
+    v83 mob, sourced from maplestory.io GMS/83
+  - NPCs -> Roger (id 3, wzId 2000) - starter NPC on Maple
+    Island, sourced from meowdb.com/msclassic
+  - Quests -> Return Scroll icon (item 2030000) - most
+    evocative of "adventure/questing" among catalogue items
+  - Items -> Zakum Helmet (item 1002180) - v83 endgame trophy,
+    universally recognized
+  - Maps -> Chief Gray's Sign (item 4000149) - signpost icon,
+    thematically = "browse the world's maps"
+  - World map -> kept the emoji fallback (no single canonical
+    sprite for "the world"; SVG globe scales cleanly)
+
+  **In-sprint fix:** first attempt used mapThumbnailSrcs to
+  render the Henesys minimap, which is 465x86 aspect. The 40px
+  icon slot squashed it to a 7px sliver. Kitten flagged it
+  during verification; swapped to Chief Gray's Sign for
+  visual consistency with the other item-icon tiles.
+
+  Every tile uses the Sprite component's onerror fallback chain
+  (primary CDN -> alt CDN -> emoji glyph) so a CDN outage
+  degrades gracefully rather than showing broken-image icons.
+  Pixel-art nearest-neighbor rendering preserves crispness of
+  the 32-64px v83 sprites.
+
   **Sprint 74 - Drop rate calculator:**
   Datamine has drop tables (via mobs.json's `drops` field) with
   a `score` field per drop entry - integer rating from -1 to 12
