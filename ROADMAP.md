@@ -396,6 +396,78 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 77 - Astro View Transitions + magical page navigation:**
+  Liven's ask (from a UX brainstorm review): ship the highest-ROI
+  polish item - "View Transitions with theme cross-fade" - to make
+  every nav feel like a native app instead of a hard reload.
+
+  **Ship path:**
+  - Added `<ClientRouter fallback="animate" />` to BaseLayout's <head>
+  - Custom CSS keyframes for a soft upward-drift + brief blur (220ms
+    exit, 260ms enter, cubic-bezier easing) applied to
+    ::view-transition-old(root) / ::view-transition-new(root)
+  - prefers-reduced-motion media query falls back to a plain 120ms
+    opacity fade - vestibular safety, no drift, no blur
+
+  **Landmines cleared during 3-round hotfix cycle:**
+
+  Sprint 77 initial ship broke ALL 4 calculators. Root cause: I
+  added `data-astro-rerun` to force scripts to re-execute on nav.
+  Per Astro docs, that attribute implicitly makes scripts inline,
+  which skips TypeScript processing - raw TS shipped to browser,
+  SyntaxError on parse. Kitten's damage-calc audit caught it in
+  the first verify pass.
+
+  **Sprint 77.1 fix (calculators):** Reverted data-astro-rerun on
+  all 4 calc pages + jukebox + glossary. Correct pattern for VT
+  re-init is a processed script (Astro handles TS) that registers
+  a `document.addEventListener("astro:page-load", init)` handler.
+  The listener persists across nav; init runs on every page-load
+  event (initial + all VT). Each init function has an early-return
+  guard checking for a page-characteristic element ID so listeners
+  attached from unrelated pages don't crash on missing DOM. All 4
+  calcs verified working across VT re-visits.
+
+  Sprint 77.1 also attempted MusicPlayer persistence. Applied
+  transition:persist="music-player" to the container div. Kitten
+  proved via JS-expando test that Astro persisted the container
+  BUT the <audio> child was still being replaced on nav - old
+  audio orphaned, new audio started at time 0, button state
+  became misleading. Sprint 77.2 tried moving persist to the
+  audio element directly (per Astro's <video> docs pattern) -
+  kitten's expando test proved the audio ALSO wasn't persisting:
+  new node every nav, attributes carried over but JS state gone.
+
+  **Sprint 77.3 fix (audio singleton):** Bypassed Astro's persist
+  entirely. Removed the <audio> HTML element from MusicPlayer.
+  Audio now lives as `window.__cerberosMusicAudio` created via
+  `new Audio()` constructor - immune to view transitions because
+  it's not in the DOM at all. Get-or-create pattern in
+  initMusicPlayer, idempotent across re-init. Button wrapper is
+  the ONLY thing in the DOM; it gets re-rendered on nav and
+  re-wired to the singleton audio. Verified same instance
+  survives nav via kitten's __qaMark expando test.
+
+  **Sprint 77.3 policy: "first track wins" across nav.** Once
+  audio.src is set, we NEVER overwrite it on subsequent inits -
+  reassigning src triggers implicit load() which resets
+  currentTime and pauses. Users who want a different track can
+  visit /jukebox (that's a separate audio flow). Known tradeoff:
+  per-map BGM override from Sprint 73 only fires on the first
+  loaded page - cross-map nav keeps whatever's playing.
+
+  **Sprint 77.3.1 cosmetic:** Button label was deriving track
+  title from the CURRENT page's theme instead of the locked-in
+  playing track. Fixed by caching the resolved first-track meta
+  on `window.__cerberosMusicTrackMeta` and reading from there in
+  setUiState. Kitten flagged this on final verify.
+
+  **Kitten-hours spent:** ~4 rounds of verify across 77 → 77.3.1.
+  Fantastic bug isolation using JS expandos as ground truth for
+  DOM node identity (attributes can be copied; JS-object property
+  bags cannot). Regression test recorded for future audio-persist
+  work: `audio.__mark = "foo"; nav; expect(audio.__mark === "foo")`.
+
   **Sprint 76 - Clickable mob sprites with hit acknowledgment:**
   Liven's ask: "click the mob sprite -> use the damage sprite to
   acknowledge our click, then apply to every mob on /mobs tab."

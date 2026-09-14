@@ -248,7 +248,12 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	<script id="hunt-maps-data" type="application/json" is:inline set:html={huntMapsJson}></script>
 </BaseLayout>
 
+{/* Sprint 77.1 fix: astro:page-load listener instead of
+    data-astro-rerun (the latter forces is:inline and skips TS). */}
 <script>
+document.addEventListener("astro:page-load", () => {
+	// Guard: only wire when EXP calc DOM is present.
+	if (!document.getElementById("mobs-data")) return;
 	/**
 	 * EXP calculator client. All state is derived from the form
 	 * inputs on every recompute - no cached "last result" that
@@ -554,6 +559,7 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 		});
 	}
 	$class.addEventListener("change", renderRecommendations);
+});
 </script>
 
 <style>

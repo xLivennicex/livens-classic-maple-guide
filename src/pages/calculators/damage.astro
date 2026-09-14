@@ -207,7 +207,20 @@ const weaponsJson = JSON.stringify(weaponEntries);
 	<script id="weapons-data" type="application/json" is:inline set:html={weaponsJson}></script>
 </BaseLayout>
 
+{/* Sprint 77.1 fix: data-astro-rerun implicitly treats the script
+    as inline, which skips Astro's TypeScript processing and ships
+    raw TS to the browser (SyntaxError). Correct pattern for view-
+    transition re-init is a processed script + astro:page-load
+    listener. Runs on every nav (initial + VT), skips when target
+    page's DOM isn't present. Kitten flagged the calc-inert
+    regression during Sprint 77 verify. */}
 <script>
+document.addEventListener("astro:page-load", () => {
+	// Guard: only wire when we're actually on the damage calc page.
+	// The listener persists across nav, so this fires on every
+	// page-load event including ones for unrelated routes.
+	if (!document.getElementById("input-weapon")) return;
+
 	// Client controller. Kept in one file for easy iteration; if
 	// it grows past ~200 lines, factor into a module import.
 	interface Mob { id: number; name: string; level: number; pdef: number; mdef: number; }
@@ -318,6 +331,7 @@ const weaponsJson = JSON.stringify(weaponEntries);
 	for (const el of [$primary, $secondary, $wa, $skill, $mastery, $pdef, $mdef]) {
 		el.addEventListener("input", recompute);
 	}
+});
 </script>
 
 <style>

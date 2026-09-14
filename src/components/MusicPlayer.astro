@@ -51,7 +51,15 @@ const audioMapJson = JSON.stringify(themeAudio);
 	data-audio-map={audioMapJson}
 	data-map-bgm={mapBgmJson}
 >
-	<audio id="music-player-audio" loop preload="none"></audio>
+	{/* Sprint 77.3: audio moved to a JS singleton on window (see
+	    initMusicPlayer below). Rationale: Astro's transition:persist
+	    on <audio> was verified by kitten's JS-expando test to NOT
+	    actually move the node across view transitions - the new
+	    page always got a fresh <audio> element and the old one
+	    was orphaned. Working around this by keeping the audio
+	    entirely off the Astro-rendered DOM. The Audio() constructor
+	    doesn't require DOM attachment to play; it survives forever
+	    on window, immune to view transitions or wrapper re-renders. */}
 
 	<button
 		id="music-player-toggle"
@@ -90,12 +98,30 @@ const audioMapJson = JSON.stringify(themeAudio);
 	}
 
 	const STORAGE_KEY = "cerberos-music-on";
+	const AUDIO_SINGLETON_KEY = "__cerberosMusicAudio";
+
+	// Sprint 77.3: audio singleton lives on window, not in the DOM.
+	// Immune to Astro view transitions - the button UI wrapper gets
+	// re-rendered on nav (which is fine, cheap DOM ops), but the
+	// audio + its playback state (currentTime, paused, src) live in
+	// the JS heap on window forever. Get-or-create pattern makes
+	// this idempotent across nav re-inits.
+	function getAudio(): HTMLAudioElement {
+		const w = window as unknown as Record<string, HTMLAudioElement>;
+		if (!w[AUDIO_SINGLETON_KEY]) {
+			const el = new Audio();
+			el.loop = true;
+			el.preload = "none";
+			w[AUDIO_SINGLETON_KEY] = el;
+		}
+		return w[AUDIO_SINGLETON_KEY];
+	}
 
 	function initMusicPlayer() {
 		const container = document.getElementById("music-player") as HTMLElement | null;
-		const audio = document.getElementById("music-player-audio") as HTMLAudioElement | null;
 		const button = document.getElementById("music-player-toggle") as HTMLButtonElement | null;
-		if (!container || !audio || !button) return;
+		if (!container || !button) return;
+		const audio = getAudio();
 
 		const audioMap = JSON.parse(container.dataset.audioMap ?? "{}") as Record<string, AudioTrack | null>;
 		const theme = document.documentElement.dataset.theme ?? "henesys";
@@ -120,7 +146,34 @@ const audioMapJson = JSON.stringify(themeAudio);
 		// No track available at all? Leave the button hidden.
 		if (!track) return;
 
-		audio.src = track.src;
+		// Sprint 77.3 policy: first page's track wins, forever.
+		// Once audio.src is set, we NEVER overwrite it on nav -
+		// even if the new page has a different theme. Kitten caught
+		// the previous behavior: reassigning src triggers implicit
+		// load() -> currentTime reset -> paused, which shattered
+		// audio continuity across theme boundaries. Users who want
+		// a specific track can visit /jukebox and pick one there
+		// (that's a separate audio flow, so no cross-contamination).
+		//
+		// Known tradeoff: per-map BGM override from Sprint 73 no
+		// longer swaps on nav. The map-BGM data-attribute still
+		// influences the FIRST-loaded track, so users landing
+		// directly on a /maps/[id] page get its BGM. Cross-map
+		// navigation just keeps whatever's playing - acceptable
+		// for a preservation site (users often want ambient
+		// continuity anyway).
+		const w = window as unknown as Record<string, AudioTrack | undefined>;
+		const TRACK_META_KEY = "__cerberosMusicTrackMeta";
+		if (!audio.src) {
+			audio.src = track.src;
+			w[TRACK_META_KEY] = track;
+		}
+		// Sprint 77.3.1 cosmetic: on non-first-track pages, the
+		// button label was derived from the CURRENT page's theme
+		// track (e.g. "Now playing: Watchful Deep" on /mobs even
+		// though henesys.mp3 was actually playing). Use the locked-
+		// in first track for display everywhere - stays truthful.
+		const displayTrack: AudioTrack = w[TRACK_META_KEY] ?? track;
 
 		const iconMuted = button.querySelector<HTMLElement>('[data-role="icon-muted"]');
 		const iconPlaying = button.querySelector<HTMLElement>('[data-role="icon-playing"]');
@@ -131,12 +184,14 @@ const audioMapJson = JSON.stringify(themeAudio);
 			// Tooltip includes the resolved track title even while muted
 			// so screen readers announce what's queued before activation.
 			// Visible label stays concise ("Music off" vs. the title).
+			// Uses displayTrack (the locked-in first track) so the label
+			// stays truthful across cross-theme navigation.
 			button!.title = playing
-				? `Now playing: ${track!.title} (click to pause)`
-				: `Play "${track!.title}"`;
+				? `Now playing: ${displayTrack.title} (click to pause)`
+				: `Play "${displayTrack.title}"`;
 			if (iconMuted) iconMuted.hidden = playing;
 			if (iconPlaying) iconPlaying.hidden = !playing;
-			if (label) label.textContent = playing ? track!.title : "Music off";
+			if (label) label.textContent = playing ? displayTrack.title : "Music off";
 		}
 
 		async function play() {
@@ -158,19 +213,33 @@ const audioMapJson = JSON.stringify(themeAudio);
 		}
 
 		button.hidden = false;
-		setUiState(false);
+		// Sprint 77.2: sync UI to the CURRENT audio state (which may
+		// be a persisted-across-nav playing state), not blindly to
+		// paused. Fixes the "button says muted but audio was on"
+		// state-drift bug on view-transition re-init.
+		setUiState(!audio.paused);
 
-		button.addEventListener("click", () => {
-			if (audio.paused) {
-				play();
-			} else {
-				pause();
-			}
-		});
+		// Guard against double-wiring the click listener when this
+		// button was previously initialized (persisted audio +
+		// re-rendered button on nav = same button instance NOT
+		// possible; but same-page re-init would be). Marker attr
+		// on the button element itself.
+		if (button.dataset.mpWired !== "1") {
+			button.dataset.mpWired = "1";
+			button.addEventListener("click", () => {
+				if (audio.paused) {
+					play();
+				} else {
+					pause();
+				}
+			});
+		}
 
 		// If the user had music on last visit, try resuming on first
 		// user gesture (any click) - browsers count that as consent.
-		if (localStorage.getItem(STORAGE_KEY) === "1") {
+		// Only attach this once per page load; it self-removes after
+		// firing (once: true).
+		if (localStorage.getItem(STORAGE_KEY) === "1" && audio.paused) {
 			const attemptResume = () => {
 				play();
 				document.removeEventListener("click", attemptResume);
@@ -179,11 +248,19 @@ const audioMapJson = JSON.stringify(themeAudio);
 		}
 	}
 
+	// Sprint 77.2: also re-init on every astro:page-load so the
+	// button/container (which is re-rendered on nav) picks up
+	// listeners and syncs its UI to the PERSISTED audio element's
+	// state. initMusicPlayer is idempotent - if the button already
+	// has listeners attached from a previous run, re-attaching new
+	// ones is harmless because the audio is the single source of
+	// truth for playback state.
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", initMusicPlayer);
 	} else {
 		initMusicPlayer();
 	}
+	document.addEventListener("astro:page-load", initMusicPlayer);
 </script>
 
 <style>

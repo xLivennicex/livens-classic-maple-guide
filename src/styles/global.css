@@ -1186,3 +1186,60 @@ main.page-width {
 	color: var(--text-muted);
 }
 
+
+/* =========================================================
+   Sprint 77: Astro View Transitions polish
+   ---------------------------------------------------------
+   The default cross-fade is fine but a touch flat. We add:
+   (1) A slight upward drift on the incoming page (feels like
+       stepping into the next room instead of a jump cut).
+   (2) A very brief blur on the outgoing page (magic-portal
+       vibe without becoming disorienting).
+   (3) prefers-reduced-motion respect - falls back to a plain
+       instant fade for anyone who opts out of motion.
+   ========================================================= */
+
+::view-transition-old(root) {
+	animation: liven-page-exit 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+::view-transition-new(root) {
+	animation: liven-page-enter 260ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+/* Sprint 77.1 fix: kitten flagged `blur()` (no argument) as
+   Chromium-lenient; other engines may skip the keyframe. Use
+   explicit blur(0px) at the zero endpoints. */
+@keyframes liven-page-exit {
+	from { opacity: 1; filter: blur(0px); transform: translateY(0); }
+	to   { opacity: 0; filter: blur(2px); transform: translateY(-6px); }
+}
+@keyframes liven-page-enter {
+	from { opacity: 0; filter: blur(3px); transform: translateY(8px); }
+	to   { opacity: 1; filter: blur(0px); transform: translateY(0); }
+}
+
+/* Named transition group for the persisted MusicPlayer. Since it
+   survives navigation, we skip its animation entirely - visual
+   continuity to match the audio continuity. */
+::view-transition-old(music-player),
+::view-transition-new(music-player) {
+	animation: none;
+}
+
+/* Vestibular safety: kill drift + blur for reduced-motion. Keep a
+   tiny opacity fade so pages still feel connected rather than
+   snap-swapping. */
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-old(root) {
+		animation: liven-page-exit-safe 120ms linear both;
+	}
+	::view-transition-new(root) {
+		animation: liven-page-enter-safe 120ms linear both;
+	}
+	@keyframes liven-page-exit-safe {
+		from { opacity: 1; } to { opacity: 0; }
+	}
+	@keyframes liven-page-enter-safe {
+		from { opacity: 0; } to { opacity: 1; }
+	}
+}
+

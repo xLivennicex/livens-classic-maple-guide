@@ -192,7 +192,11 @@ const mobsJson = JSON.stringify(grindMobs);
 	<script id="mobs-data" type="application/json" is:inline set:html={mobsJson}></script>
 </BaseLayout>
 
+{/* Sprint 77.1 fix: astro:page-load listener instead of
+    data-astro-rerun (the latter forces is:inline and skips TS). */}
 <script>
+document.addEventListener("astro:page-load", () => {
+	if (!document.getElementById("input-kpm")) return;
 	interface Mob { id: number; name: string; level: number; }
 	const mobs: Mob[] = JSON.parse(document.getElementById("mobs-data")!.textContent ?? "[]");
 	const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -286,6 +290,7 @@ const mobsJson = JSON.stringify(grindMobs);
 	for (const el of [$kpm, $mesoPerKill, $dropRate, $mesoMult, $potCost, $goal, $session]) {
 		el.addEventListener("input", recompute);
 	}
+});
 </script>
 
 <style>

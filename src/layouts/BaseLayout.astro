@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import MapleLeaf from "../components/MapleLeaf.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
 import PrimaryNav from "../components/PrimaryNav.astro";
@@ -108,6 +109,19 @@ const canonicalUrl = Astro.site
 		<meta name="twitter:description" content={description} />
 
 		<title>{title}</title>
+
+		{/* Sprint 77: Astro View Transitions.
+		    - Uses the browser's native View Transitions API where
+		      supported (Chrome, Edge, Safari 18+), animated CSS
+		      fallback everywhere else.
+		    - `fallback="animate"` opts non-supporting browsers into
+		      Astro's client-side transition emulation instead of
+		      hard-reloading. Zero content jank on Firefox.
+		    - Named transition groups on specific elements below
+		      (musicplayer, header/nav) let those elements slide
+		      between pages instead of cross-fading with the rest.
+		*/}
+		<ClientRouter fallback="animate" />
 	</head>
 
 	<body data-theme-decorations={decorations ? "on" : "off"}>
@@ -158,6 +172,17 @@ const canonicalUrl = Astro.site
 			</p>
 		</footer>
 
+		{/* Sprint 77: transition:persist keeps the audio element +
+		    playback state ALIVE across view transitions. Without
+		    this the music would restart on every nav (Sprint 73
+		    made per-page persistence work; we don't want to lose
+		    that when we add ClientRouter). Known limitation: the
+		    map-BGM override baked in at build time won't refresh
+		    when navigating between /maps/[id] pages via view
+		    transition - audio just keeps playing whatever's cued.
+		    Acceptable tradeoff for site-wide music continuity;
+		    users can click the player button to swap tracks
+		    manually. */}
 		<MusicPlayer mapId={Astro.props.bgmMapId} />
 	</body>
 </html>

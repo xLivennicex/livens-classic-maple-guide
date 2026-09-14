@@ -213,7 +213,11 @@ const itemsJson = JSON.stringify(ITEM_DROP_SOURCES);
 	<script id="items-data" type="application/json" is:inline set:html={itemsJson}></script>
 </BaseLayout>
 
+{/* Sprint 77.1 fix: switched from data-astro-rerun (which forces
+    is:inline and breaks TS) to astro:page-load listener pattern. */}
 <script>
+document.addEventListener("astro:page-load", () => {
+	if (!document.getElementById("input-mob-search")) return;
 	// Score -> % mapping mirrored client-side. Kept in sync with
 	// src/data/drop-rates.ts. Duplication is intentional: shipping
 	// the mapping as data lets us avoid an ESM import in the
@@ -555,6 +559,7 @@ const itemsJson = JSON.stringify(ITEM_DROP_SOURCES);
 	for (const el of [$kpm, $target, $mult, $customRate]) {
 		el.addEventListener("input", renderProbabilities);
 	}
+});
 </script>
 
 <style>

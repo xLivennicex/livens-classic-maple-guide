@@ -127,6 +127,9 @@ const categoryCounts = sortedTerms.reduce(
 	</div>
 </BaseLayout>
 
+{/* Sprint 77.1: glossary already had its own astro:page-load
+    handler at the bottom; just drop data-astro-rerun which
+    (mis)fires the file into is:inline mode + breaks TS parse. */}
 <script>
 	// Client-side glossary filter. Fully progressive: page ships
 	// server-rendered and readable without JS; filter simply becomes

@@ -252,7 +252,11 @@ const tracksJson = JSON.stringify(tracks);
 	<script id="jb-tracks-data" type="application/json" is:inline set:html={tracksJson}></script>
 </BaseLayout>
 
+{/* Sprint 77.1: astro:page-load listener replaces data-astro-rerun
+    (which was breaking the TS parse). Re-wires on every nav. */}
 <script>
+document.addEventListener("astro:page-load", () => {
+	if (!document.querySelector(".jukebox")) return;
 	/**
 	 * Jukebox client controller.
 	 *
@@ -415,6 +419,7 @@ const tracksJson = JSON.stringify(tracks);
 			syncPlayingUI();
 		}
 	});
+});
 </script>
 
 <style>
