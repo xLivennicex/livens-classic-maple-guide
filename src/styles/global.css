@@ -526,6 +526,18 @@ main.page-width {
 .prose {
 	padding: 1.6rem 1.85rem;
 	margin-bottom: 1.5rem;
+	/* Sprint 78: center the reading column. Per-guide styles set
+	   max-width (typically 72ch for optimal readability at ~66-75
+	   chars/line), but historically they left-aligned - which
+	   created asymmetric dead space on the right on wide viewports
+	   and read as "broken layout" instead of "intentional reading
+	   pane". margin-inline: auto is orthogonal to max-width so
+	   per-page overrides continue to work; this just centers
+	   whatever width they land on. Applies to .prose AND
+	   .section-heading (the eyebrow+H1+lede hero pattern above
+	   article bodies) so a page's whole reading column feels
+	   unified. */
+	margin-inline: auto;
 	background: color-mix(in srgb, var(--surface-card) 94%, transparent);
 	backdrop-filter: blur(8px) saturate(1.05);
 	-webkit-backdrop-filter: blur(8px) saturate(1.05);
@@ -1057,7 +1069,12 @@ main.page-width {
 	align-items: end;
 	justify-content: space-between;
 	gap: 1rem;
-	margin-bottom: 1.5rem;
+	/* Sprint 78: center this hero panel too (see .prose comment).
+	   margin-inline: auto pairs with per-page max-width caps so
+	   guide pages read as a centered reading column instead of
+	   a left-aligned strip. margin-bottom stays a full shorthand
+	   below so `auto` doesn't wipe vertical spacing. */
+	margin: 0 auto 1.5rem;
 	padding: 1.3rem 1.6rem;
 	background: var(--surface-card);
 	border: 2px solid var(--accent-primary);
