@@ -1,0 +1,343 @@
+---
+/**
+ * 404 - Themed not-found page.
+ *
+ * Astro auto-uses src/pages/404.astro for any unmatched route on
+ * static-hosted deployments. Cloudflare Pages serves this file
+ * with a real 404 status by convention (it's built as
+ * dist/404.html and CF looks for it on catch-all failures).
+ *
+ * The vibe: three iconic starter mobs — Orange Mushroom, Green
+ * Slime, Ribbon Pig — rendered in their damage-taken (hit1)
+ * state, looking dejected that the page you asked for doesn't
+ * exist in the datamine. Liven-voice copy and CTAs back to the
+ * useful parts of the site.
+ *
+ * Sprite strategy: use the existing <Sprite> component with a
+ * fallback chain [hit1, stand]. Orange Mushroom has a solid
+ * hit1 endpoint on maplestory.io (verified 200); Slime and
+ * Ribbon Pig can be flaky on hit1, so they'll gracefully drop
+ * to stand and users still see a mob. Zero build-time risk of
+ * a broken image.
+ *
+ * Theme: lith (that ocean-blue coastal vibe fits the "you got
+ * washed off the map" narrative). Uses the same theme system as
+ * every other page, so scrollbars/accents/etc. auto-swap.
+ */
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Sprite from "../components/Sprite.astro";
+import { DEFAULT_VERSION } from "../lib/maplestory-cdn";
+
+// wzIds sourced from src/data/db/mobs.json.
+// Orange Mushroom's crying face (hit1) is the iconic v83 sprite
+// every returning player recognizes; it's what sold the whole
+// "themed 404" idea in the first place.
+const MOB_ROOT = `https://maplestory.io/api/${DEFAULT_VERSION}/mob`;
+const mobs = [
+	{
+		name: "Orange Mushroom",
+		wzId: 1210102,
+		bubble: "Even *I* couldn't 404 this hard.",
+	},
+	{
+		name: "Green Slime",
+		wzId: 210100,
+		bubble: "Blorp. This page is dust.",
+	},
+	{
+		name: "Ribbon Pig",
+		wzId: 1210101,
+		bubble: "Oink oink I mean, that's not a thing.",
+	},
+] as const;
+
+function spriteSrcs(wzId: number): string[] {
+	// hit1 (crying/damaged) first; stand as a proven fallback.
+	// Sprite's built-in onerror chain handles the swap silently.
+	return [`${MOB_ROOT}/${wzId}/render/hit1`, `${MOB_ROOT}/${wzId}/render/stand`];
+}
+---
+
+<BaseLayout
+	title="404 - Page not found - Liven's Classic Maple Guide"
+	description="This page doesn't exist in the Classic World datamine. Orange Mushroom, Slime, and Ribbon Pig are all pretty upset about it."
+	currentPath="/404"
+	theme="lith"
+	decorations={false}
+>
+	<section class="not-found">
+		<div class="not-found__mobs" aria-hidden="true">
+			{
+				mobs.map((mob) => (
+					<figure class="not-found__mob">
+						<Sprite
+							srcs={spriteSrcs(mob.wzId)}
+							alt={`${mob.name} taking damage`}
+							loading="eager"
+							class="not-found__sprite"
+						/>
+						<figcaption class="not-found__bubble">{mob.bubble}</figcaption>
+					</figure>
+				))
+			}
+		</div>
+
+		<div class="not-found__copy">
+			<p class="not-found__eyebrow">404 - Route not in datamine</p>
+			<h1 class="not-found__title">You wandered off the world map.</h1>
+			<p class="not-found__lede">
+				The URL you followed doesn't exist in Classic World, v83 GMS,
+				or any other build we've catalogued. Might have been moved,
+				might have been a typo in Nexon's dev branch, might just be
+				a haunted link. Either way, three starter mobs are pretty
+				bummed about it.
+			</p>
+			<p class="not-found__lede not-found__lede--secondary">
+				Let's get you back somewhere useful:
+			</p>
+
+			<ul class="not-found__cta-list">
+				<li>
+					<a class="not-found__cta not-found__cta--primary" href="/">
+						<span class="not-found__cta-title">Back to Home</span>
+						<span class="not-found__cta-sub">Latest news + featured guides</span>
+					</a>
+				</li>
+				<li>
+					<a class="not-found__cta" href="/guides">
+						<span class="not-found__cta-title">Guides</span>
+						<span class="not-found__cta-sub">CoT2 vs v83, jobs, glossary, more</span>
+					</a>
+				</li>
+				<li>
+					<a class="not-found__cta" href="/calculators">
+						<span class="not-found__cta-title">Calculators</span>
+						<span class="not-found__cta-sub">Damage, mesos, drops, EXP</span>
+					</a>
+				</li>
+				<li>
+					<a class="not-found__cta" href="/jukebox">
+						<span class="not-found__cta-title">Jukebox</span>
+						<span class="not-found__cta-sub">Every BGM on the site</span>
+					</a>
+				</li>
+			</ul>
+
+			<p class="not-found__hint">
+				Or press <kbd>Ctrl</kbd>+<kbd>K</kbd> to search across every
+				page on the site.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.not-found {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+		padding: 3rem 1rem 4rem;
+		max-width: 780px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	/* Mob squad row */
+	.not-found__mobs {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 2.4rem;
+		flex-wrap: wrap;
+	}
+	.not-found__mob {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0;
+	}
+	/* Sprint 82.1 fix: <Sprite> renders <img> via set:html for its
+	   onerror fallback chain, which skips Astro's scoped-style
+	   attribute stamping. Wrapping sprite-targeted rules in
+	   :global() lets them cascade through without needing the
+	   data-astro-cid attribute. The parent .not-found__mob IS
+	   scoped (rendered in the template body), so specificity
+	   stays local - we're not polluting global CSS. */
+	.not-found__mob :global(.not-found__sprite) {
+		/* MapleStory.io ships mob renders at native pixel sizes
+		   (~50-70px each). Setting `width` drives the upscale;
+		   `max-width` alone would just cap and let the sprite
+		   render tiny. `image-rendering: pixelated` keeps the
+		   ~2x upscale crisp instead of bilinear-blurred. */
+		width: 140px;
+		height: auto;
+		max-width: 140px;
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+		/* Little bob to hint at "sad" without going full cartoon.
+		   Motion drops to nothing under prefers-reduced-motion. */
+		animation: nf-bob 2.6s ease-in-out infinite;
+	}
+	.not-found__mob:nth-child(2) :global(.not-found__sprite) {
+		animation-delay: -0.6s;
+	}
+	.not-found__mob:nth-child(3) :global(.not-found__sprite) {
+		animation-delay: -1.4s;
+	}
+	@keyframes nf-bob {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(4px); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.not-found__mob :global(.not-found__sprite) {
+			animation: none;
+		}
+	}
+
+	/* Speech bubbles - little text callouts under each mob */
+	.not-found__bubble {
+		position: relative;
+		max-width: 160px;
+		padding: 0.45rem 0.7rem;
+		background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+		border: 1px solid var(--border-card);
+		border-radius: 0.55rem;
+		font-size: 0.8rem;
+		line-height: 1.35;
+		color: var(--text-body);
+		box-shadow: var(--shadow-content-card);
+		font-style: italic;
+	}
+	/* Bubble tail pointing up at the sprite */
+	.not-found__bubble::before {
+		content: "";
+		position: absolute;
+		top: -6px;
+		left: 50%;
+		transform: translateX(-50%) rotate(45deg);
+		width: 10px;
+		height: 10px;
+		background: inherit;
+		border-top: 1px solid var(--border-card);
+		border-left: 1px solid var(--border-card);
+	}
+
+	/* Copy block */
+	.not-found__copy {
+		width: 100%;
+	}
+	.not-found__eyebrow {
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin: 0 0 0.4rem;
+	}
+	.not-found__title {
+		font-size: clamp(1.6rem, 4vw, 2.4rem);
+		line-height: 1.15;
+		color: var(--text-heading);
+		margin: 0 0 0.9rem;
+	}
+	.not-found__lede {
+		font-size: 1.02rem;
+		line-height: 1.6;
+		color: var(--text-body);
+		margin: 0 auto 0.9rem;
+		max-width: 62ch;
+	}
+	.not-found__lede--secondary {
+		margin-top: 1.4rem;
+		font-weight: 600;
+	}
+
+	/* CTA grid */
+	.not-found__cta-list {
+		list-style: none;
+		margin: 0.8rem 0 1.5rem;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 0.75rem;
+		text-align: left;
+	}
+	.not-found__cta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.85rem 1rem;
+		background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+		border: 1px solid var(--border-card);
+		border-radius: 0.65rem;
+		color: var(--text-body);
+		text-decoration: none;
+		box-shadow: var(--shadow-content-card);
+		transition:
+			transform 140ms ease,
+			border-color 140ms ease,
+			box-shadow 140ms ease;
+	}
+	.not-found__cta:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+	}
+	.not-found__cta:focus-visible {
+		outline: 2px solid var(--accent-primary);
+		outline-offset: 2px;
+	}
+	.not-found__cta--primary {
+		border-color: var(--accent-primary);
+		background: color-mix(in srgb, var(--accent-primary) 12%, var(--surface-card));
+	}
+	.not-found__cta-title {
+		font-weight: 700;
+		color: var(--text-heading);
+		font-size: 1rem;
+	}
+	.not-found__cta-sub {
+		font-size: 0.82rem;
+		color: var(--text-body);
+		opacity: 0.85;
+	}
+
+	.not-found__hint {
+		font-size: 0.9rem;
+		color: var(--text-body);
+		opacity: 0.85;
+		margin: 0;
+	}
+	.not-found__hint kbd {
+		font-family: inherit;
+		font-size: 0.78rem;
+		padding: 0.1rem 0.4rem;
+		margin: 0 0.05rem;
+		border-radius: 0.25rem;
+		background: color-mix(in srgb, var(--surface-card) 60%, transparent);
+		border: 1px solid var(--border-card);
+		color: var(--text-heading);
+	}
+
+	@media (max-width: 640px) {
+		.not-found__mobs {
+			gap: 1.2rem;
+		}
+		.not-found__mob :global(.not-found__sprite) {
+			width: 96px;
+			max-width: 96px;
+		}
+		.not-found__bubble {
+			max-width: 120px;
+			font-size: 0.72rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.not-found__cta {
+			transition: none;
+		}
+	}
+</style>

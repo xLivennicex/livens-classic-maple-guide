@@ -396,6 +396,75 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 82 - Themed 404 page with sad mob squad:**
+  Liven's ask: use the crying/damage-taken sprites of the three
+  iconic starter mobs (Orange Mushroom, Green Slime, Ribbon Pig)
+  to theme a proper 404 page. Because if you have to disappoint
+  a user with a broken link, you might as well do it with
+  sprite-based charm.
+
+  **Ship:**
+  - New `src/pages/404.astro`. Astro auto-uses this for any
+    unmatched route on static-hosted deployments; Cloudflare
+    Pages serves it with proper HTTP 404 status (kitten
+    verified via `fetch(...).status === 404`, not a soft-200).
+  - Three sprites rendered via existing `<Sprite srcs={...}>`
+    with a `[hit1, stand]` fallback chain. Orange Mushroom's
+    `hit1` (the classic crying face) returns 200 reliably;
+    Slime and Ribbon Pig `hit1` is flaky/500 on maplestory.io,
+    so their images gracefully drop to `stand`. Zero broken
+    image icons ever.
+  - Speech bubbles under each mob with Liven-voice snark
+    ("Even *I* couldn't 404 this hard.", "Blorp. This page is
+    dust.", "Oink oink I mean, that's not a thing.")
+  - 4 CTA cards (Home / Guides / Calculators / Jukebox) with
+    accent-primary-highlighted Home card. Plus a Cmd/K hint
+    that ties in to Sprint 81's command palette.
+  - Theme locked to `lith` (blue) - fits the "washed off the
+    map into open water" vibe of not-found copy.
+  - Mob sprite wzIds sourced from `src/data/db/mobs.json`:
+    Orange Mushroom=1210102, Green Slime=210100,
+    Ribbon Pig=1210101.
+
+  **Sprint 82.1 hotfix - Astro scoped style + set:html leak:**
+  Kitten caught that my `.not-found__sprite` styles weren't
+  applying: `getComputedStyle().imageRendering === "auto"`
+  instead of `"crisp-edges"`. Root cause: the `<Sprite>`
+  component renders `<img>` via `set:html` (needed for the
+  inline onerror fallback chain), which BYPASSES Astro's per-
+  component scoped-style attribute stamping. So the compiled
+  CSS selector `.not-found__sprite[data-astro-cid-ibpinaeu]`
+  couldn't match the un-attributed img. Silent no-op.
+
+  Fix: wrap sprite-targeted rules in `:global()` inside the
+  still-scoped parent selector. Parent `.not-found__mob` IS
+  scoped (rendered in template body), so specificity stays
+  local - we're not polluting global CSS. Pattern:
+      `.not-found__mob :global(.not-found__sprite) { ... }`
+
+  **Sprint 82.2 hotfix - width vs. max-width:**
+  Even after the scope fix, sprites still rendered at native
+  ~60-70px because I only set `max-width: 140px`. That CAPS
+  size but doesn't DRIVE it - MapleStory.io returns tiny PNGs
+  and `max-width` was letting them render at intrinsic size.
+  Added `width: 140px; height: auto;` to actually upscale.
+  Result: sprites now render at exactly 140px each (2.22-
+  2.33x scale), and the `image-rendering: crisp-edges` from
+  82.1 finally pays off - upscaled pixel art stays crisp
+  instead of bilinear-blurred.
+
+  **Regression-worthy lesson (both hotfixes):** For pages/
+  components that pass content through `<Sprite>` or other
+  components using `set:html`, target the rendered element
+  via `:global()` from a scoped parent. AND when styling
+  intrinsically-sized images, always pair `max-width` with
+  an explicit `width` if you want them scaled up, not just
+  capped.
+
+  **Kitten scorecard final:** 3/3 green after 82.2. Sprites
+  rendered at 140px, crisp-edges applied, HTTP 404 status
+  preserved.
+
   **Sprint 81 - Cmd/K command palette (Pagefind):**
   The big marquee polish item off the shortlist. Users hit Cmd/K
   (or Ctrl/K, or "/", or click the placeholder header search input)
