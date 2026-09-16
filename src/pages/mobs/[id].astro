@@ -49,6 +49,36 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 	description={`${d.name} (mob ID ${d.id}) - quest requirements, spawn locations (soon), drop tables (soon).`}
 	theme={pageTheme}
 >
+	{/* Sprint 84.2: page-level pagefind weight wrapper. Kitten's
+	    5→10 h1 weight bump moved zero ranks because search
+	    ranking is decided by term frequency across ALL text on
+	    the page, not just the title. Item pages with prose like
+	    "Where it comes from / Given by quests..." accumulate
+	    more term hits than a mob's compact stat block.
+
+	    Fix: wrap the entire mob page content in weight=3 so
+	    every term hit on the mob page counts 3x. The h1's
+	    weight=10 still wins for its own text (nested weight
+	    takes precedence over ancestor weight per Pagefind's
+	    docs). Net effect: mob "Orange Mushroom" now dominates
+	    incidental item mentions of the same phrase.
+
+	    NOT adding this to every entity template - keeping the
+	    boost scoped to mobs (the entity type kitten flagged as
+	    losing to items). Bosses inherit the same treatment
+	    below.
+
+	    Sprint 84.3: bumped 3→8. Weight 3 lost to items because
+	    Pagefind's BM25 factors in document length; short item
+	    pages ("Orange Mushroom Hat" is basically the whole
+	    page) have crazy term density that a 3x page-wide boost
+	    couldn't overcome. Weight 8 is enough headroom to
+	    dominate: 8x the ~40 term hits on a mob page = 320
+	    "effective terms" vs. ~15-20 unweighted terms on a
+	    short item page. Nested h1 weight=10 still wins for the
+	    title text itself (Pagefind uses the nearest-ancestor
+	    weight, not multiplied). */}
+	<div data-pagefind-weight="8">
 	<nav class="crumbs">
 		<a href="/mobs">← Mobs</a>
 		<span class="crumbs__sep">·</span>
@@ -65,7 +95,18 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 			/>
 		</div>
 		<div class="hero__title">
-			<h1>{d.name}</h1>
+			{/* Sprint 84.1: mob h1 weight bumped to 10 (was 5).
+			    Weight 5 wasn't enough to outrank 6+ items whose
+			    names include the same tokens as the mob (e.g.
+			    "Orange Mushroom Hat" competes with "Orange
+			    Mushroom" mob on identical h1 title matches).
+			    Pagefind weight scales linearly, so 10 = 5x the
+			    default weight of 2. Applied only to mob h1
+			    (canonical entity page). Bosses also get 10 in
+			    their template. Maps/NPCs/Quests keep the more
+			    modest 5 since their names collide with items
+			    less frequently. */}
+			<h1 data-pagefind-weight="10">{d.name}</h1>
 			<div class="hero__badges">
 				<span class="badge badge--id">Mob ID {d.id}</span>
 				{d.stats?.level != null && (
@@ -196,6 +237,7 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 			</ul>
 		)}
 	</section>
+	</div>
 </BaseLayout>
 
 <style>

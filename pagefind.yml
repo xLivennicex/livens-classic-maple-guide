@@ -1,0 +1,33 @@
+# Pagefind indexing configuration (Sprint 84)
+#
+# Consumed automatically by `pagefind --site dist` (chained after
+# `astro build` via the `build` script in package.json). Any option
+# here can also be passed as a CLI flag; keeping them declaratively
+# in this file makes the tuning discoverable and greppable.
+
+# Selectors whose text should NOT be indexed. These are chrome/meta
+# UI bits that create noise in search excerpts:
+#
+# - `.crumbs`         breadcrumb nav ("← Mobs · Orange Mushroom") -
+#                    every detail page ships one, so before this
+#                    exclusion the index had ~5,000 copies of "Mobs"
+#                    inflating the term frequency of that word AND
+#                    causing "MobsOrange" style run-together bugs
+#                    in excerpts (adjacent inline elements with no
+#                    whitespace get concatenated).
+# - `.hero__badges`  the row of badge chips ("Mob ID 9", "Lv. 8",
+#                    "Spawns on 4 maps", "Drops 6 items") - purely
+#                    metadata, unlikely to be what a user searches
+#                    for, and produces "IslandHenesys" style
+#                    concatenations across chip boundaries.
+# - `.badge`         defense in depth for any badge that appears
+#                    outside a `.hero__badges` cluster.
+#
+# Note: <PrimaryNav>, <header>, and .site-footer live OUTSIDE the
+# <main data-pagefind-body> element in BaseLayout, so they're
+# already excluded implicitly. This config only handles the noise
+# elements that sit inside main content but aren't semantic prose.
+exclude_selectors:
+  - ".crumbs"
+  - ".hero__badges"
+  - ".badge"

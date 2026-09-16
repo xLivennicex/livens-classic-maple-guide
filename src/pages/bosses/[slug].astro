@@ -67,7 +67,7 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 			/>
 		</div>
 		<div class="hero__title">
-			<h1>{mob.name}</h1>
+			<h1 data-pagefind-weight="10">{mob.name}</h1>
 			<p class="hero__role">{role}</p>
 			<div class="hero__badges">
 				<span class="badge badge--lvl">Lv. {mob.stats?.level ?? "?"}</span>

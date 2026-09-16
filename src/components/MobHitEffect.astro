@@ -190,4 +190,42 @@
 		-webkit-background-clip: text;
 		background-clip: text;
 	}
+
+	/* Sprint 83: reduced-motion pass. Users who opt out of motion
+	   are typically vulnerable to vestibular triggers - the exact
+	   thing that scale + translate animations produce. But we don't
+	   want to eliminate the hit acknowledgment entirely (silent
+	   clicks read as broken). So: keep the *color/opacity* signal,
+	   drop the *positional/scale* motion.
+
+	   Flash: brightness pulse stays (informative "you hit it"
+	   signal, no vestibular component). Scale transform is
+	   suppressed with animation-name override to a scale-free
+	   keyframe set.
+
+	   Damage number: appears/fades at click position without
+	   floating up or scaling in/out. Total presence time drops
+	   from 900ms to 650ms since there's no travel arc to complete. */
+	@media (prefers-reduced-motion: reduce) {
+		.mob-hit-flash {
+			animation-name: mob-hit-flash--rm;
+		}
+		@keyframes mob-hit-flash--rm {
+			0%   { filter: brightness(1); }
+			30%  { filter: brightness(2.4) saturate(0.4); }
+			60%  { filter: brightness(1.4); }
+			100% { filter: brightness(1); }
+		}
+
+		.mob-damage-number {
+			animation-name: mob-damage-float--rm;
+			animation-duration: 650ms;
+		}
+		@keyframes mob-damage-float--rm {
+			0%   { opacity: 0; transform: translate(-50%, -50%); }
+			20%  { opacity: 1; transform: translate(-50%, -50%); }
+			70%  { opacity: 1; transform: translate(-50%, -50%); }
+			100% { opacity: 0; transform: translate(-50%, -50%); }
+		}
+	}
 </style>

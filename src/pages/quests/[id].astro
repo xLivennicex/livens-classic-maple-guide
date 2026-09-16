@@ -119,7 +119,7 @@ const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 				</div>
 			)}
 			<div class="hero__title">
-				<h1>{props.d.name}</h1>
+				<h1 data-pagefind-weight="5">{props.d.name}</h1>
 				<div class="hero__badges">
 					<span class="badge badge--id">Quest {props.d.id}</span>
 					<span class="badge">Lv {props.d.levelMin ?? "?"}</span>

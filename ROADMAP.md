@@ -396,6 +396,96 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 84 - Pagefind content tuning:**
+  Kitten's parking-lot items from Sprint 81 addressed: chip-
+  boundary run-together text ("IslandHenesys", "SnailMob") in
+  search excerpts, and mob results getting outranked by items
+  for their own name.
+
+  **Ship - excerpt cleanup (the big win):**
+  - New `pagefind.yml` at repo root, consumed automatically by
+    `pagefind --site dist` (chained after `astro build`).
+    Declarative config beats hidden CLI flags in package.json.
+  - `exclude_selectors: [".crumbs", ".hero__badges", ".badge"]`
+    strips breadcrumb nav + badge chip clusters from every page
+    before indexing. These were:
+    (a) Adding noise to excerpts ("Mob ID 9 · Lv. 8 · Spawns on
+        4 maps · Drops 6 items" appearing in results)
+    (b) Creating "IslandHenesys" concatenation bugs where
+        adjacent inline elements ran their text together with
+        no whitespace boundary
+    (c) Inflating term frequency of chrome words like "Mobs"
+        across ~5000 pages, distorting BM25 scoring
+  - Index size dropped 27,225 → 21,332 words (22% noise
+    reduction). Kitten verified excerpts are clean across
+    "henesys", "victoria", "snail" queries - no more chip-
+    boundary bugs anywhere.
+
+  **Sprint 84.1 → 84.3 - ranking boost saga:**
+  Item pages competing on "Orange Mushroom" ("Hat", "T-Shirt",
+  "Invasion", etc.) were dominating the mob page for that
+  query. Three iterations to find the right lever.
+
+  84.1: h1 `data-pagefind-weight="5"` on mob/boss/map/npc/quest
+  detail pages. Zero rank movement. Kitten's diagnosis: h1
+  weight only affects h1 text (2 tokens); item pages have
+  identical h1 matches PLUS more body text hits, so BM25 total
+  score favors items.
+
+  84.2: page-level `<div data-pagefind-weight="3">` wrapper
+  around ALL mob content (including h1 which keeps its
+  weight="10" - Pagefind uses nearest-ancestor weight, so
+  h1 still gets 10 and everything else gets 3). Result: mob
+  moved from rank 7 → rank 7. Not enough headroom.
+
+  84.3: bumped page-level wrapper to weight=8. Result:
+  - "orange mushroom" → mob at RANK 1 (was rank 7). Total win.
+  - "snail" → mob at rank 6 (was rank 11). Improvement but
+    still just past top-5. Blocked by 5 legitimate snail-
+    themed maps ("Snail Hunting Ground I-III", "Snail Garden",
+    "Snail Field of Flowers") - those pages naturally have
+    "Snail" in their h1s and drop tables. Fixing this would
+    require either per-page down-weighting on map pages or a
+    client-side re-rank layer. Diminishing returns; a user
+    searching "snail" may legitimately want maps as often as
+    the mob, and the mob is one click away at #6 with a
+    visible "Mob" chip.
+
+  **Lesson worth remembering:** Pagefind weights don't stack -
+  the nearest ancestor's weight applies. Wrapping in weight=N
+  at page level boosts EVERY term hit on that page N times,
+  which is what you usually want for entity pages. But short,
+  dense competing pages (item pages with only h1 + short
+  description) can still win on term density even against a
+  3x page-wide boost. Empirically, weight=8 was the threshold
+  to dominate ~150-word item pages with a ~200-word mob page.
+
+  **Sprint 83 - Reduced-motion pass for MobHitEffect:**
+  Sprint 76 shipped click-to-hit-effect on mob sprites (white
+  flash + damage number floats up on click). The animations
+  used scale/translate transforms - exactly the class of
+  motion that triggers vestibular issues for prefers-reduced-
+  motion users.
+
+  Design principle: for users who opt out of motion, keep the
+  *informative* visual signal (they hit something) but drop
+  the *positional/scale* motion (nauseogenic component).
+  Silent clicks read as broken, so full disable is worse UX.
+
+  **Ship:**
+  - `@media (prefers-reduced-motion: reduce)` block appended
+    to MobHitEffect's global stylesheet.
+  - `.mob-hit-flash` animation overridden with `mob-hit-flash--rm`
+    keyframes: brightness pulse ONLY, no scale transform.
+    Same 250ms duration for consistent game-feel timing.
+  - `.mob-damage-number` overridden with `mob-damage-float--rm`
+    keyframes: appears/fades at click position without
+    translating up or scaling in/out. Duration shortened
+    900ms → 650ms since there's no travel arc to complete.
+  - Kitten verified via CSSOM dump: RM keyframes have zero
+    `transform: scale()` or vertical `translate` - only opacity
+    and filter changes. 6/6 pass.
+
   **Sprint 82 - Themed 404 page with sad mob squad:**
   Liven's ask: use the crying/damage-taken sprites of the three
   iconic starter mobs (Orange Mushroom, Green Slime, Ribbon Pig)
