@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import FloatingToc from "../components/FloatingToc.astro";
 import MapleLeaf from "../components/MapleLeaf.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
 import PrimaryNav from "../components/PrimaryNav.astro";
@@ -171,6 +172,14 @@ const canonicalUrl = Astro.site
 				</a>. Background music: fan compositions (credit pending).
 			</p>
 		</footer>
+
+		{/* Sprint 79: self-configuring on-this-page navigation.
+		    Renders itself only when the current page has >= 2 h2s
+		    inside `.prose` (i.e. long-form guide pages). Sits in
+		    the right-side dead space Sprint 78 standardized on
+		    when we centered the guide reading columns. Hidden
+		    below 1400px viewport. Zero per-guide-file wiring. */}
+		<FloatingToc />
 
 		{/* Sprint 77: transition:persist keeps the audio element +
 		    playback state ALIVE across view transitions. Without

@@ -47,6 +47,106 @@ html {
 	scroll-behavior: smooth;
 }
 
+/* =========================================================
+   Sprint 80: themed gradient scrollbars
+   ---------------------------------------------------------
+   Uses each theme's --accent-primary → --accent-primary-strong
+   pair as a vertical gradient on the thumb. When the user
+   navigates between regional pages the scrollbar cross-fades
+   with the rest of the theme tokens (thanks to CSS var
+   inheritance) so scrolling feels native to whichever region
+   you're browsing.
+
+   Cross-engine reality:
+   - WebKit/Blink (Chrome, Edge, Safari, ~85% of users) supports
+     ::-webkit-scrollbar-* pseudo-elements with full gradient
+     backgrounds. Full fidelity here.
+   - Firefox supports `scrollbar-color` with two SOLID colors
+     only (no gradients). We give it a solid accent thumb + a
+     transparent track. Different-but-cohesive fallback.
+   - Mobile browsers largely hide native scrollbars entirely,
+     so the styling is essentially desktop-only polish.
+
+   The transparent border + background-clip: padding-box trick
+   on the thumb creates a small gap between the thumb and the
+   track edges so the thumb reads as a floating pill rather
+   than a bar filling its channel. Reads more polished.
+   ========================================================= */
+
+/* Sprint 80.1 fix: kitten caught that Chromium 121+ silently
+   drops ::-webkit-scrollbar-* rules whenever the standardized
+   `scrollbar-width` or `scrollbar-color` property is also set
+   on the same element - the Chrome team's stance is "if both
+   are declared, standard wins." Our initial `* { scrollbar-
+   width: thin }` was matching html/root and killing the whole
+   gradient in Chromium. To get gradient thumbs in WebKit AND
+   themed thin scrollbars in Firefox, we gate the standard
+   properties behind an @supports check that resolves TRUE
+   only in browsers WITHOUT ::-webkit-scrollbar support. */
+
+/* Non-WebKit path (Firefox and anything else without the
+   webkit pseudo-elements): solid theme-colored thin scrollbar.
+   Firefox can't render gradients on scrollbars regardless -
+   `scrollbar-color` takes two solid colors. Best we can do.  */
+@supports not selector(::-webkit-scrollbar) {
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--accent-primary) transparent;
+	}
+}
+
+/* WebKit / Blink path (Chrome, Edge, Safari, Opera): full
+   gradient thumb using the theme's accent-primary → strong
+   pair as vertical stops. Auto-swaps when the user navigates
+   between themed regions. */
+::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}
+::-webkit-scrollbar-track {
+	background: color-mix(in srgb, var(--surface-card) 35%, transparent);
+	border-radius: 6px;
+}
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(
+		180deg,
+		var(--accent-primary),
+		var(--accent-primary-strong)
+	);
+	border-radius: 6px;
+	/* Padding-box border trick: gives the thumb a 2px inset
+	   from the track so it looks like a floating pill. */
+	border: 2px solid transparent;
+	background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+	/* Flip the gradient direction on hover for a subtle "the
+	   thumb woke up" feel without any JS. */
+	background: linear-gradient(
+		180deg,
+		var(--accent-primary-strong),
+		var(--accent-primary)
+	);
+	background-clip: padding-box;
+}
+::-webkit-scrollbar-corner {
+	/* Where vertical + horizontal scrollbars intersect. Keep it
+	   invisible so it doesn't awkwardly show the surface color. */
+	background: transparent;
+}
+
+/* Sprint 79 fix (a11y / WCAG 2.3.3): scrollIntoView({ behavior: "auto" })
+   inherits CSS's scroll-behavior, so the FloatingToc's JS branch for
+   reduced-motion users was silently getting the smooth animation
+   anyway. Kill the smooth default when the user has opted out of
+   motion. Applies globally, not just to TOC scroll - any programmatic
+   scrollTo/scrollIntoView on this site now respects the preference. */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
 /* Body base rule lives in the `base` layer so themes always win when
  * they define their own background. Themes without explicit body rules
  * (Kerning, Lith, Ellinia, Sleepywood - still stubs) fall back to this

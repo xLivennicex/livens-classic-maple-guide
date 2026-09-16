@@ -1,0 +1,262 @@
+---
+/**
+ * FloatingToc - a self-configuring right-rail "on this page"
+ * navigation for long-form guide pages.
+ *
+ * Design:
+ * - Pure progressive enhancement. Server ships an empty <aside>;
+ *   the client script populates it on astro:page-load if the
+ *   current page has >= 2 <h2>s inside `.prose`.
+ * - Zero per-guide-file wiring. Just gets included once in
+ *   BaseLayout; self-detects whether to render itself.
+ * - Sits in the right-side dead space we standardized on in
+ *   Sprint 78 (guide reading columns centered at ~572-604px
+ *   inside a 1150px page-width, so on >=1400px viewports there
+ *   is ~200px+ of unused space on each side).
+ * - Hidden below 1400px viewport - not enough room for a side
+ *   rail, users get the standard scroll experience.
+ * - IntersectionObserver-based scroll spy highlights the current
+ *   section. rootMargin biases the "active" line toward the top
+ *   third of the viewport so it moves as headings pass reading
+ *   position, not just when they enter/exit the whole page.
+ * - Reduced-motion respect: smooth-scroll only for users who
+ *   haven't opted out of motion.
+ * - Astro View Transitions safe: script re-runs on every
+ *   astro:page-load; module-scoped observer reference gets
+ *   disconnected before we build the new one so no leaks.
+ */
+---
+
+{/* Empty shell - the client script fills this in and toggles
+    the hidden attribute based on whether the current page has
+    enough headings to warrant a TOC. */}
+<aside
+	id="floating-toc"
+	class="floating-toc"
+	aria-label="On this page"
+	hidden
+></aside>
+
+<script>
+	// Minimum headings before we bother showing the TOC. A single-
+	// section page doesn't need on-this-page nav.
+	const TOC_MIN_HEADINGS = 2;
+
+	// Selector for what counts as a page heading. Scoped to .prose
+	// so we don't scoop up section headings in the site chrome.
+	const HEADING_SELECTOR = ".prose h2";
+
+	// Module-scoped so we can disconnect the previous nav's
+	// observer before wiring a fresh one on view-transition
+	// re-init. Storing it on the DOM element instead would
+	// break because Astro swaps the whole <aside> on nav.
+	let activeObserver: IntersectionObserver | null = null;
+
+	function slugify(text: string): string {
+		return text
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")
+			.replace(/^-+|-+$/g, "");
+	}
+
+	function renderToc() {
+		const toc = document.getElementById("floating-toc");
+		if (!toc) return;
+
+		// Tear down any previous TOC first (nav re-init).
+		toc.innerHTML = "";
+		toc.hidden = true;
+		if (activeObserver) {
+			activeObserver.disconnect();
+			activeObserver = null;
+		}
+
+		const headings = Array.from(
+			document.querySelectorAll<HTMLHeadingElement>(HEADING_SELECTOR),
+		);
+		if (headings.length < TOC_MIN_HEADINGS) return;
+
+		// Assign stable IDs to headings that don't have one yet.
+		// Uses text-slug; on collision we suffix an index so
+		// deep-linking stays unambiguous.
+		const seen = new Set<string>();
+		for (const h of headings) {
+			if (!h.id) {
+				const base = slugify(h.textContent ?? "");
+				let candidate = base || "section";
+				let n = 2;
+				while (seen.has(candidate) || document.getElementById(candidate)) {
+					candidate = `${base}-${n++}`;
+				}
+				h.id = candidate;
+			}
+			seen.add(h.id);
+			// Bit of breathing room above hash-nav targets so the
+			// heading isn't jammed against the top edge on jump.
+			h.style.scrollMarginTop = "1.5rem";
+		}
+
+		// Build the nav markup.
+		toc.hidden = false;
+		const title = document.createElement("p");
+		title.className = "floating-toc__title";
+		title.textContent = "On this page";
+		toc.appendChild(title);
+
+		const list = document.createElement("ol");
+		list.className = "floating-toc__list";
+		const linksById = new Map<string, HTMLAnchorElement>();
+
+		for (const h of headings) {
+			const li = document.createElement("li");
+			const a = document.createElement("a");
+			a.href = `#${h.id}`;
+			a.textContent = h.textContent ?? "";
+			a.className = "floating-toc__link";
+			a.dataset.tocLink = h.id;
+
+			// Reduced-motion-respecting smooth scroll. Native hash
+			// nav would also work but bypasses the media query.
+			a.addEventListener("click", (e) => {
+				e.preventDefault();
+				const target = document.getElementById(h.id);
+				if (!target) return;
+				const prefersReduced = window.matchMedia(
+					"(prefers-reduced-motion: reduce)",
+				).matches;
+				target.scrollIntoView({
+					behavior: prefersReduced ? "auto" : "smooth",
+					block: "start",
+				});
+				history.pushState(null, "", `#${h.id}`);
+			});
+
+			li.appendChild(a);
+			list.appendChild(li);
+			linksById.set(h.id, a);
+		}
+		toc.appendChild(list);
+
+		// Scroll spy: highlight the topmost visible heading. The
+		// rootMargin narrows the "active" band to roughly the top
+		// third of the viewport, so scroll direction feels natural:
+		// as you scroll down, the next heading activates when it
+		// approaches the top of the reading area.
+		activeObserver = new IntersectionObserver(
+			(entries) => {
+				// Update the visible set: track which entries are
+				// currently in the active band.
+				const visibleIds = new Set<string>();
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						visibleIds.add(entry.target.id);
+					}
+				}
+				// Choose the topmost visible heading (smallest
+				// boundingClientRect.top >= 0). If none, keep the
+				// last active one to avoid flicker at boundaries.
+				const candidates = headings.filter((h) => visibleIds.has(h.id));
+				if (candidates.length === 0) return;
+				const active = candidates[0];
+				for (const [id, a] of linksById) {
+					a.classList.toggle("floating-toc__link--active", id === active.id);
+				}
+			},
+			{ rootMargin: "-80px 0px -66% 0px", threshold: 0 },
+		);
+		for (const h of headings) activeObserver.observe(h);
+	}
+
+	// Run on initial page load AND every subsequent view-transition
+	// nav. astro:page-load fires on both cases with the ClientRouter
+	// active, so a single listener covers both entry points.
+	document.addEventListener("astro:page-load", renderToc);
+</script>
+
+<style>
+	.floating-toc {
+		/* Fixed to the viewport right edge - lives in the dead space
+		   right of the centered reading column. z-index above page
+		   content but below any modal/tooltip layer we might add
+		   later. */
+		position: fixed;
+		right: 1.5rem;
+		top: 11rem;
+		width: 220px;
+		max-height: calc(100vh - 14rem);
+		overflow-y: auto;
+		padding: 0.9rem 1rem 1rem;
+		background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+		backdrop-filter: blur(10px) saturate(1.05);
+		-webkit-backdrop-filter: blur(10px) saturate(1.05);
+		border: 1px solid var(--border-card);
+		border-radius: 0.65rem;
+		box-shadow: var(--shadow-content-card);
+		font-size: 0.83rem;
+		z-index: 5;
+	}
+
+	.floating-toc__title {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: var(--accent-primary);
+		margin: 0 0 0.55rem;
+	}
+
+	.floating-toc__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		counter-reset: toc-item;
+	}
+
+	.floating-toc__link {
+		display: block;
+		padding: 0.35rem 0.55rem 0.35rem 0.7rem;
+		border-left: 2px solid transparent;
+		border-radius: 0 0.3rem 0.3rem 0;
+		color: var(--text-body);
+		text-decoration: none;
+		line-height: 1.35;
+		transition:
+			background-color 140ms ease,
+			border-color 140ms ease,
+			color 140ms ease;
+	}
+	.floating-toc__link:hover {
+		background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+		color: var(--text-heading);
+	}
+	.floating-toc__link:focus-visible {
+		outline: 2px solid var(--accent-primary);
+		outline-offset: 1px;
+	}
+	.floating-toc__link--active {
+		background: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+		border-left-color: var(--accent-primary);
+		color: var(--text-heading);
+		font-weight: 600;
+	}
+
+	/* Hide on viewports without room for a side rail. 1400px is
+	   the empirical cutoff: below that, the ~200px TOC starts
+	   colliding with a 1150px page-width centered content. */
+	@media (max-width: 1399px) {
+		.floating-toc {
+			display: none;
+		}
+	}
+
+	/* Reduced-motion nicety: kill the hover transition so nothing
+	   animates on cursor movement for motion-averse users. */
+	@media (prefers-reduced-motion: reduce) {
+		.floating-toc__link {
+			transition: none;
+		}
+	}
+</style>
