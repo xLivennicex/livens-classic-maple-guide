@@ -396,6 +396,131 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 80 - Themed gradient scrollbars + 80.2 chonk pass:**
+  Liven's polish request off the shortlist. Native scrollbars are
+  vestigial-looking on a themed site; wanted them to feel like
+  part of the design language and swap with the regional palette.
+
+  **Ship:**
+  - `::-webkit-scrollbar` styling in `global.css` (right after the
+    `html { scroll-behavior: smooth }` rule). Track is a translucent
+    color-mix of `--surface-card`; thumb is a `linear-gradient(180deg,
+    var(--accent-primary), var(--accent-primary-strong))` pill.
+    Hover state flips the gradient direction (bottom→top) for a
+    subtle no-JS "the thumb woke up" cue.
+  - "Floating pill" thumb trick: 2px transparent border +
+    `background-clip: padding-box` so the visible gradient area
+    sits inset from the track edges. Reads as a rounded capsule
+    rather than a bar filling its channel.
+  - 80.2 tweak: bumped from 12px→14px width and 6px→8px radius
+    ("rounder and slightly thicker"). At 14px container with the
+    2px pill trick the visible thumb is 10px wide, so 8px radius
+    saturates fully into capsule shape - anything higher is a
+    no-op.
+  - Firefox path: fallback in `@supports not selector(::-webkit-
+    scrollbar) { * { scrollbar-width: thin; scrollbar-color: ... } }`.
+    Solid theme-colored thin bar; Firefox `scrollbar-color` can
+    only take two solid colors, so no gradient possible there.
+  - Every theme (henesys/lith/perion/sleepywood/ellinia/kerning)
+    already ships both `--accent-primary` and `--accent-primary-
+    strong` from Sprint 65-ish, so gradient auto-swaps on
+    regional nav for free.
+
+  **Sprint 80.1 hotfix — Chromium 121+ gotcha:**
+  Initial ship set `* { scrollbar-width: thin; scrollbar-color: ... }`
+  as the Firefox path AND the webkit rules alongside. Kitten caught
+  the gradient was silently absent in Chromium: gutter measured
+  10px (the "thin" value) instead of the 12px `::-webkit-scrollbar`
+  width, and the thumb was a solid theme color instead of a
+  gradient.
+
+  **Root cause (worth remembering for future scrollbar work):**
+  Chromium 121+ deliberately drops `::-webkit-scrollbar-*` pseudo-
+  element rules on any element that also has the standardized
+  `scrollbar-width` or `scrollbar-color` set. The Chrome team's
+  stance: "if both are declared, standard wins." Because our
+  `* { scrollbar-width: thin }` matched html/root, the entire
+  webkit path was DOA in Chrome/Edge/Safari.
+
+  Fix: wrap the standard properties in
+  `@supports not selector(::-webkit-scrollbar) { ... }` so they
+  ONLY apply in browsers without ::-webkit-scrollbar (Firefox).
+  WebKit engines skip the block entirely, keep their gradient
+  rules. Verified by kitten: `getComputedStyle(html).scrollbarWidth
+  === "auto"` in Chromium (proving the guard excluded the standard
+  rule), gutter = 14px on every themed page, gradient CSS present
+  with both base + `:hover` variants.
+
+  **Sprint 79 - Floating right-rail table of contents:**
+  Natural follow-up to Sprint 78: once the guide reading columns
+  centered, the right-side dead space was symmetric-and-intentional
+  looking, but still not USEFUL. TOC uses it for on-this-page nav.
+
+  **Ship:**
+  - New `FloatingToc.astro` component (~220 lines). Rendered once
+    in BaseLayout so every page gets it for free. Ships as an
+    empty `<aside id="floating-toc" hidden>`; client script
+    (processed TS, not inline) populates it on `astro:page-load`
+    IF the page has >= 2 `<h2>`s inside `.prose`. Auto-detection
+    means zero per-guide-file wiring.
+  - Auto-slugified IDs assigned to any headings that lack one
+    (collision handling: `-2`, `-3` suffix). `scroll-margin-top:
+    1.5rem` set inline so hash-nav targets land with breathing
+    room instead of jammed against the top edge.
+  - IntersectionObserver scroll-spy with
+    `rootMargin: "-80px 0px -66% 0px"` biases the active-band to
+    the top third of the viewport. Feels like headings "arrive
+    at reading position" as they activate.
+  - Click-to-scroll uses `scrollIntoView({ behavior: prefersReduced
+    ? "auto" : "smooth" })` with `history.pushState` for hash-URL
+    sync. Reduced-motion respect wired.
+  - Fixed to viewport right at `right: 1.5rem`, `top: 11rem`.
+    Hidden below 1400px viewport via media query (any smaller and
+    the 220px panel would collide with the 1150px page-width).
+  - View-transition safe: module-scoped observer reference gets
+    disconnected before the new nav's observer is wired. Confirmed
+    via kitten round-trip (cot2 → getting-started → cot2, TOC
+    rebuilds cleanly each hop).
+
+  **Sprint 79.1 hotfix - CSS scroll-behavior override:**
+  Kitten caught that `scrollIntoView({ behavior: "auto" })` on the
+  reduced-motion branch was STILL animating smoothly because
+  `html { scroll-behavior: smooth }` in global.css was overriding
+  the JS-specified behavior. Added a `@media (prefers-reduced-
+  motion: reduce) { html { scroll-behavior: auto } }` override
+  right after the base rule. Fixes WCAG 2.3.3 (Animation from
+  Interactions) hygiene for ALL programmatic scrolls, not just
+  the TOC.
+
+  **Sprint 78 - Centered guide reading columns:**
+  Liven's screenshot caught it: guide pages had left-aligned
+  `.section-heading` + `.prose` blocks capped at 68-72ch, which
+  stacked all dead space asymmetrically on the right at wide
+  viewports. Looked broken - eye reads it as "layout failure"
+  not "intentional reading pane."
+
+  **The DRY moment (Zen of Python applied):**
+  Every one of the 10 guide `.astro` files had per-page
+  `.section-heading { max-width: 68ch }` + `.prose { max-width:
+  72ch }` overrides. The reading widths were CORRECT (66-75
+  chars/line is the well-established prose sweet spot); the bug
+  was purely alignment - no `margin-inline: auto` anywhere.
+
+  Options considered:
+  - Add margin-auto to each guide's <style> block (10 files, DRY
+    violation)
+  - Rip out per-guide max-width, replace with global (10 files +
+    global, loses per-page tuning e.g. skill-changes uses 76ch)
+  - Add margin rules ONLY to global.css (1 file, orthogonal to
+    per-page max-width so both cascade cleanly)
+
+  Went with option 3. Since `margin-inline` and `max-width` are
+  different CSS properties, per-guide max-width overrides continue
+  to work unchanged; the global just centers whatever width they
+  land on. Kitten verified pixel-perfect symmetric centering
+  (289.72px each side on section-heading at 1900px viewport) across
+  3 sampled guide pages, no regression at 900/500px.
+
   **Sprint 77 - Astro View Transitions + magical page navigation:**
   Liven's ask (from a UX brainstorm review): ship the highest-ROI
   polish item - "View Transitions with theme cross-fade" - to make

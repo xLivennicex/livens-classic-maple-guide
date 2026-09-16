@@ -98,14 +98,21 @@ html {
 /* WebKit / Blink path (Chrome, Edge, Safari, Opera): full
    gradient thumb using the theme's accent-primary → strong
    pair as vertical stops. Auto-swaps when the user navigates
-   between themed regions. */
+   between themed regions.
+
+   Sprint 80.2: bumped from 12px→14px width and 6px→8px radius
+   per Liven feedback. With a 14px container and the 2px
+   transparent-border trick the visible thumb is 10px wide, so
+   8px radius saturates into a full pill capsule shape (any
+   value >=5 caps at pill; 8 gives the track corners a bit of
+   softness to match). */
 ::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
+	width: 14px;
+	height: 14px;
 }
 ::-webkit-scrollbar-track {
 	background: color-mix(in srgb, var(--surface-card) 35%, transparent);
-	border-radius: 6px;
+	border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb {
 	background: linear-gradient(
@@ -113,7 +120,7 @@ html {
 		var(--accent-primary),
 		var(--accent-primary-strong)
 	);
-	border-radius: 6px;
+	border-radius: 8px;
 	/* Padding-box border trick: gives the thumb a 2px inset
 	   from the track so it looks like a floating pill. */
 	border: 2px solid transparent;
