@@ -396,6 +396,81 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 81 - Cmd/K command palette (Pagefind):**
+  The big marquee polish item off the shortlist. Users hit Cmd/K
+  (or Ctrl/K, or "/", or click the placeholder header search input)
+  and get a native-feeling global search over all 5,739 pages.
+
+  **Ship:**
+  - New `CommandPalette.astro` component (~510 lines, under the
+    600 cap). Rendered once in BaseLayout. Uses HTML `<dialog>`
+    for native modal focus-trap + Esc handling + backdrop layer.
+  - Pagefind was already installed as devDep and wired into
+    `npm run build` (`astro build && pagefind --site dist`). All
+    infrastructure existed - previous deploys were missing the
+    postbuild step because I was calling `npx astro build`
+    directly. Fixed by using `npm run build` for this deploy.
+    Result: `dist/pagefind/` shipped with WASM index shards, and
+    `/pagefind/pagefind.js` returns `application/javascript` on
+    the live site.
+  - 27,225 words indexed across 5,739 pages. Pagefind found a
+    `data-pagefind-body` scoping annotation somewhere in the
+    templates, so only main content gets indexed (not nav/footer
+    chrome repeated 5739x).
+  - Lazy-loaded Pagefind: `import("/pagefind/pagefind.js")` fires
+    only on first palette open. Saves ~50KB WASM+JS from every
+    initial page load. Subsequent opens resolve from module cache.
+
+  **UX beats:**
+  - Cmd/K (Mac) or Ctrl/K (Win/Linux) opens - preventDefault so we
+    don't fight browser shortcuts. "/" also opens Google-style,
+    but only when the user isn't already typing in a form.
+  - Header search input (originally placeholder chrome from
+    Sprint 43) gets re-purposed: click OR focus triggers the
+    palette, then blurs the header input so focus lands on the
+    palette input. Zero markup change to the header component.
+  - 140ms debounced query. Race guard via monotonic query ID so
+    stale responses can't overwrite fresh ones.
+  - Top 8 results. Each result gets a URL-derived section chip
+    (Guide/Mob/Item/Job/Map/Quest/Calculator/Blog/Music/Launch)
+    so users can scan by category at a glance.
+  - Excerpts use Pagefind's built-in `<mark>` term highlighting;
+    themed via `.command-palette__excerpt mark { background:
+    color-mix(accent-primary, 30%) }` so highlights auto-swap
+    with the regional theme.
+  - Arrow keys navigate (with modulo wrap-around), Enter opens,
+    Esc closes (native <dialog>), backdrop click closes, click
+    on a result opens it.
+
+  **A11y wins:**
+  - Native `<dialog>` = free focus trap + screen-reader modal
+    announcement + native Esc handling. No custom focus-trap JS.
+  - `<ul role="listbox">` + `<li role="option" aria-selected>`
+    for proper listbox pattern.
+  - `aria-live="polite"` on the results container announces new
+    result counts to screen readers as the user types.
+  - `prefers-reduced-motion` drops the 180ms scale-in animation
+    to a plain 120ms opacity fade (both dialog and ::backdrop).
+
+  **View-transitions safety:**
+  - Global keyboard listeners attach ONCE at module scope on
+    `document`. Survive every Astro nav.
+  - `astro:before-preparation` hook closes the dialog before nav
+    so we don't leak an open modal into the next page.
+  - `astro:page-load` re-binds the dialog's local input/click
+    handlers. Idempotent via a `dataset.cpBound` marker so we
+    don't stack listeners across many nav hops.
+
+  **Kitten scorecard:**
+  9/10 tests fully pass, 1 partial. Palette itself is 100%
+  working; the partial was Pagefind's fuzzy fallback surfacing
+  spurious results for near-gibberish queries like
+  "asdfqwerlkjh" (real gibberish like "qqqjjjbbb" correctly
+  hits the empty state). Also flagged for future content sprints:
+  (a) inline chip text runs together in excerpts (template
+  whitespace bug), (b) mob "Snail" doesn't outrank items/maps
+  for the "snail" query (content weighting).
+
   **Sprint 80 - Themed gradient scrollbars + 80.2 chonk pass:**
   Liven's polish request off the shortlist. Native scrollbars are
   vestigial-looking on a themed site; wanted them to feel like

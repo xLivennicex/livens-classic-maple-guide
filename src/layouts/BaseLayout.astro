@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import CommandPalette from "../components/CommandPalette.astro";
 import FloatingToc from "../components/FloatingToc.astro";
 import MapleLeaf from "../components/MapleLeaf.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
@@ -172,6 +173,14 @@ const canonicalUrl = Astro.site
 				</a>. Background music: fan compositions (credit pending).
 			</p>
 		</footer>
+
+		{/* Sprint 81: Cmd/Ctrl+K site-wide search palette (Pagefind).
+		    Rendered once here so every page has global search. The
+		    dialog itself is `<dialog>` (native modal semantics) and
+		    stays closed until triggered. Also intercepts clicks on
+		    the header's placeholder search input, upgrading it into
+		    a real search launcher without changing its markup. */}
+		<CommandPalette />
 
 		{/* Sprint 79: self-configuring on-this-page navigation.
 		    Renders itself only when the current page has >= 2 h2s

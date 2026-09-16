@@ -1,0 +1,666 @@
+---
+/**
+ * CommandPalette - Cmd/Ctrl+K site-wide search dialog powered
+ * by Pagefind.
+ *
+ * Pagefind is a static-first search engine: indexing happens at
+ * build time via `pagefind --site dist` (already chained in
+ * package.json's build script), which emits a WASM search core
+ * + a shard index to /pagefind/. Everything runs entirely
+ * client-side - no search server, no API keys, no Cloudflare
+ * worker. Works offline once the shards are cached.
+ *
+ * UX:
+ * - Cmd/K (macOS) or Ctrl/K (other) opens the palette
+ * - Also opens on click of the header search input (which is
+ *   otherwise inert - it was placeholder chrome from Sprint 43)
+ * - Esc closes (native <dialog> behavior)
+ * - Backdrop click closes
+ * - Arrow keys navigate results, Enter opens the highlighted one
+ * - Result click also opens
+ * - Debounced 140ms so we don't hammer the WASM core on every
+ *   keystroke; feels instant to humans, avoids lag on slower
+ *   machines
+ *
+ * A11y:
+ * - Uses native <dialog> so screen readers announce it as a
+ *   modal and focus is trapped inside for free
+ * - aria-live on results container so new counts are announced
+ * - Motion-safe: open/close animation drops to a plain fade
+ *   under prefers-reduced-motion
+ *
+ * View-transitions-safe:
+ * - Global keyboard listener attaches once (module scope), works
+ *   forever regardless of Astro nav
+ * - `astro:before-preparation` closes the dialog before nav so
+ *   we don't leak an open modal into the new page
+ * - Per-nav re-bind of the dialog's local input/click handlers
+ *   via astro:page-load - idempotent (guarded with a data-attr
+ *   marker on the dialog)
+ */
+---
+
+<dialog
+	id="command-palette"
+	class="command-palette"
+	aria-label="Site search"
+>
+	<form class="command-palette__form" method="dialog">
+		<div class="command-palette__input-row">
+			{/* Search icon (inline SVG so no extra HTTP request) */}
+			<svg
+				class="command-palette__icon"
+				viewBox="0 0 20 20"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<circle cx="9" cy="9" r="6" />
+				<path d="m14 14 4 4" stroke-linecap="round" />
+			</svg>
+			<input
+				id="command-palette-input"
+				class="command-palette__input"
+				type="search"
+				autocomplete="off"
+				spellcheck="false"
+				placeholder="Search maps, mobs, items, quests, guides..."
+				aria-label="Search query"
+				aria-controls="command-palette-results"
+			/>
+			<kbd class="command-palette__kbd" aria-hidden="true">Esc</kbd>
+		</div>
+
+		<ul
+			id="command-palette-results"
+			class="command-palette__results"
+			role="listbox"
+			aria-live="polite"
+			aria-label="Search results"
+		></ul>
+
+		<div class="command-palette__hint">
+			<span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+			<span><kbd>↵</kbd> open</span>
+			<span><kbd>Esc</kbd> close</span>
+			<span class="command-palette__hint-attrib">powered by Pagefind</span>
+		</div>
+	</form>
+</dialog>
+
+<script>
+	// ---------- Types ----------
+	interface PagefindSubResult {
+		title: string;
+		url: string;
+		excerpt: string;
+	}
+	interface PagefindResultData {
+		url: string;
+		excerpt: string;
+		meta: { title?: string; description?: string; image?: string };
+		sub_results?: PagefindSubResult[];
+	}
+	interface PagefindResult {
+		id: string;
+		data: () => Promise<PagefindResultData>;
+	}
+	interface PagefindSearch {
+		results: PagefindResult[];
+	}
+	interface PagefindAPI {
+		search: (q: string) => Promise<PagefindSearch>;
+		options?: (o: Record<string, unknown>) => Promise<void>;
+	}
+
+	// ---------- Module-scoped state ----------
+	// Palette references get re-queried on every astro:page-load
+	// (Astro swaps the DOM subtree on nav) but listeners on the
+	// document itself persist for the lifetime of the tab.
+	let pagefindPromise: Promise<PagefindAPI> | null = null;
+	let debounceTimer: number | null = null;
+	let currentQueryId = 0; // guards against stale-response races
+	let highlightedIndex = -1;
+	let cachedResults: Array<{ url: string; data: PagefindResultData }> = [];
+
+	const MAX_RESULTS = 8;
+	const DEBOUNCE_MS = 140;
+
+	// ---------- Pagefind lazy init ----------
+	// Loaded only on first open - saves ~50KB WASM + JS from
+	// initial page load. On subsequent opens the promise resolves
+	// instantly from cache.
+	function getPagefind(): Promise<PagefindAPI> {
+		if (pagefindPromise) return pagefindPromise;
+		pagefindPromise = (async () => {
+			// The URL is served by Cloudflare Pages from /pagefind/
+			// after `pagefind --site dist` runs at build time.
+			// vite-ignore because this path doesn't exist at
+			// dev-time bundling; it's populated at build's
+			// postbuild step.
+			const mod = (await import(
+				/* @vite-ignore */ "/pagefind/pagefind.js"
+			)) as PagefindAPI;
+			return mod;
+		})();
+		return pagefindPromise;
+	}
+
+	// ---------- URL → section label ----------
+	// Small helper so results get a category chip like "GUIDES"
+	// or "MOBS" derived from URL prefix. Purely cosmetic; keeps
+	// results scannable when the site has 5000+ pages across many
+	// verticals.
+	function sectionOf(url: string): string {
+		try {
+			const path = new URL(url, window.location.origin).pathname;
+			const seg = path.split("/").filter(Boolean)[0] ?? "";
+			const map: Record<string, string> = {
+				guides: "Guide",
+				mobs: "Mob",
+				items: "Item",
+				jobs: "Job",
+				maps: "Map",
+				quests: "Quest",
+				calculators: "Calculator",
+				blog: "Blog",
+				jukebox: "Music",
+				launch: "Launch",
+			};
+			return map[seg] ?? "Page";
+		} catch {
+			return "Page";
+		}
+	}
+
+	// ---------- Render ----------
+	function renderEmpty(list: HTMLUListElement, hasQuery: boolean) {
+		list.innerHTML = "";
+		const li = document.createElement("li");
+		li.className = "command-palette__empty";
+		li.textContent = hasQuery
+			? "No results. Try a different search."
+			: "Start typing to search all pages.";
+		list.appendChild(li);
+		highlightedIndex = -1;
+		cachedResults = [];
+	}
+
+	function renderResults(
+		list: HTMLUListElement,
+		results: Array<{ url: string; data: PagefindResultData }>,
+	) {
+		list.innerHTML = "";
+		cachedResults = results;
+		results.forEach((r, i) => {
+			const li = document.createElement("li");
+			li.className = "command-palette__result";
+			li.setAttribute("role", "option");
+			li.dataset.url = r.data.url;
+			li.dataset.index = String(i);
+
+			const chip = document.createElement("span");
+			chip.className = "command-palette__chip";
+			chip.textContent = sectionOf(r.data.url);
+
+			const title = document.createElement("p");
+			title.className = "command-palette__title";
+			title.textContent = r.data.meta.title ?? r.data.url;
+
+			const excerpt = document.createElement("p");
+			excerpt.className = "command-palette__excerpt";
+			// Pagefind ships excerpts with <mark>...</mark> tags
+			// wrapping matched terms. Safe to inject because the
+			// index was built from our own controlled HTML.
+			excerpt.innerHTML = r.data.excerpt;
+
+			li.appendChild(chip);
+			li.appendChild(title);
+			li.appendChild(excerpt);
+			list.appendChild(li);
+		});
+		highlightedIndex = results.length > 0 ? 0 : -1;
+		updateHighlight(list);
+	}
+
+	function updateHighlight(list: HTMLUListElement) {
+		const items = list.querySelectorAll<HTMLLIElement>(".command-palette__result");
+		items.forEach((el, i) => {
+			const active = i === highlightedIndex;
+			el.classList.toggle("command-palette__result--active", active);
+			if (active) el.setAttribute("aria-selected", "true");
+			else el.removeAttribute("aria-selected");
+		});
+		// Keep the highlighted item in view when navigating past
+		// the visible window. block:nearest avoids jarring jumps
+		// when the item is already visible.
+		if (highlightedIndex >= 0 && items[highlightedIndex]) {
+			items[highlightedIndex].scrollIntoView({ block: "nearest" });
+		}
+	}
+
+	// ---------- Search ----------
+	async function runSearch(query: string, list: HTMLUListElement) {
+		const q = query.trim();
+		if (!q) {
+			renderEmpty(list, false);
+			return;
+		}
+		// Race guard: increment ID before each dispatch; drop the
+		// response if the ID changed while we were awaiting.
+		const myId = ++currentQueryId;
+		try {
+			const pagefind = await getPagefind();
+			const search = await pagefind.search(q);
+			if (myId !== currentQueryId) return;
+			const top = search.results.slice(0, MAX_RESULTS);
+			const resolved = await Promise.all(
+				top.map(async (r) => ({ url: r.id, data: await r.data() })),
+			);
+			if (myId !== currentQueryId) return;
+			if (resolved.length === 0) {
+				renderEmpty(list, true);
+			} else {
+				renderResults(list, resolved);
+			}
+		} catch (err) {
+			console.warn("[CommandPalette] search failed:", err);
+			renderEmpty(list, true);
+		}
+	}
+
+	function scheduleSearch(query: string, list: HTMLUListElement) {
+		if (debounceTimer !== null) window.clearTimeout(debounceTimer);
+		debounceTimer = window.setTimeout(() => {
+			runSearch(query, list);
+		}, DEBOUNCE_MS);
+	}
+
+	// ---------- Open / close ----------
+	function openPalette() {
+		const dialog = document.getElementById(
+			"command-palette",
+		) as HTMLDialogElement | null;
+		const input = document.getElementById(
+			"command-palette-input",
+		) as HTMLInputElement | null;
+		const list = document.getElementById(
+			"command-palette-results",
+		) as HTMLUListElement | null;
+		if (!dialog || !input || !list) return;
+		if (dialog.open) return;
+		dialog.showModal();
+		// Reset each open. Users typically want a fresh search
+		// context, not to resume mid-query from an earlier session.
+		input.value = "";
+		renderEmpty(list, false);
+		// Focus the input after the next paint so the browser's
+		// dialog focus trap has settled first.
+		requestAnimationFrame(() => input.focus());
+	}
+
+	function closePalette() {
+		const dialog = document.getElementById(
+			"command-palette",
+		) as HTMLDialogElement | null;
+		if (!dialog || !dialog.open) return;
+		dialog.close();
+	}
+
+	// ---------- Navigate to result ----------
+	function navigateTo(url: string) {
+		closePalette();
+		// Use standard location change so Astro's ClientRouter
+		// picks it up as a same-origin nav and runs view
+		// transitions like any other link.
+		window.location.href = url;
+	}
+
+	// ---------- Per-page-load wiring ----------
+	// Idempotent: guarded by a data-attr on the dialog so we
+	// don't stack listeners across many view transitions.
+	function bindDialog() {
+		const dialog = document.getElementById(
+			"command-palette",
+		) as HTMLDialogElement | null;
+		if (!dialog) return;
+		if (dialog.dataset.cpBound === "1") return;
+		dialog.dataset.cpBound = "1";
+
+		const input = document.getElementById(
+			"command-palette-input",
+		) as HTMLInputElement | null;
+		const list = document.getElementById(
+			"command-palette-results",
+		) as HTMLUListElement | null;
+		if (!input || !list) return;
+
+		// Input triggers search
+		input.addEventListener("input", () => {
+			scheduleSearch(input.value, list);
+		});
+
+		// Keyboard nav within the dialog
+		input.addEventListener("keydown", (e) => {
+			if (cachedResults.length === 0) return;
+			if (e.key === "ArrowDown") {
+				e.preventDefault();
+				highlightedIndex = (highlightedIndex + 1) % cachedResults.length;
+				updateHighlight(list);
+			} else if (e.key === "ArrowUp") {
+				e.preventDefault();
+				highlightedIndex =
+					(highlightedIndex - 1 + cachedResults.length) %
+					cachedResults.length;
+				updateHighlight(list);
+			} else if (e.key === "Enter") {
+				e.preventDefault();
+				const target = cachedResults[highlightedIndex];
+				if (target) navigateTo(target.data.url);
+			}
+		});
+
+		// Click a result → nav to it
+		list.addEventListener("click", (e) => {
+			const li = (e.target as HTMLElement).closest<HTMLLIElement>(
+				".command-palette__result",
+			);
+			if (!li || !li.dataset.url) return;
+			navigateTo(li.dataset.url);
+		});
+
+		// Backdrop click closes. Native <dialog> reports the
+		// backdrop as click events with target === dialog itself
+		// (children stop propagation via the form wrapper).
+		dialog.addEventListener("click", (e) => {
+			if (e.target === dialog) closePalette();
+		});
+	}
+
+	// ---------- Global triggers ----------
+	// Attached ONCE at module scope. Persists across all view
+	// transitions - Astro's DOM swap doesn't touch document-level
+	// listeners.
+	document.addEventListener("keydown", (e) => {
+		// Cmd/Ctrl+K to open
+		if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+			e.preventDefault();
+			openPalette();
+		}
+		// "/" also opens (Google-style) unless the user is
+		// already typing in a form field. Skip if a modifier
+		// key is held so we don't hijack Ctrl+/ etc.
+		if (
+			e.key === "/" &&
+			!e.metaKey &&
+			!e.ctrlKey &&
+			!e.altKey &&
+			!(e.target instanceof HTMLInputElement) &&
+			!(e.target instanceof HTMLTextAreaElement) &&
+			!(e.target instanceof HTMLSelectElement)
+		) {
+			e.preventDefault();
+			openPalette();
+		}
+	});
+
+	// Repurpose the header search input as a palette trigger.
+	// Delegated at document level so we don't need to re-query
+	// on every nav.
+	document.addEventListener("click", (e) => {
+		const el = e.target as HTMLElement | null;
+		if (!el) return;
+		// Only match the header's site-search input, not our own
+		// palette input (which lives inside #command-palette).
+		if (
+			el.matches('input[type="search"]') &&
+			!el.closest("#command-palette")
+		) {
+			e.preventDefault();
+			(el as HTMLInputElement).blur();
+			openPalette();
+		}
+	});
+	// Also intercept keyboard focus (tab-in) on that same input
+	// so keyboard users get the palette too.
+	document.addEventListener(
+		"focusin",
+		(e) => {
+			const el = e.target as HTMLElement | null;
+			if (!el) return;
+			if (
+				el.matches('input[type="search"]') &&
+				!el.closest("#command-palette")
+			) {
+				(el as HTMLInputElement).blur();
+				openPalette();
+			}
+		},
+	);
+
+	// Astro view-transition hooks
+	document.addEventListener("astro:before-preparation", () => {
+		// Close before nav starts so we don't leak an open modal
+		// into the new page's DOM tree.
+		closePalette();
+	});
+	document.addEventListener("astro:page-load", bindDialog);
+</script>
+
+<style>
+	.command-palette {
+		width: min(640px, calc(100vw - 2rem));
+		max-height: min(72vh, 620px);
+		padding: 0;
+		border: 1px solid var(--border-card);
+		border-radius: 0.9rem;
+		background: color-mix(in srgb, var(--surface-card) 96%, transparent);
+		backdrop-filter: blur(14px) saturate(1.05);
+		-webkit-backdrop-filter: blur(14px) saturate(1.05);
+		box-shadow: var(--shadow-panel);
+		color: var(--text-body);
+		overflow: hidden;
+	}
+	.command-palette::backdrop {
+		background: color-mix(in srgb, #0b1a2c 60%, transparent);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+	}
+
+	/* Motion. Native <dialog> opens instantly by default. We add
+	   a subtle scale/fade so the palette feels like it "arrived"
+	   rather than teleported in. Reduced-motion drops to a plain
+	   fade. */
+	.command-palette,
+	.command-palette::backdrop {
+		animation-duration: 180ms;
+		animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+		animation-fill-mode: both;
+	}
+	.command-palette[open] {
+		animation-name: cp-scale-in;
+	}
+	.command-palette[open]::backdrop {
+		animation-name: cp-fade-in;
+	}
+	@keyframes cp-scale-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px) scale(0.98);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+	@keyframes cp-fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.command-palette[open],
+		.command-palette[open]::backdrop {
+			animation-name: cp-fade-in;
+			animation-duration: 120ms;
+		}
+	}
+
+	.command-palette__form {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		margin: 0;
+		max-height: inherit;
+	}
+
+	.command-palette__input-row {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.9rem 1rem;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.command-palette__icon {
+		width: 18px;
+		height: 18px;
+		color: var(--accent-primary);
+		flex-shrink: 0;
+	}
+	.command-palette__input {
+		flex: 1 1 auto;
+		min-width: 0;
+		background: transparent;
+		border: 0;
+		outline: none;
+		color: var(--text-heading);
+		font-size: 1.05rem;
+		font-family: inherit;
+		padding: 0.25rem 0;
+	}
+	.command-palette__input::-webkit-search-cancel-button {
+		/* Hide native "x" - it clashes with our design and Esc
+		   already does the same job. */
+		appearance: none;
+		display: none;
+	}
+	.command-palette__kbd {
+		font-family: inherit;
+		font-size: 0.72rem;
+		padding: 0.15rem 0.45rem;
+		border-radius: 0.3rem;
+		background: color-mix(in srgb, var(--surface-card) 60%, transparent);
+		border: 1px solid var(--border-card);
+		color: var(--text-body);
+		flex-shrink: 0;
+	}
+
+	.command-palette__results {
+		list-style: none;
+		margin: 0;
+		padding: 0.35rem 0;
+		overflow-y: auto;
+		max-height: 60vh;
+	}
+
+	.command-palette__empty {
+		padding: 1.2rem 1rem;
+		text-align: center;
+		color: var(--text-body);
+		opacity: 0.7;
+		font-size: 0.92rem;
+	}
+
+	.command-palette__result {
+		padding: 0.55rem 1rem 0.65rem;
+		cursor: pointer;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: 0.7rem;
+		row-gap: 0.15rem;
+		border-left: 3px solid transparent;
+		transition:
+			background-color 100ms ease,
+			border-color 100ms ease;
+	}
+	.command-palette__result:hover,
+	.command-palette__result--active {
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+		border-left-color: var(--accent-primary);
+	}
+	.command-palette__chip {
+		grid-column: 1;
+		grid-row: 1;
+		align-self: center;
+		font-size: 0.66rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		font-weight: 700;
+		padding: 0.2rem 0.5rem;
+		border-radius: 0.3rem;
+		background: color-mix(in srgb, var(--accent-primary) 18%, transparent);
+		color: var(--accent-primary-strong, var(--accent-primary));
+		white-space: nowrap;
+	}
+	.command-palette__title {
+		grid-column: 2;
+		grid-row: 1;
+		margin: 0;
+		font-size: 0.98rem;
+		font-weight: 600;
+		color: var(--text-heading);
+	}
+	.command-palette__excerpt {
+		grid-column: 1 / span 2;
+		grid-row: 2;
+		margin: 0.1rem 0 0;
+		font-size: 0.85rem;
+		line-height: 1.4;
+		color: var(--text-body);
+		opacity: 0.85;
+		/* Clamp to 2 lines so long excerpts don't blow up the
+		   result height. */
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.command-palette__excerpt :global(mark) {
+		background: color-mix(in srgb, var(--accent-primary) 30%, transparent);
+		color: var(--text-heading);
+		padding: 0 0.15em;
+		border-radius: 0.2em;
+	}
+
+	.command-palette__hint {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		padding: 0.5rem 1rem;
+		border-top: 1px solid var(--border-card);
+		background: color-mix(in srgb, var(--surface-card) 80%, transparent);
+		font-size: 0.75rem;
+		color: var(--text-body);
+		opacity: 0.85;
+		flex-wrap: wrap;
+	}
+	.command-palette__hint kbd {
+		font-family: inherit;
+		font-size: 0.7rem;
+		padding: 0.05rem 0.35rem;
+		margin: 0 0.2rem 0 0;
+		border-radius: 0.25rem;
+		background: color-mix(in srgb, var(--surface-card) 60%, transparent);
+		border: 1px solid var(--border-card);
+	}
+	.command-palette__hint-attrib {
+		margin-left: auto;
+		opacity: 0.65;
+		font-size: 0.7rem;
+	}
+</style>
