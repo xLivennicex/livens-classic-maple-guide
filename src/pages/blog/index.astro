@@ -14,11 +14,54 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const posts = (await getCollection("blog"))
-	.sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
+// Sprint 85: pre-compute read-time and freshness once per entry so
+// the JSX stays declarative and each card doesn't recompute. Reading
+// speed baseline (200 wpm) is the widely-cited "average adult skim"
+// rate - deliberately conservative so estimates round up rather than
+// underpromise. Anything under 1 minute rounds up to 1.
+const NEW_WINDOW_DAYS = 7;
+const WPM_BASELINE = 200;
+const nowMs = Date.now();
 
-const featured = posts.filter((p) => p.data.featured);
-const rest = posts.filter((p) => !p.data.featured);
+function readTimeMinutes(body: string): number {
+	// Strip markdown syntax noise before counting - frontmatter
+	// links, hashes, and code fences would otherwise inflate the
+	// count. This is a rough scrub, not a full parser; a couple
+	// misclassified tokens per post won't move the minute-rounded
+	// estimate. Match \S+ counts contiguous non-whitespace runs
+	// which is a fine word approximation.
+	const stripped = body
+		.replace(/```[\s\S]*?```/g, " ")
+		.replace(/`[^`]*`/g, " ")
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+		.replace(/\[[^\]]*\]\([^)]*\)/g, " $& ")
+		.replace(/[#*_>|-]/g, " ");
+	const words = stripped.match(/\S+/g)?.length ?? 0;
+	return Math.max(1, Math.round(words / WPM_BASELINE));
+}
+
+function isFresh(iso: string): boolean {
+	const publishedMs = new Date(iso).getTime();
+	const ageDays = (nowMs - publishedMs) / (1000 * 60 * 60 * 24);
+	return ageDays >= 0 && ageDays <= NEW_WINDOW_DAYS;
+}
+
+type CardData = {
+	entry: Awaited<ReturnType<typeof getCollection<"blog">>>[number];
+	readMins: number;
+	fresh: boolean;
+};
+
+const posts: CardData[] = (await getCollection("blog"))
+	.sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt))
+	.map((entry) => ({
+		entry,
+		readMins: readTimeMinutes(entry.body ?? ""),
+		fresh: isFresh(entry.data.publishedAt),
+	}));
+
+const featured = posts.filter((c) => c.entry.data.featured);
+const rest = posts.filter((c) => !c.entry.data.featured);
 
 // Format an ISO date string as "Month Day, Year". Kept dead simple -
 // no need to pull in a full i18n date lib for one presentation format.
@@ -59,16 +102,21 @@ function formatDate(iso: string): string {
 	{featured.length > 0 && (
 		<section class="featured-section">
 			<h2 class="section-title">Featured</h2>
-			<div class="featured-grid">
-				{featured.map((p) => (
+			<div class={`featured-grid ${featured.length === 1 ? "featured-grid--hero" : ""}`}>
+				{featured.map(({ entry: p, readMins, fresh }) => (
 					<a class={`post-card post-card--featured post-card--${p.data.category}`} href={`/blog/${p.id}`}>
 						<div class="post-card__head">
 							<span class={`post-card__category post-card__category--${p.data.category}`}>
 								{p.data.category}
 							</span>
+							{fresh && <span class="post-card__new" aria-label="Published recently">NEW</span>}
+							<span class="post-card__spacer" aria-hidden="true"></span>
 							<time class="post-card__date" datetime={p.data.publishedAt}>
 								{formatDate(p.data.publishedAt)}
 							</time>
+							<span class="post-card__readtime" aria-label={`Approximate reading time: ${readMins} minutes`}>
+								{readMins} min read
+							</span>
 						</div>
 						<h3 class="post-card__title">{p.data.title}</h3>
 						<p class="post-card__excerpt">
@@ -82,7 +130,10 @@ function formatDate(iso: string): string {
 								))}
 							</div>
 						)}
-						<span class="post-card__cta">Read the post -&gt;</span>
+						<span class="post-card__cta">
+							Read the post
+							<span class="post-card__cta-arrow" aria-hidden="true">-&gt;</span>
+						</span>
 					</a>
 				))}
 			</div>
@@ -100,15 +151,20 @@ function formatDate(iso: string): string {
 			</p>
 		) : (
 			<div class="posts-grid">
-				{rest.map((p) => (
+				{rest.map(({ entry: p, readMins, fresh }) => (
 					<a class={`post-card post-card--${p.data.category}`} href={`/blog/${p.id}`}>
 						<div class="post-card__head">
 							<span class={`post-card__category post-card__category--${p.data.category}`}>
 								{p.data.category}
 							</span>
+							{fresh && <span class="post-card__new" aria-label="Published recently">NEW</span>}
+							<span class="post-card__spacer" aria-hidden="true"></span>
 							<time class="post-card__date" datetime={p.data.publishedAt}>
 								{formatDate(p.data.publishedAt)}
 							</time>
+							<span class="post-card__readtime" aria-label={`Approximate reading time: ${readMins} minutes`}>
+								{readMins} min read
+							</span>
 						</div>
 						<h3 class="post-card__title">{p.data.title}</h3>
 						<p class="post-card__excerpt">
@@ -121,7 +177,10 @@ function formatDate(iso: string): string {
 								))}
 							</div>
 						)}
-						<span class="post-card__cta">Read the post -&gt;</span>
+						<span class="post-card__cta">
+							Read the post
+							<span class="post-card__cta-arrow" aria-hidden="true">-&gt;</span>
+						</span>
 					</a>
 				))}
 			</div>
@@ -178,23 +237,41 @@ function formatDate(iso: string): string {
 		padding: 1.1rem 1.2rem;
 		background: var(--surface-card);
 		border: 1px solid var(--border-card);
-		border-left: 4px solid var(--text-muted);
+		/* Sprint 85: left border widens on hover (was static 4px).
+		   Uses a variable so featured cards can override the base
+		   width without duplicating the transition wiring. */
+		border-left: var(--post-card-left-width, 4px) solid var(--text-muted);
 		border-radius: 0.6rem;
 		text-decoration: none;
 		color: inherit;
-		transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+		transition:
+			transform 0.16s ease,
+			border-color 0.16s ease,
+			border-left-width 0.16s ease,
+			box-shadow 0.16s ease,
+			background 0.16s ease;
 	}
 	.post-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 18px color-mix(in srgb, var(--accent-primary) 18%, transparent);
+		transform: translateY(-3px);
+		/* Left border widens on hover for a tactile "you're on it"
+		   feedback signal. Featured cards start at 6px and hover to
+		   8px; standard cards go 4 -> 6. Values stay small enough
+		   that the card content doesn't reflow noticeably. */
+		--post-card-left-width: 6px;
+		box-shadow:
+			0 8px 24px color-mix(in srgb, var(--accent-primary) 22%, transparent),
+			0 2px 6px color-mix(in srgb, var(--accent-primary) 12%, transparent);
 	}
 	.post-card--featured {
-		border-left-width: 6px;
+		--post-card-left-width: 6px;
 		background: linear-gradient(
 			to bottom right,
 			var(--surface-card),
 			color-mix(in srgb, var(--accent-primary) 6%, var(--surface-card))
 		);
+	}
+	.post-card--featured:hover {
+		--post-card-left-width: 8px;
 	}
 	.post-card--news { border-left-color: #2662c9; }
 	.post-card--opinion { border-left-color: #b8730e; }
@@ -202,10 +279,22 @@ function formatDate(iso: string): string {
 	.post-card--community { border-left-color: #7d3fb8; }
 
 	.post-card__head {
+		/* Sprint 85: switched from space-between to flex with an
+		   explicit spacer element. Reason: we now have 4-5 items in
+		   the head row (category, optional NEW pill, date, read
+		   time) and space-between distributes gaps unevenly when
+		   some items are absent. A spacer with flex-grow does the
+		   right thing every time - the left group stays clustered,
+		   the right group stays clustered, and the middle absorbs
+		   any leftover space. */
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		gap: 0.8rem;
+		gap: 0.55rem;
+		flex-wrap: wrap;
+	}
+	.post-card__spacer {
+		flex: 1 1 auto;
+		min-width: 0;
 	}
 	.post-card__category {
 		font-size: 0.78rem;
@@ -216,16 +305,95 @@ function formatDate(iso: string): string {
 		background: var(--bg-cloud);
 		border-radius: 999px;
 		color: var(--text-heading);
+		/* Sprint 85: on card hover, category badge fills with its
+		   category color and flips text to a light shade. This
+		   gives the whole card a "lit up" moment. See per-category
+		   override below post-card:hover selectors. */
+		transition: background 0.16s ease, color 0.16s ease;
 	}
 	.post-card__category--news { color: #2662c9; }
 	.post-card__category--opinion { color: #b8730e; }
 	.post-card__category--changelog { color: #158a4d; }
 	.post-card__category--community { color: #7d3fb8; }
 
+	/* Hover-fill treatments. Uses solid color backgrounds keyed to
+	   each category, with `color-mix` to soften the fill so it
+	   reads as an accent rather than a jarring solid block. Text
+	   flips to white for contrast against the filled pill. */
+	.post-card--news:hover .post-card__category--news {
+		background: color-mix(in srgb, #2662c9 85%, transparent);
+		color: #fff;
+	}
+	.post-card--opinion:hover .post-card__category--opinion {
+		background: color-mix(in srgb, #b8730e 85%, transparent);
+		color: #fff;
+	}
+	.post-card--changelog:hover .post-card__category--changelog {
+		background: color-mix(in srgb, #158a4d 85%, transparent);
+		color: #fff;
+	}
+	.post-card--community:hover .post-card__category--community {
+		background: color-mix(in srgb, #7d3fb8 85%, transparent);
+		color: #fff;
+	}
+
+	/* Sprint 85: "NEW" pill for posts published within the last
+	   NEW_WINDOW_DAYS (currently 7). Uses accent color so it
+	   picks up whatever theme is set on this page (Kerning purple
+	   here, but composable across other themes). Subtle pulse
+	   animation drives eye attention on first visit without being
+	   annoying - full cycle takes 2.4s and is capped at 3
+	   iterations so it settles once you've clocked it. */
+	.post-card__new {
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.66rem;
+		font-weight: 900;
+		letter-spacing: 0.12em;
+		padding: 0.14rem 0.42rem;
+		border-radius: 999px;
+		background: var(--accent-primary);
+		color: #fff;
+		text-transform: uppercase;
+		animation: post-card-new-pulse 2.4s ease-in-out 3;
+	}
+	@keyframes post-card-new-pulse {
+		0%, 100% {
+			box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-primary) 60%, transparent);
+		}
+		50% {
+			box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-primary) 0%, transparent);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.post-card__new {
+			animation: none;
+		}
+	}
+
 	.post-card__date {
 		font-size: 0.78rem;
 		color: var(--text-muted);
 		font-variant-numeric: tabular-nums;
+	}
+	.post-card__readtime {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		font-variant-numeric: tabular-nums;
+		/* Vertical bar separator between date and read time. Using
+		   ::before instead of a real separator element keeps the
+		   DOM shape clean and the visual weight subtle. */
+		position: relative;
+		padding-left: 0.65rem;
+	}
+	.post-card__readtime::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 20%;
+		bottom: 20%;
+		width: 1px;
+		background: var(--border-card);
 	}
 	.post-card__title {
 		font-size: 1.15rem;
@@ -258,6 +426,54 @@ function formatDate(iso: string): string {
 		font-size: 0.86rem;
 		font-weight: 700;
 		color: var(--accent-primary);
+		/* Sprint 85: split arrow into its own span so it can slide
+		   on hover without affecting the label's text metrics.
+		   inline-flex keeps the arrow baseline-aligned with the
+		   label text across font sizes/themes. */
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.post-card__cta-arrow {
+		display: inline-block;
+		transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+		/* The overshoot easing gives the arrow a satisfying "click-
+		   forward" feel on hover instead of a linear glide. */
+	}
+	.post-card:hover .post-card__cta-arrow {
+		transform: translateX(4px);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.post-card__cta-arrow {
+			transition: none;
+		}
+		.post-card:hover .post-card__cta-arrow {
+			transform: none;
+		}
+	}
+
+	/* Sprint 85: hero treatment for the featured section when only
+	   ONE post is featured. Single featured post fills the full
+	   grid width and gets extra padding/title bump so it reads as
+	   a proper hero, not just "same card, wider." When 2+ featured
+	   posts exist the grid stays as 1fr columns and they render
+	   side-by-side (or stacked on narrow viewports via
+	   auto-fill/minmax). */
+	.featured-grid--hero .post-card--featured {
+		padding: 1.6rem 1.8rem;
+		gap: 0.75rem;
+	}
+	.featured-grid--hero .post-card--featured .post-card__title {
+		font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+		line-height: 1.2;
+	}
+	.featured-grid--hero .post-card--featured .post-card__excerpt {
+		font-size: 1rem;
+		line-height: 1.55;
+		/* Wider single-hero cards can afford more excerpt breathing
+		   room; capping to 78ch keeps the reading rhythm sane on
+		   wide viewports. */
+		max-width: 78ch;
 	}
 
 	.empty-state {

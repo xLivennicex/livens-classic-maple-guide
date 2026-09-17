@@ -396,6 +396,49 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 85 - Blog index card polish:**
+  With the blog now populated (3 posts as of this sprint) the
+  index page's card treatment was starting to feel a little
+  spartan. Four surgical polish moves in one file:
+
+  1. **Read-time estimates.** Computed at build time from each
+     post's markdown body (200 wpm baseline, minimum 1 min).
+     Renders as "N min read" separated from the date by a
+     subtle vertical bar. Small but legit info signal that
+     readers actually use to decide "is this worth opening."
+  2. **NEW pill.** Auto-applied to any post published within
+     the last 7 days. Pulses 3 times on page load then settles
+     (annoying-pulse budget respected). Uses accent color so it
+     picks up the current theme (Kerning purple on /blog).
+     Reduced-motion users skip the pulse.
+  3. **Richer hover states.** Card lift 2px -> 3px, box-shadow
+     doubles up (soft + tight), left border widens 4px -> 6px
+     (or 6 -> 8 for featured), category badge fills with its
+     category color and text flips white, CTA arrow slides
+     right with an overshoot easing curve. Every element
+     participates in the "you're hovering me" moment.
+  4. **Featured hero variant.** When exactly ONE post is
+     featured, `.featured-grid` gets a `--hero` modifier that
+     bumps padding + title size (clamp 1.5rem-1.9rem) + caps
+     excerpt width to 78ch. When 2+ featured posts exist, the
+     grid keeps the standard stacked layout (no forced hero).
+     Currently sitting on the 2+ branch since all 3 posts are
+     featured; hero variant is coded and gated, waiting for a
+     future single-hero moment.
+
+  **Kitten 5/5 pass:** read-times computed correctly
+  (8-9 min for the current opinion/community posts), NEW pill
+  correctly applied to all three (all inside 7-day window),
+  hover states verified via real Playwright page.hover() with
+  before/after computed style dumps, hero gating correct.
+
+  **Key gotcha logged for future runs:** JS-dispatched
+  MouseEvents ('mouseenter') do NOT trigger CSS `:hover`
+  pseudo-class - only real pointer input (or CDP-level hover
+  emulation via page.hover()) does. Kitten added this to the
+  reusable workflow. Relevant for anyone testing hover CSS
+  from a script.
+
   **Sprint 84 - Pagefind content tuning:**
   Kitten's parking-lot items from Sprint 81 addressed: chip-
   boundary run-together text ("IslandHenesys", "SnailMob") in
