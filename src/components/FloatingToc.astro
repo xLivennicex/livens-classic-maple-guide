@@ -42,9 +42,18 @@
 	// section page doesn't need on-this-page nav.
 	const TOC_MIN_HEADINGS = 2;
 
-	// Selector for what counts as a page heading. Scoped to .prose
-	// so we don't scoop up section headings in the site chrome.
-	const HEADING_SELECTOR = ".prose h2";
+	// Selector for what counts as a page heading. Scoped to the
+	// two long-form content wrappers used across the site so we
+	// don't scoop up structural headings from site chrome (nav,
+	// footer, hero badges, etc.):
+	//   - `.prose`         guide pages (Sprint 78-onward layout)
+	//   - `.markdown-body` blog posts + markdown-rendered content
+	// Sprint 84.4 fix: was `.prose h2` only, which silently
+	// no-op'd on every blog post because those render inside
+	// `.markdown-body`. Kitten caught this on the DK spear/polearm
+	// post - 11 <h2> in the article, 0 in `.prose`. Both selectors
+	// now covered.
+	const HEADING_SELECTOR = ".prose h2, .markdown-body h2";
 
 	// Module-scoped so we can disconnect the previous nav's
 	// observer before wiring a fresh one on view-transition
