@@ -39,3 +39,7 @@ public/audio/bgm/**/*.ogg
 # Wrangler cache
 .wrangler/
 
+
+# Ad-hoc scratch files created by agent debugging (curl output, etc)
+.tmp-*
+
