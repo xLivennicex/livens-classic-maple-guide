@@ -396,6 +396,76 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 86 - Shared .interactive-card utility (DRY refactor):**
+  Sprint 85's blog card polish was great, but during the tour
+  for Sprint 86's target selection I noticed 33 files across
+  the codebase had hand-rolled `translateY(-Npx)` hover
+  transforms. Every "clickable navigation card" on the site
+  had its own local :hover recipe with subtle drift: lift
+  values ranged 1px, 2px, 3px across 8 different card types;
+  shadows ranged from "none" to raw `rgba(0,0,0,0.1)` to
+  Sprint 85's accent-tinted doubled glow; border-color hover
+  treatments varied across cards.
+
+  **The DRY move:**
+  - New `.interactive-card` utility class in global.css
+    encoding the shared hover language: lift + accent-tinted
+    doubled shadow + border-color shift, with reduced-motion
+    escape hatch. Uses CSS custom properties for per-card
+    override:
+      `--card-lift`             translateY offset (-3px default)
+      `--card-glow-color`       accent for shadow + border
+      `--card-transition-ms`    duration (160 default)
+  - Docstring explicitly names what NOT to apply it to (chips,
+    pills, table rows, info-only cards where the click target
+    is a nested button not the card itself).
+
+  **Migration coverage (8 card selectors across 7 pages):**
+  - `.post-card` (blog, kept Sprint 85 extras as local overrides)
+  - `.map-card` (maps)
+  - `.class-tile` (items)
+  - `.npc-card` (npcs)
+  - `.quest-card` (quests)
+  - `.region-card` + `.vi-feature__card` (world)
+  - `.pq-card--shipped` (party-quests)
+
+  Each file kept its `.card { ... }` base styles, only the
+  `:hover` blocks were deleted and replaced with the class
+  attribute on the DOM element. Net effect: ~30 lines of
+  duplicated CSS deleted, drift eliminated (all cards now
+  lift 3px with matching accent glow), future card additions
+  inherit the polish for free.
+
+  **Sprint 86.1 - Specificity hotfix:**
+  Kitten's verify pass caught a subtle CSS specificity war.
+  Astro's scoped-attribute selectors like
+  `.map-card[data-astro-cid-o35rzir3]` are (0,2,0) which
+  silently beat `.interactive-card:hover` at (0,1,1) for
+  the border-color hover shift. The lift + shadow landed but
+  border-color was a no-op on 6/7 migrated cards.
+
+  Fix: doubled the class selector - `.interactive-card.interactive-card:hover`
+  is (0,2,1), which beats the scoped attribute at (0,2,0)
+  without needing `!important` (which would close the escape
+  hatch for legitimate page-level overrides at equal
+  specificity). Standard CSS specificity trick, zero runtime
+  cost. Kitten 7/7 pass on re-verify.
+
+  **Lesson to remember (added to CSS notes):** Astro scoped
+  styles compile to `.class[data-astro-cid-*]` selectors at
+  specificity (0,2,0). Global utilities that need to win the
+  hover contract against them must sit at >= (0,2,X).
+  Double-class trick (`.X.X`) is the cleanest way to bump
+  specificity without abusing !important.
+
+  **Minor cosmetic follow-ups flagged for a future sprint:**
+  - `.vi-feature__card` doesn't include `border-color` in its
+    local `transition` list, so the hover border flips
+    instantly instead of animating like the other cards
+  - `.region-card` has a green left-accent border pre-hover
+    that homogenizes on hover; may want to preserve the
+    accent via `border-left-color` split from the shorthand
+
   **Sprint 85 - Blog index card polish:**
   With the blog now populated (3 posts as of this sprint) the
   index page's card treatment was starting to feel a little

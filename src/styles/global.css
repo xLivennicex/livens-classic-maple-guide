@@ -401,6 +401,88 @@ main.page-width {
 	border-radius: 1rem;
 }
 
+/* ==================== Interactive card affordance ====================
+ *
+ * Sprint 86: shared hover-lift treatment for cards that behave as
+ * navigation targets (the whole card is clickable, usually because
+ * it's wrapped in an `<a>` or has a click handler). Before this
+ * consolidation, ~8 different card types (post-card, map-card,
+ * class-tile, npc-card, quest-card, region-card, vi-feature__card,
+ * pq-card--shipped) each hand-rolled their own hover block with
+ * subtly different lift values (1-3px), shadow recipes (none, raw
+ * black, accent-tinted), and border treatments. Design drift + copy
+ * paste maintenance nightmare.
+ *
+ * Now: apply `.interactive-card` to any card that should feel
+ * interactive. It composes with `.card` (or standalone) and can be
+ * tuned per card via CSS custom properties:
+ *
+ *   --card-lift            translateY offset (default -3px)
+ *   --card-glow-color      accent color for shadow + border (default
+ *                          --accent-primary, which themes correctly)
+ *   --card-transition-ms   transition duration in ms (default 160)
+ *
+ * DO NOT apply to:
+ *   - Chips, pills, tags (semantically different affordance)
+ *   - Table rows (use row-hover treatment instead)
+ *   - Info-only cards that don't navigate anywhere (JobCard,
+ *     SystemCard, InfoCard - hover suggests interactivity that
+ *     isn't there since the click target is a nested button)
+ *
+ * Reduced-motion escape hatch removes the lift entirely; the
+ * transition-free hover still shows border/shadow changes so the
+ * feedback signal survives without the vestibular motion. Same
+ * pattern as Sprint 83's MobHitEffect approach.
+ */
+
+.interactive-card {
+	--card-lift: -3px;
+	--card-glow-color: var(--accent-primary);
+	--card-transition-ms: 160;
+
+	transition:
+		transform calc(var(--card-transition-ms) * 1ms) ease,
+		border-color calc(var(--card-transition-ms) * 1ms) ease,
+		box-shadow calc(var(--card-transition-ms) * 1ms) ease;
+}
+
+/* Sprint 86.1: double-class selector (`.X.X:hover`) bumps
+ * specificity from (0,1,1) -> (0,2,1) so this rule beats Astro's
+ * scoped-attribute stamps like `.map-card[data-astro-cid-xxx]`
+ * (specificity 0,2,0) that otherwise silently overrode the
+ * border-color hover shift. Kitten caught this on the first
+ * migration pass - lift + shadow landed but border-color was a
+ * no-op on 6/7 cards because page-scoped `border` shorthand won.
+ * Double-class beats scoped attribute without needing !important
+ * (which would close the escape hatch for legitimate page-level
+ * hover overrides that use equal specificity). CSS parsers treat
+ * `.X.X` as "element with class X listed twice" - impossible in
+ * practice, but specificity is calculated syntactically so it
+ * counts as 2 class matches. Standard specificity trick, no
+ * runtime cost. */
+.interactive-card.interactive-card:hover {
+	transform: translateY(var(--card-lift));
+	border-color: color-mix(
+		in srgb,
+		var(--card-glow-color) 60%,
+		var(--border-card)
+	);
+	box-shadow:
+		0 8px 24px color-mix(in srgb, var(--card-glow-color) 22%, transparent),
+		0 2px 6px color-mix(in srgb, var(--card-glow-color) 12%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.interactive-card {
+		transition:
+			border-color calc(var(--card-transition-ms) * 1ms) ease,
+			box-shadow calc(var(--card-transition-ms) * 1ms) ease;
+	}
+	.interactive-card.interactive-card:hover {
+		transform: none;
+	}
+}
+
 /* ---------- Data rows used inside cards ---------- */
 
 .data-row {

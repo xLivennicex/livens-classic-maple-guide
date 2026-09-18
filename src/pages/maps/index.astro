@@ -148,7 +148,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 				<div class="map-grid">
 					{r.maps.map((m) => (
 						<a
-							class={`map-card map-card--${m.kind}`}
+							class={`map-card map-card--${m.kind} interactive-card`}
 							href={`/maps/${m.id}`}
 							data-name={(m.name + " " + (m.streetName ?? "")).toLowerCase()}
 							data-id={m.id}
@@ -363,10 +363,10 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		text-decoration: none; color: inherit;
 		transition: transform 120ms ease, border-color 120ms ease;
 	}
-	.map-card:hover {
-		transform: translateY(-2px);
-		border-color: var(--accent-primary);
-	}
+	/* Sprint 86: hover treatment now delegated to .interactive-card
+	   utility (applied on the DOM element). Empty block left as a
+	   marker in case future map-specific hover extras need to
+	   live here. */
 	.map-card__minimap {
 		width: 100%; height: 110px; object-fit: contain;
 		background: var(--surface-nav);

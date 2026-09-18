@@ -60,7 +60,7 @@ const subRegions = wm.links.map((l) => ({
 	<WorldMapView wm={wm} dossierMapNames={dossierMapNames} dossierMapLevels={dossierMapLevels} />
 
 	<section class="section vi-feature">
-		<a class="vi-feature__card" href="/world/victoria-island">
+		<a class="vi-feature__card interactive-card" href="/world/victoria-island">
 			<div class="vi-feature__body">
 				<span class="eyebrow">Featured deep dive</span>
 				<h2>Victoria Island</h2>
@@ -80,7 +80,7 @@ const subRegions = wm.links.map((l) => ({
 		<h2>Continents</h2>
 		<div class="region-grid">
 			{subRegions.map((r) => (
-				<a class="region-card" href={`/world/${r.slug}`}>
+				<a class="region-card interactive-card" href={`/world/${r.slug}`}>
 					<span class="region-card__name">{r.name}</span>
 					<span class="region-card__meta">
 						{r.pinCount} documented pin{r.pinCount === 1 ? "" : "s"}
@@ -120,9 +120,10 @@ const subRegions = wm.links.map((l) => ({
 		text-decoration: none; color: inherit;
 		transition: transform 100ms ease, border-color 100ms ease;
 	}
+	/* Sprint 86: base hover delegated to .interactive-card utility.
+	   The bg-cloud shift stays local since it's specific to
+	   region-card's flat visual language. */
 	.region-card:hover {
-		transform: translateY(-1px);
-		border-color: var(--accent-primary);
 		background: var(--bg-cloud);
 	}
 	.region-card__name {
@@ -146,10 +147,9 @@ const subRegions = wm.links.map((l) => ({
 		text-decoration: none; color: inherit;
 		transition: transform 0.1s, box-shadow 0.15s;
 	}
-	.vi-feature__card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-	}
+	/* Sprint 86: hover delegated to .interactive-card utility.
+	   Standardized accent-tinted shadow replaces the raw black
+	   shadow this card previously used. */
 	.vi-feature__body h2 {
 		font-size: 1.6rem; margin: 0.3rem 0 0.5rem;
 		color: var(--accent-primary);

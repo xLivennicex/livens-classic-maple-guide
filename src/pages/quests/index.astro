@@ -193,7 +193,7 @@ const editorialTotal = editorialCards.length;
 						const meta = CATEGORY_META[quest.category] ?? CATEGORY_META.other;
 						return (
 							<a
-								class:list={["quest-card", !quest.isEditorial && "quest-card--datamined"]}
+								class:list={["quest-card", "interactive-card", !quest.isEditorial && "quest-card--datamined"]}
 								href={quest.href}
 							>
 								<div class="quest-card__topline">
@@ -375,10 +375,7 @@ const editorialTotal = editorialCards.length;
 		text-decoration: none; color: inherit;
 		transition: transform 120ms ease, border-color 120ms ease;
 	}
-	.quest-card:hover {
-		transform: translateY(-2px);
-		border-color: var(--border-card-strong);
-	}
+	/* Sprint 86: hover delegated to .interactive-card utility. */
 	/* Dossier-only cards look subtly quieter (dashed border, faint
 	   background) so editorial cards visually lead the eye. Still
 	   clickable, still hoverable - just clearly marked as stubs. */

@@ -147,7 +147,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		<div class="class-strip__grid">
 			{CLASSES.map((c) => (
 				<a
-					class={`class-tile class-tile--${c.theme}`}
+					class={`class-tile class-tile--${c.theme} interactive-card`}
 					href={`/items/?class=${c.key}`}
 				>
 					<span class="class-tile__name">{c.key}</span>
@@ -522,7 +522,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		color: var(--text-on-nav);
 		transition: transform 120ms ease;
 	}
-	.class-tile:hover { transform: translateY(-2px); }
+	/* Sprint 86: hover lift comes from .interactive-card utility. */
 	.class-tile--perion    { background: #d67a99; color: white; }
 	.class-tile--ellinia   { background: #7a99d6; color: white; }
 	.class-tile--henesys   { background: #7cc4a0; color: white; }

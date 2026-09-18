@@ -120,7 +120,7 @@ const planned = walkthroughs.filter((w) => w.status === "planned");
 		<h2 id="shipped-heading" class="section-title">Available now</h2>
 		<div class="pq-grid">
 			{shipped.map((w) => (
-				<a class="pq-card pq-card--shipped" href={`/party-quests/${w.slug}`}>
+				<a class="pq-card pq-card--shipped interactive-card" href={`/party-quests/${w.slug}`}>
 					<div class="pq-card__badge">Available</div>
 					{w.heroMobId && (
 						<div class="pq-card__hero">
@@ -211,10 +211,10 @@ const planned = walkthroughs.filter((w) => w.status === "planned");
 		text-decoration: none; color: inherit;
 		transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
 	}
-	.pq-card--shipped:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-	}
+	/* Sprint 86: hover delegated to .interactive-card utility.
+	   The --shipped modifier is applied via a class predicate in
+	   the JSX so only shipped PQs get the interactive treatment;
+	   planned PQs stay static (no navigation target yet). */
 	.pq-card--planned {
 		opacity: 0.7;
 		border-left-color: var(--text-muted);

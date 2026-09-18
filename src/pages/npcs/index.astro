@@ -80,7 +80,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 	<div class="npc-grid">
 		{npcs.map((n) => (
 			<a
-				class="npc-card"
+				class="npc-card interactive-card"
 				href={`/npcs/${n.id}`}
 				data-name={n.name.toLowerCase()}
 				data-id={n.id}
@@ -225,10 +225,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		text-decoration: none; color: inherit;
 		transition: transform 100ms ease, border-color 100ms ease;
 	}
-	.npc-card:hover {
-		transform: translateY(-1px);
-		border-color: var(--accent-primary);
-	}
+	/* Sprint 86: hover delegated to .interactive-card utility. */
 	.npc-card__sprite {
 		width: 40px; height: 40px;
 		object-fit: contain;

@@ -104,7 +104,7 @@ function formatDate(iso: string): string {
 			<h2 class="section-title">Featured</h2>
 			<div class={`featured-grid ${featured.length === 1 ? "featured-grid--hero" : ""}`}>
 				{featured.map(({ entry: p, readMins, fresh }) => (
-					<a class={`post-card post-card--featured post-card--${p.data.category}`} href={`/blog/${p.id}`}>
+					<a class={`post-card post-card--featured post-card--${p.data.category} interactive-card`} href={`/blog/${p.id}`}>
 						<div class="post-card__head">
 							<span class={`post-card__category post-card__category--${p.data.category}`}>
 								{p.data.category}
@@ -152,7 +152,7 @@ function formatDate(iso: string): string {
 		) : (
 			<div class="posts-grid">
 				{rest.map(({ entry: p, readMins, fresh }) => (
-					<a class={`post-card post-card--${p.data.category}`} href={`/blog/${p.id}`}>
+					<a class={`post-card post-card--${p.data.category} interactive-card`} href={`/blog/${p.id}`}>
 						<div class="post-card__head">
 							<span class={`post-card__category post-card__category--${p.data.category}`}>
 								{p.data.category}
@@ -231,6 +231,13 @@ function formatDate(iso: string): string {
 	}
 
 	.post-card {
+		/* Sprint 86: hover lift + shadow + border-color now come
+		   from the shared .interactive-card utility in global.css
+		   (this element is also tagged with that class in the
+		   JSX). Only the blog-specific bits stay local: the
+		   post-card left-border color/width dance and the
+		   background transition (added here since interactive-card
+		   doesn't transition background). */
 		display: flex;
 		flex-direction: column;
 		gap: 0.55rem;
@@ -244,23 +251,18 @@ function formatDate(iso: string): string {
 		border-radius: 0.6rem;
 		text-decoration: none;
 		color: inherit;
+		/* Extend the shared transition with the two extras this
+		   card cares about (border-left-width, background). */
 		transition:
-			transform 0.16s ease,
-			border-color 0.16s ease,
 			border-left-width 0.16s ease,
-			box-shadow 0.16s ease,
 			background 0.16s ease;
 	}
 	.post-card:hover {
-		transform: translateY(-3px);
-		/* Left border widens on hover for a tactile "you're on it"
-		   feedback signal. Featured cards start at 6px and hover to
-		   8px; standard cards go 4 -> 6. Values stay small enough
-		   that the card content doesn't reflow noticeably. */
+		/* Blog-specific hover bit only - the base lift/shadow
+		   comes from .interactive-card. This widens the
+		   category-colored left border for a tactile "you're on
+		   it" signal. Featured cards go 6 -> 8, standard 4 -> 6. */
 		--post-card-left-width: 6px;
-		box-shadow:
-			0 8px 24px color-mix(in srgb, var(--accent-primary) 22%, transparent),
-			0 2px 6px color-mix(in srgb, var(--accent-primary) 12%, transparent);
 	}
 	.post-card--featured {
 		--post-card-left-width: 6px;
