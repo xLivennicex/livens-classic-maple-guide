@@ -349,6 +349,29 @@ main.page-width {
 	text-transform: uppercase;
 }
 
+/* Sprint 88: `.eyebrow--guide` modifier for the guides + blog
+ * pattern (looser tracking, adds bottom margin for prose flow).
+ * Extracted from 11 identical local declarations across
+ * blog/index and every guides/*.astro. The base `.eyebrow`
+ * intentionally does NOT set display/margin because 21+ other
+ * files rely on the current minimal canonical (dense database
+ * pages, cards, headers) - changing canonical would silently
+ * shift their layout.
+ *
+ * If a new page falls into this "prose reading context, wants a
+ * hero eyebrow" bucket, use `class="eyebrow eyebrow--guide"`.
+ * If it wants the dense card/index eyebrow, keep the local
+ * variant for now until we consolidate .eyebrow--dense.
+ */
+.eyebrow--guide {
+	display: inline-block;
+	letter-spacing: 0.12em;
+	margin-bottom: 0.4rem;
+	/* font-weight: 700 = "bold" - canonical already sets this
+	   via keyword; 700 is the numeric equivalent so no change.
+	   font-size stays at canonical 0.78rem. */
+}
+
 /* ---------- Buttons ---------- */
 
 .primary-button,

@@ -396,6 +396,44 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 88 - .eyebrow--guide modifier extracted:**
+  Tackled the .eyebrow beast (29 total definitions across the
+  codebase). Categorized into 4 real design variants: guide
+  pages (0.78rem/0.12em, biggest cluster - 11 files), database
+  index pages (0.75rem/0.1em - 6 files), cards + hall-of-fame
+  (0.75rem/0.08em with margin - 4 files), and party quest /
+  town pages (0.75rem/0.08em no margin - 3 files), plus 21+
+  files that rely on the minimal canonical global .eyebrow.
+
+  Key insight: the variance is real design system sub-pattern
+  not just drift - guides use looser tracking for prose reading
+  context, index pages use denser type for data-dense contexts.
+  So the consolidation strategy is "name the variants, don't
+  fight them."
+
+  This sprint: extracted the biggest cluster (Cat A - guides
+  pattern, 11 identical local blocks). Added `.eyebrow--guide`
+  modifier to global.css with `display: inline-block`,
+  `letter-spacing: 0.12em`, `margin-bottom: 0.4rem`. The base
+  `.eyebrow` intentionally stays minimal because 21+ other
+  files rely on it as-is (calculators, layouts, components,
+  standalone pages).
+
+  Migrated 11 files: blog/index + all 10 guides/*.astro. JSX
+  change was uniform (`class="eyebrow"` -> `class="eyebrow
+  eyebrow--guide"`) so batched via PowerShell regex. Deleted
+  11 identical local blocks (203 bytes each = ~2200 bytes of
+  duplicated CSS removed).
+
+  Kitten pixel-perfect verify: all 3 sample migrated pages
+  render byte-identical computed styles to the pre-migration
+  local declarations (font-size 12.48px, letter-spacing
+  1.4976px, weight 700, margin-bottom 6.4px, display
+  inline-block). Non-modifier pages verified unchanged
+  (mobs local at 0.1em, character local at 0.08em,
+  calculators/damage global at 0.05em). Zero regressions,
+  the modifier is fully scoped.
+
   **Sprint 87.2 - closed the 2 cosmetic follow-ups from 86.1:**
   Small tidy sprint closing loose ends kitten flagged during
   the interactive-card verify. Both in `pages/world/index.astro`.
