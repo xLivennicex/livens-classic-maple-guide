@@ -396,6 +396,32 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 87.2 - closed the 2 cosmetic follow-ups from 86.1:**
+  Small tidy sprint closing loose ends kitten flagged during
+  the interactive-card verify. Both in `pages/world/index.astro`.
+
+  **1. `.region-card` green accent stripe preserved on hover.**
+  The utility's hover `border-color` shorthand was dimming all
+  4 sides to a sage color-mix, visually erasing the distinctive
+  green left stripe that signals "region entry point." Fix:
+  scoped `.region-card.region-card:hover { border-left-color:
+  var(--accent-primary); }` at specificity (0,3,1) beats the
+  utility's (0,2,1) unambiguously regardless of source order.
+  Same double-class trick pattern as Sprint 86.1, applied one
+  level deeper for a per-card escape hatch.
+
+  **2. `.vi-feature__card` border-color now animates on hover.**
+  Its local transition list `transform 0.1s, box-shadow 0.15s`
+  omitted `border-color`, so the utility's hover flip was
+  instant instead of smoothly animating. Deleted the local
+  transition entirely and let the utility own all three (160ms
+  each). Consistency > per-card timing quirk.
+
+  Kitten 2/2 pass: region-card border-left stays green on
+  hover while the other 3 sides shift to sage as intended;
+  vi-feature__card `transition-property` now correctly
+  includes `border-color` at 0.16s.
+
   **Sprint 87.1 - .filter-row + .result-count extracted:**
   Continued Sprint 87's index-page primitive sweep. Extracted
   three more identical-copy patterns to global.css:

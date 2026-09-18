@@ -118,13 +118,26 @@ const subRegions = wm.links.map((l) => ({
 		border-left: 3px solid var(--accent-primary);
 		border-radius: 0.5rem;
 		text-decoration: none; color: inherit;
-		transition: transform 100ms ease, border-color 100ms ease;
+		/* Transition owned by .interactive-card utility (transform +
+		   border-color + box-shadow). The local `background`
+		   transition below is the only extra this card needs. */
+		transition: background 100ms ease;
 	}
 	/* Sprint 86: base hover delegated to .interactive-card utility.
 	   The bg-cloud shift stays local since it's specific to
 	   region-card's flat visual language. */
 	.region-card:hover {
 		background: var(--bg-cloud);
+	}
+	/* Sprint 87.2: preserve the accent-primary left border through
+	   hover. Without this, the utility's `border-color` shorthand
+	   dims all four sides to a color-mix (sage), which visually
+	   erases the distinctive green stripe this card uses to signal
+	   "region entry point." Double-class trick bumps specificity
+	   to (0,3,1) which beats the utility's (0,2,1) unambiguously
+	   regardless of source order. */
+	.region-card.region-card:hover {
+		border-left-color: var(--accent-primary);
 	}
 	.region-card__name {
 		font-weight: 500; color: var(--accent-primary);
@@ -145,7 +158,13 @@ const subRegions = wm.links.map((l) => ({
 		border-radius: 14px;
 		padding: 1.5rem 1.75rem;
 		text-decoration: none; color: inherit;
-		transition: transform 0.1s, box-shadow 0.15s;
+		/* Sprint 87.2: transition owned by .interactive-card utility
+		   (transform + border-color + box-shadow, all 160ms).
+		   Previously the local list was `transform 0.1s, box-shadow
+		   0.15s` which omitted `border-color` - kitten flagged that
+		   the utility's hover border-color shift was flipping
+		   instantly instead of animating. Deleting the local list
+		   lets the utility own all three transitions consistently. */
 	}
 	/* Sprint 86: hover delegated to .interactive-card utility.
 	   Standardized accent-tinted shadow replaces the raw black
