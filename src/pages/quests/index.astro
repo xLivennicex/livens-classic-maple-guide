@@ -133,7 +133,7 @@ const editorialTotal = editorialCards.length;
 >
 	<section class="section-heading">
 		<div>
-			<span class="eyebrow">Reference database</span>
+			<span class="eyebrow eyebrow--index">Reference database</span>
 			<h1>Quests</h1>
 			<p class="lede">
 				{totalCount} quests grouped by level tier - <strong>{editorialTotal}</strong> with
@@ -249,11 +249,6 @@ const editorialTotal = editorialCards.length;
 	/* .section-heading panel treatment lives in global.css so every
 	   page-hero across the site stays visually consistent. Only
 	   page-local overrides go here (currently: none). */
-	.eyebrow {
-		display: inline-block; font-size: 0.75rem; font-weight: bold;
-		text-transform: uppercase; letter-spacing: 0.1em;
-		color: var(--accent-primary);
-	}
 	.lede {
 		max-width: 46rem; margin-top: 0.5rem; line-height: 1.6;
 		color: var(--text-body);

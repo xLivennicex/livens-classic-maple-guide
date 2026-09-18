@@ -126,7 +126,7 @@ const totalSlides = slides.length;
 	aria-label="Featured updates and launch videos"
 >
 	<div class="home-carousel__heading">
-		<span class="eyebrow">What's new</span>
+		<span class="eyebrow eyebrow--card">What's new</span>
 		<h2 class="home-carousel__title">Latest updates &amp; trailers</h2>
 		<p class="home-carousel__lede">
 			Rotating deck of the newest editorial posts, official Nexon
@@ -348,15 +348,10 @@ const totalSlides = slides.length;
 		margin-bottom: 1.1rem;
 	}
 
-	.eyebrow {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent-primary);
-		margin-bottom: 0.25rem;
-	}
+	.eyebrow { margin-bottom: 0.25rem; }
+	/* Sprint 88.2: typography from .eyebrow--card global modifier;
+	   this slim local retains only the card-specific bottom
+	   margin (layout, not typography). */
 
 	.home-carousel__title {
 		margin: 0.15rem 0 0.4rem;

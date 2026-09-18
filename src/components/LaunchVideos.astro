@@ -41,7 +41,7 @@ const VIDEOS: LaunchVideo[] = [
 <section class="launch-videos section" id="launch-videos" aria-labelledby="launch-videos-heading">
 	<div class="section-heading">
 		<div>
-			<span class="eyebrow">Watch the trailers</span>
+			<span class="eyebrow eyebrow--card">Watch the trailers</span>
 			<h2 id="launch-videos-heading">The latest from Nexon</h2>
 			<p class="lede">
 				Official Classic World launch videos from the
@@ -77,15 +77,10 @@ const VIDEOS: LaunchVideo[] = [
 		margin: 2rem 0;
 	}
 
-	.eyebrow {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent-primary, #b8460e);
-		margin-bottom: 0.25rem;
-	}
+	.eyebrow { margin-bottom: 0.25rem; }
+	/* Sprint 88.2: typography from .eyebrow--card global modifier;
+	   this slim local retains only the card-specific bottom
+	   margin (layout, not typography). */
 
 	.section-heading .lede {
 		max-width: 42rem;

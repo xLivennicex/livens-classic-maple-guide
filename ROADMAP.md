@@ -396,6 +396,60 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 88.2 - .eyebrow--card modifier (Cat C+D):**
+  Extracted the eyebrow pattern for card contexts (denser
+  typography than --index because card interiors are already
+  tight). Design decision: modifier is typography-only, no
+  margin-bottom. Cards that want visual separation from the
+  following heading keep a slim scoped `.eyebrow {
+  margin-bottom: 0.25rem; }` local (margin is layout, belongs
+  with layout code, not typography).
+
+  7 files migrated across two sub-groups:
+  - Group D (3 files - party-quests/index, kerning-pq,
+    world/victoria-island): full local block deleted, no
+    margin needed
+  - Group C (4 files - FoundersPackagesCard, HomeCarousel,
+    LaunchVideos, hall-of-fame): 8-property local block
+    replaced with slim 1-property margin-only override
+
+  Kitten 7/7 pass with detailed table: all Group D pages show
+  margin-bottom 0px, all Group C pages show 4px (0.25rem)
+  from slim override. Kitten also flagged the CSS "flex
+  blockification" gotcha - party-quests/index eyebrow reports
+  computed `display: block` (not inline-block) because its
+  parent `.section-heading` is `display: flex`, which
+  blockifies inline-level display on flex children. Expected
+  behavior, not a bug - the CSS rule still declares
+  inline-block; the layout algorithm just overrides it for
+  flex items.
+
+  **Total eyebrow campaign (Sprints 88 + 88.1 + 88.2):**
+  - 24 files migrated (11 + 6 + 7)
+  - 20 full local blocks deleted (+ 4 partial: reduced to
+    slim single-property margin overrides)
+  - 3 new global modifiers (--guide, --index, --card)
+  - Zero visual regressions across all migrated pages
+  - Remaining local .eyebrow blocks: 4 slim margin-only
+    (Cat C) + 1 truly unique variant (Cat E - bosses uses
+    display:block, 0.8rem, unique to boss category headers)
+
+  **Sprint 88.1 - .eyebrow--index modifier extracted:**
+  Same recipe as Sprint 88 for the database index pages
+  cluster (Category B - 6 files: items/maps/mobs/npcs/
+  quests/world indexes, all identical 0.75rem/0.1em/
+  inline-block/no-margin). Added `.eyebrow--index` global
+  modifier, batch-migrated all 6 files via PowerShell regex
+  (JSX class swap + local block delete). 168 bytes deleted
+  from each file. Kitten pixel-perfect verify: all migrated
+  eyebrows match pre-migration computed values (font-size
+  12px, letter-spacing 1.2px, weight 700, inline-block, 0
+  margin), Sprint 88's --guide still working, character's
+  untouched local variant unaffected.
+
+  Total after 88 + 88.1: 17 eyebrow local blocks deleted
+  from 17 files across two modifier variants.
+
   **Sprint 88 - .eyebrow--guide modifier extracted:**
   Tackled the .eyebrow beast (29 total definitions across the
   codebase). Categorized into 4 real design variants: guide

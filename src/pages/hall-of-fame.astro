@@ -39,7 +39,7 @@ const tierCounts = Object.fromEntries(
 >
 	<section class="section-heading">
 		<div>
-			<span class="eyebrow">Legacy Showcase</span>
+			<span class="eyebrow eyebrow--card">Legacy Showcase</span>
 			<h1>Hall of Fame</h1>
 			<p class="lede">
 				{totalCount} legendary event items from MapleStory's history, sorted
@@ -120,15 +120,10 @@ const tierCounts = Object.fromEntries(
 		margin: 1rem 0 1.5rem;
 	}
 
-	.eyebrow {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent-primary);
-		margin-bottom: 0.25rem;
-	}
+	.eyebrow { margin-bottom: 0.25rem; }
+	/* Sprint 88.2: typography from .eyebrow--card global modifier;
+	   this slim local retains only the card-specific bottom
+	   margin (layout, not typography). */
 
 	.lede {
 		max-width: 44rem;

@@ -372,6 +372,39 @@ main.page-width {
 	   font-size stays at canonical 0.78rem. */
 }
 
+/* Sprint 88.1: `.eyebrow--index` modifier for the database
+ * index pages (mobs/items/maps/npcs/quests/world indexes).
+ * Denser than `--guide` because the surrounding context is
+ * data-heavy (filter chips, result counts, tabular content),
+ * so the eyebrow shouldn't feel like it's shouting. Extracted
+ * from 6 identical local declarations.
+ */
+.eyebrow--index {
+	display: inline-block;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+}
+
+/* Sprint 88.2: `.eyebrow--card` modifier for eyebrows inside
+ * cards (FoundersPackagesCard, HomeCarousel, LaunchVideos,
+ * hall-of-fame, party-quests, victoria-island). Denser than
+ * `--index` because card interiors are typographically tight
+ * already - a looser tracking would fight the surrounding
+ * micro-copy. Extracted from 7 identical typography blocks.
+ *
+ * Deliberately typography-only (no margin-bottom). Cards that
+ * want visual separation from the following heading keep a
+ * slim scoped `.eyebrow { margin-bottom: 0.25rem; }` in their
+ * local block - margin is layout, not typography, so it stays
+ * with the layout code. Prevents this modifier from
+ * mysteriously altering flow when applied in a new context.
+ */
+.eyebrow--card {
+	display: inline-block;
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+}
+
 /* ---------- Buttons ---------- */
 
 .primary-button,

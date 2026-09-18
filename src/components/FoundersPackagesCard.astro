@@ -38,7 +38,7 @@ function fmtUSD(n: number): string {
 <section class="founders-card">
 	<header class="founders-card__head">
 		<div>
-			<span class="eyebrow">Founder's Packages · On Sale Now</span>
+			<span class="eyebrow eyebrow--card">Founder's Packages · On Sale Now</span>
 			<h2 class="founders-card__title">
 				{compact ? "Pre-order Classic World" : "Pick your Founder's Package"}
 			</h2>
@@ -123,15 +123,10 @@ function fmtUSD(n: number): string {
 		margin-bottom: 1.5rem;
 	}
 
-	.eyebrow {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--accent-primary);
-		margin-bottom: 0.25rem;
-	}
+	.eyebrow { margin-bottom: 0.25rem; }
+	/* Sprint 88.2: typography from .eyebrow--card global modifier;
+	   this slim local retains only the card-specific bottom
+	   margin (layout, not typography). */
 
 	.founders-card__title {
 		font-size: 1.7rem;

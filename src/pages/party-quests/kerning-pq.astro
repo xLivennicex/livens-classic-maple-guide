@@ -69,7 +69,7 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 	<!-- ============================================================ -->
 	<header class="kpq-hero">
 		<div class="kpq-hero__body">
-			<span class="eyebrow">Party Quest walkthrough</span>
+			<span class="eyebrow eyebrow--card">Party Quest walkthrough</span>
 			<h1>{KPQ_META.name}</h1>
 			<p class="tagline">{KPQ_META.tagline}</p>
 			<div class="kpq-hero__facts">
@@ -409,13 +409,6 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 <style>
 	.crumbs { margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-secondary); }
 	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
-
-	.eyebrow {
-		display: inline-block; font-size: 0.75rem; font-weight: 700;
-		letter-spacing: 0.08em; text-transform: uppercase;
-		color: var(--accent-primary);
-	}
-
 	/* -------- Hero -------- */
 	.kpq-hero {
 		display: grid;

@@ -120,7 +120,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 >
 	<section class="section-heading">
 		<div>
-			<span class="eyebrow">Reference catalog</span>
+			<span class="eyebrow eyebrow--index">Reference catalog</span>
 			<h1>Items</h1>
 			<p class="lede">
 				{items.length.toLocaleString()} items grouped into
@@ -478,11 +478,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 </BaseLayout>
 
 <style>
-	.eyebrow {
-		display: inline-block; font-size: 0.75rem; font-weight: bold;
-		text-transform: uppercase; letter-spacing: 0.1em;
-		color: var(--accent-primary);
-	}
 	h1 { margin: 0.3rem 0 0.5rem; }
 	.lede {
 		max-width: 48rem; line-height: 1.6;
