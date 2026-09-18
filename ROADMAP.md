@@ -396,6 +396,20 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 87.1 - .filter-row + .result-count extracted:**
+  Continued Sprint 87's index-page primitive sweep. Extracted
+  three more identical-copy patterns to global.css:
+  - `.filter-row` (3 identical copies in items/maps/npcs)
+  - `.filter-row__label` (2 identical copies in maps/npcs)
+  - `.result-count` (4 identical copies in items/maps/mobs/npcs)
+
+  Deleted 9 local blocks across 4 files. Kitten 100% pass:
+  computed styles match on every element, zero remaining local
+  redeclarations per HTML grep. Kitten also caught that items
+  DOES render a `.filter-row__label` ("Section:") even though
+  my initial survey didn't note it - confirming the shared
+  style threads through cleanly on all 4 pages.
+
   **Sprint 87 - .chip and .expand-btn extracted to global.css:**
   Direct continuation of Sprint 86's DRY momentum. Survey found:
   - `.chip` base: **4 copies** (items/maps/mobs/npcs) - 3

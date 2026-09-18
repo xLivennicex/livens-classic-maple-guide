@@ -191,11 +191,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		padding: 0.5rem 0.75rem; border: 1px solid var(--border-card);
 		border-radius: 0.4rem; font-size: 1rem; background: var(--bg-cloud);
 	}
-	.filter-row { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
-	.filter-row__label {
-		font-size: 0.85rem; font-weight: bold;
-		color: var(--text-muted); min-width: 4rem;
-	}
 	.filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 	.chip--active {
@@ -203,7 +198,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		border-color: var(--accent-primary);
 	}
 
-	.result-count { margin: 0.5rem 0 0.8rem; font-size: 0.85rem; color: var(--text-muted); }
 
 	.npc-grid {
 		display: grid;
