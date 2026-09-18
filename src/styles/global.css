@@ -483,6 +483,65 @@ main.page-width {
 	}
 }
 
+/* ==================== .chip and .expand-btn (filter UI) ==================
+ *
+ * Sprint 87: extracted from items/maps/mobs/npcs (chip) and
+ * items/maps/quests (expand-btn) - each page had its own local copy
+ * of these filter-UI primitives with subtle copy-paste drift over
+ * time (mobs missing `color` in the chip transition, quests using
+ * 0.8rem instead of 0.9rem horizontal expand-btn padding).
+ *
+ * Canonical shape:
+ *   .chip           pill-shaped filter toggle (e.g. "Undead",
+ *                   "Perion Region", "Warrior"). Clickable, hovers
+ *                   to accent fill.
+ *   .expand-btn     "Expand all" / "Collapse all" style controls.
+ *                   Same pill shape as chips but visually a button
+ *                   with bold weight.
+ *
+ * Both are theme-token-driven so they inherit whatever theme is
+ * set on the current page. Cursor is `pointer` because they're
+ * interactive; on a real <button> or <a> the browser default
+ * would already cover this, but chips are sometimes rendered as
+ * <span> so we set it explicitly for consistency.
+ *
+ * DO NOT redefine these locally. If a specific page needs a
+ * different chip shape (e.g. character.astro's inline-flag chip),
+ * use a distinct class name so it doesn't collide with the
+ * canonical one.
+ */
+
+.chip {
+	padding: 0.35rem 0.7rem;
+	font-size: 0.8rem;
+	background: var(--surface-nav);
+	color: var(--text-on-nav);
+	border: 1px solid var(--border-card);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background 120ms ease, color 120ms ease;
+}
+.chip:hover {
+	background: var(--accent-primary);
+	color: white;
+}
+
+.expand-btn {
+	padding: 0.4rem 0.9rem;
+	background: var(--surface-nav);
+	color: var(--text-on-nav);
+	border: 1px solid var(--border-card);
+	border-radius: 999px;
+	font-size: 0.8rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background 120ms ease, color 120ms ease;
+}
+.expand-btn:hover {
+	background: var(--accent-primary);
+	color: white;
+}
+
 /* ---------- Data rows used inside cards ---------- */
 
 .data-row {

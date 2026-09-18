@@ -293,13 +293,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		color: var(--text-muted); min-width: 4rem;
 	}
 	.filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-	.chip {
-		padding: 0.35rem 0.7rem; font-size: 0.8rem;
-		background: var(--surface-nav); color: var(--text-on-nav);
-		border: 1px solid var(--border-card); border-radius: 999px;
-		cursor: pointer; transition: background 120ms ease, color 120ms ease;
-	}
-	.chip:hover { background: var(--accent-primary); color: white; }
+
 	.chip--active {
 		background: var(--accent-primary); color: white;
 		border-color: var(--accent-primary);
@@ -308,14 +302,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		display: flex; gap: 0.5rem; padding-top: 0.5rem;
 		border-top: 1px dashed var(--border-card);
 	}
-	.expand-btn {
-		padding: 0.4rem 0.9rem;
-		background: var(--surface-nav); color: var(--text-on-nav);
-		border: 1px solid var(--border-card); border-radius: 999px;
-		font-size: 0.8rem; font-weight: bold; cursor: pointer;
-		transition: background 120ms ease, color 120ms ease;
-	}
-	.expand-btn:hover { background: var(--accent-primary); color: white; }
 
 	.result-count { margin: 0.5rem 0 0.8rem; font-size: 0.85rem; color: var(--text-muted); }
 

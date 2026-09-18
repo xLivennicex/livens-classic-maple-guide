@@ -396,6 +396,28 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 87 - .chip and .expand-btn extracted to global.css:**
+  Direct continuation of Sprint 86's DRY momentum. Survey found:
+  - `.chip` base: **4 copies** (items/maps/mobs/npcs) - 3
+    identical, mobs slightly drifted (missing `color 120ms ease`
+    in transition after some historical copy-paste)
+  - `.chip:hover`: 4 identical copies
+  - `.expand-btn` base: **3 copies** (items/maps/quests) - 2
+    identical, quests using 0.8rem instead of 0.9rem padding-x
+  - `.expand-btn:hover`: 3 identical copies
+
+  Extracted canonical versions to global.css with a docstring
+  spelling out what NOT to do (redefine locally). Deleted 11
+  local blocks across 5 files. Character.astro's opinionated
+  smaller-chip variant left alone since it's a legit distinct
+  visual (scoped .chip rule wins via specificity on that page
+  only). Kitten 100% pass verifying chips + expand-btns render
+  correctly on all 5 pages, hover states work per-theme (each
+  page's accent color threads through the utility), the
+  character page's custom variant still renders with its
+  smaller shape, and zero remaining local .chip/.expand-btn
+  rules in the emitted HTML.
+
   **Sprint 86 - Shared .interactive-card utility (DRY refactor):**
   Sprint 85's blog card polish was great, but during the tour
   for Sprint 86's target selection I noticed 33 files across
