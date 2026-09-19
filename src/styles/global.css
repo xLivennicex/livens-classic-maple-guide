@@ -598,6 +598,38 @@ main.page-width {
 	color: white;
 }
 
+/* Sprint 91.5: shared filter-search input. Every index page
+ * (items, maps, mobs, npcs) had an identical `.search-label`
+ * + `.search-label input` block - now consolidated here. The
+ * label is a column-flex stack with a bold caption above the
+ * input; input styles the field with a light cloud fill and
+ * card border. Mobile media query below bumps min-height to
+ * 44px for WCAG 2.5.5 tap safety (audit reported 307x36 px).
+ * font-size stays at 1rem (16px) so iOS Safari doesn't
+ * auto-zoom the viewport when the input focuses.
+ */
+.search-label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	font-size: 0.85rem;
+	font-weight: bold;
+}
+
+.search-label input {
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--border-card);
+	border-radius: 0.4rem;
+	font-size: 1rem;
+	background: var(--bg-cloud);
+}
+
+@media (max-width: 768px) {
+	.search-label input {
+		min-height: 44px;
+	}
+}
+
 /* Sprint 91.1: mobile touch-target bump for shared chip/button
  * primitives. Desktop keeps its compact 28-30px height because
  * mouse users don't need thumb-sized targets and dense filter
