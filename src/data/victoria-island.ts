@@ -609,11 +609,36 @@ export const victoriaTowns: VictoriaTown[] = [
 			"Matters of the Heart",
 			"The Sage's Burden",
 		],
-		notableMobs: ["Raffle", "Aqumander", "Echopus", "Myewood", "Sporewood"],
+		// Sprint 97.4: full mob roster from the datamine cross-reference.
+		// 20 unique mobs across the 27-map region. Listed here are the
+		// CoT2-original spawns (upstream maplestory.io/GMS/83 has no
+		// stats for these yet - they show as stubs on the mob pages).
+		// Reused classics (Zombie Mushroom, Curse Eye, Evil Eye, Lupin,
+		// Zombie Lupin, Fairy 2/3/4, Rotten Mushroom) round out the
+		// spawn tables but aren't listed here since they're not what
+		// makes the region distinctive.
+		notableMobs: [
+			"Raffle",
+			"Aqumander",
+			"Echopus",
+			"Rafflesia",
+			"Duskmander",
+			"Myewood",
+			"Sporewood",
+			"Glowshroom",
+			"Golden Stirge",
+			"Rotten Mushmom",
+		],
 		huntingMaps: [
-			{ name: "Primeval Forest I", note: "First hunt map east of the Hollow. Autumn foliage, cave-fairy mobs." },
-			{ name: "The End of Fleeting Light", note: "Deeper sub-map for the level 45+ questline." },
-			{ name: "Cave Fairy Sanctuary", note: "The core sanctuary hub - Bluebell spawns and the sage's quest chain." },
+			{ name: "Primeval Forest I", note: "First hunt map east of the Hollow. Aqumander + Glowshroom + Echopus starter mix." },
+			{ name: "Primeval Forest II", note: "Progression - Golden Stirge added to the spawn table." },
+			{ name: "Collision of Ice and Fire", note: "Themed pocket map with Rafflesia + Aqumander + Glowshroom." },
+			{ name: "The Valley of Death", note: "Grim mid-region hunt - Zombie Mushroom + Zombie Lupin + Rafflesia." },
+			{ name: "The End of Fleeting Light", note: "Level 45+ questline hub. Duskmander + Aqumander + Rafflesia." },
+			{ name: "Decayed Tunnel III", note: "Late-region tunnel with Rafflesia + Myewood + Golden Stirge." },
+			{ name: "Precipice of Darkness", note: "Boss-adjacent map - Duskmander + Rotten Mushroom + Zombie Lupin + Zombie Mushroom." },
+			{ name: "Someone Else's Grave", note: "Rotten Mushmom (region mini-boss) + Rotten Mushroom + Fairy 3 + Zombie Mushroom. Marquee target for the mid-level party." },
+			{ name: "Dilapidated Tomb", note: "Sporewood + Rotten Mushroom + Fairy 2 spawn. Late-region tomb approach." },
 		],
 		landmarks: ["Cave Fairy Sanctuary", "Cave Fairy Department Store", "Arcane Station"],
 		featuredContent: {
@@ -640,8 +665,13 @@ export const victoriaTowns: VictoriaTown[] = [
 				category: "quest",
 			},
 			{
-				title: "Grind Bluebells + cave-fairy mobs",
-				description: "Raffle, Aqumander, Echopus, Myewood, and Sporewood spawn in the sub-maps. Solid EXP for the 39-50 push with less competition than Sleepywood.",
+				title: "Grind the cave-fairy roster",
+				description: "10 CoT2-original mobs (Raffle, Aqumander, Echopus, Rafflesia, Duskmander, Myewood, Sporewood, Glowshroom, Golden Stirge, Rotten Mushmom) plus reused classics (Zombie Mushroom, Curse Eye, Lupin) spawn across 27 sub-maps. Level 24-40 spread. Less competition than Sleepywood.",
+				category: "combat",
+			},
+			{
+				title: "Chase Rotten Mushmom in Someone Else's Grave",
+				description: "The region's own mini-boss - spawns in Someone Else's Grave (map 10006121) alongside Rotten Mushroom, Fairy 3, and Zombie Mushroom. CoT2-original with no upstream stats yet, but it's the region's marquee target for the mid-level party.",
 				category: "combat",
 			},
 			{

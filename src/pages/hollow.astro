@@ -27,15 +27,52 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import mapsData from "../data/db/maps.json";
 import questsData from "../data/db/quests.json";
+import mobsData from "../data/db/mobs.json";
 
-/* Canonical IDs from the CoT2 client datamine. */
+/* Canonical IDs from the CoT2 client datamine. Every Forgotten
+ * Hollow region map lives in the 10006000-10006999 range - I
+ * verified by scanning maps.json and found exactly 27 maps in
+ * that range, all sharing the Bgm03/BygoneGarden soundtrack. */
 const HOLLOW_MAP_ID = 10006000;
 const HOLLOW_REGION = "Forgotten Hollow";
+const HOLLOW_ID_MIN = 10006000;
+const HOLLOW_ID_MAX = 10006999;
 
 type MapRecord = (typeof mapsData)[number];
 type QuestRecord = (typeof questsData)[number];
+type MobRecord = (typeof mobsData)[number];
 
 const map = mapsData.find((m: MapRecord) => m.id === HOLLOW_MAP_ID);
+
+/* Every map in the Forgotten Hollow region - used to enumerate
+ * the full sub-map graph and cross-reference which mobs live
+ * inside the region. */
+const regionMaps: MapRecord[] = mapsData
+	.filter(
+		(m: MapRecord) => m.id >= HOLLOW_ID_MIN && m.id <= HOLLOW_ID_MAX,
+	)
+	.slice()
+	.sort((a, b) => a.id - b.id);
+
+/* Union of all mobs spawning across every Forgotten Hollow
+ * region map. Dedupe by mob id since the same mob spawns
+ * across several sub-maps. Sorted by level ascending (with
+ * stat-less CoT2 stubs pushed to the end so real level bands
+ * lead). */
+const mobIdsInRegion = new Set<number>();
+for (const rm of regionMaps) {
+	for (const mob of rm.mobs ?? []) {
+		if (typeof mob.id === "number") mobIdsInRegion.add(mob.id);
+	}
+}
+const regionMobs: MobRecord[] = mobsData
+	.filter((m: MobRecord) => mobIdsInRegion.has(m.id))
+	.slice()
+	.sort((a, b) => {
+		const al = a.stats?.level ?? 999;
+		const bl = b.stats?.level ?? 999;
+		return al - bl;
+	});
 
 /* Quests tagged with the Forgotten Hollow region PLUS any
  * quest whose title mentions the Hollow (catches "Welcome to
@@ -102,11 +139,15 @@ const exits = map?.exits ?? [];
 						<dd>{levelRange}</dd>
 					</div>
 					<div>
-						<dt>Region kind</dt>
-						<dd>Town</dd>
+						<dt>Maps in region</dt>
+						<dd>{regionMaps.length}</dd>
 					</div>
 					<div>
-						<dt>Quests here</dt>
+						<dt>Mobs</dt>
+						<dd>{regionMobs.length}</dd>
+					</div>
+					<div>
+						<dt>Quests</dt>
 						<dd>{questsHere.length}</dd>
 					</div>
 					<div>
@@ -158,9 +199,43 @@ const exits = map?.exits ?? [];
 			</article>
 		)}
 
+		{regionMobs.length > 0 && (
+			<article class="hollow-card hollow-card--mobs">
+				<h2 class="hollow-card__title">Mobs of the region</h2>
+				<p class="hollow-card__note">
+					{regionMobs.length} unique mobs across {regionMaps.length} maps. CoT2-
+					original mobs (marked <em>new</em>) don't have stats on maplestory.io
+					yet - the guide displays whatever the client dump provides.
+				</p>
+				<ul class="hollow-card__mobs">
+					{regionMobs.map((m) => {
+						const isStub = !m.stats || !m.stats.level;
+						return (
+							<li>
+								<a href={`/mobs/${m.id}`}>
+									<strong>{m.name}</strong>
+									<span class="hollow-card__meta">
+										{isStub ? (
+											<em>new</em>
+										) : (
+											`Lv ${m.stats?.level}`
+										)}
+									</span>
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			</article>
+		)}
+
 		{exits.length > 0 && (
 			<article class="hollow-card hollow-card--maps">
-				<h2 class="hollow-card__title">Connected maps</h2>
+				<h2 class="hollow-card__title">Direct exits</h2>
+				<p class="hollow-card__note">
+					Maps reachable directly from Shallow Passage. Follow any of
+					these to enter the deeper {regionMaps.length - 1}-map graph.
+				</p>
 				<ul class="hollow-card__list hollow-card__list--links">
 					{exits.map((exit) => (
 						<li>
@@ -283,23 +358,27 @@ const exits = map?.exits ?? [];
 	   things aligned at wide viewports and collapses to a single
 	   column below 720px. Quest card spans wider since it holds
 	   more content. */
-	/* Two-column grid: narrow left column stacks NPCs above
-	   Connected maps, wide right column holds the meaty Quests
-	   card at full height. No empty grid cells because named
-	   areas explicitly place each card - solves the "cards
-	   clinging to one column" gap kitten flagged in Sprint
-	   97.2 verify. */
+	/* Two-column grid: narrow left column stacks NPCs, Mobs,
+	   and Direct exits; wide right column holds the meaty
+	   Quests card at full height. Named areas guarantee no
+	   empty cells regardless of DOM order. Sprint 97.4 added
+	   the Mobs row when the region mob data got surfaced. */
 	.hollow-grid {
 		display: grid;
 		grid-template-columns: minmax(240px, 1fr) minmax(360px, 2fr);
 		grid-template-areas:
 			"npcs quests"
+			"mobs quests"
 			"maps quests";
 		gap: 1.2rem;
 		max-width: 1080px;
 		margin: 0 auto;
 		padding: 0 1rem 2rem;
-		align-items: start;
+		/* Default `stretch` so the Quests card (which spans all
+		   3 rows in the named area grid) actually fills its
+		   3-row area. Kitten flagged the previous `start` value
+		   was leaving a huge empty column beside Mobs + exits. */
+		align-items: stretch;
 	}
 
 	.hollow-card {
@@ -312,11 +391,69 @@ const exits = map?.exits ?? [];
 	.hollow-card--npcs {
 		grid-area: npcs;
 	}
+	.hollow-card--mobs {
+		grid-area: mobs;
+	}
 	.hollow-card--maps {
 		grid-area: maps;
 	}
 	.hollow-card--quests {
 		grid-area: quests;
+	}
+
+	.hollow-card__note {
+		margin: 0 0 0.8rem;
+		font-size: 0.8rem;
+		line-height: 1.4;
+		color: var(--text-muted);
+	}
+	.hollow-card__note em {
+		font-style: normal;
+		font-weight: 700;
+		color: var(--accent-primary-strong);
+	}
+
+	/* Mobs list: two-column dense grid within the card so the
+	   20-item roster stays scannable without towering. */
+	.hollow-card__mobs {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 0.4rem;
+	}
+	.hollow-card__mobs a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.5rem 0.6rem;
+		background: rgba(217, 122, 42, 0.08);
+		border: 1px solid transparent;
+		border-radius: 0.4rem;
+		color: inherit;
+		text-decoration: none;
+		transition:
+			border-color 120ms ease,
+			transform 120ms ease;
+	}
+	.hollow-card__mobs a:hover,
+	.hollow-card__mobs a:focus-visible {
+		border-color: var(--accent-primary);
+		transform: translateY(-1px);
+		outline: none;
+	}
+	.hollow-card__mobs strong {
+		font-size: 0.85rem;
+		color: var(--text-heading);
+	}
+	.hollow-card__mobs em {
+		font-style: normal;
+		font-weight: 700;
+		font-size: 0.7rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--accent-primary-strong);
 	}
 
 	.hollow-card__title {
@@ -412,14 +549,15 @@ const exits = map?.exits ?? [];
 			padding: 1.4rem 1.2rem;
 		}
 		/* Mobile: single-column stack in reading order (NPCs
-		   first as the roster / social opener, then Quests as
-		   the meat, then Connected maps as the "where next"
+		   as social opener, Quests as the meat, Mobs for the
+		   grinding crowd, Direct exits as "where next"
 		   footer). Overrides the two-column named-area grid. */
 		.hollow-grid {
 			grid-template-columns: 1fr;
 			grid-template-areas:
 				"npcs"
 				"quests"
+				"mobs"
 				"maps";
 		}
 	}
