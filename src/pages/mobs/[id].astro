@@ -127,6 +127,14 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 		</div>
 	</header>
 
+	{/* Sprint 97.5: flavor text renders for mobs enriched from
+	    MeowDB (CoT2-original spawns like the Forgotten Hollow
+	    roster). Classic mobs from maplestory.io don't have this
+	    field - the `d.flavor` check just skips the block. */}
+	{"flavor" in d && (d as { flavor?: string | null }).flavor && (
+		<p class="mob-flavor">{(d as { flavor: string }).flavor}</p>
+	)}
+
 	{d.stats ? (
 		<section class="section">
 			<h2>Combat stats</h2>
@@ -142,19 +150,32 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 				<div class="stat"><span class="stat__label">Accuracy</span><span class="stat__val">{d.stats.accuracy ?? "?"}</span></div>
 				<div class="stat"><span class="stat__label">Evasion</span><span class="stat__val">{d.stats.evasion ?? "?"}</span></div>
 			</div>
-			<p class="muted-note">
-				Base stats mirrored from
-				<a href={`https://maplestory.io/api/GMS/83/mob/${d.wzId}`} target="_blank" rel="noopener">maplestory.io</a>
-				(GMS v83 Mob.wz). Classic World values may differ - Founder's
-				Access will let us verify in-game.
-			</p>
+			{/* Sprint 97.5: attribution conditionally swaps based on
+			    where the stats came from. MeowDB-sourced mobs are the
+			    CoT2-original spawns (no upstream WZ ID); the classic
+			    reused mobs still come from maplestory.io. */}
+			{"dataSource" in d && (d as { dataSource?: string }).dataSource === "meowdb" ? (
+				<p class="muted-note">
+					Stats mirrored from
+					<a href={`https://meowdb.com/msclassic/monsters/${d.id}`} target="_blank" rel="noopener">MeowDB</a>
+					(Classic World test-client dump). Values reflect the CoT2
+					datamine and may differ once Founder's Access opens.
+				</p>
+			) : (
+				<p class="muted-note">
+					Base stats mirrored from
+					<a href={`https://maplestory.io/api/GMS/83/mob/${d.wzId}`} target="_blank" rel="noopener">maplestory.io</a>
+					(GMS v83 Mob.wz). Classic World values may differ - Founder's
+					Access will let us verify in-game.
+				</p>
+			)}
 		</section>
 	) : (
 		<div class="disclaimer">
 			<strong>Stats not yet mirrored for this mob.</strong>
-			{" "}Name lookup on maplestory.io didn't return a match (usually a
-			post-v83 CoT addition or a renamed variant). Quest cross-refs,
-			spawn maps, and drop table below are still authoritative.
+			{" "}Neither maplestory.io nor MeowDB has this mob resolved (usually
+			a dev/test entry). Quest cross-refs, spawn maps, and drop table
+			below are still authoritative.
 		</div>
 	)}
 
@@ -241,6 +262,22 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 </BaseLayout>
 
 <style>
+	/* Sprint 97.5: flavor blurb for MeowDB-enriched mobs. Sits
+	   between the hero card and the combat stats section as an
+	   italic quote-adjacent line, styled to feel like a Bestiary
+	   description rather than yet another data row. */
+	.mob-flavor {
+		margin: 0 0 1.2rem;
+		padding: 0.9rem 1.2rem;
+		font-style: italic;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		color: var(--text-body);
+		background: var(--surface-card);
+		border-left: 3px solid var(--accent-secondary);
+		border-radius: 0.4rem;
+	}
+
 	.crumbs {
 		font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;
 	}

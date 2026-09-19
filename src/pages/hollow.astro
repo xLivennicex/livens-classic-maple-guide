@@ -203,9 +203,10 @@ const exits = map?.exits ?? [];
 			<article class="hollow-card hollow-card--mobs">
 				<h2 class="hollow-card__title">Mobs of the region</h2>
 				<p class="hollow-card__note">
-					{regionMobs.length} unique mobs across {regionMaps.length} maps. CoT2-
-					original mobs (marked <em>new</em>) don't have stats on maplestory.io
-					yet - the guide displays whatever the client dump provides.
+					{regionMobs.length} unique mobs across {regionMaps.length} maps -
+					level range 24-60. CoT2-original spawns come from the MeowDB mirror
+					since maplestory.io hasn't ingested them yet; classic reused mobs
+					come straight from maplestory.io.
 				</p>
 				<ul class="hollow-card__mobs">
 					{regionMobs.map((m) => {

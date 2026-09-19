@@ -312,29 +312,69 @@ export function skillIconUrl(skillId: string): string {
 // swap - no build-time probing, no broken-image glyph.
 
 /**
+ * Sprint 97.5 - locally-mirrored CoT2 mob sprites.
+ *
+ * Any mob in this set has a PNG served from our own domain at
+ * `/images/mobs/cot2/mob_{id}.png` - downloaded by
+ * `scripts/enrich-cot2-mobs.mjs` from MeowDB during ingestion.
+ * These are the mobs upstream maplestory.io/GMS/83 doesn't know
+ * about yet (all CoT2-original spawns), so we mirror them
+ * locally to sidestep meowdb.com's referer-blocked hotlinks
+ * (which kitten found returning ERR_BLOCKED_BY_ORB in-browser).
+ *
+ * To grow this set: re-run `node scripts/enrich-cot2-mobs.mjs`
+ * and add the newly-downloaded ids here. The enrichment script
+ * writes `mob.spriteLocal` onto the dossier as well; this Set
+ * exists so `mobSpriteSrcs()` can prepend the local URL without
+ * having to receive the full mob record on every call.
+ */
+const COT2_LOCAL_SPRITE_IDS = new Set<number>([
+	54, // Glowshroom
+	55, // Raffle
+	56, // Golden Stirge
+	57, // Aqumander
+	58, // Echopus
+	59, // Rafflesia
+	60, // Duskmander
+	61, // Myewood
+	62, // Rotten Mushroom (CoT2 variant)
+	63, // Sporewood
+	92, // Super Ribbon Pig
+	1059, // Minor Zombie
+	700003, // Rotten Mushmom (region mini-boss)
+	800022, // Rotten Mushmom (duplicate id from upstream)
+]);
+
+/**
  * Ordered fallback chain for a mob sprite.
- *   1. MeowDB (Classic World-accurate, primary)
- *   2. maplestory.io v83 render (covers the 9 mobs MeowDB is
- *      missing: Nependeath, Dark Nependeath, Ultra Jr. Necki 1
- *      all resolved via wzId - confirmed 200 via HEAD probe)
+ *   1. Local `/images/mobs/cot2/mob_{id}.png` if we mirrored it
+ *      (skips CORS + referer issues on meowdb hotlinks).
+ *   2. maplestory.io v83 render (only when wzId is known - the
+ *      primary source for classic mobs where the WZ ID resolved)
+ *   3. MeowDB hotlink (Classic World-accurate but browser-hostile
+ *      for some referer configurations - last resort)
  *
  * Pass `wzId=null` for mobs whose name lookup didn't resolve;
- * the fallback is simply skipped and the Sprite hides itself on
- * primary failure.
+ * the maplestory.io step is skipped and we go local -> meowdb.
  */
 export function mobSpriteSrcs(
 	mobId: number,
 	wzId: number | null | undefined,
 ): string[] {
-	// Order matters. maplestory.io is a CDN-backed API with better
-	// availability + no cross-origin friction; meowdb is a hobbyist
-	// mirror that returns 200 from most origins but occasionally
-	// stalls or serves referer-blocked responses in the browser.
-	// So: maplestory.io first when we know the wzId, meowdb as a
-	// fallback for the 9 mobs with no wzId or if the primary 404s.
+	// Locally-mirrored sprite lives on our own origin and beats
+	// every upstream on both speed and reliability. Only prepend
+	// it when we actually downloaded the PNG - the Set is the
+	// source of truth for what got mirrored.
+	const local = COT2_LOCAL_SPRITE_IDS.has(mobId)
+		? [`/images/mobs/cot2/mob_${mobId}.png`]
+		: [];
 	const meowdb = mobSpriteUrl(mobId);
-	if (wzId == null) return [meowdb];
-	return [`${CDN_ROOT}/${DEFAULT_VERSION}/mob/${wzId}/render/stand`, meowdb];
+	if (wzId == null) return [...local, meowdb];
+	return [
+		...local,
+		`${CDN_ROOT}/${DEFAULT_VERSION}/mob/${wzId}/render/stand`,
+		meowdb,
+	];
 }
 
 /**
