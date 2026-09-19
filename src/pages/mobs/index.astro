@@ -79,11 +79,15 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 
 	<div class="mob-table-wrap">
 		<table class="mob-table">
+			{/* Sprint 91.3: added .col-* classes on <th> so mobile
+			   display:none + sticky treatment applies to header
+			   AND body uniformly (previously headers ignored the
+			   mobile CSS because classes were tbody-only). */}
 			<thead>
 				<tr>
-					<th>Sprite</th>
-					<th class="sortable" data-sort="id" data-type="num">ID<span class="sort-arrow"></span></th>
-					<th class="sortable" data-sort="name" data-type="str">Name<span class="sort-arrow"></span></th>
+					<th class="col-icon">Sprite</th>
+					<th class="col-id sortable" data-sort="id" data-type="num">ID<span class="sort-arrow"></span></th>
+					<th class="col-name sortable" data-sort="name" data-type="str">Name<span class="sort-arrow"></span></th>
 					<th class="sortable col-num" data-sort="level" data-type="num">Lv<span class="sort-arrow"></span></th>
 					<th class="sortable col-num" data-sort="hp" data-type="num">HP<span class="sort-arrow"></span></th>
 					<th class="sortable col-num" data-sort="exp" data-type="num">EXP<span class="sort-arrow"></span></th>
@@ -278,7 +282,79 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 	}
 
 
-	.mob-table-wrap { overflow-x: auto; }
+	.mob-table-wrap {
+		overflow-x: auto;
+		/* Sprint 91.3: right-edge fade hints that more columns
+		 * exist and can be scrolled to. Same treatment used on
+		 * /items .cat-table-wrap for consistency. */
+		position: relative;
+		background: linear-gradient(
+			90deg,
+			transparent 90%,
+			color-mix(in srgb, var(--border-card) 55%, transparent)
+		) right center / 24px 100% no-repeat local;
+	}
+
+	/* Sprint 91.3: mobile data-table treatment. At 375px the mob
+	 * table needs ~640px to fit all 8 columns, so it always
+	 * horizontal-scrolls. Without a sticky name column, users lose
+	 * their place when scrolling right to see stats. Fix:
+	 *   - Hide col-icon + col-id (visual noise, not needed for
+	 *     stat comparison on a phone)
+	 *   - Pin col-name at left: 0 with a subtle right-edge shadow
+	 *     so users can scroll [Name | Lv | HP | EXP | Drops | Q]
+	 *     with the identity column always visible
+	 * Desktop stays as-is (all columns visible, no sticky needed
+	 * because the table fits without horizontal scroll).
+	 */
+	@media (max-width: 768px) {
+		/* Sprint 91.3 gotcha 1: .mob-table normally uses
+		 * `overflow: hidden` to clip its border-radius corners.
+		 * But that makes the table itself a scroll-containing
+		 * block, which BREAKS position:sticky on <td> - the
+		 * sticky td tries to stick relative to the (non-
+		 * scrolling) table instead of the outer .mob-table-wrap.
+		 *
+		 * Sprint 91.3 gotcha 2 (source-order cascade fumble):
+		 * the base `.mob-table { overflow: hidden }` rule is
+		 * declared BELOW this media query in the stylesheet, so
+		 * a same-specificity override here loses on cascade
+		 * order. Use the double-class trick (same technique
+		 * Sprint 86.1 used to beat Astro scoped selectors) to
+		 * bump specificity from 0,1,0 to 0,2,0 - wins regardless
+		 * of source order without reaching for !important.
+		 * Trade-off: the border-radius corners no longer clip
+		 * on mobile, which is fine - the wrap already crops
+		 * overflow horizontally.
+		 */
+		.mob-table.mob-table {
+			overflow: visible;
+		}
+		.mob-table th.col-icon,
+		.mob-table td.col-icon,
+		.mob-table th.col-id,
+		.mob-table td.col-id {
+			display: none;
+		}
+		.mob-table th.col-name,
+		.mob-table td.col-name {
+			position: sticky;
+			left: 0;
+			z-index: 1;
+			background: var(--surface-card);
+			/* Right-edge shadow signals the column is pinned. */
+			box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.08);
+		}
+		/* Header uses different bg - override with the darker
+		   surface-nav so the sticky effect blends with the row it
+		   sits above. */
+		.mob-table thead th.col-name {
+			background: var(--surface-nav);
+		}
+		.mob-row:hover .col-name {
+			background: var(--bg-cloud);
+		}
+	}
 	.mob-table {
 		width: 100%; border-collapse: collapse;
 		background: var(--surface-card); border-radius: 0.75rem; overflow: hidden;
