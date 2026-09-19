@@ -1,0 +1,155 @@
+---
+/**
+ * FallingLeaves - ambient falling maple leaves overlay.
+ *
+ * Sprint 92: fall-themed Maple World treatment. Renders a viewport-
+ * fixed layer of drifting maple leaves for a "seasonal Henesys"
+ * feel. Uses the existing `/images/maple-leaf.png` asset (already
+ * shipped, no new art needed) with per-leaf CSS custom properties
+ * driving randomized position / duration / size / rotation.
+ *
+ * Design decisions:
+ *   - Fixed positioning so leaves appear to fall across whatever
+ *     the user is currently viewing (feels ambient, not tied to
+ *     one section).
+ *   - `pointer-events: none` so leaves NEVER block clicks - even
+ *     the ones drifting over CTA buttons stay purely decorative.
+ *   - Opacity capped at ~0.55 so they never overpower content;
+ *     white maple silhouettes over parchment need to whisper,
+ *     not shout.
+ *   - Half the leaf count on mobile (via CSS n-th-child hide) to
+ *     save battery + keep the small viewport calm.
+ *   - `prefers-reduced-motion: reduce` kills the animation
+ *     entirely (leaves stay hidden) - the whole point is the
+ *     drifting motion, and vestibular-sensitive users get a
+ *     clean static homepage instead.
+ *   - `contain: layout paint style` on each leaf isolates them
+ *     from the rest of the render tree so browsers can composite
+ *     them on the GPU without invalidating page reflow.
+ *
+ * Prop: `count` (default 10). Lower to 6-7 for a quieter effect
+ * or up to 14 for a heavier flurry. Above ~16 becomes distracting.
+ */
+
+export interface Props {
+	count?: number;
+}
+
+const { count = 10 } = Astro.props;
+
+// Precomputed randomization tables. Kept as a static array (not
+// Math.random() at render time) so SSR output is deterministic -
+// same HTML every build, no hydration mismatch, no "why does the
+// homepage look different every deploy" mystery. Values were
+// hand-picked to feel natural: durations 14-24s (slow, calm),
+// horizontal positions spread across the viewport, sizes 32-64px
+// mixing near/far depth, some rotate CW some CCW for variety.
+const LEAF_PRESETS = [
+	{ x: "6%",  size: 42, dur: 18, delay: -2,  drift: 30,  spin: 360,  opacity: 0.52 },
+	{ x: "14%", size: 56, dur: 22, delay: -14, drift: -40, spin: -290, opacity: 0.6  },
+	{ x: "24%", size: 34, dur: 16, delay: -8,  drift: 20,  spin: 400,  opacity: 0.45 },
+	{ x: "34%", size: 48, dur: 20, delay: -18, drift: -25, spin: -340, opacity: 0.55 },
+	{ x: "45%", size: 38, dur: 17, delay: -5,  drift: 35,  spin: 320,  opacity: 0.48 },
+	{ x: "56%", size: 62, dur: 24, delay: -11, drift: -30, spin: -380, opacity: 0.5  },
+	{ x: "66%", size: 40, dur: 19, delay: -21, drift: 40,  spin: 350,  opacity: 0.55 },
+	{ x: "76%", size: 52, dur: 21, delay: -3,  drift: -20, spin: -300, opacity: 0.58 },
+	{ x: "85%", size: 36, dur: 15, delay: -16, drift: 25,  spin: 420,  opacity: 0.42 },
+	{ x: "93%", size: 46, dur: 23, delay: -9,  drift: -35, spin: -330, opacity: 0.55 },
+	{ x: "18%", size: 32, dur: 14, delay: -12, drift: 15,  spin: 360,  opacity: 0.4  },
+	{ x: "62%", size: 44, dur: 20, delay: -6,  drift: -22, spin: -350, opacity: 0.5  },
+	{ x: "38%", size: 30, dur: 16, delay: -19, drift: 28,  spin: 380,  opacity: 0.38 },
+	{ x: "80%", size: 34, dur: 15, delay: -7,  drift: -18, spin: -370, opacity: 0.42 },
+];
+
+const leaves = LEAF_PRESETS.slice(0, Math.min(count, LEAF_PRESETS.length));
+---
+
+<div class="falling-leaves" aria-hidden="true">
+	{leaves.map((leaf, i) => (
+		<img
+			class="falling-leaves__leaf"
+			src="/images/maple-leaf.png"
+			alt=""
+			loading="lazy"
+			decoding="async"
+			style={`
+				--x: ${leaf.x};
+				--size: ${leaf.size}px;
+				--dur: ${leaf.dur}s;
+				--delay: ${leaf.delay}s;
+				--drift: ${leaf.drift}px;
+				--spin: ${leaf.spin}deg;
+				--opacity: ${leaf.opacity};
+			`}
+			data-leaf-index={i}
+		/>
+	))}
+</div>
+
+<style>
+	/* Full-viewport fixed layer. z-index -1 places leaves BEHIND
+	   all normal-flow content (which stacks at auto = 0), so
+	   leaves visibly drift through the open page background but
+	   naturally hide behind opaque panels (hero, cards, section
+	   surfaces). This is intentional - gives the effect of
+	   "leaves falling in the open air around structures" rather
+	   than "leaves photobombing every card." pointer-events:
+	   none so leaves NEVER block interaction with cards/buttons
+	   even if a stacking-context accident lifts them forward. */
+	.falling-leaves {
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.falling-leaves__leaf {
+		position: absolute;
+		top: 0;
+		left: var(--x);
+		width: var(--size);
+		height: auto;
+		opacity: var(--opacity, 0.5);
+		/* `will-change: transform` hints the browser to promote
+		   the leaf to its own compositor layer - keeps the 60fps
+		   fall smooth even with 10+ leaves animating. */
+		will-change: transform;
+		/* `contain` isolates layout/paint from the rest of the
+		   tree so leaf animation doesn't invalidate main content
+		   reflows. */
+		contain: layout paint style;
+		animation: falling-leaves-drift var(--dur, 20s) linear
+			var(--delay, 0s) infinite;
+	}
+
+	@keyframes falling-leaves-drift {
+		from {
+			transform: translate3d(0, -18vh, 0) rotate(0deg);
+		}
+		to {
+			transform: translate3d(var(--drift, 20px), 118vh, 0)
+				rotate(var(--spin, 360deg));
+		}
+	}
+
+	/* Mobile: hide half the leaves via nth-child so the phone
+	   viewport stays calm + battery-friendly. Odd-indexed leaves
+	   keep drifting; even-indexed hide. */
+	@media (max-width: 768px) {
+		.falling-leaves__leaf:nth-child(even) {
+			display: none;
+		}
+	}
+
+	/* Vestibular-safe fallback: kill the animation entirely for
+	   users who prefer reduced motion. Leaves stay hidden rather
+	   than static - the whole POINT of this component is the
+	   drifting motion, so static leaves would be visual clutter
+	   with no purpose. */
+	@media (prefers-reduced-motion: reduce) {
+		.falling-leaves {
+			display: none;
+		}
+	}
+</style>

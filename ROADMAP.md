@@ -396,6 +396,77 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 92 - fall-in-Maple-World homepage treatment
+  (Phase 1: no custom art needed):**
+  Liven asked for the homepage to feel more fall-like. Turns
+  out we already had /images/maple-leaf.png shipped (nice
+  red-to-orange gradient momiji-style asset) so Phase 1 needed
+  zero new art. Shipped:
+
+  1. New `<FallingLeaves>` component - viewport-fixed ambient
+     overlay rendering 10 maple leaves as `<img>` elements
+     each with inline CSS custom props driving randomized
+     drift animation. Kept the randomization as a static
+     LEAF_PRESETS array (not Math.random at render time) so
+     SSR output is deterministic - same HTML every build.
+     Per-leaf props: --x (start position), --size (32-64px
+     mixing near/far depth), --dur (14-24s slow calm), --delay
+     (negative so some start mid-flight on load), --drift
+     (horizontal wobble), --spin (some CW some CCW), --opacity
+     (~0.4-0.6 so leaves whisper not shout).
+
+  2. z-index -1 with pointer-events: none - leaves visibly
+     drift through open page background but naturally hide
+     behind opaque panels (hero, cards, section surfaces).
+     Intentional design choice: gives "leaves falling in open
+     air around structures" feel rather than photobombing
+     every card. Belt-and-suspenders: pointer-events none
+     also guarantees no click interception even if a stacking
+     accident lifted them forward.
+
+  3. Warm golden-hour amber overlay on the hero panel via
+     linear-gradient(135deg, rgba(255,176,92,0.09),
+     rgba(255,118,54,0.05)) layered on top of --surface-hero-
+     panel. Low opacity so the theme's parchment surface still
+     dominates - just ambient warmth, not color takeover.
+
+  4. .hero__scope top dashed border swapped from --border-card
+     (neutral) to rgba(210,120,45,0.55) (warm amber) so the
+     scope banner picks up the fall mood.
+
+  5. Accessibility + performance guardrails:
+     - `contain: layout paint style` on each leaf isolates
+       animation from main content reflow
+     - `will-change: transform` promotes each leaf to its own
+       compositor layer for smooth 60fps
+     - Mobile (<= 768px): `:nth-child(even)` hides half the
+       leaves via CSS - battery-friendly + calmer small screen
+     - `@media (prefers-reduced-motion: reduce)` hides the
+       entire layer - vestibular-sensitive users get a clean
+       static homepage instead of jittering static leaves
+
+  Kitten 6/6 pass: 10 leaves render with correct inline
+  custom props, animation-name/timing/iteration all correct,
+  maple-leaf.png returns 200, warm gradient present in
+  computed background-image, amber border color exact match,
+  document.elementFromPoint(cta_center) returns the button
+  (not a leaf) confirming z-index -1 + pointer-events none
+  work, primary-button :hover still fires through the leaf
+  layer, mobile shows 5/5 visible/hidden split correctly,
+  prefers-reduced-motion CSSOM rule found and forced-override
+  confirms display: none takes effect. Visual screenshot
+  confirms cozy autumn vibe - leaves scattered around the
+  hero panel, warm apricot cast on the hero surface, dashed
+  amber rule above the scope banner.
+
+  Phase 2 (optional, requires Liven to generate art):
+  - The current `/images/henesys-background.png` is a full-on
+    sunny summer scene (bright green trees, blue sky, no fall
+    color anywhere). If Liven generates a fall variant
+    (autumn foliage, warmer dusk sky, maybe fallen leaves on
+    the paths), we swap it in for the finishing touch. Not
+    urgent - Phase 1 already lands the fall feel.
+
   **Sprint 91 (audit) + 91.1 (touch targets + copy nits):**
   Kicked off the mobile responsive audit at 375x812 across 8
   key pages (/, /blog, /items, /maps, /mobs, /npcs, /quests,

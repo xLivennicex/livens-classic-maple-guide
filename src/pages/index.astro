@@ -9,6 +9,7 @@ import AccuracyLedger, { type LedgerEntry } from "../components/AccuracyLedger.a
 import StatusBadge from "../components/StatusBadge.astro";
 import Countdown from "../components/Countdown.astro";
 import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
+import FallingLeaves from "../components/FallingLeaves.astro";
 import HomeCarousel from "../components/HomeCarousel.astro";
 import Sprite from "../components/Sprite.astro";
 import MobHitEffect from "../components/MobHitEffect.astro";
@@ -153,6 +154,15 @@ const prepChecklist = [
 	theme="henesys"
 	decorations={true}
 >
+	{/*
+	 * Sprint 92: seasonal fall-in-Maple-World treatment. Ambient
+	 * maple leaves drift across the entire homepage viewport
+	 * behind content (z-index 0, pointer-events none). Uses the
+	 * existing /images/maple-leaf.png asset. Component handles
+	 * prefers-reduced-motion + mobile leaf-count reduction.
+	 */}
+	<FallingLeaves />
+
 	<section class="hero">
 		<div class="hero-copy">
 			<span class="badge">Classic World field manual</span>
@@ -392,13 +402,27 @@ const prepChecklist = [
 
 <style>
 	/* Homepage hero panel - themed via CSS vars so the same
-	   markup respects whatever theme BaseLayout applies. */
+	   markup respects whatever theme BaseLayout applies.
+	   Sprint 92: added a subtle golden-hour amber overlay
+	   (angled linear gradient) on top of the theme's parchment
+	   surface so the hero reads as "warm autumn afternoon in
+	   Henesys." Kept the tint low (8%/4% opacity stops) so the
+	   underlying theme surface still dominates - just an
+	   ambient warmth, not a color takeover. Position relative
+	   + z-index 1 ensures hero content stacks ABOVE the
+	   FallingLeaves fixed layer (which sits at z-index 0). */
 	.hero {
 		display: grid;
 		grid-template-columns: 1.5fr 0.75fr;
 		gap: 1.5rem;
 		padding: 2.5rem;
-		background: var(--surface-hero-panel);
+		background:
+			linear-gradient(
+				135deg,
+				rgba(255, 176, 92, 0.09) 0%,
+				rgba(255, 118, 54, 0.05) 100%
+			),
+			var(--surface-hero-panel);
 		border: 3px solid var(--border-hero);
 		border-radius: 1.25rem;
 		box-shadow: var(--shadow-panel);
@@ -436,7 +460,11 @@ const prepChecklist = [
 		gap: 1.4rem;
 		margin: 1.6rem 0 0;
 		padding: 0.9rem 0 0;
-		border-top: 1px dashed var(--border-card);
+		/* Sprint 92: swapped the neutral border-card dashed line
+		   for a warm amber so the scope banner picks up the
+		   fall-Maple-World mood. rgba over solid so it plays
+		   with any theme's underlying surface color. */
+		border-top: 1px dashed rgba(210, 120, 45, 0.55);
 	}
 
 	.hero__stat {
