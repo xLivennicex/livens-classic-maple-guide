@@ -396,6 +396,72 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 93 - autumn Maple World backdrop + season toggle:**
+  Liven cooked an INSANE autumn Henesys backdrop for Phase 2 of
+  the fall treatment: Halloween-in-Maple-World scene with jack-
+  o'-lantern string lights over the mushroom cottages, ghost
+  hanging from a maple tree, spider on a web, pumpkin-head
+  scarecrow, witch-hat green slime, moonlit dusk sky with a
+  huge full moon, waterfalls, windmill. Dimension-matched the
+  summer scene exactly (1672x941, 2.6MB, PNG).
+
+  Wired in as a seasonal toggle system (not a static swap) per
+  Liven's ask "can we also add a feature where you can toggle
+  between the seasonal backgrounds":
+
+  **CSS architecture:**
+  - `html[data-theme="henesys"][data-season="autumn"] body`
+    selector in themes/henesys.css swaps to the autumn image
+    plus a warmer/darker scrim gradient (rgba(30,20,45)->rgba(80,
+    40,30)->rgba(244,220,180)) tuned so the moody dusk purples
+    read through instead of getting washed out by the summer
+    scrim's cream fade
+  - Double-attribute specificity (0,2,0) beats the base summer
+    rule (0,1,0) regardless of source order - same pattern as
+    Sprint 86.1 / 91.3 double-class-trick
+
+  **Flash prevention:**
+  - Inline `<head>` script in BaseLayout reads localStorage.season
+    and sets `data-season` on <html> BEFORE any external CSS
+    renders. So the correct backdrop paints on first frame - no
+    summer-to-autumn blip on autumn-preferred returning visits
+  - Default season = "autumn" for first-time visitors since
+    Liven's original ask was to make the site feel fall-like
+
+  **SeasonToggle component:**
+  - Fixed bottom-left fab (mirror of the bottom-right music
+    player fab so they anchor the viewport symmetrically)
+  - Two inline SVG glyphs (sun for summer, stylized 5-lobed
+    maple leaf for autumn) - inline SVG picked over emoji so
+    icons render consistently across Windows/Android/iOS
+    where native emoji fonts vary wildly
+  - CSS `:root[data-season="X"]` selectors show only the
+    active season's glyph + text label - the button acts as
+    its own live indicator so users always know which season
+    is active
+  - Click handler uses event delegation on document with an
+    idempotency guard (`data-season-listener` flag) so it
+    survives Astro's ClientRouter view-transition DOM swaps
+    without needing astro:page-load re-registration dance
+  - `transition:persist` on the button element so the fab
+    itself doesn't re-mount between page transitions
+  - Only rendered when `theme === "henesys"` in BaseLayout -
+    showing a toggle that does nothing visible on Ellinia/
+    Perion/Sleepywood/Kerning would be user-hostile until we
+    ship autumn variants for those too
+  - Mobile media query (<= 500px): drops text label so the
+    fab collapses to a compact 44x44 icon-only pill
+
+  Kitten 7/7 pass: autumn is default first-visit (data-season=
+  autumn, autumn PNG loads 200), toggle renders with correct
+  glyph + label per season, click flips data-season + swaps
+  body background + persists to localStorage, reload survives
+  (no FOUC), only appears on henesys pages (verified absent
+  on /mobs=sleepywood, /blog=kerning, /bosses=sleepywood),
+  mobile shows icon-only 44x44 pill. Screenshot confirms the
+  autumn backdrop + Sprint 92 falling leaves layer together
+  read as full-on cozy Halloween Maple World.
+
   **Sprint 92 - fall-in-Maple-World homepage treatment
   (Phase 1: no custom art needed):**
   Liven asked for the homepage to feel more fall-like. Turns

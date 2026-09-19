@@ -6,6 +6,7 @@ import FloatingToc from "../components/FloatingToc.astro";
 import MapleLeaf from "../components/MapleLeaf.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
 import PrimaryNav from "../components/PrimaryNav.astro";
+import SeasonToggle from "../components/SeasonToggle.astro";
 import { nextMilestoneHeadline } from "../data/launch";
 
 // Which visual theme to apply. Defaults to Henesys (the site's home
@@ -90,6 +91,41 @@ const canonicalUrl = Astro.site
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
+
+		{/*
+		 * Sprint 93: seasonal backdrop flash prevention. Read the
+		 * user's saved season from localStorage and apply the
+		 * `data-season` attribute to <html> BEFORE any external
+		 * CSS renders. Without this, the summer backdrop would
+		 * paint first, then blip to autumn once the client script
+		 * hydrated - jarring flash of unstyled scene.
+		 *
+		 * Runs synchronously in <head>, so by the time the theme
+		 * stylesheet applies its `html[data-season="autumn"] body
+		 * { background-image: ... }` rule, the attribute is
+		 * already set correctly.
+		 *
+		 * Default = "autumn" since Liven's initial ask was to
+		 * make the site feel more fall-like. First-time visitors
+		 * see the Halloween Maple World scene; the toggle lets
+		 * them opt back to summer if they prefer.
+		 *
+		 * `is:inline` keeps the script un-bundled (no import
+		 * cost, runs immediately) and matches the standard
+		 * flash-prevention pattern used across Astro sites.
+		 */}
+		<script is:inline>
+			try {
+				const stored = localStorage.getItem("season");
+				const season = stored === "summer" || stored === "autumn"
+					? stored
+					: "autumn";
+				document.documentElement.setAttribute("data-season", season);
+			} catch {
+				document.documentElement.setAttribute("data-season", "autumn");
+			}
+		</script>
+
 		<link rel="icon" type="image/png" href="/images/maple-leaf.png" />
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
@@ -202,5 +238,14 @@ const canonicalUrl = Astro.site
 		    users can click the player button to swap tracks
 		    manually. */}
 		<MusicPlayer mapId={Astro.props.bgmMapId} />
+
+		{/* Sprint 93: seasonal backdrop toggle. Only henesys has
+		    an autumn art variant right now, so we conditionally
+		    render the toggle only for henesys-themed pages -
+		    showing a control that does nothing visible on
+		    Ellinia/Perion/etc would be user-hostile. When we
+		    add autumn variants for the other themes, drop this
+		    guard and the toggle just works everywhere. */}
+		{theme === "henesys" && <SeasonToggle />}
 	</body>
 </html>

@@ -1,0 +1,206 @@
+---
+/**
+ * SeasonToggle - floating fab that swaps the henesys theme's
+ * backdrop between summer (default meadow) and autumn (Halloween
+ * Maple World). Persists to localStorage so the user's choice
+ * sticks between visits.
+ *
+ * Sprint 93. Design decisions:
+ *   - Fixed bottom-left corner (mirror-image of the MusicPlayer
+ *     fab at bottom-right so the two anchor the viewport
+ *     symmetrically without colliding).
+ *   - Icon-first: renders the current season's emoji + a compact
+ *     text label. Aria-label carries the full meaning for AT.
+ *   - `is:inline` script directly on the button so listeners
+ *     re-attach cleanly after Astro's ClientRouter view
+ *     transitions swap the DOM.
+ *   - transition:persist so the fab doesn't re-mount on nav.
+ *   - Flash prevention lives UPSTREAM in BaseLayout's <head>
+ *     inline script - by the time this component paints, the
+ *     data-season attribute is already correct.
+ *
+ * Only rendered when the current page's theme is `henesys` -
+ * other themes don't have autumn variants yet, so showing a
+ * toggle that does nothing visible would be user-hostile.
+ */
+---
+
+<button
+	class="season-toggle"
+	type="button"
+	aria-label="Toggle seasonal backdrop"
+	title="Toggle seasonal backdrop"
+	transition:persist
+>
+	{/* Inline SVG icons keep the toggle glyph consistent across
+	   OS/browser combos (native emoji fonts vary wildly between
+	   Windows, Android, iOS). currentColor lets the icon adopt
+	   the button's text color on hover for free. */}
+	<span class="season-toggle__icon" aria-hidden="true">
+		<svg class="season-toggle__glyph season-toggle__glyph--summer"
+			viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+			<circle cx="12" cy="12" r="4.2" />
+			<g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+				<line x1="12" y1="2.5" x2="12" y2="5.5" />
+				<line x1="12" y1="18.5" x2="12" y2="21.5" />
+				<line x1="2.5" y1="12" x2="5.5" y2="12" />
+				<line x1="18.5" y1="12" x2="21.5" y2="12" />
+				<line x1="5.1" y1="5.1" x2="7.2" y2="7.2" />
+				<line x1="16.8" y1="16.8" x2="18.9" y2="18.9" />
+				<line x1="5.1" y1="18.9" x2="7.2" y2="16.8" />
+				<line x1="16.8" y1="7.2" x2="18.9" y2="5.1" />
+			</g>
+		</svg>
+		<svg class="season-toggle__glyph season-toggle__glyph--autumn"
+			viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+			{/* Stylized 5-lobed maple leaf silhouette. Path was
+			   simplified from the maple-leaf.png asset so the
+			   toggle icon reads as the same visual language as
+			   the falling leaves. */}
+			<path d="M12 2.2 L13.2 6.8 L16.6 4.2 L15.3 8.6 L20 8 L16.6 11.2 L21.5 13.2 L16.4 14.1 L18 18 L13.8 16.2 L13.4 20.8 L12 17.5 L10.6 20.8 L10.2 16.2 L6 18 L7.6 14.1 L2.5 13.2 L7.4 11.2 L4 8 L8.7 8.6 L7.4 4.2 L10.8 6.8 Z" />
+		</svg>
+	</span>
+	<span class="season-toggle__label">
+		<span class="season-toggle__label--summer">Summer</span>
+		<span class="season-toggle__label--autumn">Autumn</span>
+	</span>
+</button>
+
+<script is:inline>
+	/**
+	 * Click handler for the season toggle. Reads the current
+	 * data-season attribute (set by the flash-prevention script
+	 * in BaseLayout's <head>), flips it, writes to localStorage,
+	 * and lets the CSS reactively swap the backdrop.
+	 *
+	 * Uses event delegation on document so a single listener
+	 * survives Astro's ClientRouter DOM swaps without needing
+	 * astro:page-load re-registration dance.
+	 *
+	 * Idempotency guard: the `data-season-listener` flag prevents
+	 * double-registration if this script somehow runs twice
+	 * (dev hot reload, view transition edge cases, etc).
+	 */
+	if (!document.documentElement.dataset.seasonListener) {
+		document.documentElement.dataset.seasonListener = "1";
+		document.addEventListener("click", (event) => {
+			const btn = event.target.closest?.(".season-toggle");
+			if (!btn) return;
+			const current = document.documentElement.getAttribute("data-season") || "summer";
+			const next = current === "autumn" ? "summer" : "autumn";
+			document.documentElement.setAttribute("data-season", next);
+			try {
+				localStorage.setItem("season", next);
+			} catch {
+				/* Private-mode / storage-disabled: attribute still
+				   applies for this session, just doesn't persist. */
+			}
+		});
+	}
+</script>
+
+<style>
+	/* Fixed bottom-left mirror of the music player fab. z-index
+	 * high enough to sit above the falling-leaves layer + page
+	 * content but low enough that modals/overlays still cover it
+	 * if we add any. */
+	.season-toggle {
+		position: fixed;
+		left: 1rem;
+		bottom: 1rem;
+		z-index: 50;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.5rem 0.85rem;
+		background: var(--surface-card, #fffdf6);
+		color: var(--text-body, #243126);
+		border: 2px solid var(--border-card, #d8c99c);
+		border-radius: 999px;
+		font-family: var(--font-heading, inherit);
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		cursor: pointer;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+		transition:
+			background 150ms ease,
+			border-color 150ms ease,
+			transform 150ms ease,
+			box-shadow 150ms ease;
+	}
+
+	.season-toggle:hover,
+	.season-toggle:focus-visible {
+		background: var(--surface-nav, #f5ad42);
+		border-color: var(--border-nav, #d18428);
+		color: var(--text-on-nav, #4b351d);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+		outline: none;
+	}
+
+	.season-toggle:active {
+		transform: translateY(0);
+	}
+
+	.season-toggle__icon {
+		display: inline-flex;
+		align-items: center;
+		line-height: 1;
+		/* Autumn maple glyph gets a warm burnt-orange in its
+		   default state so the current-season indicator reads at
+		   a glance without needing to think. Summer sun glyph
+		   uses a warm honey yellow. Both switch to inherited
+		   currentColor on hover so they harmonize with the
+		   button's shifted text color. */
+	}
+	.season-toggle__glyph--summer {
+		color: #f0a830;
+	}
+	.season-toggle__glyph--autumn {
+		color: #c9522a;
+	}
+	.season-toggle:hover .season-toggle__glyph--summer,
+	.season-toggle:hover .season-toggle__glyph--autumn,
+	.season-toggle:focus-visible .season-toggle__glyph--summer,
+	.season-toggle:focus-visible .season-toggle__glyph--autumn {
+		color: currentColor;
+	}
+
+	/* Show only the glyph + label for the CURRENT season. CSS
+	   selectors switch on the html[data-season] attribute so the
+	   toggle acts as its own live indicator - user always sees
+	   which season is active. */
+	.season-toggle__glyph--autumn,
+	.season-toggle__label--autumn {
+		display: none;
+	}
+	.season-toggle__glyph--summer,
+	.season-toggle__label--summer {
+		display: inline;
+	}
+	:root[data-season="autumn"] .season-toggle__glyph--summer,
+	:root[data-season="autumn"] .season-toggle__label--summer {
+		display: none;
+	}
+	:root[data-season="autumn"] .season-toggle__glyph--autumn,
+	:root[data-season="autumn"] .season-toggle__label--autumn {
+		display: inline;
+	}
+
+	/* On very small screens, drop the text label so the fab
+	   collapses to a compact circular icon-only pill. Saves
+	   thumb-thumping real estate near the audio fab. */
+	@media (max-width: 500px) {
+		.season-toggle__label {
+			display: none;
+		}
+		.season-toggle {
+			padding: 0.6rem;
+			min-width: 44px;
+			min-height: 44px;
+			justify-content: center;
+		}
+	}
+</style>
