@@ -449,6 +449,92 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
   scroll affordance (91.3), footnote link enlargement (91.4),
   search input mobile treatment (91.5).
 
+  **Sprint 91.2 - /world BLOCKER, pin clipping fix:**
+  5 of 11 region-label overlays on /world had rects extending
+  past the stage right edge on 375px viewport (up to right=475
+  vs stage right=359). Root cause: Nexon's WorldMap coord
+  system lets region-label overlay images extend past the
+  map's origin+width box (intentional decorative wrap-around
+  in source data). At any viewport width the same percentage
+  overflows, but on desktop those clipped regions remain
+  visually large enough to be tappable, while on mobile the
+  clipped labels shrink to a few pixels wide and become
+  physically un-tappable.
+
+  Fix: on @media (max-width: 768px), .wmv__stage overflow-x
+  flips from `hidden` to `auto` so users can pan horizontally
+  to reach clipped labels. Added -webkit-overflow-scrolling
+  touch for iOS momentum + a subtle mask-image right-edge
+  fade (linear gradient fading last 24px to 35% opacity)
+  as scroll affordance. Desktop unchanged. Kitten 4/4 pass:
+  overflow-x auto on mobile, hidden on desktop, scrollLeft
+  0->119 confirms scroll works, all 4 previously-clipped
+  links reachable after pan, screenshot shows fade cue,
+  desktop shows full map with no fade leak.
+
+  **Sprint 91.3 - data-table sticky name column on mobile:**
+  /items and /mobs tables horizontally scroll on mobile with
+  no sticky first column, so users lost their place. Fix on
+  @media (max-width: 768px): hide col-icon + col-id (not
+  critical for stat comparison on a phone), pin col-name at
+  left: 0 with a subtle right-edge box-shadow. Also added
+  the right-edge fade gradient to .mob-table-wrap that
+  .cat-table-wrap on /items already had.
+
+  Two gotchas hit mid-sprint (kitten caught both):
+  1. `<th>` cells lacked col-* classes so display:none +
+     sticky only applied to `<td>`, causing header/body
+     misalignment. Fixed by adding col-icon/col-id/col-name
+     classes to `<th>` on both tables.
+  2. `.mob-table` uses `overflow: hidden` in its base rule
+     for border-radius corner clipping, which makes the
+     table itself a scroll-containing block and BREAKS
+     position:sticky on `<td>`. The mobile override
+     `.mob-table { overflow: visible }` was declared BEFORE
+     the base rule in source order, so cascade order won
+     for the base. Fixed with the double-class trick
+     `.mob-table.mob-table` (0,2,0 specificity, same
+     technique Sprint 86.1 used to beat Astro scoped
+     selectors) - beats source order without !important.
+
+  Kitten 3rd verify all pass: .mob-table overflow visible
+  on mobile / hidden on desktop, td.col-name offset from
+  wrap = 0 after 78px scroll, both th and td pin correctly,
+  shadow renders, /items unaffected by mob fix.
+
+  **Sprint 91.5 - .search-label extracted as primitive +
+  mobile min-height:**
+  Fourth exact copy of the same block found across /items
+  /maps /mobs /npcs index pages: `.search-label` and
+  `.search-label input`. Extracted to global.css as a
+  shared primitive (primitive total now 8) and added
+  @media (max-width: 768px) { .search-label input {
+  min-height: 44px } } for WCAG 2.5.5 tap-safety. font-size
+  stays at 1rem (16px) so iOS Safari does not auto-zoom
+  the viewport when the input focuses. Deleted the 4
+  duplicate blocks. Kitten 5-check pass on all 4 pages.
+
+  **Sprint 91.4 was a false alarm:** the audit's "footnote
+  reference link 7x16 px" was actually the col-id links in
+  the mob table (bare `<a>` with the numeric mob ID text).
+  After Sprint 91.3 hides col-id on mobile via display:none,
+  these tiny links no longer exist on the mobile viewport.
+  No separate 91.4 sprint needed.
+
+  **Final Sprint 91 sweep - 8 of 8 original audit findings
+  RESOLVED.** No MAJOR or BLOCKER issues remain from the
+  original prioritized list, no new MAJOR/BLOCKER issues
+  found during the final sweep. Site is mobile-QA-clean at
+  375px.
+
+  Minor remainders (non-blockers, deferred):
+  - `.wmv__pin` mob-name links inside sticky col-name are
+    ~16px text height (row is 33px tall so passes WCAG 2.5.8
+    AA spacing exception but fails AAA 2.5.5 44px). Could
+    enable whole-row tap for extra forgiveness.
+  - Blog footer credit `zaytri/maplestory-cursors` link
+    148x15 (trivial, not a primary interaction path).
+
   **Sprint 90 - homepage hero scope banner:**
   Addressed "no first-visit wow moment" from the earlier
   tour. The site's identity is *massive reference database*
