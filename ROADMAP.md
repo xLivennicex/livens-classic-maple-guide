@@ -396,6 +396,49 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 90 - homepage hero scope banner:**
+  Addressed "no first-visit wow moment" from the earlier
+  tour. The site's identity is *massive reference database*
+  so the winning hero move was immediate proof-of-scope
+  rather than more marketing copy. Added `.hero__scope` - a
+  compact horizontal stat strip between the hero paragraph
+  and the CTA buttons showing the raw counts of every
+  content category in one glance.
+
+  Structure: semantic `<dl>` with 5 `.hero__stat` children
+  each pairing `<dt class="hero__stat-num">` (big tabular
+  number in accent-primary-strong green) with `<dd
+  class="hero__stat-label">` (uppercase muted micro-label).
+  Numbers pull from build-time `generated-at.json` so they
+  self-update every rebuild; itemCount uses toLocaleString()
+  for the thousands separator (4,302 not 4302). Tabular-nums
+  font-variant keeps digits column-aligned across rebuilds.
+
+  Design touches:
+  - 1px dashed top border on the strip visually anchors it
+    as a "status readout" not marketing copy
+  - Accent-primary-strong color (#365c3a in henesys theme)
+    gives the numbers gravitas without shouting
+  - Mobile media query drops number size to 1.4rem and
+    tightens gap to 0.9rem/1.2rem so the natural wrap to a
+    second row stays legible
+
+  Current numbers: 4,302 items · 426 maps · 322 quests ·
+  266 NPCs · 195 mobs. First impression now conveys "we
+  have the whole game indexed" before any button click,
+  earning the "look up anything" CTA below.
+
+  Kitten 6/6 pass: all counts hydrate correctly with real
+  values from generated-at.json, computed styles match
+  spec exactly on both desktop (1440x900) and mobile
+  (375x812), tabular-nums confirmed active, dashed rule
+  renders correctly at both breakpoints, mobile wrap
+  gracefully splits 4+1 (four stats on row 1, mobs
+  wrapping to row 2), hero regression clean (badge, h1,
+  paragraph, 3 CTAs all intact and in correct DOM order).
+  Both screenshots verified visually - clean single row
+  at desktop, graceful wrap on phone.
+
   **Sprint 89 - disclosure-summary primitive + bosses eyebrow:**
   Closed the last two DRY targets. Two files had 95% identical
   `<details>/<summary>` disclosure styling with different names:

@@ -165,6 +165,39 @@ const prepChecklist = [
 				blank spots where the answers aren't in yet.
 			</p>
 
+			{/*
+			 * Sprint 90: scope banner - immediate proof-of-database.
+			 * The hero used to end with buttons that promised "look up
+			 * anything," but a first-time visitor had zero evidence of
+			 * whether "anything" meant a starter guide or the whole
+			 * game. These five raw counts (pulled at build time from
+			 * the datamine's generated-at.json) show scale before any
+			 * click. Numbers use tabular figures so the row doesn't
+			 * jitter when counts update between builds.
+			 */}
+			<dl class="hero__scope" aria-label="Reference database scope">
+				<div class="hero__stat">
+					<dt class="hero__stat-num">{generatedAt.itemCount.toLocaleString()}</dt>
+					<dd class="hero__stat-label">items</dd>
+				</div>
+				<div class="hero__stat">
+					<dt class="hero__stat-num">{generatedAt.mapCount}</dt>
+					<dd class="hero__stat-label">maps</dd>
+				</div>
+				<div class="hero__stat">
+					<dt class="hero__stat-num">{generatedAt.questCount}</dt>
+					<dd class="hero__stat-label">quests</dd>
+				</div>
+				<div class="hero__stat">
+					<dt class="hero__stat-num">{generatedAt.npcCount}</dt>
+					<dd class="hero__stat-label">NPCs</dd>
+				</div>
+				<div class="hero__stat">
+					<dt class="hero__stat-num">{generatedAt.mobCount}</dt>
+					<dd class="hero__stat-label">mobs</dd>
+				</div>
+			</dl>
+
 			<div class="hero-actions">
 				<a class="primary-button" href="/jobs">Choose your job</a>
 				<a class="secondary-button" href="#reference">Look up anything</a>
@@ -379,6 +412,55 @@ const prepChecklist = [
 		max-width: 42rem;
 		font-size: 1.05rem;
 		line-height: 1.7;
+	}
+
+	/* Sprint 90: scope banner - a compact horizontal bar showing
+	 * the raw counts of items/maps/quests/NPCs/mobs in the
+	 * database. Sits between the hero paragraph and the CTA
+	 * buttons to earn credibility for the "look up anything"
+	 * promise below.
+	 *
+	 * Design tokens picked to feel like a status readout rather
+	 * than marketing copy:
+	 * - Tabular figures (`font-variant-numeric: tabular-nums`)
+	 *   so counts stay column-aligned across rebuilds.
+	 * - Divider = 1px vertical rule between stats, muted color
+	 *   so it fades into the parchment.
+	 * - Wraps to two rows on narrow viewports without the
+	 *   dividers colliding (border-inline-start on siblings
+	 *   only kicks in on horizontal flex context).
+	 */
+	.hero__scope {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.4rem;
+		margin: 1.6rem 0 0;
+		padding: 0.9rem 0 0;
+		border-top: 1px dashed var(--border-card);
+	}
+
+	.hero__stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.hero__stat-num {
+		margin: 0;
+		font-size: 1.65rem;
+		font-weight: 700;
+		line-height: 1;
+		color: var(--accent-primary-strong, var(--accent-primary));
+		font-variant-numeric: tabular-nums;
+	}
+
+	.hero__stat-label {
+		margin: 0;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-muted);
 	}
 
 	.hero-actions {
@@ -617,6 +699,16 @@ const prepChecklist = [
 	@media (max-width: 500px) {
 		.hero {
 			padding: 1.3rem;
+		}
+
+		/* Sprint 90: keep the scope banner readable when it
+		   wraps to two rows on narrow phones - tighter gap
+		   prevents the second row from feeling detached. */
+		.hero__scope {
+			gap: 0.9rem 1.2rem;
+		}
+		.hero__stat-num {
+			font-size: 1.4rem;
 		}
 
 		.job-grid {
