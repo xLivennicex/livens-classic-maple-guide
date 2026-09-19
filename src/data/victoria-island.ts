@@ -16,7 +16,14 @@
 // Theme slugs match src/styles/themes/*.css. Typed as a string
 // literal union rather than importing SiteTheme (which lives in an
 // .astro file and doesn't re-export cleanly to .ts modules).
-export type VictoriaTheme = "henesys" | "kerning" | "perion" | "ellinia" | "lith" | "sleepywood";
+export type VictoriaTheme =
+	| "henesys"
+	| "kerning"
+	| "perion"
+	| "ellinia"
+	| "lith"
+	| "sleepywood"
+	| "forgotten-hollow"; // Sprint 97.3: CoT2 test-client addition
 
 export interface VictoriaTown {
 	slug: string;                     // used as page anchor
@@ -574,6 +581,78 @@ export const victoriaTowns: VictoriaTown[] = [
 				title: "Photograph the Mysterious Statue",
 				description: "There's an unlabeled statue in Sleepywood town whose actual lore has never been formally confirmed. Community theories range from 'it's a Legendary Hero' to 'it's the previous hotel owner.' It stays mysterious.",
 				category: "lore",
+			},
+		],
+	},
+	// -------------------------------------------------------------
+	// Sprint 97.3: Forgotten Hollow. Added to Victoria Island in the
+	// CoT2 test client (Nexon's newer canonical build). Doesn't
+	// appear on maplestory.io's world-map API (still GMS/83), so
+	// upstream tooling misses it - but our maps.json / quests.json
+	// pipeline dumps directly from the client and DID pull it in.
+	// This entry is what surfaces it on /world/victoria-island; the
+	// /hollow page is the themed front door.
+	{
+		slug: "forgotten-hollow",
+		name: "Forgotten Hollow",
+		mapId: 10006000,
+		theme: "forgotten-hollow",
+		levelRange: [39, 50],
+		classTag: null,
+		tagline: "The bioluminescent grotto tucked behind Ellinia.",
+		blurb: "A cave-fairy town reached through Ellinia's back roads. Zelya greets returning explorers with the Return Scroll, Nyroth runs the emotional-support arc of the questline, and the Bluebell Buds keep the spore-lanterns lit. Level 39-50 content bridging into the deeper Cave Fairy Sanctuary and Primeval Forest.",
+		signatureNpcs: ["Zelya", "Nyroth", "Myra", "Grendel the Really Old"],
+		signatureQuests: [
+			"Welcome to the Hollow",
+			"Zelya's Map",
+			"Nyroth's Fragile Hope",
+			"Matters of the Heart",
+			"The Sage's Burden",
+		],
+		notableMobs: ["Raffle", "Aqumander", "Echopus", "Myewood", "Sporewood"],
+		huntingMaps: [
+			{ name: "Primeval Forest I", note: "First hunt map east of the Hollow. Autumn foliage, cave-fairy mobs." },
+			{ name: "The End of Fleeting Light", note: "Deeper sub-map for the level 45+ questline." },
+			{ name: "Cave Fairy Sanctuary", note: "The core sanctuary hub - Bluebell spawns and the sage's quest chain." },
+		],
+		landmarks: ["Cave Fairy Sanctuary", "Cave Fairy Department Store", "Arcane Station"],
+		featuredContent: {
+			label: "Themed region page",
+			title: "Enter the Hollow",
+			blurb: "The themed front door - fairy-grotto backdrop, drifting maple leaves, and the full quest / NPC / connected-map roster pulled straight from the CoT2 datamine.",
+			href: "/hollow",
+			cta: "Open /hollow",
+		},
+		lore: [
+			"Forgotten Hollow doesn't appear on the old Victoria Island world map because it wasn't there yet - Nexon's CoT2 test client added the region as a mid-game bridge between Ellinia's magician-heavy questlines and the deeper Cave Fairy content. Grendel the Really Old, of all people, is the onboarding NPC: he hands you 'Welcome to the Hollow' back in his Ellinia library, then the Hollow's own residents (Zelya, Nyroth, Myra) take over the story.",
+			"The town proper is a single map called Shallow Passage. Water drips constantly and the ambient light comes from luminous fungi rather than any real sun. Bluebell Buds and Fully Bloomed Bluebells stand near the entrance as living lanterns; the Arcane Station in the middle of the map is a lore breadcrumb toward the Arcane River content that Classic World is unlikely to formally reach.",
+			"The narrative core of the region is a small ensemble drama: Nyroth's Fragile Hope, Matters of the Heart, and Old Friends form a chain about grief, memory, and coming home. It's the most emotionally-loaded stretch of the Victoria Island level range - a deliberate breath before the KPQ era hits.",
+		],
+		activities: [
+			{
+				title: "Follow Zelya's Map",
+				description: "Level 39 opener from Zelya. Introduces the Bluebell mob line and unlocks the sub-map graph. The Return Scroll to Forgotten Hollow becomes buyable in the Cave Fairy Department Store after this.",
+				category: "quest",
+			},
+			{
+				title: "Complete the Nyroth arc",
+				description: "Fragile Hope, Matters of the Heart, and (with Myra) Old Friends form the emotional spine of the region. Level 45-49. Best done in order for the prose to land.",
+				category: "quest",
+			},
+			{
+				title: "Grind Bluebells + cave-fairy mobs",
+				description: "Raffle, Aqumander, Echopus, Myewood, and Sporewood spawn in the sub-maps. Solid EXP for the 39-50 push with less competition than Sleepywood.",
+				category: "combat",
+			},
+			{
+				title: "Photograph the Arcane Station",
+				description: "The one visible hint of the Arcane River that Classic World won't officially reach. The station is dark and inert here, but the model is intact - lore breadcrumbs for the observant.",
+				category: "lore",
+			},
+			{
+				title: "Shop the Cave Fairy Department Store",
+				description: "Sells the Return Scroll to Forgotten Hollow (item 2030007) plus a small stock of cave-fairy-themed consumables. Cheap teleport home after the questline concludes.",
+				category: "trade",
 			},
 		],
 	},
