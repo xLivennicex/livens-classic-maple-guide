@@ -396,6 +396,72 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 97 - Forgotten Hollow easter-egg page + theme:**
+  Liven's Forgotten Hollow art was too unique to slot in as
+  just another autumn variant (bioluminescent fairy grotto
+  with glowing mushrooms, crystal shrine, cascading waterfalls,
+  fairy houses in cliff walls, wooden bridges through moss-
+  covered stone - not tied to any MapleStory canon town).
+  Kicked it upstairs to its own dedicated bonus page at
+  /hollow.
+
+  Shipped:
+  - New src/styles/themes/forgotten-hollow.css - minimal theme
+    that inherits mostly from :root Henesys defaults but
+    overrides accent-primary (amber #d97a2a from the fairy
+    lantern glow), accent-secondary (violet #b78bd9 from the
+    mushroom glow), text-heading (deep plum #2e1b4a for
+    magical-otherworldly reading), border-hero (wood brown
+    #8b5a2b matching the wooden bridges), and shadow-panel
+    (cooler cave tone). Base body background points directly
+    at forgotten-hollow-autumn-background.png so the scene
+    ALWAYS renders regardless of season toggle - this pocket
+    dimension exists outside the calendar.
+  - Added "forgotten-hollow" to SiteTheme union in BaseLayout.
+  - New src/pages/hollow.astro - minimal centered flavor-text
+    panel with title "The Forgotten Hollow", eyebrow "YOU HAVE
+    WANDERED OFF THE MAP", short atmospheric copy, and a
+    "Return to Maple World" back-to-/ anchor. Content stays
+    small on purpose so the artwork is the star.
+  - Suppressed the SeasonToggle when theme === "forgotten-
+    hollow" - a toggle with no visible effect would be user-
+    hostile (this scene is intentionally season-less).
+  - Extended the FallingLeaves guard from `theme === "henesys"`
+    to `(theme === "henesys" || theme === "forgotten-hollow")`
+    so drifting leaves ambient over the grotto scene too.
+  - Subtle footer breadcrumb `.site-footer__hollow` on every
+    page - single lowercase "seek the hollow" text with a
+    decorative floret glyph, muted 45% opacity default,
+    lifts to 90% + amber tint on hover. Reads as flavor not
+    navigation; rewards the curious without shouting at
+    everyone else.
+
+  Cascade lesson (learned AGAIN, second time this feature):
+  - Original theme rule `html[data-theme="forgotten-hollow"]
+    body` was specificity (0,1,2). The seasons.css shared
+    autumn fallback `html[data-season="autumn"][data-theme]
+    body` at (0,2,2) BEAT it, so /hollow initially painted
+    the henesys autumn image over the grotto scene.
+  - Fix: bumped theme rule to `html[data-theme="forgotten-
+    hollow"][data-season] body` (same 0,2,2 specificity via
+    the bare-attribute-boost trick) AND moved the @import for
+    forgotten-hollow.css to load AFTER seasons.css in
+    global.css so source order breaks the tie in the theme's
+    favor. Same double-attribute pattern from Sprints 86.1 /
+    91.3 / 94, applied to a new corner of the cascade.
+  - Note for future-me: when adding a theme with a "special"
+    always-on backdrop that shouldn't participate in seasonal
+    swaps, either give its selector higher specificity than
+    the seasons rules OR load its theme file after seasons.css.
+    Doing both is belt-and-suspenders and worth it.
+
+  Kitten 8/8 pass on re-verify: /hollow renders correctly,
+  backdrop shows the fairy grotto (not henesys autumn), title
+  reads in deep violet plum (not forest green), theme
+  variables set correctly, season toggle absent, falling
+  leaves present, footer breadcrumb present on all pages,
+  no regressions on other themes' backdrops or heading colors.
+
   **Sprint 95 - leaves consistent across all henesys pages +
   Kerning gets its own autumn backdrop:**
 

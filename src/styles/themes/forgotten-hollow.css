@@ -1,0 +1,94 @@
+/* Forgotten Hollow: bonus easter-egg theme.
+ *
+ * Sprint 97. A hidden pocket-dimension grotto that isn't part of
+ * MapleStory canon - a bioluminescent fairy cavern with glowing
+ * mushrooms, waterfalls, a crystal shrine, and maple foliage
+ * draped through wooden bridges. Reached only via the /hollow
+ * page (with a subtle footer breadcrumb to help the curious
+ * find it).
+ *
+ * Design decisions:
+ *   - Inherits most of Henesys defaults via :root - only overrides
+ *     the accent colors + border-hero to fit the cavern palette
+ *     (warm amber lanterns + violet glowing mushrooms). Text +
+ *     surface + cursor tokens stay put so cards remain readable
+ *     over the dark artwork.
+ *   - Base body background points DIRECTLY at the hollow art
+ *     regardless of data-season. This scene is inherently
+ *     timeless/magical - no summer variant makes sense. The
+ *     season toggle is suppressed on /hollow (see BaseLayout).
+ *   - Reuses the same warm dusk scrim as the autumn variants
+ *     since the scene has the same moonlit-dusk color palette
+ *     (purple top, warm parchment feel needed at the bottom for
+ *     text readability).
+ *   - Kills the CSS decoration layer (clouds + grass) same as
+ *     Henesys does - the image contains its own ambient
+ *     decorations (fairy lights, mushrooms, maple leaves) and
+ *     doubling up would fight the artwork.
+ */
+
+[data-theme="forgotten-hollow"] {
+	/* Warm amber accents pulled from the fairy lanterns lighting
+	 * the wooden bridges + fairy houses in the scene. */
+	--accent-primary: #d97a2a;
+	--accent-primary-strong: #b35d1a;
+
+	/* Bioluminescent violet from the glowing mushrooms
+	 * scattered throughout the cavern. */
+	--accent-secondary: #b78bd9;
+	--accent-secondary-border: #7c4fa8;
+	--accent-secondary-text: #2e1b4a;
+
+	/* Deep plum headings pull the eye toward the violet mushroom
+	 * glow rather than the henesys default forest green - reads
+	 * as "magical/otherworldly" instead of "sunny meadow" on the
+	 * cream panels. */
+	--text-heading: #2e1b4a;
+
+	/* Warm wood-brown border on the hero panel matches the
+	 * wooden bridges + railings in the artwork. */
+	--border-hero: #8b5a2b;
+
+	/* Slightly cooler shadow so the hero panel reads as sitting
+	 * over the dark cavern rather than sunlit meadow. */
+	--shadow-panel: 0 10px 30px rgba(30, 20, 45, 0.35);
+}
+
+/* Base body background - reuses the autumn scrim from seasons.css
+ * because the hollow scene has the same moonlit-dusk color story
+ * as every other autumn variant. --autumn-scrim is defined at :root
+ * so it's available regardless of season attribute. !important
+ * matches the pattern every other theme uses (defensive against
+ * browser style-cache stickiness).
+ *
+ * Sprint 97 cascade fix: the seasons.css shared autumn fallback
+ * uses selector `html[data-season="autumn"][data-theme] body`
+ * at specificity (0,2,2). My original theme selector
+ * `html[data-theme="forgotten-hollow"] body` was only (0,1,2) so
+ * the seasons fallback WON and painted the henesys autumn image
+ * over the hollow art. Bumped to (0,2,2) via the same double-
+ * attribute pattern by adding [data-season] (bare attribute -
+ * matches any value since data-season is always set). Equal
+ * specificity means source order decides, so this theme file
+ * must load AFTER seasons.css in global.css - see the import
+ * order comment there. */
+html[data-theme="forgotten-hollow"][data-season] body {
+	background-color: #1a1030 !important;
+	background-image: var(--autumn-scrim),
+		url("/images/forgotten-hollow-autumn-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
+}
+
+/* Suppress CSS cloud/grass decorations - the artwork carries its
+ * own ambient details (mushrooms, lanterns, waterfalls, drifting
+ * leaves) so double-decorating would fight the scene. Same
+ * pattern Henesys uses. */
+html[data-theme="forgotten-hollow"] body[data-theme-decorations="on"]::before,
+html[data-theme="forgotten-hollow"] body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
+}

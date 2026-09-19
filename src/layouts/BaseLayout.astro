@@ -18,7 +18,8 @@ export type SiteTheme =
 	| "perion"
 	| "lith"
 	| "ellinia"
-	| "sleepywood";
+	| "sleepywood"
+	| "forgotten-hollow"; // Sprint 97: /hollow easter-egg only
 
 interface Props {
 	title: string;
@@ -236,6 +237,18 @@ const canonicalUrl = Astro.site
 					zaytri/maplestory-cursors
 				</a>. Background music: fan compositions (credit pending).
 			</p>
+			{/* Sprint 97: subtle discovery breadcrumb to the
+			    /hollow easter-egg page. Deliberately just a
+			    single lowercase word with a maple glyph so it
+			    reads as flavor, not navigation. Curious visitors
+			    who mouseover will see it turn into a link;
+			    everyone else will scan past it. */}
+			<p class="site-footer__hollow">
+				<a href="/hollow" title="Beyond the mist">
+					<span aria-hidden="true" class="site-footer__hollow-leaf">&#x2740;</span>
+					<span>seek the hollow</span>
+				</a>
+			</p>
 		</footer>
 
 		{/* Sprint 81: Cmd/Ctrl+K site-wide search palette (Pagefind).
@@ -272,8 +285,12 @@ const canonicalUrl = Astro.site
 		    backdrop as a shared fallback for all themes; when
 		    per-theme autumn variants ship later, seasons.css
 		    can override the fallback per theme without changing
-		    anything here. */}
-		<SeasonToggle />
+		    anything here.
+		    Sprint 97: suppressed on the forgotten-hollow easter-
+		    egg theme - that scene is intentionally season-less
+		    (the grotto exists outside the calendar), so a
+		    toggle with no visible effect would be user-hostile. */}
+		{theme !== "forgotten-hollow" && <SeasonToggle />}
 
 		{/* Sprint 95: FallingLeaves lifted up from index.astro so
 		    every henesys-themed page gets the ambient drift
@@ -283,6 +300,6 @@ const canonicalUrl = Astro.site
 		    thematically live; non-henesys themes (Kerning night
 		    city, Perion volcanic, Sleepywood forest) will get
 		    their own atmospheric overlays later if wanted. */}
-		{theme === "henesys" && <FallingLeaves />}
+		{(theme === "henesys" || theme === "forgotten-hollow") && <FallingLeaves />}
 	</body>
 </html>

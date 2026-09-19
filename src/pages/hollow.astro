@@ -1,0 +1,119 @@
+---
+/**
+ * /hollow - Forgotten Hollow easter-egg landing.
+ *
+ * Sprint 97. A hidden pocket-dimension grotto page reached via
+ * a subtle footer breadcrumb (or by typing the URL). Uses the
+ * dedicated forgotten-hollow theme so the entire chrome adopts
+ * the amber-and-violet cave palette while the artwork does the
+ * heavy visual lifting.
+ *
+ * Design decisions:
+ *   - Minimal content on purpose - the ART is the point. A
+ *     single centered flavor-text panel over a large empty
+ *     stretch of the scene, so the fairy grotto reads as the
+ *     hero of the page.
+ *   - No nav links except a "Return to Maple World" back-to-/
+ *     anchor - this is a moment, not a hub.
+ *   - Not linked from PrimaryNav - only findable via the
+ *     footer glyph or a direct URL. Rewards the curious.
+ *   - decorations={false} because the theme kills them anyway
+ *     (image contains its own ambient details) - being explicit
+ *     saves a re-render pass.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="The Forgotten Hollow"
+	description="A hidden fairy grotto beyond the mist. Every Maple traveler stumbles here at least once."
+	theme="forgotten-hollow"
+	decorations={false}
+>
+	<section class="hollow">
+		<div class="hollow__panel">
+			<p class="hollow__eyebrow">You have wandered off the map.</p>
+			<h1 class="hollow__title">The Forgotten Hollow</h1>
+			<p class="hollow__lede">
+				Not on any world map. Not in any datamine. Just a hush of
+				dripping water, glowing spore-lanterns, and the smell of
+				pumpkin spice caught in the moss.
+			</p>
+			<p class="hollow__lede">
+				Rest a moment. The maple leaves fall a little softer here.
+			</p>
+			<a class="hollow__return" href="/">Return to Maple World</a>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	/* Tall section so the backdrop art gets breathing room -
+	   the grotto is the star, the panel is a small guest. */
+	.hollow {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 78vh;
+		padding: 4rem 1rem;
+	}
+
+	.hollow__panel {
+		max-width: 520px;
+		padding: 2rem 2.4rem;
+		text-align: center;
+		background: rgba(255, 253, 246, 0.88);
+		border: 2px solid var(--border-hero);
+		border-radius: 1rem;
+		box-shadow: var(--shadow-panel);
+		/* Subtle warm-amber halo so the panel feels lit by the
+		   scene's fairy lanterns rather than dropped in from
+		   another site. */
+		outline: 4px solid rgba(217, 122, 42, 0.15);
+		outline-offset: -4px;
+	}
+
+	.hollow__eyebrow {
+		margin: 0 0 0.4rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--accent-secondary-border);
+	}
+
+	.hollow__title {
+		margin: 0 0 1.2rem;
+		font-size: clamp(1.8rem, 4vw, 2.6rem);
+		color: var(--text-heading);
+		font-family: var(--font-heading);
+	}
+
+	.hollow__lede {
+		margin: 0 0 1rem;
+		font-size: 1rem;
+		line-height: 1.55;
+		color: var(--text-body);
+	}
+
+	.hollow__return {
+		display: inline-block;
+		margin-top: 1.4rem;
+		padding: 0.7rem 1.4rem;
+		background: var(--accent-primary);
+		color: var(--text-on-accent);
+		border: 2px solid var(--accent-primary-strong);
+		border-radius: 999px;
+		font-weight: 700;
+		text-decoration: none;
+		transition:
+			background 150ms ease,
+			transform 150ms ease;
+	}
+	.hollow__return:hover,
+	.hollow__return:focus-visible {
+		background: var(--accent-primary-strong);
+		transform: translateY(-1px);
+		outline: none;
+	}
+</style>

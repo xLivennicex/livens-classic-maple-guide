@@ -38,6 +38,14 @@
  * `html[data-theme="X"] body` (0,1,2). */
 @import "./seasons.css" layer(themes);
 
+/* Sprint 97: forgotten-hollow theme MUST load after seasons.css
+ * so its body backdrop rule (0,2,2 specificity - same as the
+ * seasons autumn fallback) wins the source-order tiebreaker.
+ * Otherwise the shared henesys autumn image would paint over
+ * the hollow art. See forgotten-hollow.css for the full cascade
+ * math. */
+@import "./themes/forgotten-hollow.css" layer(themes);
+
 /* Sprint 65: shared design token for "content card" treatment used
    by long-form article bodies (.prose in guides, .post--card in
    blog posts). Soft, theme-tinted glow + subtle drop for depth
@@ -800,6 +808,39 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 .site-footer__credits a {
 	text-decoration: underline;
 	text-underline-offset: 2px;
+}
+
+/* Sprint 97: subtle discovery breadcrumb to the /hollow easter-
+ * egg page. Deliberately quieter than the credits row - no
+ * underline, muted opacity, small letterspacing so it reads as
+ * ambient flavor rather than navigation. Hovering lifts the
+ * opacity + adds a warm amber tint, rewarding the curious. */
+.site-footer__hollow {
+	margin-top: 0.9rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+	opacity: 0.45;
+	transition: opacity 200ms ease;
+}
+.site-footer__hollow:hover {
+	opacity: 0.9;
+}
+.site-footer__hollow a {
+	color: inherit;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+.site-footer__hollow a:hover,
+.site-footer__hollow a:focus-visible {
+	color: #b35d1a; /* matches forgotten-hollow --accent-primary-strong */
+	outline: none;
+}
+.site-footer__hollow-leaf {
+	font-size: 1rem;
+	line-height: 1;
+	color: #c9522a; /* warm autumn burnt-orange */
 }
 
 /* ==================== Markdown Content ====================
