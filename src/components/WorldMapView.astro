@@ -184,6 +184,46 @@ const unlinkedPins = wm.maps.filter((p) => p.dossierMapId == null);
 		border-radius: 0.5rem;
 		overflow: hidden;
 	}
+
+	/* Sprint 91.2 mobile fix: Nexon's WorldMap coordinate system
+	 * lets region-label overlays extend past the map's visible
+	 * origin+width box (intentional decorative wrap-around in the
+	 * source data - see WorldMap.img spec). At any viewport width
+	 * the same percentage overflows, but on desktop those clipped
+	 * regions are visually large enough that the on-screen slice
+	 * remains tappable. At mobile widths the clipped labels shrink
+	 * to a few pixels wide and users literally cannot tap them.
+	 *
+	 * Fix: let the stage scroll horizontally on phones. Combined
+	 * with a right-edge fade mask that hints "more to the right",
+	 * users can pan to discover and reach every label. Vertical
+	 * overflow stays hidden because it's rarely an issue and
+	 * would break the map's aspect-ratio-locked height.
+	 *
+	 * Long-term better fix: render a mobile-only text link list
+	 * below the map as an alternate navigation path. That's a
+	 * bigger sprint - filing under `_todo` in the roadmap.
+	 */
+	@media (max-width: 768px) {
+		.wmv__stage {
+			overflow-x: auto;
+			overflow-y: hidden;
+			/* iOS momentum scrolling for a native-feeling pan. */
+			-webkit-overflow-scrolling: touch;
+			/* Subtle right-edge fade signals "pan right to see more."
+			 * Mask fades the last 24px of the visible viewport. */
+			mask-image: linear-gradient(
+				90deg,
+				#000 0,
+				#000 calc(100% - 24px),
+				rgba(0, 0, 0, 0.35) 100%
+			);
+		}
+		/* Once the user starts scrolling, the fade is misleading -
+		 * kill it via a scroll-listener-set class in JS.
+		 * Deferred: doing this with pure CSS via `scroll-timeline`
+		 * would work in Chromium but not Safari as of 2025. */
+	}
 	.wmv__bg {
 		display: block;
 		width: 100%;
