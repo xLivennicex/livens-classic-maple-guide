@@ -4,6 +4,7 @@ import { ClientRouter } from "astro:transitions";
 import CommandPalette from "../components/CommandPalette.astro";
 import FloatingToc from "../components/FloatingToc.astro";
 import MapleLeaf from "../components/MapleLeaf.astro";
+import FallingLeaves from "../components/FallingLeaves.astro";
 import MusicPlayer from "../components/MusicPlayer.astro";
 import PrimaryNav from "../components/PrimaryNav.astro";
 import SeasonToggle from "../components/SeasonToggle.astro";
@@ -273,5 +274,15 @@ const canonicalUrl = Astro.site
 		    can override the fallback per theme without changing
 		    anything here. */}
 		<SeasonToggle />
+
+		{/* Sprint 95: FallingLeaves lifted up from index.astro so
+		    every henesys-themed page gets the ambient drift
+		    (previously only the homepage had it - "consistent
+		    across all henesys backgrounds" per Liven). Guarded
+		    on theme === henesys because that's where the leaves
+		    thematically live; non-henesys themes (Kerning night
+		    city, Perion volcanic, Sleepywood forest) will get
+		    their own atmospheric overlays later if wanted. */}
+		{theme === "henesys" && <FallingLeaves />}
 	</body>
 </html>

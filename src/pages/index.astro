@@ -9,7 +9,6 @@ import AccuracyLedger, { type LedgerEntry } from "../components/AccuracyLedger.a
 import StatusBadge from "../components/StatusBadge.astro";
 import Countdown from "../components/Countdown.astro";
 import FoundersPackagesCard from "../components/FoundersPackagesCard.astro";
-import FallingLeaves from "../components/FallingLeaves.astro";
 import HomeCarousel from "../components/HomeCarousel.astro";
 import Sprite from "../components/Sprite.astro";
 import MobHitEffect from "../components/MobHitEffect.astro";
@@ -154,15 +153,9 @@ const prepChecklist = [
 	theme="henesys"
 	decorations={true}
 >
-	{/*
-	 * Sprint 92: seasonal fall-in-Maple-World treatment. Ambient
-	 * maple leaves drift across the entire homepage viewport
-	 * behind content (z-index 0, pointer-events none). Uses the
-	 * existing /images/maple-leaf.png asset. Component handles
-	 * prefers-reduced-motion + mobile leaf-count reduction.
-	 */}
-	<FallingLeaves />
-
+	{/* Sprint 95: FallingLeaves moved to BaseLayout so every
+	    henesys-themed page gets the ambient drift, not just the
+	    homepage. See BaseLayout.astro for the mount site. */}
 	<section class="hero">
 		<div class="hero-copy">
 			<span class="badge">Classic World field manual</span>

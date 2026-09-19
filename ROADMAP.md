@@ -396,6 +396,69 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 95 - leaves consistent across all henesys pages +
+  Kerning gets its own autumn backdrop:**
+
+  Two-part sprint responding to Liven's "keep the leaf falling
+  consistent on all henesys backgrounds. Also I have made the
+  Autumn background for kerning" ask.
+
+  Part 1: leaves site-wide across henesys pages.
+  - Lifted `<FallingLeaves>` out of index.astro up into
+    BaseLayout with a `theme === "henesys"` guard - every
+    henesys-themed page now gets the ambient drift, not just
+    the homepage. Kitten confirmed 12/12 henesys routes show
+    the leaves and 8/8 non-henesys routes correctly suppress
+    them.
+  - Guarded on henesys because that's where the leaves
+    thematically live; if Liven wants leaves on Kerning autumn
+    (the Halloween city scene) too, easy one-line toggle.
+
+  Part 2: per-theme Kerning autumn variant.
+  - Liven delivered Halloween Kerning.png - a gorgeous
+    moonlit-Kerning-City scene with jack-o-lantern-lit fire
+    escapes, string lights + bat banners across the alley,
+    witch-hat slimes (green/pink/blue), ghost slimes on the
+    balcony, candy stalls with striped awnings, spider webs,
+    black cats, food truck, industrial pipes wrapped in maple
+    garlands. Perfect grimy-urban-Halloween match to the
+    Kerning theme.
+  - Copied to `/images/kerning-autumn-background.png`
+    (dimension-matched 1672x941 to slot in cleanly).
+  - Added per-theme override in seasons.css:
+    `html[data-theme="kerning"][data-season="autumn"] body {
+     background-image: ..., url("/images/kerning-autumn-
+     background.png") !important }`.
+    Same (0,2,2) specificity as the shared henesys autumn
+    fallback declared earlier in the file - source order
+    breaks the tie so kerning-autumn wins for kerning pages
+    while other themes still use the shared henesys autumn.
+  - Scrim gradient reused unchanged - both scenes are moonlit
+    dusk artwork so the warm dusk-to-parchment fade reads
+    correctly against either.
+
+  Also incidentally validated the future-extension architecture
+  from Sprint 94 - the shared-fallback + per-theme-override
+  pattern JUST WORKED for Kerning with zero refactor. When
+  Liven cooks autumn variants for Perion / Ellinia / Lith /
+  Sleepywood, each will need ~10 lines in seasons.css and
+  nothing else.
+
+  Kitten 6/6 pass: leaves render on all 12 sampled henesys
+  routes, absent on all 8 sampled non-henesys routes, Kerning
+  autumn shows the new Halloween city scene, Kerning summer
+  unchanged (round-trip toggle works), other themes still use
+  shared henesys autumn fallback, visual screenshots confirm
+  both the new Kerning backdrop and leaves rendering on
+  /character.
+
+  Also noticed while grabbing the file: Liven has some Halloween-
+  themed BGM files in Downloads too (Halloween Hotline.wav,
+  Halloween Night.wav, New Age Kerning City.wav). Could wire a
+  seasonal audio swap later - when data-season="autumn" is
+  active, MusicPlayer could pull from a Halloween track pool.
+  Filing for potential future sprint.
+
   **Sprint 94 - autumn backdrop extends to ALL themed pages:**
   Liven asked "can we swap the other henesys backgrounds for
   that as well?" - answered by making the Halloween Maple World
