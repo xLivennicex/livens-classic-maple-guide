@@ -24,6 +24,20 @@
 @import "./themes/ellinia.css" layer(themes);
 @import "./themes/sleepywood.css" layer(themes);
 
+/* Sprint 94 (v2): seasonal backdrop imported INTO the themes
+ * layer so it's tier-equal with the theme rules it needs to
+ * override. Critical cascade gotcha: for !important declarations,
+ * cascade layer order INVERTS - earlier-declared layers WIN,
+ * and UNLAYERED !important is actually the WEAKEST tier (loses
+ * to every layered !important). So an unlayered `seasons.css`
+ * with !important got clobbered by every theme's layered
+ * !important. Putting seasons inside `layer(themes)` alongside
+ * the theme rules means both live in the same !important tier
+ * and specificity decides the winner. seasons.css uses the
+ * double-attribute selector (0,2,2) which beats every theme's
+ * `html[data-theme="X"] body` (0,1,2). */
+@import "./seasons.css" layer(themes);
+
 /* Sprint 65: shared design token for "content card" treatment used
    by long-form article bodies (.prose in guides, .post--card in
    blog posts). Soft, theme-tinted glow + subtle drop for depth

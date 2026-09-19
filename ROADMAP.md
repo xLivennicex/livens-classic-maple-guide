@@ -396,6 +396,70 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 94 - autumn backdrop extends to ALL themed pages:**
+  Liven asked "can we swap the other henesys backgrounds for
+  that as well?" - answered by making the Halloween Maple World
+  scene the shared autumn backdrop for EVERY theme (not just
+  henesys). Zero new art needed; one shared scene rendered
+  everywhere the user has autumn toggled on.
+
+  Changes:
+  - Extracted the henesys-specific autumn CSS out of henesys.css
+    into new src/styles/seasons.css so seasonal system scales
+    past one theme
+  - Removed the `theme === "henesys"` guard on SeasonToggle in
+    BaseLayout - fab now renders on every themed page
+  - Added a decoration-kill rule for non-henesys themes when
+    autumn is active (henesys already had its own kill rule
+    because the image contains clouds+grass and would double-
+    decorate) - the CSS cloud + grass decorations look great
+    over blue skies but would photobomb the moonlit dusk
+    artwork
+  - Also fixed a view-transition bug caught mid-sprint: Astro's
+    ClientRouter re-parses <html> attributes on nav, which
+    WIPED the client-set data-season. Added an astro:before-swap
+    listener that re-applies data-season from localStorage to
+    event.newDocument.documentElement so the autumn attribute
+    stays glued through view-transition navs
+
+  Painful cascade lesson learned (two failed attempts):
+  - Attempt 1: put seasons in a NEW layer after themes. Failed
+    because for !important declarations, CSS cascade layer
+    order INVERTS (earlier layer wins, opposite of normal
+    cascade). Themes layer came first, so theme's !important
+    beat seasons' !important.
+  - Attempt 2: removed the layer wrapper, made seasons unlayered.
+    Failed WORSE - unlayered !important is actually the WEAKEST
+    !important tier, losing to every layered !important. Even
+    the previously-working /henesys autumn regressed.
+  - Attempt 3 (finally): imported seasons INTO the themes layer
+    via `@import "./seasons.css" layer(themes)`. Both rules now
+    in same !important tier, specificity decides. Double-
+    attribute selector `html[data-season="autumn"][data-theme]
+    body` (0,2,2) beats each theme's `html[data-theme="X"] body`
+    (0,1,2). WORKS.
+  - Key mental model for future: `!important` + CSS layers is a
+    cascade trap. Unlayered !important is weakest. Layered
+    !important cascades in REVERSE layer-declaration order.
+    Same-layer + specificity is the least-surprising winning
+    strategy.
+
+  Kitten 6/6 pass on attempt 3: henesys autumn shows Halloween
+  scene, sleepywood autumn shows Halloween scene, kerning autumn
+  shows Halloween scene, all three themes' summer defaults still
+  work correctly, view-transition preserves data-season across
+  navs (before-swap listener firing correctly), visual confirms
+  Halloween backdrop rendering cleanly under sleepywood-themed
+  /mobs UI. Ship.
+
+  Future extension path: when Liven generates per-theme autumn
+  art, add specific rules like `html[data-theme="ellinia"][data-
+  season="autumn"] body { background-image: url(ellinia-autumn.png) }`
+  in seasons.css. Those will override the shared henesys autumn
+  fallback via specificity (0,2,2 vs 0,2,2 - source order
+  wins in same layer + same specificity, and per-theme rules
+  declared after the fallback will win).
+
   **Sprint 93 - autumn Maple World backdrop + season toggle:**
   Liven cooked an INSANE autumn Henesys backdrop for Phase 2 of
   the fall treatment: Halloween-in-Maple-World scene with jack-

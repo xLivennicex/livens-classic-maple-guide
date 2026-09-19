@@ -115,15 +115,42 @@ const canonicalUrl = Astro.site
 		 * flash-prevention pattern used across Astro sites.
 		 */}
 		<script is:inline>
-			try {
-				const stored = localStorage.getItem("season");
-				const season = stored === "summer" || stored === "autumn"
-					? stored
-					: "autumn";
-				document.documentElement.setAttribute("data-season", season);
-			} catch {
-				document.documentElement.setAttribute("data-season", "autumn");
-			}
+			(function () {
+				/**
+				 * Re-applies the saved season to <html>. Runs
+				 * synchronously on first paint AND on every Astro
+				 * view-transition swap (astro:before-swap fires
+				 * before the new page paints, so no visible flash
+				 * between navs).
+				 */
+				function applySeason() {
+					try {
+						const stored = localStorage.getItem("season");
+						const season = stored === "summer" || stored === "autumn"
+							? stored
+							: "autumn";
+						document.documentElement.setAttribute("data-season", season);
+					} catch {
+						document.documentElement.setAttribute("data-season", "autumn");
+					}
+				}
+				applySeason();
+				/* Sprint 94 fix: Astro's ClientRouter re-parses
+				 * the incoming page's <html> attributes on view-
+				 * transition nav, which WIPED our client-set
+				 * data-season. Re-apply on before-swap so the
+				 * autumn backdrop stays glued through nav. Idempotent -
+				 * safe if fires multiple times. */
+				document.addEventListener("astro:before-swap", (event) => {
+					try {
+						const stored = localStorage.getItem("season");
+						const season = stored === "summer" || stored === "autumn"
+							? stored
+							: "autumn";
+						event.newDocument.documentElement.setAttribute("data-season", season);
+					} catch { /* private mode - session-only */ }
+				});
+			})();
 		</script>
 
 		<link rel="icon" type="image/png" href="/images/maple-leaf.png" />
@@ -239,13 +266,12 @@ const canonicalUrl = Astro.site
 		    manually. */}
 		<MusicPlayer mapId={Astro.props.bgmMapId} />
 
-		{/* Sprint 93: seasonal backdrop toggle. Only henesys has
-		    an autumn art variant right now, so we conditionally
-		    render the toggle only for henesys-themed pages -
-		    showing a control that does nothing visible on
-		    Ellinia/Perion/etc would be user-hostile. When we
-		    add autumn variants for the other themes, drop this
-		    guard and the toggle just works everywhere. */}
-		{theme === "henesys" && <SeasonToggle />}
+		{/* Sprint 94: seasonal backdrop toggle now available on
+		    every themed page. Autumn uses the Henesys Halloween
+		    backdrop as a shared fallback for all themes; when
+		    per-theme autumn variants ship later, seasons.css
+		    can override the fallback per theme without changing
+		    anything here. */}
+		<SeasonToggle />
 	</body>
 </html>

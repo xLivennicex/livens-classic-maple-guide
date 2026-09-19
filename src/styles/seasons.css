@@ -1,0 +1,88 @@
+/**
+ * Seasonal backdrop layer.
+ *
+ * Sprint 94: extracted from henesys.css so the seasonal system
+ * scales past a single theme. Imported INTO the themes layer
+ * (via `@import "./seasons.css" layer(themes)` in global.css)
+ * so it's cascade-tier-equal with the theme rules it overrides -
+ * see the comment on the import site for the !important +
+ * layer-inversion trap that made me learn this the hard way.
+ *
+ * Architecture:
+ *   - A single "fallback" rule uses the Henesys autumn scene as
+ *     the default autumn backdrop across ALL themes. When Liven
+ *     wanted the site to feel more fall-like, that scene was
+ *     the ask; extending it to non-Henesys pages gives the whole
+ *     site the same seasonal treatment without waiting for per-
+ *     theme art.
+ *   - When per-theme autumn variants get generated later, add
+ *     more specific selectors here (e.g.
+ *     `html[data-theme="ellinia"][data-season="autumn"] body`)
+ *     with the higher-specificity double-attribute selector -
+ *     those will override the shared fallback via specificity
+ *     (0,2,0) beating (0,1,0) without needing source-order
+ *     gymnastics.
+ *   - All rules use `!important` because each theme's base body
+ *     background rule also uses `!important` (that was defensive
+ *     against browser style-cache stickiness back in Sprint 84).
+ *     Autumn must win, so it must also shout.
+ *
+ * data-season attribute is set on <html> by the inline head
+ * script in BaseLayout, sourced from localStorage with a
+ * default of "autumn" for first-time visitors.
+ */
+
+/* Shared autumn fallback - applies to every theme unless a more
+ * specific per-theme rule below overrides it. Uses the same
+ * warm dusk-to-parchment scrim as the henesys-specific rule
+ * used to; that scrim was tuned against the autumn image so
+ * it stays tuned regardless of which theme the visitor is on.
+ *
+ * IMPORTANT cascade note: this rule uses the double-attribute
+ * selector [data-season="autumn"][data-theme] to bump specificity
+ * from (0,1,2) to (0,2,2), which BEATS every theme's base body
+ * rule (all of them are `html[data-theme="X"] body` at 0,1,2).
+ * We can't rely on layer order because both this file and the
+ * theme files use !important, and for !important declarations
+ * the CSS cascade INVERTS layer order (earlier layer wins), so
+ * the seasons layer being "later" would actually lose. Higher
+ * specificity is the winning move at both normal and !important
+ * priority. The [data-theme] bare-attribute check matches every
+ * page (the attribute is always set) - it's a pure specificity
+ * boost, not a filter. */
+html[data-season="autumn"][data-theme] body {
+	background-image:
+		linear-gradient(
+			180deg,
+			rgba(30, 20, 45, 0) 0%,
+			rgba(80, 40, 30, 0.25) 45%,
+			rgba(244, 220, 180, 0.82) 100%
+		),
+		url("/images/henesys-autumn-background.png") !important;
+	background-size: cover, cover !important;
+	background-position: center top, center top !important;
+	background-repeat: no-repeat, no-repeat !important;
+	background-attachment: fixed, fixed !important;
+}
+
+/* Non-Henesys themes normally render CSS-drawn cloud + grass
+ * decorations on top of a flat sky color (see the
+ * `body[data-theme-decorations="on"]::before/::after` blocks in
+ * each theme file). Those decorations look great over a plain
+ * blue sky but fight the autumn dusk artwork - the CSS clouds
+ * would float above the moonlit sky and the pixel grass strip
+ * would sit in front of the pumpkin patches.
+ *
+ * Kill the decorations layer whenever autumn is active on ANY
+ * non-Henesys theme so the autumn scene reads cleanly. Henesys
+ * already has its own decoration-kill rule (the image contains
+ * clouds + grass so decorations were double-decorating), so
+ * this rule fills the gap for the others. */
+html:not([data-theme="henesys"])[data-season="autumn"]
+	body[data-theme-decorations="on"]::before,
+html:not([data-theme="henesys"])[data-season="autumn"]
+	body[data-theme-decorations="on"]::after {
+	content: none;
+	background: none;
+	display: none;
+}
