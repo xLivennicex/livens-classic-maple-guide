@@ -1,79 +1,209 @@
 ---
 /**
- * /hollow - Forgotten Hollow easter-egg landing.
+ * /hollow - Forgotten Hollow region hub.
  *
- * Sprint 97. A hidden pocket-dimension grotto page reached via
- * a subtle footer breadcrumb (or by typing the URL). Uses the
- * dedicated forgotten-hollow theme so the entire chrome adopts
- * the amber-and-violet cave palette while the artwork does the
- * heavy visual lifting.
+ * Sprint 97.2. Turned from "pure vibes easter-egg landing" into
+ * a real region hub after Liven pointed out that Forgotten
+ * Hollow IS in the CoT2 datamine (map 10006000, Shallow Passage
+ * street, Victoria Island region, level 39-50 content with 10
+ * quests, four sub-maps, and a whole NPC roster).
  *
  * Design decisions:
- *   - Minimal content on purpose - the ART is the point. A
- *     single centered flavor-text panel over a large empty
- *     stretch of the scene, so the fairy grotto reads as the
- *     hero of the page.
- *   - No nav links except a "Return to Maple World" back-to-/
- *     anchor - this is a moment, not a hub.
- *   - Not linked from PrimaryNav - only findable via the
- *     footer glyph or a direct URL. Rewards the curious.
- *   - decorations={false} because the theme kills them anyway
- *     (image contains its own ambient details) - being explicit
- *     saves a re-render pass.
+ *   - Themed hero panel keeps the atmospheric fairy-grotto vibe
+ *     established in Sprint 97 - the artwork is still the star,
+ *     the panel just sits over a large stretch of empty scene.
+ *   - Below the fold: three data-driven sections pulling straight
+ *     from src/data/db/{maps,quests}.json at build time - NPCs of
+ *     the Hollow, Quests here (grouped by level), Connected maps.
+ *     Zero manual duplication of DB content.
+ *   - Deep link to /maps/10006000 for the canonical map detail
+ *     view (with minimap positions, mob refs, full exit graph).
+ *     /hollow is the flavored front door; /maps/10006000 is the
+ *     technical detail page.
+ *   - Not linked from PrimaryNav yet - still discoverable via
+ *     footer breadcrumb. Nav promotion is a separate decision
+ *     since it changes site information architecture.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import mapsData from "../data/db/maps.json";
+import questsData from "../data/db/quests.json";
+
+/* Canonical IDs from the CoT2 client datamine. */
+const HOLLOW_MAP_ID = 10006000;
+const HOLLOW_REGION = "Forgotten Hollow";
+
+type MapRecord = (typeof mapsData)[number];
+type QuestRecord = (typeof questsData)[number];
+
+const map = mapsData.find((m: MapRecord) => m.id === HOLLOW_MAP_ID);
+
+/* Quests tagged with the Forgotten Hollow region PLUS any
+ * quest whose title mentions the Hollow (catches "Welcome to
+ * the Hollow" which is region-tagged Ellinia because Grendel
+ * the Really Old - the onboarding NPC - stands in Ellinia
+ * and directs you here). Fuzzy name match keeps future
+ * Hollow-adjacent quests auto-included without needing to
+ * hard-code IDs. Sorted by level for natural progression. */
+const questsHere: QuestRecord[] = questsData
+	.filter(
+		(q: QuestRecord) =>
+			q.region === HOLLOW_REGION || /hollow/i.test(q.name ?? ""),
+	)
+	.slice()
+	.sort((a, b) => (a.levelMin ?? 0) - (b.levelMin ?? 0));
+
+/* NPCs = union of quest-givers + in-map NPC roster. Dedupe by
+ * name (some NPCs give multiple quests). */
+const npcNames = new Set<string>();
+for (const q of questsHere) if (q.npcName) npcNames.add(q.npcName);
+for (const n of map?.npcs ?? []) if (n.name) npcNames.add(n.name);
+const npcs = [...npcNames].sort();
+
+/* Level range across all region quests - lets us show a single
+ * "Level 39-50" facts entry rather than making the reader do
+ * the math from ten quest cards. */
+const levels = questsHere
+	.map((q) => q.levelMin)
+	.filter((l): l is number => typeof l === "number");
+const minLevel = levels.length ? Math.min(...levels) : null;
+const maxLevel = levels.length ? Math.max(...levels) : null;
+const levelRange =
+	minLevel != null && maxLevel != null
+		? minLevel === maxLevel
+			? `${minLevel}`
+			: `${minLevel}-${maxLevel}`
+		: null;
+
+/* Exit list = the connected sub-maps that make up the greater
+ * Forgotten Hollow region. Keeping the toMapId so we can deep-
+ * link into each one. */
+const exits = map?.exits ?? [];
 ---
 
 <BaseLayout
 	title="The Forgotten Hollow"
-	description="A hidden fairy grotto beyond the mist. Every Maple traveler stumbles here at least once."
+	description="Region hub for Forgotten Hollow (map 10006000). Bluebell Buds, Cave Fairies, and the road to the End of Fleeting Light."
 	theme="forgotten-hollow"
 	decorations={false}
 >
-	<section class="hollow">
-		<div class="hollow__panel">
-			<p class="hollow__eyebrow">A new region charted</p>
-			<h1 class="hollow__title">The Forgotten Hollow</h1>
-			<p class="hollow__lede">
-				A bioluminescent grotto tucked behind Maple World's edge -
-				freshly added to the map. Dripping water, glowing spore-
-				lanterns, and the smell of pumpkin spice caught in the moss.
+	<section class="hollow-hero">
+		<div class="hollow-hero__panel">
+			<p class="hollow-hero__eyebrow">Victoria Island - Shallow Passage</p>
+			<h1 class="hollow-hero__title">The Forgotten Hollow</h1>
+			<p class="hollow-hero__lede">
+				A bioluminescent grotto reached through Ellinia's back roads.
+				Bluebell Buds and Cave Fairies keep the lanterns lit while
+				travelers pick their way toward the End of Fleeting Light.
 			</p>
-			<p class="hollow__lede">
-				Rest a moment. The maple leaves fall a little softer here.
-			</p>
-			<a class="hollow__return" href="/">Back to Maple World</a>
+			{levelRange && (
+				<dl class="hollow-hero__facts">
+					<div>
+						<dt>Level range</dt>
+						<dd>{levelRange}</dd>
+					</div>
+					<div>
+						<dt>Region kind</dt>
+						<dd>Town</dd>
+					</div>
+					<div>
+						<dt>Quests here</dt>
+						<dd>{questsHere.length}</dd>
+					</div>
+					<div>
+						<dt>NPCs</dt>
+						<dd>{npcs.length}</dd>
+					</div>
+				</dl>
+			)}
+			<a class="hollow-hero__cta" href={`/maps/${HOLLOW_MAP_ID}`}>
+				Open the full map page
+			</a>
 		</div>
 	</section>
+
+	{/* Grid uses named template-areas so cards land where the
+	    composition wants them regardless of DOM order. NPCs
+	    top-left, Connected maps bottom-left, Quests fills the
+	    entire right column (it holds the most content so it
+	    earns the space). Mobile collapses to single-column
+	    stack in reading order below. */}
+	<section class="hollow-grid">
+		{npcs.length > 0 && (
+			<article class="hollow-card hollow-card--npcs">
+				<h2 class="hollow-card__title">NPCs of the Hollow</h2>
+				<ul class="hollow-card__list">
+					{npcs.map((name) => (
+						<li>{name}</li>
+					))}
+				</ul>
+			</article>
+		)}
+
+		{questsHere.length > 0 && (
+			<article class="hollow-card hollow-card--quests">
+				<h2 class="hollow-card__title">Quests here</h2>
+				<ul class="hollow-card__quests">
+					{questsHere.map((q) => (
+						<li>
+							<a href={`/quests/${q.id}`}>
+								<strong>{q.name}</strong>
+								<span class="hollow-card__meta">
+									Lv {q.levelMin ?? "?"}
+									{q.npcName ? ` \u00b7 ${q.npcName}` : ""}
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</article>
+		)}
+
+		{exits.length > 0 && (
+			<article class="hollow-card hollow-card--maps">
+				<h2 class="hollow-card__title">Connected maps</h2>
+				<ul class="hollow-card__list hollow-card__list--links">
+					{exits.map((exit) => (
+						<li>
+							<a href={`/maps/${exit.toMapId}`}>{exit.toMapName}</a>
+						</li>
+					))}
+				</ul>
+			</article>
+		)}
+	</section>
+
+	<p class="hollow-return">
+		<a href="/">Back to Maple World</a>
+	</p>
 </BaseLayout>
 
 <style>
-	/* Tall section so the backdrop art gets breathing room -
-	   the grotto is the star, the panel is a small guest. */
-	.hollow {
+	/* Hero: tall enough that the grotto artwork gets breathing
+	   room before content starts. Panel is a warm-parchment
+	   overlay so the flavor text stays readable against the
+	   dark cavern top-half of the image. */
+	.hollow-hero {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-height: 78vh;
-		padding: 4rem 1rem;
+		min-height: 62vh;
+		padding: 4rem 1rem 2rem;
 	}
 
-	.hollow__panel {
-		max-width: 520px;
+	.hollow-hero__panel {
+		max-width: 640px;
+		width: 100%;
 		padding: 2rem 2.4rem;
 		text-align: center;
-		background: rgba(255, 253, 246, 0.88);
+		background: rgba(255, 253, 246, 0.9);
 		border: 2px solid var(--border-hero);
 		border-radius: 1rem;
 		box-shadow: var(--shadow-panel);
-		/* Subtle warm-amber halo so the panel feels lit by the
-		   scene's fairy lanterns rather than dropped in from
-		   another site. */
 		outline: 4px solid rgba(217, 122, 42, 0.15);
 		outline-offset: -4px;
 	}
 
-	.hollow__eyebrow {
+	.hollow-hero__eyebrow {
 		margin: 0 0 0.4rem;
 		font-size: 0.8rem;
 		font-weight: 700;
@@ -82,23 +212,55 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 		color: var(--accent-secondary-border);
 	}
 
-	.hollow__title {
+	.hollow-hero__title {
 		margin: 0 0 1.2rem;
 		font-size: clamp(1.8rem, 4vw, 2.6rem);
 		color: var(--text-heading);
 		font-family: var(--font-heading);
 	}
 
-	.hollow__lede {
-		margin: 0 0 1rem;
+	.hollow-hero__lede {
+		margin: 0 auto 1.4rem;
+		max-width: 46ch;
 		font-size: 1rem;
 		line-height: 1.55;
 		color: var(--text-body);
 	}
 
-	.hollow__return {
+	/* Facts row: 4 stat pairs from the DB - level range, kind,
+	   quest count, NPC count. Same 8th-primitive pattern as the
+	   homepage hero scope banner. */
+	.hollow-hero__facts {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.6rem 1.4rem;
+		margin: 1rem 0 1.4rem;
+		padding: 0.8rem 1rem;
+		background: rgba(217, 122, 42, 0.08);
+		border: 1px dashed var(--accent-primary);
+		border-radius: 0.6rem;
+	}
+	.hollow-hero__facts div {
+		text-align: center;
+	}
+	.hollow-hero__facts dt {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--accent-secondary-border);
+	}
+	.hollow-hero__facts dd {
+		margin: 0.2rem 0 0;
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--text-heading);
+	}
+
+	.hollow-hero__cta {
 		display: inline-block;
-		margin-top: 1.4rem;
+		margin-top: 0.4rem;
 		padding: 0.7rem 1.4rem;
 		background: var(--accent-primary);
 		color: var(--text-on-accent);
@@ -110,10 +272,155 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			background 150ms ease,
 			transform 150ms ease;
 	}
-	.hollow__return:hover,
-	.hollow__return:focus-visible {
+	.hollow-hero__cta:hover,
+	.hollow-hero__cta:focus-visible {
 		background: var(--accent-primary-strong);
 		transform: translateY(-1px);
 		outline: none;
+	}
+
+	/* Data cards grid: NPCs, quests, connected maps. Grid keeps
+	   things aligned at wide viewports and collapses to a single
+	   column below 720px. Quest card spans wider since it holds
+	   more content. */
+	/* Two-column grid: narrow left column stacks NPCs above
+	   Connected maps, wide right column holds the meaty Quests
+	   card at full height. No empty grid cells because named
+	   areas explicitly place each card - solves the "cards
+	   clinging to one column" gap kitten flagged in Sprint
+	   97.2 verify. */
+	.hollow-grid {
+		display: grid;
+		grid-template-columns: minmax(240px, 1fr) minmax(360px, 2fr);
+		grid-template-areas:
+			"npcs quests"
+			"maps quests";
+		gap: 1.2rem;
+		max-width: 1080px;
+		margin: 0 auto;
+		padding: 0 1rem 2rem;
+		align-items: start;
+	}
+
+	.hollow-card {
+		padding: 1.4rem 1.6rem;
+		background: rgba(255, 253, 246, 0.92);
+		border: 2px solid var(--border-hero);
+		border-radius: 0.8rem;
+		box-shadow: var(--shadow-panel);
+	}
+	.hollow-card--npcs {
+		grid-area: npcs;
+	}
+	.hollow-card--maps {
+		grid-area: maps;
+	}
+	.hollow-card--quests {
+		grid-area: quests;
+	}
+
+	.hollow-card__title {
+		margin: 0 0 0.9rem;
+		font-size: 1.15rem;
+		color: var(--text-heading);
+		font-family: var(--font-heading);
+		border-bottom: 1px dashed var(--accent-secondary);
+		padding-bottom: 0.5rem;
+	}
+
+	.hollow-card__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.hollow-card__list li {
+		padding: 0.35rem 0.6rem;
+		background: rgba(217, 122, 42, 0.08);
+		border-radius: 0.4rem;
+		color: var(--text-body);
+	}
+	.hollow-card__list--links a {
+		color: var(--accent-primary-strong);
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.hollow-card__list--links a:hover,
+	.hollow-card__list--links a:focus-visible {
+		text-decoration: underline;
+	}
+
+	.hollow-card__quests {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 0.5rem;
+	}
+	.hollow-card__quests a {
+		display: block;
+		padding: 0.6rem 0.8rem;
+		background: rgba(217, 122, 42, 0.08);
+		border-radius: 0.5rem;
+		color: inherit;
+		text-decoration: none;
+		border: 1px solid transparent;
+		transition:
+			border-color 120ms ease,
+			transform 120ms ease;
+	}
+	.hollow-card__quests a:hover,
+	.hollow-card__quests a:focus-visible {
+		border-color: var(--accent-primary);
+		transform: translateY(-1px);
+		outline: none;
+	}
+	.hollow-card__quests strong {
+		display: block;
+		color: var(--text-heading);
+		margin-bottom: 0.2rem;
+	}
+	.hollow-card__meta {
+		display: block;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+
+	.hollow-return {
+		text-align: center;
+		margin: 1rem 0 3rem;
+	}
+	.hollow-return a {
+		color: var(--accent-primary-strong);
+		text-decoration: none;
+		font-weight: 700;
+	}
+	.hollow-return a:hover,
+	.hollow-return a:focus-visible {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 720px) {
+		.hollow-hero {
+			min-height: 50vh;
+			padding: 2rem 1rem 1.4rem;
+		}
+		.hollow-hero__panel {
+			padding: 1.4rem 1.2rem;
+		}
+		/* Mobile: single-column stack in reading order (NPCs
+		   first as the roster / social opener, then Quests as
+		   the meat, then Connected maps as the "where next"
+		   footer). Overrides the two-column named-area grid. */
+		.hollow-grid {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				"npcs"
+				"quests"
+				"maps";
+		}
 	}
 </style>

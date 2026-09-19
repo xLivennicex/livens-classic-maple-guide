@@ -396,6 +396,73 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 97.2 - /hollow becomes a real region hub:**
+  Liven called out that my flavor text on /hollow ("Not on any
+  world map. Not in any datamine.") contradicted itself - the
+  page IS in the guide, and Forgotten Hollow IS a real charted
+  region in the CoT2 client datamine. My initial grep for
+  "hollow" in src/data had returned nothing meaningful because
+  ripgrep was mis-handling something; a Select-String pass
+  found the Hollow content everywhere:
+  - Map 10006000 "Forgotten Hollow" (Shallow Passage street,
+    Victoria Island region, BGM Bygone Garden, kind=town)
+  - 10 region-tagged quests, level range 39-50, given by NPCs
+    Zelya, Nyroth, Myra, Jaime the Wandering Explorer, Daniel
+    the Scholar
+  - 4 connected sub-maps: The End of Fleeting Light, Primeval
+    Forest I, Cave Fairy Sanctuary, Cave Fairy Department Store
+  - In-map NPCs: Bluebell Bud, Fully Bloomed Bluebell, Nyroth,
+    Arcane Station
+  - Return Scroll to Forgotten Hollow (item 2030007)
+  - Onboarding quest "Welcome to the Hollow" (10611) given by
+    Grendel the Really Old back in Ellinia
+  - Level 39-50 mid-game content
+
+  Rebuilt /hollow from pure-vibe easter-egg to a proper
+  data-driven region hub while keeping the fairy-grotto themed
+  hero panel intact:
+  - Frontmatter imports maps.json + quests.json, filters at
+    build time. Quest filter is region-match OR name fuzzy-match
+    on "hollow" so cross-region entry quests like Grendel's
+    "Welcome to the Hollow" get pulled in and Grendel joins
+    the NPC roster via the quest-giver dedupe.
+  - Hero panel now has an eyebrow "Victoria Island - Shallow
+    Passage", accurate flavor text ("reached through Ellinia's
+    back roads"), a 4-stat facts row (level range, region kind,
+    quest count, NPC count) all computed from DB data, and a
+    CTA button linking to /maps/10006000 for full map detail.
+  - Below the hero: three data cards in a named-template-areas
+    grid - NPCs top-left, Connected maps bottom-left, Quests
+    fills the full-height right column. Each quest links to
+    /quests/{id}; each connected map links to /maps/{id}.
+    Mobile collapses to single-column stack in reading order.
+  - Kitten verify 5/5 pass on re-check: all 15 outbound links
+    return 200, layout composition works at 1440 and 375, no
+    theme/backdrop/leaves/toggle regressions, NPCs count 9
+    with Grendel present, quest count 11 including the
+    Ellinia-tagged "Welcome to the Hollow" onboarding quest.
+
+  Two grid layout iterations:
+  - First attempt used `grid-template-columns: repeat(auto-fit,
+    minmax(260px, 1fr))` with a single `grid-column: 1 / -1`
+    span on the Quests card. Auto-flow placed NPCs col1 row1,
+    Quests full-width row 2, Connected maps col1 row 3 - which
+    left the entire right 2/3 of the page empty on rows 1 and
+    3 at 1440. Kitten flagged.
+  - Fixed with named `grid-template-areas` at 2-column
+    (minmax(240,1fr) / minmax(360,2fr)). Explicit placement
+    means no empty cells regardless of DOM order.
+
+  Followup considered but not shipped (asked Liven for a call):
+  - Promote the "seek the hollow" footer breadcrumb from 45%-
+    opacity discovery link to a proper PrimaryNav entry?
+    Depends on whether Liven wants Hollow as a first-class
+    destination in site navigation.
+  - Add mob data for the Hollow region? Currently the region's
+    quest DB references mobs but the map's mobPositions array
+    is empty (it's a town map). Sub-maps (Primeval Forest,
+    Cave Fairy Sanctuary) would have the actual mob data.
+
   **Sprint 97 - Forgotten Hollow easter-egg page + theme:**
   Liven's Forgotten Hollow art was too unique to slot in as
   just another autumn variant (bioluminescent fairy grotto
