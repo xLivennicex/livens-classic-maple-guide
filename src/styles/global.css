@@ -637,6 +637,64 @@ main.page-width {
 	color: var(--text-muted);
 }
 
+/* ==================== Disclosure summary ============================
+ *
+ * Sprint 89: shared styling for `<summary>` elements inside
+ * `<details>` disclosure widgets. Extracted from items/index
+ * (`.cat-header`) and maps/index (`.region-header`) which were
+ * 95% identical - same flex layout, same 5px accent left border,
+ * same hover bg-cloud shift, same chevron rotation on [open].
+ *
+ * BEM child .disclosure-summary__chevron handles the animated
+ * rotate. The selector `details[open] > .disclosure-summary
+ * .disclosure-summary__chevron` matches the chevron inside any
+ * open <details>, regardless of what other classes the parent
+ * has (.cat-section vs .region etc). Direct child combinator
+ * on the summary keeps the rule narrow.
+ *
+ * Page-specific bits (title font-size, count column) stay in
+ * the local scoped styles. This utility owns layout + chrome +
+ * disclosure animation, page CSS owns typography specifics.
+ *
+ * If a page needs a different accent stripe color, override via
+ * `--disclosure-accent` on the summary or its ancestor.
+ */
+.disclosure-summary {
+	--disclosure-accent: var(--accent-primary);
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	padding: 0.85rem 1.2rem;
+	cursor: pointer;
+	list-style: none;
+	border-left: 5px solid var(--disclosure-accent);
+	transition: background 120ms ease;
+}
+
+/* Kills the default browser marker (Chrome/Safari) so our
+ * BEM chevron is the only affordance. Firefox's marker is
+ * suppressed by `list-style: none` on the summary itself,
+ * which is already set above. */
+.disclosure-summary::-webkit-details-marker {
+	display: none;
+}
+
+.disclosure-summary:hover {
+	background: var(--bg-cloud);
+}
+
+.disclosure-summary__chevron {
+	display: inline-block;
+	font-size: 1.3rem;
+	line-height: 1;
+	color: var(--disclosure-accent);
+	transition: transform 150ms ease;
+}
+
+details[open] > .disclosure-summary .disclosure-summary__chevron {
+	transform: rotate(90deg);
+}
+
 /* ---------- Data rows used inside cards ---------- */
 
 .data-row {

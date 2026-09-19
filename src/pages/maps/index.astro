@@ -137,8 +137,8 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 	<div class="regions">
 		{orderedRegions.map((r) => (
 			<details class="region" data-region={r.region} open>
-				<summary class="region-header">
-					<span class="chevron" aria-hidden="true">&rsaquo;</span>
+				<summary class="region-header disclosure-summary">
+					<span class="disclosure-summary__chevron" aria-hidden="true">&rsaquo;</span>
 					<h2 class="region-header__title">{r.region}</h2>
 					<span class="region-header__count">
 						<span class="region-header__visible">{r.maps.length}</span>
@@ -301,21 +301,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		border-radius: 0.75rem;
 		overflow: hidden;
 	}
-	.region-header {
-		display: flex; align-items: center; gap: 0.8rem;
-		padding: 0.85rem 1.2rem;
-		cursor: pointer; list-style: none;
-		border-left: 5px solid var(--accent-primary);
-		transition: background 120ms ease;
-	}
-	.region-header::-webkit-details-marker { display: none; }
-	.region-header:hover { background: var(--bg-cloud); }
-	.chevron {
-		display: inline-block; font-size: 1.3rem; line-height: 1;
-		color: var(--accent-primary);
-		transition: transform 150ms ease;
-	}
-	.region[open] .chevron { transform: rotate(90deg); }
 	.region-header__title { margin: 0; font-size: 1.15rem; }
 	.region-header__count {
 		margin-left: auto; font-size: 0.85rem;

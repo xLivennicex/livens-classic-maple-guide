@@ -396,6 +396,57 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 89 - disclosure-summary primitive + bosses eyebrow:**
+  Closed the last two DRY targets. Two files had 95% identical
+  `<details>/<summary>` disclosure styling with different names:
+  items used `.cat-header` + `.cat-header__chevron`, maps used
+  `.region-header` + unscoped `.chevron` (semantic collision
+  risk since `.chevron` is generic).
+
+  Extracted `.disclosure-summary` shared primitive to global.css
+  encoding the base pattern (flex layout + accent left border +
+  bg-cloud hover + `::-webkit-details-marker` reset). Chevron
+  is `.disclosure-summary__chevron`; rotate on open uses
+  selector `details[open] > .disclosure-summary
+  .disclosure-summary__chevron` which matches regardless of
+  parent details classes.
+
+  CSS custom property `--disclosure-accent` (defaults to
+  `--accent-primary`) allows per-page override without
+  duplicating the whole block. Design decision baked into the
+  docstring: primitive owns layout + chrome + animation, page
+  CSS keeps typography specifics (title font-size varies
+  between 1.1rem items and 1.15rem maps).
+
+  Migration: added `disclosure-summary` alongside existing
+  `.cat-header`/`.region-header` class on both `<summary>`
+  elements; renamed maps' unscoped `.chevron` to
+  `.disclosure-summary__chevron` (killing the generic
+  collision risk); deleted the duplicated base CSS from both
+  pages (~15 lines each).
+
+  **Bosses eyebrow standardization:**
+  The last local `.eyebrow` variant flagged as "genuinely
+  custom" in Sprint 88's post-mortem. Turned out to be
+  historical drift: bosses used 0.8rem font (canonical is
+  0.78rem), 0.1em spacing (--guide is 0.12em), block display
+  (--guide is inline-block), 0.3rem margin (--guide is 0.4rem).
+  Bosses uses the eyebrow in the same page-header pattern as
+  /blog and /guides (eyebrow above h1 in a section-heading
+  card). Standardized to `.eyebrow--guide`, deleted the local
+  block. Barely-perceptible visual delta (0.02rem font, 0.02em
+  tracking, 1.6px margin) accepted as consolidation cost.
+
+  Kitten 3/3 pass: /items and /maps disclosure summaries render
+  with identical computed styles (flex 12.8px gap, 13.6/19.2px
+  padding, 5px accent border, 120ms bg transition, hover
+  fills bg-cloud, chevron 20.8px in accent color, rotates
+  90deg on open via CSS transform matrix). Page-specific
+  title font-sizes preserved (items 17.6px, maps 18.4px).
+  Bosses eyebrow pixel-verified at 12.48px / 1.4976px
+  letter-spacing / 6.4px margin / inline-block / 700 weight.
+  Zero remaining local `.eyebrow` in scoped page styles.
+
   **Sprint 88.2 - .eyebrow--card modifier (Cat C+D):**
   Extracted the eyebrow pattern for card contexts (denser
   typography than --index because card interiors are already

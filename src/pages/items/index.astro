@@ -229,8 +229,8 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 				data-sub={sec.sub}
 				open
 			>
-				<summary class="cat-header">
-					<span class="cat-header__chevron" aria-hidden="true">&rsaquo;</span>
+				<summary class="cat-header disclosure-summary">
+					<span class="cat-header__chevron disclosure-summary__chevron" aria-hidden="true">&rsaquo;</span>
 					<h2 class="cat-header__title">
 						{sec.category} <span class="cat-header__sep">/</span> {sec.sub}
 					</h2>
@@ -565,23 +565,6 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		border-radius: 0.75rem;
 		overflow: hidden;
 	}
-	.cat-header {
-		display: flex; align-items: center; gap: 0.8rem;
-		padding: 0.85rem 1.2rem;
-		cursor: pointer;
-		list-style: none;
-		transition: background 120ms ease;
-		border-left: 5px solid var(--accent-primary);
-	}
-	.cat-header::-webkit-details-marker { display: none; }
-	.cat-header:hover { background: var(--bg-cloud); }
-	.cat-header__chevron {
-		display: inline-block;
-		font-size: 1.3rem; line-height: 1;
-		color: var(--accent-primary);
-		transition: transform 150ms ease;
-	}
-	.cat-section[open] .cat-header__chevron { transform: rotate(90deg); }
 	.cat-header__title { margin: 0; font-size: 1.1rem; }
 	.cat-header__sep { color: var(--text-muted); font-weight: normal; }
 	.cat-header__count {
