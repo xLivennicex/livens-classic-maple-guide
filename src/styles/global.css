@@ -598,6 +598,29 @@ main.page-width {
 	color: white;
 }
 
+/* Sprint 91.1: mobile touch-target bump for shared chip/button
+ * primitives. Desktop keeps its compact 28-30px height because
+ * mouse users don't need thumb-sized targets and dense filter
+ * rows read better tight. But at phone widths (<= 768px), WCAG
+ * 2.5.5 wants 44x44 minimum for tap safety - especially since
+ * chips are the PRIMARY filtering affordance on index pages
+ * and were previously reported as "broken with a thumb."
+ *
+ * `display: inline-flex + align-items: center` is what makes
+ * `min-height` actually work with the existing padding - a bare
+ * `min-height` on inline elements is ignored unless the box
+ * model is flex/grid/block.
+ */
+@media (max-width: 768px) {
+	.chip,
+	.expand-btn {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
 /* ==================== Filter row + result count ==================
  *
  * Sprint 87.1: two more index-page primitives extracted to kill

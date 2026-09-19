@@ -508,6 +508,19 @@ const totalSlides = slides.length;
 	.home-carousel__cta:focus-visible {
 		text-decoration: underline;
 	}
+	/* Sprint 91.1: on mobile the CTA was a 118x17 hit target -
+	   only interactive control on the hero carousel and users
+	   couldn't reliably tap it. Bumped to 44px min height via
+	   inline-flex + padding to meet WCAG 2.5.5. Underline on
+	   hover still communicates it's a link. */
+	@media (max-width: 768px) {
+		.home-carousel__cta {
+			min-height: 44px;
+			display: inline-flex;
+			align-items: center;
+			padding: 0.25rem 0;
+		}
+	}
 
 	/* Prev/next nav buttons. Positioned absolute over the viewport.
 	   Sized generously for touch targets (44x44 minimum). */

@@ -37,8 +37,9 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		<div>
 			<span class="eyebrow eyebrow--index">Reference catalog</span>
 			<h1>NPCs</h1>
+			{/* Sprint 91.1 whitespace fix - see items/index.astro. */}
 			<p class="lede">
-				{npcs.length} NPCs from the CoT 2 datamine.
+				{npcs.length} NPCs from the CoT 2 datamine.{" "}
 				{withQuests} hand out quests. {withMaps} are stationed
 				on at least one map. {orphans} are unmapped/uncredited
 				(often scripted or event-spawned NPCs).

@@ -122,9 +122,16 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		<div>
 			<span class="eyebrow eyebrow--index">Reference catalog</span>
 			<h1>Items</h1>
+			{/*
+			 * Sprint 91.1 whitespace fix: Astro (like JSX) collapses
+			 * newlines between text and adjacent `{expression}` to
+			 * nothing, not a space - so `into\n{sections.length}`
+			 * rendered as `into15`. Explicit `{" "}` preserves the
+			 * space while keeping the source multi-line and readable.
+			 */}
 			<p class="lede">
-				{items.length.toLocaleString()} items grouped into
-				{sections.length} category / subcategory sections.
+				{items.length.toLocaleString()} items grouped into{" "}
+				{sections.length} category / subcategory sections.{" "}
 				{editorialCount} have hand-written editorial pages.
 				Filter by category, class, or weapon type - collapse
 				sections you're not browsing.

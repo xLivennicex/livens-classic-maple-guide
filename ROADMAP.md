@@ -396,6 +396,59 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
     subtle and error-prone**; always use `mobSpriteSrcs()`,
     never `mobSpriteUrl()` directly.
 
+  **Sprint 91 (audit) + 91.1 (touch targets + copy nits):**
+  Kicked off the mobile responsive audit at 375x812 across 8
+  key pages (/, /blog, /items, /maps, /mobs, /npcs, /quests,
+  /world). Baseline good news: zero page-level horizontal
+  overflow anywhere, grids collapse to single column
+  correctly. But systemic issues surfaced:
+
+  **Kitten audit findings prioritized:**
+  1. BLOCKER - /world map pins clipped (5 of 11 render off
+     the map bounds because pin coords aren't scaled with the
+     background image at mobile widths)
+  2. BLOCKER - filter chips 28px tall (92 sub-40 touch
+     targets on /items alone), fails WCAG 2.5.5 min 44
+  3. MAJOR - data tables (.item-table, .mob-table) horizontal
+     scroll inside 343px wrappers with no sticky first column
+     and no scroll affordance
+  4. MAJOR - .tier-nav__chip 25px, .expand-btn 30px,
+     .home-carousel__cta 118x17 - all under WCAG 44px min
+  5. MAJOR - inline footnote reference links ~7x16px
+     (effectively un-tappable)
+  6. MINOR - search inputs 307x36 (need font-size >= 16px
+     to prevent iOS zoom)
+  7. NIT - JSX whitespace collapse bug on /items /mobs /npcs
+     /quests intros ("grouped into15", "datamine.175",
+     "osmsdataexplorer.com.Looking")
+
+  **Sprint 91.1 fixes (systemic wins first):**
+  - Added `@media (max-width: 768px)` block to global.css
+    that gives `.chip` and `.expand-btn` `min-height: 44px`,
+    `display: inline-flex`, `align-items: center`. Since
+    Sprint 87 extracted these as shared primitives, this
+    ONE change fixed chips on 6+ index pages simultaneously.
+    Desktop keeps the compact 28-30px height because mouse
+    users don't need thumb-sized targets.
+  - Same treatment applied per-file to `.tier-nav__chip`
+    (quests) and `.home-carousel__cta` (HomeCarousel
+    component) since those are page-specific classes.
+  - Copy nit fixes: JSX whitespace collapse (`text\n{expr}`
+    renders as concatenation, not text+space+expr) fixed
+    with explicit `{" "}` markers on all 4 flagged pages.
+    Also fixed a bonus "cross- verifies" broken-word bug
+    kitten spotted on /quests.
+
+  Kitten 5/5 pass: all chips/buttons now report >=44px on
+  mobile viewport, desktop untouched (chip stays 28.19px,
+  expand-btn stays 29.78px), all four copy fixes visible in
+  rendered HTML at 375px.
+
+  Remaining audit items queued for follow-up sprints:
+  world map pins (91.2 - BLOCKER, structural), data table
+  scroll affordance (91.3), footnote link enlargement (91.4),
+  search input mobile treatment (91.5).
+
   **Sprint 90 - homepage hero scope banner:**
   Addressed "no first-visit wow moment" from the earlier
   tour. The site's identity is *massive reference database*

@@ -135,13 +135,17 @@ const editorialTotal = editorialCards.length;
 		<div>
 			<span class="eyebrow eyebrow--index">Reference database</span>
 			<h1>Quests</h1>
+			{/* Sprint 91.1 whitespace fix - see items/index.astro.
+			   Also the `<a>osmsdataexplorer.com</a>.` and the
+			   Party Quests link were swallowing the space between
+			   them, making the second link look like a period. */}
 			<p class="lede">
 				{totalCount} quests grouped by level tier - <strong>{editorialTotal}</strong> with
 				hand-authored editorial write-ups, the rest as datamined
 				stubs (still clickable, still show giver + level + region,
-				just without the story context yet). Every entry cross-
-				verifies against the CoT 2 datamine at
-				<a href="https://osmsdataexplorer.com" target="_blank" rel="noopener">osmsdataexplorer.com</a>.
+				just without the story context yet). Every entry
+				cross-verifies against the CoT 2 datamine at{" "}
+				<a href="https://osmsdataexplorer.com" target="_blank" rel="noopener">osmsdataexplorer.com</a>.{" "}
 				<a href="/party-quests">Looking for Party Quests?</a>
 			</p>
 		</div>
@@ -277,6 +281,17 @@ const editorialTotal = editorialCards.length;
 	}
 	.tier-nav__chip:hover {
 		background: var(--accent-primary); color: white;
+	}
+	/* Sprint 91.1: tier-nav chips are the primary in-page nav
+	   for jumping between level buckets. At 113x25 desktop they
+	   were the smallest chip on the site - matched global .chip
+	   mobile treatment for thumb safety on phones. */
+	@media (max-width: 768px) {
+		.tier-nav__chip {
+			min-height: 44px;
+			display: inline-flex;
+			align-items: center;
+		}
 	}
 	.tier-nav__count {
 		opacity: 0.75; font-weight: normal;
