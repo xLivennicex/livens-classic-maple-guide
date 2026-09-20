@@ -77,6 +77,18 @@ const ITEMS: Record<string, string> = {
 	"Beige Plain Robe": "/items/1050000",
 	"Black Dragon Robe": "/items/1050011",
 	"White Chaos Robe": "/items/1050022",
+	// Hats (Sprint 97.8 - post-audit gap fill, 9 score>=4 candidates
+	// the first draft dismissed by telling readers to just buy shop)
+	"Red Starry Bandana": "/items/1002084",
+	"Red Apprentice Hat": "/items/1002021",
+	"Pink Jester": "/items/1002107",
+	"Black Jester": "/items/1002108",
+	"Brown Jester": "/items/1002106",
+	"Bronze Koif": "/items/1002016",
+	"Green Feather Hat": "/items/1002043",
+	"Red Thief Hood": "/items/1002048",
+	"Green Loosecap": "/items/1002072",
+	"White Bandana": "/items/1002011",
 };
 ---
 
@@ -472,6 +484,132 @@ const ITEMS: Record<string, string> = {
 				just buy shop claws unless this shows up incidentally.
 			</li>
 		</ul>
+
+		<h2 id="hats">Hats (the slot I told you to skip)</h2>
+		<p>
+			Full transparency: my first draft of this guide told you to buy
+			the Lv 10 shop hat and forget about the slot. Then I re-ran the
+			datamine audit and it laughed at me - there are{" "}
+			<strong>ten</strong> pre-Lv30 hat drops with score{" "}
+			<code>&gt;=3</code> that any class would actually equip, and
+			most of them come from mobs already in your farm table. Zero
+			new maps required. Here's the corrected picture.
+		</p>
+
+		<h3 id="hats-universal">The one hat every class should chase</h3>
+		<p class="callout callout--tip">
+			<strong>
+				<a href={ITEMS["Red Starry Bandana"]}>Red Starry Bandana</a>
+			</strong>{" "}
+			(Lv 25, all-job, score 8) - drops from{" "}
+			<a href="/mobs/17">Stirge</a> in Sleepywood. +2 STR, 24 PDD, 5
+			MaxHP. There is no shop hat in the Lv 20-30 range that comes
+			within 10 PDD of this. Stirge is already your Work Gloves +
+			Blue Basic Boots farm - three drops from one map.
+		</p>
+
+		<h3 id="hats-mage">Magician-only hats</h3>
+		<p>
+			Mages get the deepest hat pool - four class-locked options across
+			the Lv 10-30 window:
+		</p>
+		<ul>
+			<li>
+				<strong>
+					<a href={ITEMS["Red Apprentice Hat"]}>Red Apprentice Hat</a>
+				</strong>{" "}
+				(Lv 10, score 8) - from <a href="/mobs/14">Bubbling</a>.
+				Same map as your Emerald Staff / Battle Axe / Triple-Tipped
+				Zamadar farm; Bubbling is genuinely the busiest single map
+				in the pre-30 gear routing.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Pink Jester"]}>Pink Jester</a>
+				</strong>{" "}
+				(Lv 30, score 7) - from{" "}
+				<a href="/mobs/21">Zombie Mushroom</a>. Requires INT 50 / LUK
+				20, so it lands right at the Lv 30 job-change boundary. This
+				is your "walk into 2nd job with a real hat" pick.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Black Jester"]}>Black Jester</a>
+				</strong>{" "}
+				(Lv 30, score 6) - from <a href="/mobs/20">Dark Axe Stump</a>{" "}
+				in Perion. Slight sidegrade to Pink Jester (+15 MaxMP
+				instead of +15 MaxHP). Grab whichever drops first.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Brown Jester"]}>Brown Jester</a>
+				</strong>{" "}
+				(Lv 30, score 3) - from{" "}
+				<a href="/mobs/19">Horny Mushroom</a>. The +3 INT tradeoff
+				loses some MaxHP; a mage who cares more about damage than
+				survival should farm this over the other Jesters.
+			</li>
+		</ul>
+
+		<h3 id="hats-warrior-bowman-thief">Warrior / Bowman / Thief hats</h3>
+		<ul>
+			<li>
+				<strong>
+					<a href={ITEMS["Bronze Koif"]}>Bronze Koif</a>
+				</strong>{" "}
+				(Lv 10, Warrior, score 4) - from{" "}
+				<a href="/mobs/7">Slime</a>. Trivial farm at Ellinia Dungeon
+				and it lines up with your Lemona gloves drop.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Green Feather Hat"]}>Green Feather Hat</a>
+				</strong>{" "}
+				(Lv 15, Bowman, score 4) - from{" "}
+				<a href="/mobs/13">Green Mushroom</a>. The same map that
+				gives you Pan Lid + Green Woodsman Boots + Emerald Staff
+				now covers your hat slot too. Green Mushroom is
+				disgustingly generous.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Red Thief Hood"]}>Red Thief Hood</a>
+				</strong>{" "}
+				(Lv 15, Thief, score 4) - from{" "}
+				<a href="/mobs/12">Octopus</a> in Kerning. Sits alongside
+				the Triple-Tipped Zamadar drops - if you're grinding subway
+				Bubblings you'll pass Octopus maps anyway.
+			</li>
+			<li>
+				<strong>
+					<a href={ITEMS["Green Loosecap"]}>Green Loosecap</a>
+				</strong>{" "}
+				(Lv 20, Thief, score 4) - from{" "}
+				<a href="/mobs/16">Blue Mushroom</a> at the Entrance of
+				Golem's Temple. Bridges the Red Thief Hood -> job change
+				window.
+			</li>
+		</ul>
+
+		<h3 id="hats-fallback">Universal fallback (any class)</h3>
+		<ul>
+			<li>
+				<strong>
+					<a href={ITEMS["White Bandana"]}>White Bandana</a>
+				</strong>{" "}
+				(Lv 10, all-job, score 3) - from{" "}
+				<a href="/mobs/7">Slime</a>. Score 3 is the "don't camp,
+				but grab it if you see it" tier. Fine bridge from Lv 10 to
+				15 if the Red Apprentice Hat doesn't drop.
+			</li>
+		</ul>
+		<p class="callout callout--tip">
+			<strong>Punch line update:</strong> the "three map plan"
+			(Green Mushroom, Ant Tunnel, Wild Boar) now covers your hat
+			slot too. Add Stirge to the rotation between Lv 20-25 for the
+			Red Starry Bandana and you've got a complete Lv 10-30 kit from
+			four maps.
+		</p>
 
 		<h2 id="what-not-to-chase">What NOT to chase</h2>
 		<p>
