@@ -344,7 +344,10 @@ function isGroupActive(group: NavGroup): boolean {
 		color: var(--text-on-nav);
 		background: transparent;
 		border: none;
-		cursor: pointer;
+		/* Cursor is intentionally inherited from the sitewide `a, button`
+		   rule in global.css so the themed .cur asset applies (matches
+		   the Founders "Buy on Nexon.com" CTA). Do NOT hardcode
+		   `cursor: pointer` here - it defeats the theme system. */
 	}
 
 	.primary-nav__link:hover,
@@ -437,7 +440,8 @@ function isGroupActive(group: NavGroup): boolean {
 		font-weight: 700;
 		color: var(--text-on-nav);
 		padding: 0.65rem 1rem;
-		cursor: pointer;
+		/* See .primary-nav__link comment: themed cursor comes from
+		   the global `button` rule; hardcoding pointer defeats it. */
 		min-height: 44px;
 	}
 	.primary-nav__burger:hover,
