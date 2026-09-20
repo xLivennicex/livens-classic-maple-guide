@@ -1,0 +1,194 @@
+---
+/**
+ * <GalleryPostcard> - one polaroid-styled community screenshot.
+ *
+ * Design notes:
+ * - Rotates slightly at rest to feel like a scattered photo on a
+ *   corkboard, un-rotates on hover so the caption reads flat when
+ *   users engage with it.
+ * - Rotation direction alternates via CSS `:nth-child(odd/even)` on
+ *   the parent so we don't need per-postcard randomness (which would
+ *   break SSR-consistent output).
+ * - Image ratio is preserved via aspect-ratio + object-fit; the CLS
+ *   is bounded to the polaroid frame (fixed) rather than the image
+ *   itself. If imageWidth/imageHeight are provided we hint the
+ *   browser via width/height attrs so layout is stable even before
+ *   the image loads.
+ * - Caption is the visual centerpiece - larger, centered, uses the
+ *   heading font (feels handwritten-adjacent without needing a
+ *   custom cursive that would tank load time).
+ * - IGN + moment date sit at the bottom in a small "signature" row.
+ */
+
+interface Props {
+	ign: string;
+	caption: string;
+	image: string;             // filename inside /public/gallery/
+	imageWidth?: number;
+	imageHeight?: number;
+	momentDate: string;        // ISO "2026-09-15"
+}
+
+const { ign, caption, image, imageWidth, imageHeight, momentDate } =
+	Astro.props;
+
+// Human-readable date. Guarding against invalid strings so a bad
+// frontmatter entry doesn't blow up the whole gallery build.
+// timeZone: "UTC" pinned per the site-wide convention (see the
+// long-form comment in src/pages/blog/index.astro's formatDate)
+// so builds are timezone-independent.
+let dateLabel: string;
+try {
+	dateLabel = new Date(momentDate).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+		timeZone: "UTC",
+	});
+} catch {
+	dateLabel = momentDate;
+}
+---
+
+<article class="postcard">
+	<div class="postcard__frame">
+		<img
+			class="postcard__image"
+			src={`/gallery/${image}`}
+			alt={caption}
+			width={imageWidth}
+			height={imageHeight}
+			loading="lazy"
+			decoding="async"
+		/>
+	</div>
+	<div class="postcard__body">
+		<p class="postcard__caption">{caption}</p>
+		<div class="postcard__signature">
+			<span class="postcard__ign">{ign}</span>
+			<time class="postcard__date" datetime={momentDate}>{dateLabel}</time>
+		</div>
+	</div>
+</article>
+
+<style>
+	.postcard {
+		/* Polaroid: white card, image on top, thick bottom border for
+		   the caption "handwriting area". Slight lift on hover. */
+		background: #fdfaf3;
+		border-radius: 4px;
+		padding: 0.85rem 0.85rem 1.25rem;
+		box-shadow:
+			0 1px 2px rgba(0, 0, 0, 0.08),
+			0 8px 24px rgba(0, 0, 0, 0.12);
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		transform-origin: center 40%;
+		transform: rotate(0deg);
+		transition:
+			transform 220ms ease,
+			box-shadow 220ms ease;
+		will-change: transform;
+	}
+
+	/* Alternating rest tilt on the parent grid. Placed here rather
+	   than in the grid stylesheet so the postcard component owns
+	   its own visual signature end-to-end. */
+	:global(.gallery-grid) > .postcard:nth-child(odd) {
+		transform: rotate(-1.4deg);
+	}
+	:global(.gallery-grid) > .postcard:nth-child(even) {
+		transform: rotate(1.1deg);
+	}
+	:global(.gallery-grid) > .postcard:nth-child(3n) {
+		transform: rotate(-0.6deg);
+	}
+
+	.postcard:hover,
+	.postcard:focus-within {
+		transform: rotate(0deg) translateY(-4px);
+		box-shadow:
+			0 2px 4px rgba(0, 0, 0, 0.1),
+			0 14px 34px rgba(0, 0, 0, 0.18);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.postcard,
+		.postcard:hover,
+		.postcard:focus-within,
+		:global(.gallery-grid) > .postcard:nth-child(odd),
+		:global(.gallery-grid) > .postcard:nth-child(even),
+		:global(.gallery-grid) > .postcard:nth-child(3n) {
+			transform: none;
+			transition: box-shadow 220ms ease;
+		}
+	}
+
+	.postcard__frame {
+		background: #111;                 /* letterbox for non-16:9 shots */
+		border-radius: 2px;
+		overflow: hidden;
+		aspect-ratio: 4 / 3;              /* fixed frame; images fit inside */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.postcard__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.postcard__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		padding: 0 0.15rem;
+	}
+
+	.postcard__caption {
+		margin: 0;
+		font-family: var(--font-heading);
+		font-size: 1.05rem;
+		line-height: 1.3;
+		color: #2a2118;
+		text-align: center;
+		/* Cap the caption to 3 lines so absurdly-long submissions
+		   don't stretch the postcard vertically. Approval script
+		   caps at 280 chars but even 280 could go 5+ lines. */
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.postcard__signature {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.75rem;
+		font-size: 0.78rem;
+		color: #6b5d4a;
+		border-top: 1px dashed #cabfab;
+		padding-top: 0.5rem;
+	}
+
+	.postcard__ign {
+		font-weight: 700;
+		color: #4a3d2a;
+		/* IGNs can be arbitrarily weird; truncate if the submitter
+		   picked a 60-char handle. */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 60%;
+	}
+
+	.postcard__date {
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+</style>

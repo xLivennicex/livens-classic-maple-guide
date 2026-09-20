@@ -1,0 +1,67 @@
+name:  Gallery submission
+description: Share a screenshot from Classic World for the community gallery.
+title: "[Gallery] <caption goes here>"
+labels: ["gallery-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing a moment! Fill in the fields below and drag your
+        screenshot into the last field. Liven reviews every submission -
+        approved postcards usually go live within a day.
+
+        **Please only submit screenshots you personally captured or have
+        permission to share.** By submitting, you agree to have the image
+        + caption published on livensmapleguide.com.
+
+  - type: input
+    id: ign
+    attributes:
+      label: In-game name
+      description: The IGN you want shown on the postcard.
+      placeholder: e.g. LivenTheHero
+    validations:
+      required: true
+
+  - type: input
+    id: caption
+    attributes:
+      label: Caption
+      description: One line that captures the moment. Keep it under 280 characters.
+      placeholder: e.g. Friends first Mushmom
+    validations:
+      required: true
+
+  - type: input
+    id: moment_date
+    attributes:
+      label: When it happened (YYYY-MM-DD)
+      description: The date the screenshot was taken in-game. Leave blank if you're not sure and we'll use today.
+      placeholder: 2026-09-15
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: |
+        Drag-and-drop your screenshot here, or click to attach.
+        Accepted formats: JPG, PNG, WebP. Max ~10MB.
+      placeholder: Drop your image right here.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **What happens next:**
+        1. Liven reviews the submission (usually within 24-48h).
+        2. If approved, a comment will link you to your live postcard.
+        3. If declined, we'll close this issue with a reason - usually
+           quality (blurry / unreadable), off-topic (not a Classic
+           World screenshot), or repeated content.
+
+        **Want it removed later?** Comment on this issue asking for
+        removal and it'll come down on the next deploy.

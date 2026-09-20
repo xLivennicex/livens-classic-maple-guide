@@ -438,7 +438,13 @@ main.page-width {
 	font: inherit;
 	font-weight: bold;
 	text-decoration: none;
-	cursor: pointer;
+	/* Cursor intentionally NOT declared here - it's set by the
+	   sitewide `a, button, .primary-button, .secondary-button, ...`
+	   rule at the top of this file which applies the themed .cur
+	   asset. Sprint 97.9 fixed the same anti-pattern in
+	   PrimaryNav.astro; sprint 98 catches the class-level twin
+	   here. If you're tempted to re-add `cursor: pointer` for
+	   "clarity," read the comment on that top rule first. */
 }
 
 .primary-button {

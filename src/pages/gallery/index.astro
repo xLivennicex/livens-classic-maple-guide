@@ -1,0 +1,256 @@
+---
+/**
+ * /gallery - community screenshot postcards.
+ *
+ * Reads the `gallery` content collection (community submissions,
+ * moderated by Liven via GitHub Issue approval) and renders them
+ * as polaroid-style postcards on a corkboard-esque grid.
+ *
+ * Submission flow: the "Share a moment" CTA opens a pre-filled
+ * GitHub Issue via .github/ISSUE_TEMPLATE/gallery-submission.yml.
+ * Liven approves via `npm run gallery:approve <issue-url>` which
+ * writes the .md + optimized image + commits. See scripts/
+ * approve-gallery-submission.mjs.
+ *
+ * Empty-state UX: when the collection has zero entries, we still
+ * show the CTA prominently so the first visitor can be the first
+ * submitter without seeing a broken-looking empty page.
+ */
+
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import GalleryPostcard from "../../components/GalleryPostcard.astro";
+
+// GitHub issue template URL. Kept as a const so the CTA + empty-state
+// both link to the same target and a repo rename touches one line.
+// `template` param must match the filename in .github/ISSUE_TEMPLATE/.
+const SUBMISSION_URL =
+	"https://github.com/xLivennicex/livens-classic-maple-guide/issues/new?template=gallery-submission.yml&labels=gallery-submission";
+
+// Newest moment first. We sort by momentDate (when it happened
+// in-game) rather than approvedAt so a slow-approval postcard
+// slots into its correct historical position rather than jumping
+// to the top just because Liven finally got to reviewing it.
+const postcards = (await getCollection("gallery")).sort((a, b) =>
+	b.data.momentDate.localeCompare(a.data.momentDate),
+);
+
+const count = postcards.length;
+---
+
+<BaseLayout
+	title="Gallery - Liven's Classic Maple Guide"
+	description="Community screenshots from MapleStory Classic World. First-time-kills, party moments, and other memories shared by players."
+	currentPath="/gallery"
+	theme="ellinia"
+	decorations={false}
+>
+	{/*
+	   Uses the sitewide .section-heading panel pattern (see global.css)
+	   so the header sits on a legible cream card instead of directly
+	   on the themed backdrop art. The nested <div> structure is what
+	   .section-heading > div > h1 selectors expect - do not flatten.
+	*/}
+	<header class="section-heading gallery-header">
+		<div>
+			<span class="eyebrow">Community</span>
+			<h1>Screenshot gallery</h1>
+			<p class="lede">
+				Postcards from Classic World players. First-time-kills,
+				party wipes that became inside jokes, screenshot-art
+				from the prettiest maps - the moments that make
+				MapleStory MapleStory. Got a good one? Send it in.
+			</p>
+		</div>
+		<div class="gallery-header__actions">
+			<a
+				class="primary-button"
+				href={SUBMISSION_URL}
+				target="_blank"
+				rel="noopener"
+			>
+				Share a moment →
+			</a>
+			<span class="gallery-header__count" aria-live="polite">
+				{count === 0
+					? "Be the first postcard"
+					: count === 1
+						? "1 postcard so far"
+						: `${count} postcards so far`}
+			</span>
+		</div>
+	</header>
+
+	{
+		count === 0 ? (
+			<section class="gallery-empty">
+				<p class="gallery-empty__title">
+					No postcards on the corkboard yet.
+				</p>
+				<p class="gallery-empty__body">
+					Every collection starts with the first entry.
+					Send a screenshot + one-line caption via the
+					submission form above and yours could pin here
+					by tomorrow.
+				</p>
+			</section>
+		) : (
+			<section class="gallery-grid" aria-label="Community postcards">
+				{postcards.map((postcard) => (
+					<GalleryPostcard
+						ign={postcard.data.ign}
+						caption={postcard.data.caption}
+						image={postcard.data.image}
+						imageWidth={postcard.data.imageWidth}
+						imageHeight={postcard.data.imageHeight}
+						momentDate={postcard.data.momentDate}
+					/>
+				))}
+			</section>
+		)
+	}
+
+	<footer class="gallery-fine-print">
+		<h2>How submissions work</h2>
+		<ol>
+			<li>
+				Click <strong>Share a moment</strong> above. It opens a
+				GitHub Issue with a short form - IGN, caption, when it
+				happened, and drag-drop your screenshot.
+			</li>
+			<li>
+				Liven reviews every submission. Approved postcards
+				usually go live within a day; anything spammy, NSFW,
+				or off-topic gets closed with a reason.
+			</li>
+			<li>
+				Once approved, your postcard is public forever - the
+				gallery is version-controlled in the site's git repo.
+				If you ever want it removed, comment on your original
+				issue and it'll come down on the next deploy.
+			</li>
+		</ol>
+		<p class="gallery-fine-print__foot">
+			Not on GitHub? Making an account takes 30 seconds and an
+			email address. If that's a blocker, ping Liven on Discord
+			with your screenshot and IGN and it'll get added manually.
+		</p>
+	</footer>
+</BaseLayout>
+
+<style>
+	/* .section-heading (global.css) provides the panel + eyebrow +
+	   heading + lede scaffolding. We only need scoped rules for the
+	   two elements it doesn't know about: the actions column and
+	   its count label. */
+
+	.gallery-header {
+		max-width: 62rem;
+	}
+
+	.gallery-header .lede {
+		font-size: 1.05rem;
+		line-height: 1.5;
+		margin: 0.5rem 0 0;
+		color: var(--text-body);
+	}
+
+	.gallery-header__actions {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.55rem;
+		flex-shrink: 0;
+	}
+
+	.gallery-header__count {
+		font-size: 0.85rem;
+		color: var(--text-muted, #6b5d4a);
+		font-style: italic;
+	}
+
+	/* .section-heading collapses to column layout below 800px
+	   (see global.css). Left-align the actions column when that
+	   happens so it doesn't awkwardly hug the right edge. */
+	@media (max-width: 800px) {
+		.gallery-header__actions {
+			align-items: flex-start;
+		}
+	}
+
+	/* Postcard grid. Uses auto-fill so the grid gracefully expands
+	   from 1 column on mobile up through 4 on wide desktops without
+	   named breakpoints. `min(100%, 22rem)` caps postcard width so
+	   they don't stretch absurdly wide when there's only one on a
+	   row. The gap is deliberately generous so tilted postcards
+	   don't overlap each other. */
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+		gap: 2.2rem 1.8rem;
+		max-width: 78rem;
+		margin: 0 auto;
+		padding: 1.5rem 0.5rem 3rem;
+	}
+
+	.gallery-empty {
+		max-width: 36rem;
+		margin: 3rem auto;
+		padding: 2.2rem 2rem;
+		text-align: center;
+		background: var(--surface-card, #fdfaf3);
+		border: 1px dashed var(--accent-primary, #b8460e);
+		border-radius: 10px;
+	}
+
+	.gallery-empty__title {
+		font-family: var(--font-heading);
+		font-size: 1.35rem;
+		margin: 0 0 0.6rem;
+		color: var(--text-heading);
+	}
+
+	.gallery-empty__body {
+		margin: 0;
+		color: var(--text-body);
+		line-height: 1.5;
+	}
+
+	.gallery-fine-print {
+		max-width: 46rem;
+		margin: 3rem auto 1rem;
+		padding: 1.75rem 1.75rem 1.5rem;
+		/* Solid surface (not transparent tint) - kitten caught the
+		   sprint 98 header floating on backdrop art AND flagged this
+		   footer at 6% alpha as the same bug family. Uses the same
+		   surface-card token as .section-heading so both panels read
+		   as the same design-system element. */
+		background: var(--surface-card);
+		border-radius: 10px;
+		border: 1px solid var(--accent-primary);
+		box-shadow: var(--shadow-panel);
+	}
+
+	.gallery-fine-print h2 {
+		margin: 0 0 0.85rem;
+		font-size: 1.15rem;
+	}
+
+	.gallery-fine-print ol {
+		margin: 0 0 1rem;
+		padding-left: 1.4rem;
+		line-height: 1.55;
+		color: var(--text-body);
+	}
+
+	.gallery-fine-print ol li + li {
+		margin-top: 0.6rem;
+	}
+
+	.gallery-fine-print__foot {
+		margin: 0;
+		font-size: 0.9rem;
+		color: var(--text-muted, #6b5d4a);
+		font-style: italic;
+	}
+</style>

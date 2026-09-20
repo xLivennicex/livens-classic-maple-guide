@@ -1,0 +1,4 @@
+# Sentinel file so the empty gallery collection directory ships in git.
+# Astro's content collection loader needs the directory to exist even
+# when there are no .md entries yet. Delete this file once real
+# postcards land - or leave it, it doesn't hurt anything.

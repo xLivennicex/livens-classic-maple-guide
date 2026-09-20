@@ -1,0 +1,5 @@
+# Sentinel file so the empty /gallery image directory ships in git.
+# Approved postcard images land here as <slug>.jpg (or .png/.webp).
+# The approve-gallery-submission.mjs script writes them; hand-approval
+# is fine too as long as the filename matches the content collection
+# entry's `image:` field exactly.

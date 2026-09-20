@@ -16,6 +16,7 @@
     "audit:sprites": "node scripts/audit-sprites.mjs",
     "audit:vi": "node scripts/audit-vi-references.mjs",
     "audit:guides": "node scripts/audit-guide-coverage.mjs",
+    "gallery:approve": "node scripts/approve-gallery-submission.mjs",
     "transcode:audio": "node scripts/transcode-audio.mjs",
     "fetch:maple-catalog": "node scripts/fetch-maple-catalog.mjs",
     "validate:character-items": "node scripts/validate-character-items.mjs",

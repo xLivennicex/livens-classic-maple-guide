@@ -543,4 +543,60 @@ const blog = defineCollection({
 // it's available.
 void reference;
 
-export const collections = { guides, jobs, items, quests, blog };
+// ==================== gallery collection ====================
+//
+// Community-submitted screenshot postcards. One .md-per-postcard
+// (frontmatter-only, no body prose - the visual IS the content).
+//
+// Moderation flow: submissions arrive as GitHub Issues via the
+// gallery-submission template (see .github/ISSUE_TEMPLATE/). Liven
+// reviews the issue, then either:
+//   - Runs `npm run gallery:approve <issue-url>` to auto-import + commit
+//   - Closes the issue for spam/off-topic/quality reasons
+//
+// The .md file is the sole approval token - if it exists in git, the
+// postcard is live. No approval flag, no draft/published state, no
+// pending queue in the collection. Git is the audit log.
+//
+// Image lives at `/public/gallery/<slug>.jpg` (or .png), served as-is
+// by Cloudflare Pages. The build script pre-resizes to max 1600px wide
+// so gallery load stays fast even if we get hundreds of postcards.
+
+const gallery = defineCollection({
+	loader: glob({ pattern: "**/*.md", base: "./src/content/gallery" }),
+	schema: z.object({
+		// ==== Required from submitter ====
+		ign: z.string().min(1).max(60),        // in-game name shown on postcard
+		caption: z.string().min(1).max(280),   // "Friends first Mushmom" etc
+
+		// Relative filename inside /public/gallery/. Stored WITHOUT the
+		// leading path so we can rehome the folder later without a
+		// mass-rewrite. The gallery grid concatenates `/gallery/${image}`.
+		image: z.string().regex(
+			/^[a-z0-9][a-z0-9-]*\.(jpg|jpeg|png|webp)$/i,
+			"image must be a slug-safe filename like friends-first-mushmom.jpg",
+		),
+
+		// Optional dimensions for CLS-safe rendering. The approval
+		// script fills these in via image metadata; hand-approvals
+		// can leave them blank and the CSS grid falls back gracefully.
+		imageWidth: z.number().int().positive().optional(),
+		imageHeight: z.number().int().positive().optional(),
+
+		// When the moment in the screenshot happened. Distinct from
+		// approvedAt (below) so we can show "Sept 15, 2026 - first
+		// Mushmom" even if the postcard was approved days later.
+		momentDate: z.string(),                // ISO date "2026-09-15"
+
+		// ==== Auto-populated on approval ====
+		approvedAt: z.string(),                // ISO date, set by approval script
+		submissionIssue: z.number().int().positive().optional(), // GH issue #
+
+		// ==== Optional moderation notes (never rendered) ====
+		// Kept in frontmatter so future-me remembers WHY a borderline
+		// submission got the green light. Not shown on the postcard.
+		reviewerNote: z.string().optional(),
+	}),
+});
+
+export const collections = { guides, jobs, items, quests, blog, gallery };
