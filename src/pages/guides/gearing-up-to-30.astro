@@ -1,0 +1,622 @@
+---
+/**
+ * /guides/gearing-up-to-30 - what to farm (not buy) on the road
+ * to 2nd job advancement.
+ *
+ * SEO target: 'maplestory classic gearing guide', 'maplestory
+ * classic early game gear', 'maplestory pre-30 gear drops',
+ * 'best gear for level 30 maplestory classic'. Fresh MSCW-specific
+ * queries that will spike around launch.
+ *
+ * Data provenance: every mob/item pairing here is pulled from
+ * `src/data/db/mobs.json` (drop tables crowdsourced from MeowDB,
+ * item stats from the CoT2 client datamine). Scores are community
+ * upvotes-minus-downvotes on MeowDB - anything score >=3 was
+ * spot-checked as a real farm-worthy drop; score 1-2 entries are
+ * "seen but not consistent" and get called out as such.
+ *
+ * If new mob drops get ingested via `npm run db:build`, re-run
+ * `node scripts/query-lv30-gear.mjs` to refresh the source data
+ * and update this file's tables.
+ *
+ * Sprint 97.6: created. First guide that leans hard on the
+ * enriched drop table + the working mob sprite pipeline.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+	title="Gearing Up to Level 30 - Liven's Classic Maple Guide"
+	description="What to farm (not buy) on the road to 2nd job. Best mob drops for weapons, shields, gloves, and accessories from Lv 1-30, plus the training spots that double as gear farms."
+	currentPath="/guides"
+	theme="perion"
+	decorations={false}
+>
+	<section class="section-heading">
+		<div>
+			<span class="eyebrow eyebrow--guide">Orientation</span>
+			<h1>Gearing Up to Level 30</h1>
+			<p class="lede">
+				NPC shops sell fine gear, but the good stuff drops. This is the
+				guide to what's worth chasing versus what to just buy - by class,
+				by slot, and by which training spots double as gear farms while
+				you push toward 2nd job advancement.
+			</p>
+		</div>
+	</section>
+
+	<article class="prose">
+		<h2 id="the-philosophy">The gearing philosophy</h2>
+		<p>
+			Between Lv 1 and Lv 30, most players over-spend on gear. They
+			buy every new weapon tier at the shop, replace armor every
+			10 levels, and hit the 2nd job job change with 40k meso in
+			the bank. That's the wrong loop.
+		</p>
+		<p>
+			The right loop: <strong>buy a cheap weapon at each tier from
+			the shop</strong>, but <strong>farm your shield, gloves, shoes,
+			and accessories from mobs</strong>. Shop-only slots (chest, pants,
+			hat) get one shop piece at Lv 10 and one at Lv 20, then you
+			save the rest for potions and the 2nd-job weapon (which is
+			the single biggest meso sink pre-40, at ~700k-2M depending
+			on class).
+		</p>
+		<p>
+			The list below is every equipment drop with a level requirement
+			of 30 or below that our datamine has confirmed. We prioritize
+			drops with a MeowDB score of 3+ (means multiple players have
+			seen and voted them as consistent). Anything score 1-2 gets
+			listed as "rare/possible" - don't camp for it.
+		</p>
+
+		<h2 id="universal-picks">Universal picks (any class)</h2>
+		<p>
+			Three drops are worth going out of your way for regardless of
+			what class you rolled. They cover slots where shop options are
+			either non-existent or strictly worse:
+		</p>
+
+		<div class="pick-grid">
+			<div class="pick pick--hero">
+				<h3>Pan Lid (shield, Lv 10)</h3>
+				<p class="pick__mob">
+					Drops from <a href="/mobs/13">Green Mushroom</a> (Lv 15).{" "}
+					<strong>MeowDB score 14</strong> - the single most-confirmed
+					drop in the pre-30 table.
+				</p>
+				<p class="pick__why">
+					Any-class shield with meaningful defense at a level where
+					most players don't own one. The Lv 10 requirement means it
+					slots in immediately after your first job advancement. Farm
+					at <strong>West Rocky Mountain III</strong> or{" "}
+					<strong>Tree Dungeon, Forest Up North IV</strong> - both are
+					also excellent Lv 15-22 EXP maps.
+				</p>
+			</div>
+
+			<div class="pick pick--hero">
+				<h3>Work Gloves (Lv 10, any)</h3>
+				<p class="pick__mob">
+					Drops from <a href="/mobs/17">Stirge</a> (Lv 20).
+					Score 4.
+				</p>
+				<p class="pick__why">
+					Also the guaranteed quest reward from{" "}
+					<a href="/quests/andres-request">Andre's Request</a> at Lv
+					10 - so most players don't need to farm this. Listed here
+					for completeness: if you skipped the Nella quest chain,
+					Stirge in the{" "}
+					<strong>Dark Cave / Transfer Area</strong> drop these at
+					score 4 (very reliable).{" "}
+					<strong>+6 Defense + 1 Critical Rate</strong> and 5 upgrade
+					slots make this the base for every scrolled glove pipeline
+					later.
+				</p>
+			</div>
+
+			<div class="pick pick--hero">
+				<h3>Weighted Earrings (Lv 20, any)</h3>
+				<p class="pick__mob">
+					Drops from <a href="/mobs/21">Zombie Mushroom</a> (Lv 24, score
+					4) and <a href="/mobs/22">Wild Boar</a> (Lv 25, score 2).
+				</p>
+				<p class="pick__why">
+					Earring slot is usually empty until Lv 30+, but Weighted
+					Earrings pop at Lv 20 with real stats. Ant Tunnel III
+					farms Zombie Mushrooms for both this AND the White Chaos
+					Robe (Lv 35 mage overall - keep it for the future). Best
+					accessory upgrade of the pre-30 arc.
+				</p>
+			</div>
+		</div>
+
+		<h2 id="training-spots">Training spots that double as gear farms</h2>
+		<p>
+			Some maps are worth camping specifically because the mob you're
+			grinding drops gear you actually want. Sorted by the level bracket
+			they cover:
+		</p>
+
+		<table class="farm-table">
+			<thead>
+				<tr>
+					<th>Level bracket</th>
+					<th>Mob & spot</th>
+					<th>What drops here</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="bracket">Lv 10-15</td>
+					<td>
+						<a href="/mobs/9">Orange Mushroom</a> (Lv 8)<br />
+						<em>Henesys Hunting Ground / Dangerous Forest</em>
+					</td>
+					<td>Long Sword (warrior, Lv 10, sc4), Double Axe (Lv 10, sc4),
+						Spear (Lv 10, sc4), White Gomushin shoes (Lv 11)</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 15-22</td>
+					<td>
+						<a href="/mobs/13">Green Mushroom</a> (Lv 15)<br />
+						<em>West Rocky Mountain III, Tree Dungeon IV</em>
+					</td>
+					<td><strong>Pan Lid shield (sc14)</strong>, Emerald Staff (mage, sc3),
+						Green Woodsman Boots (bowman, sc4)</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 15-20</td>
+					<td>
+						<a href="/mobs/14">Bubbling</a> (Lv 15)<br />
+						<em>Line 1 Area 1 (Kerning subway)</em>
+					</td>
+					<td>Battle Axe (warrior Lv 15, sc3), <strong>Fish Spear (Lv 20,
+						sc9)</strong>, Triple-Tipped Zamadar (thief Lv 17, sc6)</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 22-28</td>
+					<td>
+						<a href="/mobs/19">Horny Mushroom</a> (Lv 22)<br />
+						<em>Ant Tunnel IV, Ant Tunnel III</em>
+					</td>
+					<td>Steel Fingerless Gloves (warrior Lv 15, sc5),
+						Iron Dagger (thief/warrior Lv 25, sc2), Mithril Pole Arm
+						(warrior Lv 30, sc2)</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 24-30</td>
+					<td>
+						<a href="/mobs/21">Zombie Mushroom</a> (Lv 24)<br />
+						<em>Ant Tunnel III, Ant Tunnel II</em>
+					</td>
+					<td><strong>Weighted Earrings (Lv 20, sc4)</strong>, and White Chaos
+						Robe (mage Lv 35, sc8 - stash for later)</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 25-30</td>
+					<td>
+						<a href="/mobs/22">Wild Boar</a> (Lv 25)<br />
+						<em>West Rocky Mountain IV, Perion Dungeon</em>
+					</td>
+					<td><strong>Eagle Crow crossbow (bowman Lv 30, sc4)</strong>,
+						Ryden bow (Lv 30, sc2), Weighted Earrings</td>
+				</tr>
+				<tr>
+					<td class="bracket">Lv 28-32</td>
+					<td>
+						<a href="/mobs/30">Fire Boar</a> (Lv 32)<br />
+						<em>The Burnt Land III/IV/V</em>
+					</td>
+					<td><strong>Fireman's Axe (warrior Lv 30, sc4)</strong> - a
+						top-tier pre-job-change axe. Slight over-level to grind
+						solo; go in a party for EXP anyway.</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2 id="warrior-picks">Warrior gear picks</h2>
+		<p>
+			Warriors have the deepest weapon-drop pool because they can
+			wield swords, axes, blunt weapons, spears, and polearms. The
+			winning play here is: buy shop swords for the Lv 1-15 arc
+			(too many drops beat them to bother farming), then chase the
+			named weapons below for the Lv 15-30 arc.
+		</p>
+
+		<ul class="drop-list">
+			<li>
+				<strong>Battle Axe</strong> (Lv 15, warrior-only, score 3) -
+				drops from <a href="/mobs/14">Bubbling</a>. Solid axe with a low
+				enough req that you'll actually use it for the full Lv 15-25
+				stretch.
+			</li>
+			<li>
+				<strong>Steel Fingerless Gloves</strong> (Lv 15, warrior, score
+				5) - from <a href="/mobs/19">Horny Mushroom</a> in Ant Tunnel.
+				Best score-per-effort in the whole warrior list.
+			</li>
+			<li>
+				<strong>Mithril Pole Arm</strong> (Lv 30, warrior, score 2) -
+				from <a href="/mobs/19">Horny Mushroom</a>. Rare-ish but worth
+				camping if you're going Spearman 2nd job.
+			</li>
+			<li>
+				<strong>Fireman's Axe</strong> (Lv 30, warrior, score 4) - from{" "}
+				<a href="/mobs/30">Fire Boar</a> in The Burnt Land. This is the
+				axe you want going into Fighter/Page 2nd job change.
+			</li>
+			<li>
+				<strong>Black Dragon Robe</strong> (Lv 30, warrior, score 4) -
+				from <a href="/mobs/36">Lorang</a> at Florina Beach. The chest
+				slot pre-30 is usually a "buy from shop" but this beats every
+				shop option cleanly.
+			</li>
+		</ul>
+		<p class="callout callout--tip">
+			<strong>Skip:</strong> Wooden Sword (Lv 10, sc4) - lands too
+			early, gets replaced within a level. Same with Metal Axe
+			(Lv 10, warrior-tagged) - the Long Sword from Orange Mushroom
+			is a better use of your time.
+		</p>
+
+		<h2 id="magician-picks">Magician gear picks</h2>
+		<p>
+			Magicians live and die by INT-scaling gear, and INT-tagged
+			staff drops are surprisingly common in the pre-30 arc. Buy
+			the Lv 8 wand from Grendel the Really Old, then farm the
+			following:
+		</p>
+
+		<ul class="drop-list">
+			<li>
+				<strong>Emerald Staff</strong> (Lv 15, mage-only, score 3) -
+				from <a href="/mobs/13">Green Mushroom</a>. Same map as Pan Lid,
+				so one training spot outfits both your weapon and shield slot.
+			</li>
+			<li>
+				<strong>Wizard Staff</strong> (Lv 25, mage-only, score 2) - from{" "}
+				<a href="/mobs/16">Blue Mushroom</a> at The Entrance of Golem's
+				Temple. Bridges you cleanly from the Emerald Staff to your
+				2nd-job elemental wand at Lv 30.
+			</li>
+			<li>
+				<strong>Beige Plain Robe</strong> (Lv 15, mage, score 1) - from{" "}
+				<a href="/mobs/6">Stump</a>. Score is low but Stumps are
+				trivial to farm; grab one if you see it drop while doing early
+				Ellinia quests.
+			</li>
+			<li>
+				<strong>Blue Basic Boots</strong> (Lv 10, mage, score 2) - from{" "}
+				<a href="/mobs/17">Stirge</a>. Same farm as Work Gloves, so kill
+				two birds with one bat.
+			</li>
+			<li>
+				<strong>Lemona</strong> (Lv 15, mage, score 3) - gloves from{" "}
+				<a href="/mobs/7">Slime</a>. Trivial farm at any Ellinia
+				dungeon; drop rate is high.
+			</li>
+		</ul>
+
+		<h2 id="bowman-picks">Bowman gear picks</h2>
+		<p>
+			Bowmen have the smallest drop pool but the most concentrated
+			one: Wild Boar carries both viable 2nd-job weapons, which
+			means one training spot pre-30 answers your Lv 30 weapon
+			question regardless of whether you go Hunter or Crossbowman.
+		</p>
+
+		<ul class="drop-list">
+			<li>
+				<strong>Eagle Crow</strong> (Lv 30 crossbow, score 4) - from{" "}
+				<a href="/mobs/22">Wild Boar</a> at West Rocky Mountain IV.
+				Score 4 means you'll see 2-3 of these in a solid grinding
+				session. Best Crossbowman starter weapon in the game.
+			</li>
+			<li>
+				<strong>Ryden</strong> (Lv 30 bow, score 2) - from{" "}
+				<a href="/mobs/22">Wild Boar</a> and{" "}
+				<a href="/mobs/30">Fire Boar</a>. Rarer than Eagle Crow; if
+				you're going Hunter, camp the same map anyway - a Fireman's Axe
+				or Eagle Crow sells to a Warrior/Crossbowman party mate for
+				real meso.
+			</li>
+			<li>
+				<strong>War Bow</strong> (Lv 10 bow, score 1) - from{" "}
+				<a href="/mobs/10">Ribbon Pig</a>. Marginal, but Ribbon Pig
+				farming for the Old Wisconsin quest was going to happen anyway.
+				Skip if you already bought the Lv 10 shop bow.
+			</li>
+			<li>
+				<strong>Brown Hard Leather Boots</strong> (Lv 10 bowman, score
+				1) - from <a href="/mobs/9">Orange Mushroom</a>. Same farm as
+				the Long Sword; keep an eye out but don't camp.
+			</li>
+			<li>
+				<strong>Green Woodsman Boots</strong> (Lv 15 bowman, score 4) -
+				from <a href="/mobs/13">Green Mushroom</a>. Best pre-30 bowman
+				shoes. Same farm as Pan Lid and Emerald Staff (Green Mushroom
+				is genuinely the best gear-and-EXP combo map in the game).
+			</li>
+		</ul>
+
+		<h2 id="thief-picks">Thief gear picks</h2>
+		<p>
+			Thieves get punished hardest by weapon shop prices (claws and
+			daggers scale hard with level requirements), so the drop route saves the
+			most meso here. If you're going Assassin (claw) the drop table
+			is thin - buy shop claws through Lv 30. If you're going Bandit
+			(dagger), the drops below are excellent (weapon req level
+			scaling is steep for both weapons):
+		</p>
+
+		<ul class="drop-list">
+			<li>
+				<strong>Triple-Tipped Zamadar</strong> (Lv 17 dagger, score 6) -
+				from <a href="/mobs/14">Bubbling</a> at Kerning subway. Score 6
+				is one of the highest in the whole pre-30 table - this drop is
+				almost expected in a grinding session.
+			</li>
+			<li>
+				<strong>Iron Dagger</strong> (Lv 25 thief/warrior, score 2) -
+				from <a href="/mobs/19">Horny Mushroom</a> and{" "}
+				<a href="/mobs/1001">Jr. Sentinel</a>. Ant Tunnel is your best
+				dagger-farm map for the Lv 22-28 window.
+			</li>
+			<li>
+				<strong>Stinger</strong> (Lv 22 thief, score 1) - from{" "}
+				<a href="/mobs/18">Jr. Necki</a>. Rare but drops in the same
+				region you're doing Kerning PQ around, so worth noting.
+			</li>
+			<li>
+				<strong>Bronze Wolfskin</strong> (Lv 25 thief gloves, score 1) -
+				from <a href="/mobs/32">Jr. Wraith</a>. Rare drop but meaningful
+				stat block if you find one.
+			</li>
+			<li>
+				<strong>Garnier</strong> (Lv 10 claw, score 1) - from{" "}
+				<a href="/mobs/8">Pig</a>. The ONE decent claw drop in the
+				pre-30 pool. Assassins should still just buy shop claws unless
+				this shows up incidentally.
+			</li>
+		</ul>
+
+		<h2 id="what-not-to-chase">What NOT to chase</h2>
+		<p>
+			The mob drop table has a lot of noise. Skip these:
+		</p>
+		<ul>
+			<li>
+				<strong>Anything with score 0 or negative.</strong> The one-off
+				drops that appear in the tables but no one has actually
+				confirmed. Not worth camping.
+			</li>
+			<li>
+				<strong>Cosmetic tops/bottoms.</strong> There are 28 tops and
+				20 bottoms in the pre-30 drop table with wildly varying stats -
+				but Lv 10 shop chest armor + Lv 20 shop pants covers the
+				stat block just fine. Cosmetics are for after 2nd job.
+			</li>
+			<li>
+				<strong>Lv 0 "beginner" weapons</strong> (Sword, Hand Axe, Razor)
+				- these drop before you can use them meaningfully. The
+				shop-bought Lv 8 weapon skips over the whole tier.
+			</li>
+			<li>
+				<strong>Duplicate low-tier stumps drops.</strong> Wooden Wand,
+				Composite Bow, Juno gloves - all mediocre score, all
+				replaced within 5 levels. Not worth stopping training
+				for.
+			</li>
+		</ul>
+
+		<h2 id="the-punch-line">The punch line</h2>
+		<p>
+			<strong>Pick one map, farm it hard.</strong> Green Mushrooms at
+			West Rocky Mountain III is the single best training spot in
+			the Lv 15-22 window: Pan Lid for shield, Emerald Staff or
+			Green Woodsman Boots depending on class, and clean EXP that
+			gets you to Kerning PQ. Then move to Ant Tunnel III/IV for the
+			Lv 22-28 window (Horny Mushroom + Zombie Mushroom on adjacent
+			maps), grab your Weighted Earrings and Steel Fingerless Gloves,
+			and finish the Lv 28-30 grind at Wild Boar for Eagle Crow or
+			Fireman's Axe.
+		</p>
+		<p>
+			Three maps. Six meaningful drops. About 15 hours of gameplay.
+			You'll hit Lv 30 with a full accessory kit, a good weapon,
+			and enough banked meso to buy your 2nd-job weapon at the
+			job change - which is the outcome most players don't achieve
+			because they're broke from over-buying shop gear.
+		</p>
+
+		<p class="verification">
+			<strong>Data provenance:</strong> mob drop tables from MeowDB
+			(<a href="https://meowdb.com/msclassic" target="_blank" rel="noopener">meowdb.com/msclassic</a>),
+			item stats + level requirements from the CoT 2 client datamine.
+			MeowDB scores are community upvotes minus downvotes (public
+			vote count per drop). This guide will get re-verified during
+			Founder's Access with in-game drop testing. If you spot a
+			drop that's mis-listed, please
+			<a href="https://github.com/xLivennicex/livens-classic-maple-guide/issues" target="_blank" rel="noopener">open an issue</a>.
+		</p>
+
+		<p class="up-next">
+			<strong>Up next:</strong> hit Lv 30, then read the{" "}
+			<a href="/guides/warrior-2nd-job">Warrior</a> /{" "}
+			<a href="/guides/magician-2nd-job">Magician</a> /{" "}
+			<a href="/guides/bowman-2nd-job">Bowman</a> /{" "}
+			<a href="/guides/thief-2nd-job">Thief</a> 2nd-job branch decision
+			guide for your class.
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.section-heading {
+		max-width: 68ch;
+		margin-bottom: 2rem;
+	}
+	.lede {
+		font-size: 1.05rem;
+		color: var(--text-body);
+		margin-top: 0.5rem;
+	}
+
+	.prose {
+		max-width: 76ch;
+		font-size: 1rem;
+		line-height: 1.65;
+		color: var(--text-body);
+	}
+	.prose h2 {
+		font-size: 1.5rem;
+		color: var(--text-heading);
+		margin: 2.2rem 0 0.8rem;
+		padding-bottom: 0.3rem;
+		border-bottom: 2px solid var(--accent-primary);
+	}
+	.prose h3 {
+		font-size: 1.15rem;
+		color: var(--text-heading);
+		margin: 1.5rem 0 0.4rem;
+	}
+	.prose a {
+		color: var(--accent-primary);
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.prose a:hover {
+		text-decoration: underline;
+	}
+	.prose p {
+		margin: 0.7rem 0;
+	}
+	.prose ul {
+		margin: 0.6rem 0 1rem 1.4rem;
+	}
+	.prose li {
+		margin: 0.35rem 0;
+	}
+
+	/* Universal-picks hero grid. Three big call-outs for the top
+	   drops - the "even if you skip everything else, get these"
+	   trio. Card-style to visually differentiate from the bullet
+	   lists in the class sections.
+	   
+	   Sprint 97.6 fix (kitten): .prose caps content at 76ch (~638px),
+	   so a repeat(auto-fill, minmax(260px, 1fr)) grid could only fit
+	   2 cards and wrapped the third. Dropped minmax to 180px so 3
+	   tracks fit inside the prose measure (3*180 + 2*16px gap = 572px
+	   <= 638px). Stacks cleanly at narrower widths. */
+	.pick-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 1rem;
+		margin: 1rem 0 1.5rem;
+	}
+	.pick {
+		padding: 1rem 1.2rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.6rem;
+		border-left: 4px solid var(--accent-primary);
+	}
+	.pick h3 {
+		margin: 0 0 0.4rem;
+		font-size: 1.05rem;
+	}
+	.pick__mob {
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		margin: 0.2rem 0 0.6rem;
+	}
+	.pick__why {
+		font-size: 0.92rem;
+		margin: 0;
+	}
+
+	/* Farm table - the level-bracketed training-spots-that-drop-gear
+	   summary. Compact rows, monospace bracket column for scannability. */
+	.farm-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1rem 0 1.5rem;
+		font-size: 0.92rem;
+	}
+	.farm-table th,
+	.farm-table td {
+		text-align: left;
+		padding: 0.55rem 0.7rem;
+		border-bottom: 1px solid var(--border-card);
+		vertical-align: top;
+	}
+	.farm-table th {
+		background: var(--surface-card);
+		color: var(--text-heading);
+		font-weight: 700;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+	.farm-table .bracket {
+		font-family: var(--font-mono, monospace);
+		font-weight: 700;
+		color: var(--accent-primary);
+		white-space: nowrap;
+	}
+	.farm-table em {
+		display: block;
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		margin-top: 0.15rem;
+	}
+
+	/* Drop lists in class sections. Slightly indented, item names
+	   bolded, source mob linked. Keeps the vertical rhythm tight so
+	   each class section feels like a scannable reference sheet, not
+	   a wall of prose. */
+	.drop-list {
+		list-style: none;
+		padding: 0;
+		margin: 0.8rem 0 1.2rem;
+	}
+	.drop-list li {
+		padding: 0.5rem 0.8rem;
+		border-left: 3px solid var(--accent-secondary);
+		background: color-mix(in srgb, var(--surface-card) 60%, transparent);
+		margin: 0.4rem 0;
+		border-radius: 0 0.3rem 0.3rem 0;
+	}
+
+	.callout {
+		padding: 0.9rem 1.1rem;
+		border-radius: 0.4rem;
+		margin: 1rem 0;
+		font-size: 0.94rem;
+	}
+	.callout--tip {
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+		border-left: 3px solid var(--accent-primary);
+	}
+
+	.verification {
+		margin-top: 2rem;
+		padding: 0.9rem 1.1rem;
+		background: var(--surface-card);
+		border: 1px dashed var(--border-card);
+		border-radius: 0.4rem;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+	}
+
+	.up-next {
+		margin-top: 1.2rem;
+		padding: 0.9rem 1.1rem;
+		background: color-mix(in srgb, var(--accent-primary) 8%, transparent);
+		border-left: 3px solid var(--accent-primary);
+		border-radius: 0 0.4rem 0.4rem 0;
+		font-size: 0.95rem;
+	}
+</style>
