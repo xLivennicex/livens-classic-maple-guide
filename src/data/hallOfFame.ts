@@ -84,6 +84,41 @@ export const hallOfFameItems: LegacyItem[] = [
 		tierNote: "Regional cosmetic events like this are unlikely in a global-first Classic World, but a fan can dream.",
 	},
 	{
+		// Category note: balloons were CAPE-slot items (1102xxx range,
+		// not 1302xxx weapons) - they floated behind the character
+		// rather than being held. Mapped to "outfit" here since that's
+		// the closest fit in LegacyCategory - "cape" as a dedicated
+		// category isn't worth adding for a two-item run.
+		slug: "republican-balloon",
+		name: "Republican Balloon (Elephant)",
+		category: "outfit",
+		wzId: 1102111,
+		event: "US Presidential Election commemorative",
+		years: "2004",
+		server: "GMS",
+		blurb: "Cape-slot cosmetic given out during Nexon's 2004 GMS 'Vote 04' civic-participation event. A little elephant balloon that bobbed behind your character - and yes, it's BLUE. Nexon shipped both balloons in the same blue palette rather than color-coding them by party, which is peak 2004 GMS attention-to-detail. A genuinely charming sprite that a lot of veterans still remember pinning behind them at Free Market.",
+		tier: "dreamed",
+		tierNote: "Somehow STILL sitting in the v83 game files at wzId 1102111 - twenty years later, the elephant remembers. Whether Classic World ever re-enables it is another question.",
+	},
+	{
+		// Deliberately set wzId to null - the Democratic Balloon was
+		// scrubbed from the v83 GMS data (searches for "donkey" /
+		// "democratic" / "election" all return 0 hits at
+		// maplestory.io/api/GMS/83/item). The <Sprite> component's
+		// themed placeholder is exactly the right visual here: the
+		// missing sprite IS the joke and the historical footnote.
+		slug: "democratic-balloon",
+		name: "Democratic Balloon (Donkey)",
+		category: "outfit",
+		wzId: null,
+		event: "US Presidential Election commemorative",
+		years: "2004",
+		server: "GMS",
+		blurb: "The other half of the 2004 'Vote 04' pair - a donkey balloon that floated behind Democratic-leaning Maplers (also blue, because see above re: Nexon not color-coding by party). Notably absent from the v83 GMS data snapshot: searches for 'donkey', 'democratic', 'election', and 'vote' all return zero hits. Its Republican counterpart survives at wzId 1102111; the Donkey appears to have been quietly removed post-event and never re-added. First casualty of Maple redistricting.",
+		tier: "dreamed",
+		tierNote: "Sprite lost to time. If anyone has an archived v40-era .wz dump with the Donkey Balloon still intact, we would love to see it - open an issue.",
+	},
+	{
 		slug: "pumpkin-basket",
 		name: "Pumpkin Basket",
 		category: "weapon",
