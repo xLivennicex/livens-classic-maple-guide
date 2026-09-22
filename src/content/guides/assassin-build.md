@@ -111,6 +111,8 @@ This is the one that changes everything. I pulled every scroll in the `2040xxx` 
 
 **In v83, you could stack LUK across top+bottom by scrolling each piece separately.** In Classic World, top/bottom scrolls only add DEF/HP/MP. The only slot you can scroll for LUK on body armor is an **Overall**.
 
+> **Verification caveat — the "Nexon rebalanced this" framing needs an asterisk.** The datamine claim (zero Top/Bottom stat scrolls in Classic World's base itemdb) is fully verified — I scanned every scroll ID 2040000-2049999 and the sub-ranges `20404xx` (Topwear) and `20406xx` (Bottomwear) contain only DEF/HP/MP variants. However, in v83 GMS, the widely-used Top/Bottom stat scrolls (Top for LUK 30%, Bottom for LUK 30%, etc.) also weren't in the base itemdb — they came from Cash Shop / Reward Point / Gachapon systems layered on top of the base game. So the honest framing is: **Classic World's base scroll shop currently has zero Top/Bottom stat scrolls**, not "Nexon deliberately removed something v83 had." Whether Nexon adds them via cash shop / gacha / events at launch is genuinely unknown as of the CoT 2 snapshot. If they do ship, the top+bottom vs overall math in this guide gets rerun. The practical conclusion for now is unchanged: **the only shop-obtainable path to scrolled body-armor stats in CW is an Overall.**
+
 This means: **if you care about scrolled LUK from body armor, you must wear an overall, full stop.** Separate top+bottom combos still exist and can have LUK as base stats, but that number is fixed at whatever the item's base roll gave you. No compounding through scrolling.
 
 ---
