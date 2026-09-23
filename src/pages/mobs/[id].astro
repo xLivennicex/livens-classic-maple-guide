@@ -19,6 +19,7 @@ import itemDossiers from "../../data/db/items.json";
 import { mobSpriteUrl, mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
 import { themeForLocation } from "../../lib/region-theme";
+import { isCanonicalMobDossier } from "../../lib/mob-dedup";
 
 // Pre-index items by WZ ID so drop-table rows can render an icon
 // + link into /items/{id}. Missing items still render (name only) -
@@ -26,7 +27,10 @@ import { themeForLocation } from "../../lib/region-theme";
 const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	return mobDossiers.map((d) => ({
+	// Only render pages for canonical dossiers. Duplicate dossiers
+	// (same wzId, hollow drop tables) are redirected to their winner
+	// by `public/_redirects` - see scripts/generate-mob-redirects.mjs.
+	return mobDossiers.filter(isCanonicalMobDossier).map((d) => ({
 		params: { id: String(d.id) },
 		props: { d },
 	}));

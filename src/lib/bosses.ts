@@ -25,6 +25,7 @@
 
 import mobDossiers from "../data/db/mobs.json";
 import bossManifest from "../data/boss-manifest.json";
+import { mobDossierRichness } from "./mob-dedup";
 import type { SiteTheme } from "../layouts/BaseLayout.astro";
 
 type ThreatLevel = "low" | "moderate" | "high" | "extreme";
@@ -58,20 +59,6 @@ export interface BossDossier {
 const manifestBosses = (bossManifest as { bosses: Record<string, BossManifestEntry> }).bosses;
 
 /**
- * Score a mob dossier by how much cross-ref data it carries. Used
- * to pick the "best" of two dossiers that share a wzId - more
- * spawns + drops + quest requirements means the dossier ID we
- * link to has the richest downstream content.
- */
-function dossierRichness(m: (typeof mobDossiers)[number]): number {
-	return (
-		(m.mapsSpawnedOn?.length ?? 0) * 3 +
-		(m.drops?.length ?? 0) * 2 +
-		(m.requiredByQuests?.length ?? 0)
-	);
-}
-
-/**
  * Build the full boss list once at module load. Astro's static
  * build calls getStaticPaths + component render across all pages,
  * so caching this into a module-level const keeps repeat lookups
@@ -98,7 +85,7 @@ function buildBossList(): BossDossier[] {
 			console.warn(`[bosses] manifest wzId ${wzId} (${entry.slug}) not in mobs.json - skipping`);
 			continue;
 		}
-		const best = candidates.slice().sort((a, b) => dossierRichness(b) - dossierRichness(a))[0]!;
+		const best = candidates.slice().sort((a, b) => mobDossierRichness(b) - mobDossierRichness(a))[0]!;
 		bosses.push({
 			slug: entry.slug,
 			role: entry.role,

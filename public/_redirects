@@ -1,0 +1,61 @@
+# BEGIN mob-dossier-dedup (managed by scripts/generate-mob-redirects.mjs)
+# Auto-generated 2026-09-23. 18 redirects.
+# Each line: <duplicate_dossier_path>  <canonical_dossier_path>  301
+# See src/lib/mob-dedup.ts + scripts/generate-mob-redirects.mjs
+
+# Nependeath (wz 4230105)
+/mobs/39 /mobs/1036/ 301
+/mobs/39/ /mobs/1036/ 301
+# Dark Nependeath (wz 4130102)
+/mobs/42 /mobs/1045/ 301
+/mobs/42/ /mobs/1045/ 301
+# Ligator (wz 3110100)
+/mobs/800000 /mobs/29/ 301
+/mobs/800000/ /mobs/29/ 301
+# Jr. Necki (wz 2130103)
+/mobs/800001 /mobs/18/ 301
+/mobs/800001/ /mobs/18/ 301
+# Curse Eye (wz 3230100)
+/mobs/800002 /mobs/31/ 301
+/mobs/800002/ /mobs/31/ 301
+# Evil Eye (wz 2230100)
+/mobs/800010 /mobs/23/ 301
+/mobs/800010/ /mobs/23/ 301
+# Zombie Mushroom (wz 2230101)
+/mobs/800011 /mobs/21/ 301
+/mobs/800011/ /mobs/21/ 301
+# Curse Eye (wz 3230100)
+/mobs/800012 /mobs/31/ 301
+/mobs/800012/ /mobs/31/ 301
+# Horny Mushroom (wz 2110200)
+/mobs/800013 /mobs/19/ 301
+/mobs/800013/ /mobs/19/ 301
+# Cold Eye (wz 4230100)
+/mobs/800014 /mobs/37/ 301
+/mobs/800014/ /mobs/37/ 301
+# Blue Mushroom (wz 2220100)
+/mobs/800015 /mobs/16/ 301
+/mobs/800015/ /mobs/16/ 301
+# Fire Boar (wz 3210100)
+/mobs/800016 /mobs/30/ 301
+/mobs/800016/ /mobs/30/ 301
+# Lupin (wz 3210800)
+/mobs/800017 /mobs/35/ 301
+/mobs/800017/ /mobs/35/ 301
+# Mano (wz 9300184)
+/mobs/800018 /mobs/700004/ 301
+/mobs/800018/ /mobs/700004/ 301
+# King Slime (wz 9300003)
+/mobs/800019 /mobs/800003/ 301
+/mobs/800019/ /mobs/800003/ 301
+# Mushmom (wz 6130101)
+/mobs/800020 /mobs/700000/ 301
+/mobs/800020/ /mobs/700000/ 301
+# Zombie Mushmom (wz 6300005)
+/mobs/800021 /mobs/700002/ 301
+/mobs/800021/ /mobs/700002/ 301
+# Jr. Balrog (wz 6400008)
+/mobs/800023 /mobs/700001/ 301
+/mobs/800023/ /mobs/700001/ 301
+
+# END mob-dossier-dedup

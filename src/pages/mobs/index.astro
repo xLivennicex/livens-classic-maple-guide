@@ -18,8 +18,14 @@ import generatedAt from "../../data/db/generated-at.json";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
 import MobHitEffect from "../../components/MobHitEffect.astro";
+import { loserMobIds } from "../../lib/mob-dedup";
 
-const { mobs } = indexData;
+// Filter out duplicate dossiers (same wzId, hollow entries). Their
+// dossier pages don't render (see /mobs/[id].astro getStaticPaths)
+// and their paths redirect to the winner via public/_redirects, so
+// including them here would just give the browser a row that
+// bounces on click.
+const mobs = indexData.mobs.filter((m) => !loserMobIds.has(m.id));
 mobs.sort((a, b) => a.id - b.id);
 
 const withQuests = mobs.filter((m) => m.questCount > 0).length;
