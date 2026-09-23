@@ -343,6 +343,33 @@ export const sources: ArchivedSource[] = [
 			"Archer 1st job in CoT 2 dropped 'Blessing of Amazon' and added 'Power Knockback'",
 		],
 	},
+
+	// Eleveny is a Classic World closed-online tester who published
+	// an in-depth training-map tour after playing through CoT 2. The
+	// video is our primary source for map-level layout commentary,
+	// party-fit calls, and Classic-World-specific mob behavior notes
+	// (accuracy leniency, KPQ EXP nerf, exp-to-HP falloff past L60).
+	// Cross-verified against the CoT 2 datamine for mob rosters and
+	// drop tables.
+	{
+		slug: "eleveny-training-guide",
+		title: "Eleveny - Classic World Training Guide (YouTube)",
+		publisher: "Eleveny (CoT 2 closed-online tester)",
+		publishedOn: "CoT 2 test window (2026)",
+		sourceType: "community-reported",
+		topics: ["Maps", "Monsters", "Drops", "Training", "Party Play"],
+		originalUrl: "https://www.youtube.com/watch?v=-WmSz0pQkUo",
+		checkedOn: "2026-09-23",
+		status: "current",
+		summary:
+			"22-minute video walking through every training map Eleveny considers strongest across Victoria Island, Sleepywood, and Forgotten Hollow from L10 to L70. Covers map layout, mob composition, party-size fit, and per-map key drops. Also documents Classic-World-specific rebalances Eleveny observed in play (reduced KPQ EXP, more forgiving accuracy checks at low levels, exp-to-HP falloff past L60).",
+		confirmedFacts: [
+			"KPQ EXP rewards were substantially reduced in Classic World vs v83",
+			"Accuracy requirements at low levels are more forgiving in Classic World than v83",
+			"Monster EXP-to-HP ratios fall off sharply once players cross L60",
+			"Level 10 weapons NPC-sell for MORE mesos in Classic World than they did in v83",
+		],
+	},
 ];
 
 // Convenience accessor so pages can reference sources by slug without
