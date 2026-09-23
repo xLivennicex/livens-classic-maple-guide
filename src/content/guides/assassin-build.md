@@ -35,6 +35,7 @@ toc:
   - { href: "#the-25-dex-advancement-question", label: "The 25-DEX question" }
   - { href: "#ap-allocation-pure-luk-vs-balanced", label: "AP allocation" }
   - { href: "#claw-progression-l10-70", label: "Claw progression" }
+  - { href: "#throwing-star-progression-and-the-boss-drop-grind", label: "Throwing star progression" }
   - { href: "#armor-progression-and-the-sauna-robe", label: "Armor progression" }
   - { href: "#scroll-math-deep-dive", label: "Scroll math" }
   - { href: "#the-final-verdict", label: "Verdict" }
@@ -45,11 +46,12 @@ toc:
 
 If you played 2005-era GMS Assassins you already know the shape of the classic **"dexless" build**: put the minimum DEX needed for job advancement (25) and dump every subsequent point into LUK. Everything - hit rate, damage, weapon requirements - gets balanced through equipment scrolling rather than base stats.
 
-**Classic World kept the spirit of the meta but changed almost every number underneath it.** Three specific rebalances matter:
+**Classic World kept the spirit of the meta but changed almost every number underneath it.** Four specific rebalances matter:
 
 1. **Claws now have `reqDEX = reqLevel` exactly** (no "buffer" DEX needed above your character level - a huge quality-of-life win for LUK-focused builds).
 2. **The L30 Sauna Robe gives +1 to every stat**, has 10 upgrade slots, and is available to any job - an obscenely good universal L30 overall that used to have no equivalent in classic v83.
 3. **Topwear and Bottomwear stat scrolls no longer exist.** The only way to scroll LUK/DEX/STR/INT onto body armor is via **Overall Armor scrolls**. This alone tilts the entire gearing metagame back toward overalls and away from separate top+bottom pieces.
+4. **Every throwing star is now Level 10 required** (v83 gated Ilbis at L64, Hwabi at L70). The stat/damage progression across the star roster is unchanged, but the *level gate* is gone - if you can farm the drop or borrow the mesos, you can equip endgame stars at first-job. Getting them is another story - most of the top-tier stars still only drop from world bosses. See [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full table plus the Mushmom-Ilbi grind reality check.
 
 Add that up and the recommendation is louder than in v83: **wear a scrolled overall, use the low-DEX claws Classic World gave you, dump AP into LUK.** The rest of this guide is the receipts.
 
@@ -233,6 +235,174 @@ Every claw in Classic World's datamine, ranked by damage tier. **Best-in-slot (B
 
 ---
 
+## Throwing star progression and the boss-drop grind
+
+The claw progression above tells only half the damage story. **Lucky Seven uses the star's Weapon Attack value in its damage calculation, not the claw's** - so which throwing stars you feed your Sin matters as much as which claw you swing.
+
+This section covers every throwing star in Classic World's datamine, ranked by Weapon Attack, cross-referenced against the mob drop tables (verified from CoT 2 + mobs.json), with honest grind-time footnotes on the ones you'll be farming for weeks.
+
+### The full star roster (all 11 stars, sorted by damage tier)
+
+| Star | Item ID | Req Lv | **WATK** | Stack size | Shop price | Drop sources (Level range) |
+|---|:---:|:---:|:---:|:---:|:---:|---|
+| **[Subi](/items/2070000)** | 2070000 | 10 | **+15** | 500 | 250 | [Jr. Sentinel](/mobs/1001) (L23), [Mano](/mobs/700004) (L20 mini-boss) |
+| **[Wolbi](/items/2070001)** | 2070001 | 10 | **+17** | 500 | 500 | [Fire Boar](/mobs/30) (L32), Leatty (L32), Jr. Cellion (L33) |
+| **[Snowball](/items/2070008)** | 2070008 | 10 | **+17** | 800 | 500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37) |
+| **[Mokbi](/items/2070002)** | 2070002 | 10 | **+19** | 700 | 1,000 | Jr. Wraith (L35), [Cold Eye](/mobs/37) (L40), [Stone Golem](/mobs/47) (L55), Jr. Pepe (L35) |
+| **[Wooden Top](/items/2070009)** | 2070009 | 10 | **+19** | 800 | 500 | Axe Stump (L17), Dark Axe Stump (L22) |
+| **[Kumbi](/items/2070003)** | 2070003 | 10 | **+21** | 700 | 1,500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37), Drake (L50), [Stone Golem](/mobs/47) (L55), Jr. Grupin (L33) |
+| **[Icicle](/items/2070010)** | 2070010 | 10 | **+21** | 800 | 500 | [Cold Eye](/mobs/37) (L40) |
+| **[Tobi](/items/2070004)** | 2070004 | 10 | **+23** | 1,000 | 2,500 | [Stone Golem](/mobs/47) (L55), Dark Stone Golem (L58), Wild Kargo (L62), White Fang (L58) |
+| **[Steely](/items/2070005)** | 2070005 | 10 | **+25** | 1,000 | 10,000 | Red Drake (L60), Tauromacis (L70) |
+| **[Ilbi](/items/2070006)** ¹ | 2070006 | 10 | **+27** | 800 | 20,000 | **[Mushmom](/bosses/mushmom) (L60 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L65 boss)**, Lycanthrope (L80) |
+| **[Hwabi](/items/2070007)** ² | 2070007 | 10 | **+29** | 800 | 25,000 | **[Jr. Balrog](/bosses/jr-balrog) (L55 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L65 boss)** |
+
+*Data source: CoT 2 items.json (WATK + reqLevel parsed from item descriptions), mobs.json drop tables, cross-referenced 2026-09.*
+
+### The huge Classic World change: level gates are gone
+
+**In v83 GMS**, throwing stars gated hard on character level:
+
+| Star | v83 Req Lv | CW Req Lv | Delta |
+|---|:---:|:---:|---|
+| Subi | 15 | **10** | -5 |
+| Wolbi | 25 | **10** | -15 |
+| Mokbi | 30 | **10** | -20 |
+| Kumbi | 35 | **10** | -25 |
+| Tobi | 43 | **10** | -33 |
+| Steely | 50 | **10** | -40 |
+| Ilbi | **64** | **10** | **-54** |
+| Hwabi | 70 | **10** | -60 |
+
+**In Classic World, every star is Level 10 required.** Confirmed via the CoT 2 client datamine: each star's `description` field explicitly states `"Level Required: 10, Weapon Attack +XX"` and there's no separate reqLevel field overriding it.
+
+**What this means practically:**
+
+- The moment you become an Assassin at L30, you can equip **any** star in the game - even Hwabis with their +29 WATK - if someone hands them to you or you can afford the 25k shop price for one bundle.
+- The bottleneck is now **acquisition**, not level gating. Ilbis and Hwabis still drop only from world bosses (below), so most Sins will grind through the Wolbi→Kumbi→Tobi→Steely tiers via mob drops before they ever see an Ilbi.
+- **This is a MASSIVE quality-of-life win for late-bloomer Sins.** In v83 you couldn't equip Ilbis until L64. In CW, if you find a rich friend with a Mushmom hunter alt, you're throwing Ilbis at L30 the moment you Rogue-advance.
+
+### The novelty stars (Snowball, Wooden Top, Icicle)
+
+Three "flavor" stars sit next to the main progression. All are +17 to +21 WATK - same tier as Wolbi/Mokbi/Kumbi - but drop from much lower-level mobs:
+
+- **[Wooden Top](/items/2070009)** (+19 WATK) drops from **Axe Stump (L17)** and **Dark Axe Stump (L22)**. This is arguably the single most efficient star farm in the whole game for a fresh L30 Rogue - Axe Stumps are trivial to solo at L30-35, and +19 WATK matches Mokbi's damage tier without paying 1,000 mesos per bundle to a Kerning shop. Also called out in the [training routes guide](/training-routes).
+- **[Snowball](/items/2070008)** (+17 WATK, matches Wolbi) drops from Fire Boar / Lupin at L32-37. Same tier as Wolbi so it's mostly a cosmetic swap, but it stacks to 800 vs Wolbi's 500 - fewer inventory refills on long grinds.
+- **[Icicle](/items/2070010)** (+21 WATK, matches Kumbi) drops from Cold Eye (L40). Also stacks to 800. Cold Eye grinding at L40-45 is a classic Sin training route, so if you're already there for the EXP you'll auto-farm Icicles.
+
+**Practical order for a self-farming Sin:**
+
+1. **L10-30 (pre-Rogue):** Shop Subis. 250 mesos per bundle, easy.
+2. **L30-40 (fresh Rogue → Assassin):** Farm Wooden Tops on Axe Stumps → +19 WATK for free.
+3. **L40-50:** Farm Icicles on Cold Eyes (also efficient EXP) → +21 WATK.
+4. **L50-60:** Farm Tobis on Stone Golems / White Fangs → +23 WATK, and Stone Golem also drops mesos + scrolls.
+5. **L60+:** Grind Steely on Red Drakes, or start the world-boss farms below.
+
+### The endgame grind: Ilbi and Hwabi
+
+Here's where honesty matters. **The top two star tiers only drop from world bosses.** No shop sells them (Kerning caps at 25k Hwabi listings but stock is speculative), no mob under L55 has them in its table.
+
+#### Ilbi Throwing Stars — the iconic +27 WATK
+
+Drops from:
+
+- **[Mushmom](/bosses/mushmom)** (L55, 20,000 HP, world boss) - once per real-world hour per channel, spawns in one of ~7 possible Henesys-area hidden streets, replacing a Green Mushroom mob. First-hit-wins culture in most classic servers.
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (L60, 35,000 HP, world boss) - deep Sleepywood hidden street, same once-per-hour-per-channel spawn.
+- **Lycanthrope** (L80, 27,000 HP, regular mob) - not yet mapped in the CoT 2 datamine's spawn table, but community reports place it in unnamed higher-level content.
+
+**Grind reality footnote ¹ — Mushmom Ilbi is a multi-week commitment for most players.** Rough math:
+
+- Mushmom's Ilbi drop rate is not exposed in the datamine but v83 community data pegs it at ~2-3%. Assume 3% for optimism.
+- Mushmom spawns every 60 minutes per channel. Most servers have 10-20 channels. **In a well-populated server that means ~10-20 Mushmoms alive somewhere in the world per hour** - but most are already claimed by other hunters camping specific channels.
+- Realistic solo effort: 1-3 Mushmoms killed per hour of active hunting (channel-hopping, KS races, waiting for spawns).
+- At 3% drop rate: **~33 kills expected per Ilbi**. At 1-3 kills per hour of grinding: **11 to 33 hours of hunting per Ilbi bundle.**
+- Compound with the fact that Ilbi bundles stack to 800 stars, and heavy grinders burn through 800 stars in a day - so even a lucky drop only feeds you for a week.
+
+**Verdict:** Ilbis are a "grind-adjacent" endgame goal. Realistic approach: **hunt Mushmoms opportunistically while training in Henesys area content**, don't camp them dedicated. Every drop is a win; expect months to fill a 4-6 bundle inventory.
+
+**Alternative approaches:**
+
+- **Party splits.** Coordinate with a hunting circle - whoever gets the last hit on a Mushmom, the party splits the Ilbi drops via merchant channel. Cuts your active grind time dramatically.
+- **Meso-for-Ilbi trades.** By late Classic World, established Sins will farm Ilbis to sell for 400-800k per bundle (early market speculation). If you're rich from Weaponcrafting or another income stream, buying Ilbis is faster than farming them.
+- **Live with Steely.** +25 vs +27 WATK is a real damage gap but not build-breaking. Steely Throwing Knives from Red Drakes (L60, Sleepywood dungeon) are a *much* easier grind and let you skip the world-boss meta entirely.
+
+#### Hwabi Throwing Stars — the theoretical BiS at +29 WATK
+
+Drops from:
+
+- **[Jr. Balrog](/bosses/jr-balrog)** (L55, 30,000 HP, world boss) - Deep Sleepywood dungeon, hourly respawn per channel.
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (L60, 35,000 HP, world boss) - Same hunt as Ilbi, dual-drop boss.
+
+**Grind reality footnote ² — Hwabi is arguably harder to farm than Ilbi.** Both drop sources are world bosses with hourly spawns and heavy competition, and neither is a soloable fight for a Sin below the mid-50s. Jr. Balrog specifically is a party fight - most Sins need a warrior tank or a full 3-6 party to reliably clear him.
+
+**Community wisdom:** most classic-era Sins never bothered with Hwabi. **The +2 WATK over Ilbi (7% damage bump on Lucky Seven) is not worth the doubled grind time.** Ilbi is the practical BiS; Hwabi is the flex.
+
+**The exception:** Zombie Mushmom drops BOTH Ilbi and Hwabi from the same table, so if you're already grinding her for Ilbis, every kill has a chance at either. That's the only place Hwabis are efficient to farm - as a side-drop on your Ilbi hunt.
+
+### Recommended star per level bracket (the practical answer)
+
+| Your level | Best available star | How you get it | Damage tier |
+|---|---|---|:---:|
+| 10-29 | Subi Throwing Stars | Kerning shop (250 meso) | +15 WATK |
+| 30-39 | **Wooden Top** ⭐ | Farm Axe Stumps (L17-22) | +19 WATK |
+| 40-49 | **Icicle** ⭐ | Farm Cold Eyes (L40) - dual purpose training | +21 WATK |
+| 50-59 | **Tobi** ⭐ | Farm Stone Golems / White Fangs (L55-58) | +23 WATK |
+| 60-69 | **Steely** ⭐ | Farm Red Drakes (Sleepywood dungeon, L60) | +25 WATK |
+| 70+ | **Ilbi** (aspirational) | Mushmom / Zombie Mushmom farming, ~11-33h per bundle | +27 WATK |
+| 70+ (whale) | **Hwabi** (flex) | Jr. Balrog / Zombie Mushmom party runs | +29 WATK |
+
+**⭐ = self-farmable in normal training rotations without world-boss competition.** These are the "just play the game" stars that fall out of your natural leveling grind.
+
+### Damage impact of the star tier gap
+
+Rough Lucky Seven damage delta from swapping star tiers (assuming L50 Sin with 200 LUK, 1× multiplier from crit averaging):
+
+| Swap | WATK delta | Approx L7 damage increase per hit |
+|---|:---:|:---:|
+| Subi → Wooden Top | +4 | ~15% |
+| Wooden Top → Icicle | +2 | ~7% |
+| Icicle → Tobi | +2 | ~7% |
+| Tobi → Steely | +2 | ~7% |
+| Steely → Ilbi | +2 | ~7% |
+| Ilbi → Hwabi | +2 | ~7% |
+
+The **single biggest jump** is Subi→Wooden Top (+4 WATK for zero mesos, farmable at L17). **Every subsequent tier is a +2 WATK / ~7% gain.** This is why the practical recommendation is to farm your way up the mainline tier rather than skipping straight to Ilbi via the Mushmom grind - the marginal gain per tier is modest, the grind cost between tiers scales exponentially at the top.
+
+### Cross-reference: which mobs to hunt for which stars
+
+If you already know your training map, use this reverse lookup:
+
+| Mob | Level | Stars it drops |
+|---|:---:|---|
+| Axe Stump / Dark Axe Stump | 17-22 | Wooden Top |
+| Jr. Sentinel | 23 | Subi (rare) |
+| Fire Boar | 32 | Wolbi, Kumbi, Snowball |
+| Leatty | 32 | Wolbi |
+| Jr. Cellion | 33 | Wolbi |
+| Jr. Grupin | 33 | Kumbi |
+| Jr. Wraith / Jr. Pepe | 35 | Mokbi |
+| Lupin | 37 | Kumbi, Snowball |
+| Cold Eye | 40 | Mokbi, Icicle |
+| Drake | 50 | Kumbi |
+| Stone Golem | 55 | Mokbi, Kumbi, Tobi |
+| Jr. Balrog | 55 (boss) | **Hwabi** |
+| Dark Stone Golem | 58 | Tobi |
+| White Fang | 58 | Tobi |
+| Mushmom | 60 (boss) | **Ilbi** |
+| Red Drake | 60 | Steely |
+| Wild Kargo | 62 | Tobi |
+| Zombie Mushmom | 65 (boss) | **Ilbi**, **Hwabi** |
+| Tauromacis | 70 | Steely |
+| Lycanthrope | 80 | **Ilbi** |
+
+**Sleepywood dungeon (Stone Golem, Dark Stone Golem, Wild Kargo, Red Drake, Jr. Balrog) is the mainline late-game star farm.** Six of the top seven star tiers drop somewhere in Sleepywood. Building a Sin route through Sleepywood L50-70 is the single most efficient star-farming plan.
+
+### Verification note
+
+All star stats (WATK, level requirement, stack size, shop price) parsed from the CoT 2 client datamine's item descriptions - specifically the `description` field on item IDs 2070000-2070010. Drop-source tables cross-referenced against `mobs.json` drop entries, which pull from the community-maintained MeowDB layer on top of the CoT 2 mob dossiers. Drop-rate percentages are v83 community estimates, not confirmed CW values - Nexon does not publish drop rates. Grind-time projections use v83-baseline drop rates and standard MapleStory boss respawn intervals; live CW rates may differ. **If a drop rate feels dramatically off after launch, please [flag it via the site's Discord](/) and I'll rerun the projections.**
+
+---
+
 ## Armor progression and the Sauna Robe
 
 Here's the actual Assassin body-armor progression in Classic World. Because top/bottom stat scrolls don't exist, the question at each level bracket is: **which base-LUK piece gives me the best floor, and does it have upgrade slots I can convert into scrolled LUK?**
@@ -387,7 +557,11 @@ Would be nice - they don't exist in the CoT 2 datamine. The Assassin overall pip
 
 ### Does Lucky Seven really ignore weapon Attack?
 
-Yes - Lucky Seven damage in v83 uses ONLY your LUK stat and the star's Attack value from your throwing-star ammo (not the claw's Attack). The claw's Attack still matters for regular attacks and other skills, but Lucky Seven itself scales entirely off LUK. This is why crit-rate claws (Gold Titans, Adamantium Guards, Sapphire Gigantic, Blue Scarab) beat higher-PAD variants for Sin damage - crit is a Lucky-Seven multiplier, PAD isn't. Whether Classic World preserves this exactly is one of the things worth verifying at launch, but the skill definitions in the datamine appear unchanged.
+Yes - Lucky Seven damage in v83 uses ONLY your LUK stat and **the throwing star's Weapon Attack value** (not the claw's Attack). The claw's Attack still matters for regular attacks and other skills, but Lucky Seven itself scales off LUK + star WATK. This is why crit-rate claws (Gold Titans, Adamantium Guards, Sapphire Gigantic, Blue Scarab) beat higher-PAD variants for Sin damage - crit is a Lucky-Seven multiplier, claw PAD isn't. And it's why **the star tier you're using matters as much as the claw** - see [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full L7 damage impact per tier. Whether Classic World preserves this exactly is one of the things worth verifying at launch, but the skill definitions in the datamine appear unchanged.
+
+### Is farming Ilbis actually worth it?
+
+Depends on your patience budget. Ilbis are +2 WATK over Steely Throwing Knives (Red Drake drops, Sleepywood dungeon), which translates to roughly +7% Lucky Seven damage per hit. Steely Throwing Knives are trivially farmable during normal Sleepywood grinding. Ilbis require dedicated world-boss hunting (Mushmom / Zombie Mushmom), roughly 11-33 hours of active hunt time per bundle at v83-baseline drop rates. **Most classic-era Sins ran Steely as their practical BiS and only bothered with Ilbis if they were rich enough to buy them from grinders.** Full grind math in the [Ilbi footnote](#throwing-star-progression-and-the-boss-drop-grind) above.
 
 ### What about the Bandit branch?
 
@@ -414,3 +588,5 @@ Scroll gloves for Attack (via Gloves Attack Scroll - existing, verified in datam
 - [Sleepywood Sauna Robe Chain](/quests/sleepywood-sauna-robe-chain) - the quest that awards it
 - [Crafting Guide](/crafting) - Weaponcrafting for Gold Titans and Adamantium Guards
 - [Citizenship Guide](/citizenship) - Kerning City residency gets you Overall LUK scrolls from town shops
+- [Training Routes Guide](/training-routes) - which maps to grind at each level, including star-farm callouts
+- [Mushmom](/bosses/mushmom) / [Zombie Mushmom](/bosses/zombie-mushmom) / [Jr. Balrog](/bosses/jr-balrog) - the three world bosses gating Ilbi + Hwabi drops
