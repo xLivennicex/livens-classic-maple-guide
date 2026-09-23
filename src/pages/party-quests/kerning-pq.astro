@@ -284,12 +284,32 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 				</div>
 			</div>
 			<div class="reward-card reward-card--wide">
-				<span class="reward-card__label">King Slime drop pool (per Classic-era experience)</span>
+				<span class="reward-card__label">King Slime drop pool <em>(CoT 2 datamined)</em></span>
 				<ul class="reward-card__list">
-					{KPQ_REWARDS.bossDrops.map((d) => <li>{d}</li>)}
+					{KPQ_REWARDS.bossDrops.map((d) => (
+						<li>
+							<a href={`/items/${d.itemId}`}><strong>{d.name}</strong></a>
+							{" — "}{d.note}
+						</li>
+					))}
 				</ul>
 			</div>
 		</div>
+
+		{KPQ_META.notableChanges && (
+			<aside class="cw-callout" aria-labelledby="cw-changes-heading">
+				<h3 id="cw-changes-heading" class="cw-callout__title">
+					Classic World changes vs v83
+				</h3>
+				<ul class="cw-callout__list">
+					{KPQ_META.notableChanges.map((change) => <li>{change}</li>)}
+				</ul>
+				<p class="cw-callout__source">
+					Sourced from CoT 2 client datamine +
+					<a href="/training-routes#levels-20-25-bubblings-and-kpq">Eleveny's training video</a>.
+				</p>
+			</aside>
+		)}
 	</section>
 
 	<!-- ============================================================ -->
@@ -598,6 +618,19 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 	.reward-card strong { display: block; font-size: 1.5rem; color: var(--accent-primary); margin-top: 0.15rem; }
 	.reward-card__meta { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
 	.reward-card__list { margin: 0.4rem 0 0; padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-secondary); }
+	.reward-card__list li { margin-top: 0.3rem; line-height: 1.45; }
+	.reward-card__list a { color: var(--accent-primary); }
+	.cw-callout {
+		margin-top: 1.25rem;
+		background: rgba(255, 235, 180, 0.35);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 6px;
+		padding: 1rem 1.2rem;
+	}
+	.cw-callout__title { margin: 0 0 0.6rem; font-size: 1rem; }
+	.cw-callout__list { margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary); }
+	.cw-callout__list li { margin-top: 0.35rem; }
+	.cw-callout__source { margin: 0.75rem 0 0; font-size: 0.78rem; color: var(--text-muted); }
 	.scroll-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));

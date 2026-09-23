@@ -136,15 +136,16 @@ Every heading between L10 and L70 is a real map — nothing filler. Skip to the 
 - **Party fit:** Any size. Genuinely the best "somebody's already here, is that fine?" map on the island — the answer is basically always yes.
 - **Why it wins:** Density and platform layout make it the mid-20s go-to for parties, and it's roomy enough that you never feel like you're stealing spawn.
 
-### KPQ Bonus Stage — not the PQ, the bonus
+### KPQ Bonus Stage — not the PQ, the bonus (and yes, Squishy Shoes are real)
 
 - **Party quest:** [Kerning Party Quest](/party-quests/kerning-pq) — accessible at L21.
-- **The trap:** In Classic World, Nexon **heavily reduced KPQ's EXP rewards**. Outside of nostalgia and the chance at Slime Shoes, there isn't a strong reason to sit here farming runs anymore. The value is in one specific place.
-- **The Bonus Stage** — after a successful KPQ clear, your party gets ~30 minutes in a private bonus map full of [Green Mushroom](/mobs/13) and [Horny Mushroom](/mobs/19) spawns. Ideal setup: 4-player party, one floor per player.
-- **Why it's still worth doing:**
-  - **[Pan Lid](/items/1092002)** drops from Green Mushrooms in the bonus stage — this is a Shield item that sells to players for a lot of mesos.
-  - **[Claw Attack Scroll: Intermediate](/items/2044701)** (aka "60% Claw Scroll") can drop from Green Mushrooms. This is one of the higher-value scroll drops available at this level. Free-market gold if you can flip it.
-  - Horny Mushrooms drop several **L30 equips** that NPC for a respectable amount — mostly filler value, but consistent.
+- **The trap:** In Classic World, Nexon **heavily reduced KPQ's EXP rewards**. Outside of the boss-drop chase and the Bonus Room, there isn't a strong reason to sit here farming runs. Two things make it worth showing up anyway.
+- **Reason #1 — Squishy Shoes.** The iconic KPQ reward previously known as "Slime Shoes" was renamed **[Squishy Shoes](/items/1072128)** in Classic World but retained its identity: **L28 All-class, +1 STR / +1 DEX / +1 INT / +1 LUK, +18 PDD, 5 upgrade slots.** Confirmed dropping from [King Slime](/mobs/800003) (L40, 8,000 HP, boss in KPQ's Last Stage). This is the shoes equivalent of the [Blue Sauna Robe](/items/blue-sauna-robe) — one of the few universal-class stat-block pieces that any class can slot in, and it's the reason KPQ is still on this route.
+- **Reason #2 — The Bonus Room.** After a successful KPQ clear, your party enters map [80000500](/maps/80000500) with a datamine-confirmed mob composition of **[Horny Mushroom](/mobs/19) x24 + [Green Mushroom](/mobs/13) x12**. Ideal setup: 4-player party, one floor per player.
+- **Bonus Room drops worth chasing:**
+  - **[Pan Lid](/items/1092002)** from Green Mushrooms — a Shield item that sells to players for real mesos.
+  - **[Claw Attack Scroll: Intermediate](/items/2044701)** (60% success) can drop from Green Mushrooms. Free-market gold if you can flip it.
+  - Horny Mushrooms drop several **L30 equips** that NPC for filler mesos while you're there.
 
 ---
 

@@ -1,15 +1,18 @@
 // Kerning Party Quest (KPQ) walkthrough data.
 //
-// The KPQ maps themselves aren't in our client-file datamine (party
-// quest maps are instanced and generated per-run), but every mob and
-// NPC referenced here is grounded against src/data/db/*.json. See
-// scripts/audit-vi-references.mjs style resolver - if a name here
-// stops matching a real dossier, the page will render an italic
-// "unknown" stub.
+// UPDATED 2026-09-23: KPQ maps ARE in the CoT 2 datamine after all -
+// map IDs 80000000 through 80000600 covering all 5 stages, the Bonus
+// Room, and the Exit map. Earlier assumption that they were instanced-
+// only was wrong. Mob rosters and boss drops below are now grounded
+// in those map records, not just player experience.
 //
-// This is CLASSIC KPQ - the GMS v83-era loop most players remember.
-// If Classic World tweaks stages/rewards at launch, revisit stage
-// scripts + reward payouts here.
+// Every mob and NPC referenced here is grounded against
+// src/data/db/*.json. See scripts/audit-vi-references.mjs style
+// resolver - if a name here stops matching a real dossier, the page
+// will render an italic "unknown" stub.
+//
+// This is CLASSIC KPQ - the GMS v83-era loop most players remember,
+// with a few notable Classic World twists documented in KPQ_META.notableChanges.
 
 export interface KpqStage {
 	slug: string;              // used as anchor id (#stage-1-etc)
@@ -37,13 +40,23 @@ export const KPQ_REWARDS = {
 		{ name: "Earring INT Scroll: Intermediate", id: 2040309, chance: "1%" },
 		{ name: "Earring LUK Scroll: Intermediate", id: 2040313, chance: "1%" },
 	],
-	// Additional per-stage EXP (rough Classic-era ballpark):
-	stageExp: "~200-400 EXP per stage cleared + boss bonus",
-	// Boss drops on top of the quest turn-in reward. Rough Classic values.
+	// Additional per-stage EXP (rough Classic-era ballpark).
+	// Classic World reportedly reduced overall KPQ EXP payout;
+	// per-stage precise EXP values are not currently datamined.
+	stageExp: "~200-400 EXP per stage cleared (Classic World: reduced vs v83)",
+	// Boss drops - CoT 2 DATAMINE-VERIFIED from mob dossier 800003.
+	// Only two items in King Slime's drop table this build:
 	bossDrops: [
-		"Silver Deputy Star (throwing star, low chance)",
-		"Various low-tier scrolls (helm/overall/glove ATT)",
-		"Random consumables (potions, arrows)",
+		{
+			itemId: 1072128,
+			name: "Squishy Shoes",
+			note: "L28 All-class shoes. +1 STR / +1 DEX / +1 INT / +1 LUK, +18 PDD, 5 slots. Renamed from 'Slime Shoes' in Classic World; stats are the iconic all-stat blessing. This is the reason to run KPQ.",
+		},
+		{
+			itemId: 4001001,
+			name: "Coupon",
+			note: "Quest ETC used in Kerning City quest chains. Not a market item.",
+		},
 	],
 } as const;
 
@@ -66,6 +79,14 @@ export const KPQ_META = {
 	estimatedRunTime: "12-20 minutes",
 	iconicMobs: ["Curse Eye", "Ligator", "Wraith", "Jr. Wraith", "Bubbling", "King Slime"],
 	tagline: "Six characters, one waiting room, one boss room. Classic Maple's rite of passage.",
+	// Classic World changes vs v83 GMS KPQ, based on the CoT 2 datamine
+	// + closed-online tester reports (see Eleveny's training video).
+	notableChanges: [
+		"EXP payout substantially reduced vs v83 - KPQ is now primarily a Squishy Shoes / Bonus Room farm, not an EXP grind",
+		"Slime Shoes renamed to 'Squishy Shoes' but retain the iconic +1 all-stat identity (verified: item 1072128, L28, All-class, +1/+1/+1/+1, 18 PDD, 5 slots)",
+		"Boss room mob composition now datamine-confirmed: Curse Eye x3, Jr. Necki x6, King Slime x1 (vs v83's varied 'summoned Slime horde' behavior)",
+		"Bonus Room datamined at map 80000500 with Horny Mushroom x24 + Green Mushroom x12 - Green Mushrooms are the Pan Lid / Claw Scroll target",
+	],
 } as const;
 
 export const kpqStages: KpqStage[] = [
@@ -186,18 +207,20 @@ export const kpqStages: KpqStage[] = [
 		number: "boss",
 		title: "Boss: King Slime",
 		subtitle: "The final showdown. Party DPS check.",
-		mobs: ["King Slime"],
-		objective: "Kill King Slime. He spawns a horde of smaller Slimes throughout the fight - kill them for XP and to keep the room clean.",
+		mobs: ["King Slime", "Curse Eye", "Jr. Necki"],
+		objective: "Kill King Slime while dodging his summoned Curse Eyes and Jr. Neckis. Datamined room composition (map 80000400): King Slime x1, Curse Eye x3, Jr. Necki x6.",
 		timeLimit: "8 minutes.",
 		strategy: [
-			"King Slime has a lot of HP for a 21-30 boss - the whole party needs to DPS.",
-			"He periodically summons ~8 regular Slimes; they die fast but distract.",
+			"King Slime is a Level 40 boss with 8,000 HP and 800 EXP (CoT 2 datamine). Whole party needs to DPS - Level 21-30 characters won't solo him.",
+			"He deals MORE magic damage than physical (165 magic vs 130 physical) - Magicians take more damage than Warriors do, unusual for a v83-era boss. Cleric MDD buffs help disproportionately.",
+			"Curse Eyes and Jr. Neckis in the room need active management - one player should sweep them so ranged DPS on King Slime isn't interrupted.",
 			"Warriors tank the front; Bowmen/Mages ranged from platforms; Thieves flank.",
 			"Beginners: throw whatever you have - every hit counts.",
 			"When King Slime dies, the map clears and Lakelis gives the completion prompt.",
 		],
 		gotchas: [
-			"King Slime hits hard - Beginners without armor die quick if he lands on them.",
+			"King Slime hits hard and is slow (Speed -20) - kite him with ranged, don't stand under.",
+			"Curse Eye has a self-heal - burst them fast, don't let them tick HP back up.",
 			"Party members who die still get the reward if the boss dies before timer expires.",
 		],
 	},
