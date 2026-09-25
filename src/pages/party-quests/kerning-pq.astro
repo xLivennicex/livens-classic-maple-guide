@@ -19,6 +19,7 @@ import {
 	kpqStages, partyCompositions,
 } from "../../data/party-quests/kerning-pq";
 import mobDossiers from "../../data/db/mobs.json";
+import { mobHref } from "../../lib/mob-dedup";
 import npcDossiers from "../../data/db/npcs.json";
 import questDossiers from "../../data/db/quests.json";
 import itemDossiers from "../../data/db/items.json";
@@ -135,7 +136,7 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 		</p>
 		<div class="mobs-grid">
 			{iconicMobs.map((m) => (
-				<a class="mob-card" href={`/mobs/${m!.id}`}>
+				<a class="mob-card" href={mobHref(m!.id)}>
 					<Sprite
 						srcs={mobSpriteSrcs(m!.id, m!.wzId)}
 						alt=""
@@ -209,7 +210,7 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 								const m = mobByName.get(name);
 								if (!m) return <span class="stage__mob-name">{name}</span>;
 								return (
-									<a class="stage__mob" href={`/mobs/${m.id}`} title={name}>
+									<a class="stage__mob" href={mobHref(m.id)} title={name}>
 										<Sprite
 											srcs={mobSpriteSrcs(m.id, m.wzId)}
 											alt=""

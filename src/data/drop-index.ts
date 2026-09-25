@@ -15,6 +15,7 @@
  */
 
 import mobs from "./db/mobs.json";
+import { canonicalMobId } from "../lib/mob-dedup";
 
 interface RawDrop {
 	itemId: number;
@@ -67,28 +68,86 @@ export interface ItemDropSource {
 }
 
 // ============================================================
-// Build both projections in one pass over mobs.json
+// Pass 1: fold every dossier into its CANONICAL mob
 // ============================================================
+//
+// The datamine splits some mobs across two dossier IDs: the rich
+// one, plus a shadow that exists only to carry a quest-context
+// drop (the four job-advancement Dark Marbles, the KPQ Coupon).
+// Keyed naively by dossier ID we'd emit a duplicate "Zombie
+// Mushroom" row AND link at a dossier that has no page. Fold the
+// shadow's drops into the real mob instead - nothing is lost and
+// the quest drop finally shows up where players look for it.
 
-const _mobCatalog: MobCatalogEntry[] = [];
-const _itemSourcesById = new Map<number, ItemDropSource>();
+interface MergedMob {
+	id: number;
+	name: string;
+	level: number;
+	isBoss: boolean;
+	/** keyed by itemId so a drop listed by both dossiers collapses */
+	drops: Map<number, MobDrop>;
+}
+
+const _merged = new Map<number, MergedMob>();
 
 for (const m of mobs as RawMob[]) {
 	if (!m.stats || !m.drops || m.drops.length === 0) continue;
-	const drops: MobDrop[] = [];
+	const id = canonicalMobId(m.id);
+	let mob = _merged.get(id);
+	if (!mob) {
+		mob = {
+			id,
+			name: m.name,
+			level: m.stats.level,
+			isBoss: !!m.stats.isBoss,
+			drops: new Map(),
+		};
+		_merged.set(id, mob);
+	} else if (m.id === id) {
+		// The canonical dossier is the authority on identity even
+		// if a shadow happened to be visited first.
+		mob.name = m.name;
+		mob.level = m.stats.level;
+		mob.isBoss = !!m.stats.isBoss;
+	}
+
 	for (const d of m.drops) {
 		// Guard against nulls in the datamine. Score can be null
 		// for very old entries; treat as 0 (very rare) rather
 		// than dropping the entry - user might still care.
 		const score = d.score ?? 0;
-		drops.push({
+		const existing = mob.drops.get(d.itemId);
+		// Same item from both dossiers: keep the better score.
+		if (existing && existing.score >= score) continue;
+		mob.drops.set(d.itemId, {
 			itemId: d.itemId,
 			itemName: d.itemName,
 			itemType: d.itemType,
 			score,
 		});
+	}
+}
 
-		// Populate reverse index simultaneously.
+// ============================================================
+// Pass 2: derive both projections from the merged truth
+// ============================================================
+
+const _mobCatalog: MobCatalogEntry[] = [];
+const _itemSourcesById = new Map<number, ItemDropSource>();
+
+for (const mob of _merged.values()) {
+	// Sort each mob's drops by score descending so the UI can
+	// present "best drops first" without client-side sorting.
+	const drops = [...mob.drops.values()].sort((a, b) => b.score - a.score);
+	_mobCatalog.push({
+		id: mob.id,
+		name: mob.name,
+		level: mob.level,
+		isBoss: mob.isBoss,
+		drops,
+	});
+
+	for (const d of drops) {
 		let entry = _itemSourcesById.get(d.itemId);
 		if (!entry) {
 			entry = {
@@ -100,24 +159,13 @@ for (const m of mobs as RawMob[]) {
 			_itemSourcesById.set(d.itemId, entry);
 		}
 		entry.sources.push({
-			mobId: m.id,
-			mobName: m.name,
-			mobLevel: m.stats.level,
-			isBoss: !!m.stats.isBoss,
-			score,
+			mobId: mob.id,
+			mobName: mob.name,
+			mobLevel: mob.level,
+			isBoss: mob.isBoss,
+			score: d.score,
 		});
 	}
-	if (drops.length === 0) continue;
-	// Sort each mob's drops by score descending so the UI can
-	// present "best drops first" without client-side sorting.
-	drops.sort((a, b) => b.score - a.score);
-	_mobCatalog.push({
-		id: m.id,
-		name: m.name,
-		level: m.stats.level,
-		isBoss: !!m.stats.isBoss,
-		drops,
-	});
 }
 
 // Sort reverse-index sources per item so the calculator can

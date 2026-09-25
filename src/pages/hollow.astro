@@ -28,6 +28,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import mapsData from "../data/db/maps.json";
 import questsData from "../data/db/quests.json";
 import mobsData from "../data/db/mobs.json";
+import { mobHref } from "../lib/mob-dedup";
 
 /* Canonical IDs from the CoT2 client datamine. Every Forgotten
  * Hollow region map lives in the 10006000-10006999 range - I
@@ -213,7 +214,7 @@ const exits = map?.exits ?? [];
 						const isStub = !m.stats || !m.stats.level;
 						return (
 							<li>
-								<a href={`/mobs/${m.id}`}>
+								<a href={mobHref(m.id)}>
 									<strong>{m.name}</strong>
 									<span class="hollow-card__meta">
 										{isStub ? (

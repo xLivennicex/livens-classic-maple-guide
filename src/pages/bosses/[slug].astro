@@ -16,6 +16,7 @@ import type { GetStaticPaths } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import { allBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
+import { mobHref } from "../../lib/mob-dedup";
 import { mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import { themeForLocation } from "../../lib/region-theme";
 
@@ -176,7 +177,7 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 	)}
 
 	<section class="section section--tail">
-		<a class="tail-link" href={`/mobs/${mob.id}`}>
+		<a class="tail-link" href={mobHref(mob.id)}>
 			View full mob dossier ({mob.name} on /mobs) →
 		</a>
 		<p class="muted-note">

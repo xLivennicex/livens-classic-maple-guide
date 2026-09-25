@@ -30,6 +30,7 @@ import {
 import mapDossiers from "../../data/db/maps.json";
 import npcDossiers from "../../data/db/npcs.json";
 import mobDossiers from "../../data/db/mobs.json";
+import { mobHref } from "../../lib/mob-dedup";
 import questDossiers from "../../data/db/quests.json";
 import {
 	mapThumbnailSrcs,
@@ -238,7 +239,7 @@ function townDossier(mapId: number) {
 											placeholder={themePlaceholderUrl(town.theme)}
 											height="36"
 										/>
-										<a href={`/mobs/${mob.id}`}>{mob.name}</a>
+										<a href={mobHref(mob.id)}>{mob.name}</a>
 										{mob.level != null && <span class="mob-list__lv">Lv {mob.level}</span>}
 									</li>
 								);

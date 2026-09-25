@@ -27,6 +27,7 @@ import { getSource, type SourceType } from "../data/sources";
 import { itemIconUrl, mobSpriteUrl, mobSpriteSrcs, themePlaceholderUrl } from "../lib/maplestory-cdn";
 import Sprite from "../components/Sprite.astro";
 import mobDossiers from "../data/db/mobs.json";
+import { canonicalMobId, mobHref } from "../lib/mob-dedup";
 
 interface QuestRef {
 	questId: string;
@@ -429,12 +430,16 @@ const theme = "sleepywood";
 						{d.droppedBy?.map((src) => (
 							<li>
 								{(() => {
-									const info = mobInfoById.get(src.mobId);
+									// items.json can cite a shadow dossier (quest-only
+									// drops live there); resolve to the page we publish
+									// so the sprite + stats come from the rich entry.
+									const mobId = canonicalMobId(src.mobId);
+									const info = mobInfoById.get(mobId);
 									return (
-										<a class="drop-source-row" href={`/mobs/${src.mobId}`}>
+										<a class="drop-source-row" href={mobHref(mobId)}>
 											<Sprite
 												class="drop-source-row__sprite"
-												srcs={mobSpriteSrcs(src.mobId, info?.wzId ?? null)}
+												srcs={mobSpriteSrcs(mobId, info?.wzId ?? null)}
 												alt=""
 												placeholder={themePlaceholderUrl("henesys")}
 											/>

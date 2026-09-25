@@ -18,6 +18,7 @@ import mapDossiers from "../../data/db/maps.json";
 import { mapMinimapUrl, mapRenderUrl, mobSpriteUrl, mobSpriteSrcs, npcSpriteUrl, mapThumbnailSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
 import mobDossiers from "../../data/db/mobs.json";
+import { mobHref } from "../../lib/mob-dedup";
 import npcDossiers from "../../data/db/npcs.json";
 import { themeForLocation } from "../../lib/region-theme";
 
@@ -191,7 +192,7 @@ const pageTheme = themeForLocation(
 			</h2>
 			<div class="mob-grid">
 				{mobsByCount.map((m) => (
-					<a class="mob-card" href={`/mobs/${m.id}`}>
+					<a class="mob-card" href={mobHref(m.id)}>
 						<Sprite
 							class="mob-card__sprite"
 							srcs={mobSpriteSrcs(m.id, mobWzById.get(m.id) ?? null)}

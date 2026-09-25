@@ -410,6 +410,10 @@ document.addEventListener("astro:page-load", () => {
 		}
 	}
 
+	// Note: s.mobId is already canonical - drop-index.ts folds shadow
+	// dossiers into their real mob before serializing. So the /mobs/
+	// hrefs below don't need mobHref() (which we couldn't import into
+	// a client script anyway).
 	function renderSourceTable(i: ItemSrc): void {
 		$sourcesTable.innerHTML = "";
 		for (const s of i.sources.slice(0, 25)) {

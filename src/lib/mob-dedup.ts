@@ -119,6 +119,30 @@ export const loserMobIds: Set<number> = tables.loserIds;
 export const loserToWinnerMobId: Map<number, number> = tables.loserToWinnerId;
 export const mobDedupGroupCount: number = tables.duplicateGroupCount;
 
+/**
+ * Resolve any dossier ID to the ID we actually publish a page for.
+ * Winners (and unknown IDs) pass through untouched.
+ *
+ * Use this anywhere a raw datamine mob ID crosses into user-facing
+ * territory - otherwise a loser ID leaks out, 404s at build time and
+ * only survives in production because `_redirects` catches it with a
+ * 301. Working links should never need the safety net.
+ */
+export function canonicalMobId(id: number): number {
+	return loserToWinnerMobId.get(id) ?? id;
+}
+
+/**
+ * The single source of truth for "what is the URL of a mob page".
+ *
+ * Every call site used to hand-roll `/mobs/${id}` (ten of them), which
+ * is how loser IDs quietly ended up in ten different templates. One
+ * function, one place to change if the route ever moves.
+ */
+export function mobHref(id: number): string {
+	return `/mobs/${canonicalMobId(id)}`;
+}
+
 /** Convenience predicate for filter callbacks. */
 export function isCanonicalMobDossier(m: MobDossier): boolean {
 	return winnerMobIds.has(m.id);

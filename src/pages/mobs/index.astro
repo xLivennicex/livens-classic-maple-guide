@@ -18,7 +18,7 @@ import generatedAt from "../../data/db/generated-at.json";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
 import MobHitEffect from "../../components/MobHitEffect.astro";
-import { loserMobIds } from "../../lib/mob-dedup";
+import { loserMobIds, mobHref } from "../../lib/mob-dedup";
 
 // Filter out duplicate dossiers (same wzId, hollow entries). Their
 // dossier pages don't render (see /mobs/[id].astro getStaticPaths)
@@ -125,10 +125,10 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 							/>
 						</td>
 						<td class="col-id">
-							<a href={`/mobs/${mob.id}`}>{mob.id}</a>
+							<a href={mobHref(mob.id)}>{mob.id}</a>
 						</td>
 						<td class="col-name">
-							<a href={`/mobs/${mob.id}`}>{mob.name}</a>
+							<a href={mobHref(mob.id)}>{mob.name}</a>
 						</td>
 						<td class="col-num">{mob.level ?? "-"}</td>
 						<td class="col-num">{mob.maxHP != null ? mob.maxHP.toLocaleString() : "-"}</td>
