@@ -16,16 +16,7 @@
 
 import mobs from "./db/mobs.json";
 import { canonicalMobId } from "../lib/mob-dedup";
-
-interface RawDrop {
-	itemId: number;
-	itemName: string;
-	itemType: string;
-	itemSubtype: string | null;
-	reqJob: number | null;
-	reqLevel: number | null;
-	score: number | null;
-}
+import { dropsForMob } from "../lib/mob-drops";
 
 interface RawMob {
 	id: number;
@@ -34,7 +25,6 @@ interface RawMob {
 		level: number;
 		isBoss: boolean | null;
 	} | null;
-	drops: RawDrop[] | null;
 }
 
 export interface MobDrop {
@@ -68,83 +58,40 @@ export interface ItemDropSource {
 }
 
 // ============================================================
-// Pass 1: fold every dossier into its CANONICAL mob
+// Build both projections from the canonical drop tables
 // ============================================================
 //
-// The datamine splits some mobs across two dossier IDs: the rich
-// one, plus a shadow that exists only to carry a quest-context
-// drop (the four job-advancement Dark Marbles, the KPQ Coupon).
-// Keyed naively by dossier ID we'd emit a duplicate "Zombie
-// Mushroom" row AND link at a dossier that has no page. Fold the
-// shadow's drops into the real mob instead - nothing is lost and
-// the quest drop finally shows up where players look for it.
-
-interface MergedMob {
-	id: number;
-	name: string;
-	level: number;
-	isBoss: boolean;
-	/** keyed by itemId so a drop listed by both dossiers collapses */
-	drops: Map<number, MobDrop>;
-}
-
-const _merged = new Map<number, MergedMob>();
-
-for (const m of mobs as RawMob[]) {
-	if (!m.stats || !m.drops || m.drops.length === 0) continue;
-	const id = canonicalMobId(m.id);
-	let mob = _merged.get(id);
-	if (!mob) {
-		mob = {
-			id,
-			name: m.name,
-			level: m.stats.level,
-			isBoss: !!m.stats.isBoss,
-			drops: new Map(),
-		};
-		_merged.set(id, mob);
-	} else if (m.id === id) {
-		// The canonical dossier is the authority on identity even
-		// if a shadow happened to be visited first.
-		mob.name = m.name;
-		mob.level = m.stats.level;
-		mob.isBoss = !!m.stats.isBoss;
-	}
-
-	for (const d of m.drops) {
-		// Guard against nulls in the datamine. Score can be null
-		// for very old entries; treat as 0 (very rare) rather
-		// than dropping the entry - user might still care.
-		const score = d.score ?? 0;
-		const existing = mob.drops.get(d.itemId);
-		// Same item from both dossiers: keep the better score.
-		if (existing && existing.score >= score) continue;
-		mob.drops.set(d.itemId, {
-			itemId: d.itemId,
-			itemName: d.itemName,
-			itemType: d.itemType,
-			score,
-		});
-	}
-}
-
-// ============================================================
-// Pass 2: derive both projections from the merged truth
-// ============================================================
+// mob-drops.ts owns the shadow-dossier fold, so we only walk
+// dossiers that are canonical and let it hand us the complete
+// table. Identity (name/level/isBoss) therefore always comes from
+// the dossier we actually publish a page for.
 
 const _mobCatalog: MobCatalogEntry[] = [];
 const _itemSourcesById = new Map<number, ItemDropSource>();
 
-for (const mob of _merged.values()) {
-	// Sort each mob's drops by score descending so the UI can
-	// present "best drops first" without client-side sorting.
-	const drops = [...mob.drops.values()].sort((a, b) => b.score - a.score);
+for (const m of mobs as RawMob[]) {
+	if (!m.stats) continue;
+	if (m.id !== canonicalMobId(m.id)) continue;
+	const drops = dropsForMob(m.id);      // already sorted, best first
+	if (drops.length === 0) continue;
+
+	const level = m.stats.level;
+	const isBoss = !!m.stats.isBoss;
+
 	_mobCatalog.push({
-		id: mob.id,
-		name: mob.name,
-		level: mob.level,
-		isBoss: mob.isBoss,
-		drops,
+		id: m.id,
+		name: m.name,
+		level,
+		isBoss,
+		// Project down to the four fields the calculator renders -
+		// the req/quest fields on MobDropRow would just be dead
+		// weight in the client payload.
+		drops: drops.map((d) => ({
+			itemId: d.itemId,
+			itemName: d.itemName,
+			itemType: d.itemType,
+			score: d.score,
+		})),
 	});
 
 	for (const d of drops) {
@@ -159,10 +106,10 @@ for (const mob of _merged.values()) {
 			_itemSourcesById.set(d.itemId, entry);
 		}
 		entry.sources.push({
-			mobId: mob.id,
-			mobName: mob.name,
-			mobLevel: mob.level,
-			isBoss: mob.isBoss,
+			mobId: m.id,
+			mobName: m.name,
+			mobLevel: level,
+			isBoss,
 			score: d.score,
 		});
 	}

@@ -20,6 +20,7 @@ import { mobSpriteUrl, mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from ".
 import Sprite from "../../components/Sprite.astro";
 import { themeForLocation } from "../../lib/region-theme";
 import { isCanonicalMobDossier } from "../../lib/mob-dedup";
+import { dropsForMob } from "../../lib/mob-drops";
 
 // Pre-index items by WZ ID so drop-table rows can render an icon
 // + link into /items/{id}. Missing items still render (name only) -
@@ -37,6 +38,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { d } = Astro.props;
+
+// NOT `d.drops` - the datamine parks some quest drops on a shadow
+// dossier we don't publish (Zombie Mushroom's Bowman Dark Marble
+// lives on 800011, not 21). dropsForMob folds those back in.
+const drops = dropsForMob(d.id);
+const questDropCount = drops.filter((drop) => drop.isQuestItem).length;
 
 // Theme by scanning ALL spawn map names for a town substring so
 // e.g. Snail (first spawn "Snail Hunting Ground I", later spawn
@@ -122,7 +129,7 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 					Spawns on {d.mapsSpawnedOn?.length ?? 0} map{d.mapsSpawnedOn?.length === 1 ? "" : "s"}
 				</span>
 				<span class="badge">
-					Drops {d.drops?.length ?? 0} item{d.drops?.length === 1 ? "" : "s"}
+					Drops {drops.length} item{drops.length === 1 ? "" : "s"}
 				</span>
 				<span class="badge">
 					{d.requiredByQuests.length} quest requirement{d.requiredByQuests.length === 1 ? "" : "s"}
@@ -183,17 +190,30 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 		</div>
 	)}
 
-	{d.drops && d.drops.length > 0 && (
+	{drops.length > 0 && (
 		<section class="section">
-			<h2>Drops <span class="count">({d.drops.length} item{d.drops.length === 1 ? "" : "s"})</span></h2>
+			<h2>Drops <span class="count">({drops.length} item{drops.length === 1 ? "" : "s"})</span></h2>
 			<p class="muted-note">
 				Drop data crowdsourced from
 				<a href="https://meowdb.com/msclassic" target="_blank" rel="noopener">MeowDB</a>.
 				Score = community upvotes minus downvotes; higher = more
 				reliable sighting.
 			</p>
+			{questDropCount > 0 && (
+				<p class="muted-note">
+					{/* Spaces live INSIDE the string expressions - JSX trims
+					    whitespace between an expression and an element. */}
+					{questDropCount === 1
+						? "One of these is a "
+						: `${questDropCount} of these are `}
+					<strong>{questDropCount === 1 ? "quest item" : "quest items"}</strong>
+					{". In v83 those only dropped while you were actively on the " +
+						"relevant quest - Classic World behaviour is unverified, so " +
+						"treat a dry spell as \"check your quest log\" before \"bad luck\"."}
+				</p>
+			)}
 			<div class="drop-table">
-				{d.drops.map((drop) => {
+				{drops.map((drop) => {
 					const item = itemsById.get(drop.itemId);
 					return (
 						<a
@@ -210,7 +230,10 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 							/>
 							<span class="drop-row__name">{drop.itemName}</span>
 							<span class="drop-row__type">
-								{drop.itemType}{drop.itemSubtype ? ` / ${drop.itemSubtype}` : ""}
+								{drop.itemType}
+								{drop.isQuestItem
+									? <span class="drop-row__quest">Quest</span>
+									: drop.itemSubtype ? ` / ${drop.itemSubtype}` : ""}
 							</span>
 							<span class={`drop-row__score drop-row__score--${drop.score >= 5 ? "high" : drop.score >= 2 ? "med" : "low"}`}>
 								{drop.score > 0 ? `+${drop.score}` : drop.score}
@@ -433,6 +456,18 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 	.drop-row__type {
 		font-size: 0.75rem; color: var(--text-muted);
 		font-family: monospace;
+	}
+	/* Static tag, not a filter control - deliberately NOT .chip
+	   (see global.css: chips are interactive). Replaces the
+	   "/ Quest Item" subtype text rather than sitting next to it,
+	   so the row says the same thing once. */
+	.drop-row__quest {
+		margin-left: 0.4rem;
+		padding: 0.1rem 0.45rem;
+		font-size: 0.7rem; font-weight: bold;
+		font-family: inherit; letter-spacing: 0.04em;
+		border-radius: 999px;
+		background: #e0d1e7; color: #4a2e5d;
 	}
 	.drop-row__score {
 		padding: 0.15rem 0.5rem;
