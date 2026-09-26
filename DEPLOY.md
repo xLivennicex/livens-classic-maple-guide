@@ -144,7 +144,7 @@ That's Pagefind confirming the search index built during the deploy.
 When the build finishes Cloudflare gives you a URL like:
 
 ```
-https://livens-classic-maple-guide.pages.dev
+https://livens-classic-maple.pages.dev
 ```
 
 Open it. If everything renders correctly, you're live.
@@ -164,7 +164,7 @@ If you own a domain and want to use it instead of `.pages.dev`:
 
 Every push to `main` triggers a production build.
 Every push to any other branch triggers a **preview deploy** at a
-unique URL like `https://a3f0c-livens-classic-maple-guide.pages.dev` -
+unique URL like `https://a3f0c-livens-classic-maple.pages.dev` -
 useful for reviewing content changes before merging.
 
 ## Rollback

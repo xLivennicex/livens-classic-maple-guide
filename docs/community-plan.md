@@ -217,7 +217,7 @@ concrete usage forces it.
 5. **Nexon takedown.** We're a fan guide, not the game — but if
    anything ever gets a legal ping, community features come down
    before the guide does. Keeping community and guide on separate
-   subdomains (`community.livens-classic-maple-guide.pages.dev` vs
+   subdomains (`community.livens-classic-maple.pages.dev` vs
    `www.`) would make that clean.
 
 6. **Character-builder rate limits.** maplestory.io throttles

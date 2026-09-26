@@ -10,4 +10,4 @@ Allow: /
 # When we ship a sitemap (via @astrojs/sitemap), it'll live at /sitemap-index.xml.
 # The line below is harmless today (search engines ignore missing sitemap files)
 # and immediately useful the moment we add the integration.
-Sitemap: https://livens-classic-maple-guide.pages.dev/sitemap-index.xml
+Sitemap: https://livens-classic-maple.pages.dev/sitemap-index.xml

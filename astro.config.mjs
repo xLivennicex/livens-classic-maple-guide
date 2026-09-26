@@ -19,6 +19,6 @@ import sitemap from "@astrojs/sitemap";
 //   time listing every discovered page. Search engines pick it up
 //   automatically because `public/robots.txt` points at it.
 export default defineConfig({
-	site: "https://livens-classic-maple-guide.pages.dev",
+	site: "https://livens-classic-maple.pages.dev",
 	integrations: [sitemap()],
 });
