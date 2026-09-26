@@ -28,6 +28,12 @@
  *   - Group entry: gets an "active-branch" style when currentPath
  *     matches ANY of its children (so users can see "you're inside
  *     Content" even when the dropdown is closed).
+ *   - "Matches" is prefix-with-boundary, not strict equality, so a
+ *     nested route (`/calculators/exp`) lights up its section-hub
+ *     entry (`/calculators`). This matters after Sprint 99's calc
+ *     consolidation collapsed 4 individual nav links into one hub
+ *     link -- the hub now has to represent the whole subtree.
+ *     Root `/` stays exact-match so Home doesn't light up everywhere.
  */
 
 interface Props {
@@ -91,10 +97,10 @@ const NAV_STRUCTURE: NavEntry[] = [
 			{ type: "link", label: "Quests", href: "/quests" },
 			{ type: "link", label: "Party Quests", href: "/party-quests" },
 			{ type: "link", label: "Items", href: "/items" },
-			{ type: "link", label: "EXP Calculator", href: "/calculators/exp" },
-			{ type: "link", label: "Damage Calculator", href: "/calculators/damage" },
-			{ type: "link", label: "Mesos Calculator", href: "/calculators/mesos" },
-			{ type: "link", label: "Drops Calculator", href: "/calculators/drops" },
+			// Every other entry in this group points at a section hub,
+			// not at individual pages. The four calculators were the
+			// exception only because /calculators didn't exist yet.
+			{ type: "link", label: "Calculators", href: "/calculators" },
 		],
 	},
 	{ type: "link", label: "Guides", href: "/guides" },
@@ -102,11 +108,20 @@ const NAV_STRUCTURE: NavEntry[] = [
 	{ type: "link", label: "Gallery", href: "/gallery" },
 ];
 
+// Does `currentPath` belong to this nav entry's subtree? An entry
+// matches when the current URL either IS that href or lives beneath
+// it (`/calculators` matches `/calculators/exp`). Root `/` is exact
+// only, otherwise every page would count as "inside Home".
+function isPathActive(href: string, path: string): boolean {
+	if (href === "/") return path === "/";
+	return path === href || path.startsWith(href + "/");
+}
+
 // Which group (if any) contains the currentPath? Used to apply the
 // "active-branch" style to that group's trigger button so the user
 // sees where they are even when the dropdown is closed.
 function isGroupActive(group: NavGroup): boolean {
-	return group.children.some((c) => c.href === currentPath);
+	return group.children.some((c) => isPathActive(c.href, currentPath));
 }
 ---
 
@@ -143,7 +158,7 @@ function isGroupActive(group: NavGroup): boolean {
 					<a
 						class="primary-nav__link"
 						href={entry.href}
-						aria-current={entry.href === currentPath ? "page" : undefined}
+						aria-current={isPathActive(entry.href, currentPath) ? "page" : undefined}
 					>
 						{entry.label}
 					</a>
@@ -171,7 +186,7 @@ function isGroupActive(group: NavGroup): boolean {
 								<a
 									class="primary-nav__menu-link"
 									href={child.href}
-									aria-current={child.href === currentPath ? "page" : undefined}
+									aria-current={isPathActive(child.href, currentPath) ? "page" : undefined}
 								>
 									{child.label}
 								</a>

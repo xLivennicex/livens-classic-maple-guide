@@ -1,0 +1,142 @@
+---
+/**
+ * /calculators - the hub for the four planning tools.
+ *
+ * Existed as a concept long before it existed as a page: /404.astro
+ * has always offered "Calculators" as a recovery link, and audit:links
+ * has always flagged it as the site's one broken internal link. Every
+ * other catalog section (/mobs, /items, /maps, /quests) has an index;
+ * this one just never got written.
+ *
+ * The cards are driven off the CALCULATORS array below rather than
+ * hand-written markup, so a fifth tool is a one-entry change and the
+ * "N tools" count in the lede can't drift out of sync.
+ *
+ * Each card carries a `caveat` because these are estimators, not
+ * oracles - the honesty note belongs in the discovery surface, not
+ * only after someone has already committed to a click.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import InfoCard from "../../components/InfoCard.astro";
+import { DROP_INDEX_STATS } from "../../data/drop-index";
+
+interface CalculatorEntry {
+	href: string;
+	eyebrow: string;
+	heading: string;
+	blurb: string;
+	/** The honest limitation, mirroring each tool's own lede. */
+	caveat: string;
+}
+
+// Ordered by how often you'd reach for them while actually playing,
+// not alphabetically.
+const CALCULATORS: CalculatorEntry[] = [
+	{
+		href: "/calculators/exp",
+		eyebrow: "Grind planner",
+		heading: "EXP calculator",
+		blurb:
+			"Pick a mob, enter your kill rate, get EXP/hour and time to " +
+			"your next level (or to a target level).",
+		caveat:
+			"Lv 1-30 uses canonical v83 EXP values. Above that the curve " +
+			"is extrapolated pending Founder's Access verification.",
+	},
+	{
+		href: "/calculators/drops",
+		eyebrow: "Loot planner",
+		heading: "Drop rate estimator",
+		blurb:
+			`Datamined drop tables across ${DROP_INDEX_STATS.mobsWithDrops} mobs ` +
+			`and ${DROP_INDEX_STATS.uniqueItems} unique items, plus the ` +
+			"probability math for how many kills it'll really take.",
+		caveat:
+			"Rates are v83 community estimates - Nexon doesn't publish " +
+			"Classic World drop rates. Treat them as a planning baseline.",
+	},
+	{
+		href: "/calculators/mesos",
+		eyebrow: "Income planner",
+		heading: "Meso income estimator",
+		blurb:
+			"Meso-per-hour from your grind rate, minus potion drain, plus " +
+			"hours-to-goal for whatever you're saving up for.",
+		caveat:
+			"You supply the meso-per-kill from your own sampling; the tool " +
+			"does the projection, not the observation.",
+	},
+	{
+		href: "/calculators/damage",
+		eyebrow: "Theorycrafting",
+		heading: "Damage estimator",
+		blurb:
+			"Min/max/average damage for a weapon and stat spread, with " +
+			"mastery scaling and target defense reduction.",
+		caveat:
+			"Built on the v83 damage formula. If Classic World retuned any " +
+			"multiplier, this follows the old math until we can verify.",
+	},
+];
+---
+
+<BaseLayout
+	title="Calculators - Liven's Classic Maple Guide"
+	description="Planning tools for classic MapleStory: EXP per hour, drop rates and kill counts, meso income, and damage estimates. Built on the CoT 2 datamine and v83 formulas."
+	theme="henesys"
+	currentPath="/calculators"
+>
+	<header class="calc-hub-hero">
+		<p class="eyebrow">Tools</p>
+		<h1>Calculators</h1>
+		<p class="lede">
+			{CALCULATORS.length} planning tools built on the Classic World
+			datamine. They answer "how long is this actually going to take"
+			so you can decide whether it's worth it before sinking the
+			evening into it.
+		</p>
+	</header>
+
+	<div class="calc-hub-grid">
+		{CALCULATORS.map((c) => (
+			<InfoCard eyebrow={c.eyebrow} heading={c.heading}>
+				<p class="calc-hub-card__blurb">{c.blurb}</p>
+				<p class="calc-hub-card__caveat">{c.caveat}</p>
+				<a class="secondary-button" href={c.href}>Open {c.heading.toLowerCase()}</a>
+			</InfoCard>
+		))}
+	</div>
+</BaseLayout>
+
+<style>
+	.calc-hub-hero {
+		max-width: 46rem;
+		margin: 0 auto 2rem;
+		text-align: center;
+	}
+	.calc-hub-hero h1 { margin: 0.3rem 0 0.6rem; }
+
+	.calc-hub-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+		gap: 1rem;
+		align-items: stretch;
+	}
+
+	/* InfoCard owns the chrome; we only lay out its slotted body so
+	   the CTA sits flush at the bottom of every card regardless of
+	   how long the blurb runs. */
+	.calc-hub-grid :global(.info-card) {
+		display: flex;
+		flex-direction: column;
+	}
+	.calc-hub-card__blurb { flex: 1; margin: 0 0 0.7rem; }
+	.calc-hub-card__caveat {
+		margin: 0 0 1rem;
+		font-size: 0.8rem;
+		font-style: italic;
+		color: var(--text-muted);
+	}
+	.calc-hub-grid :global(.secondary-button) { align-self: flex-start; }
+</style>
