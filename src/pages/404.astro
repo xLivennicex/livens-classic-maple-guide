@@ -7,91 +7,62 @@
  * with a real 404 status by convention (it's built as
  * dist/404.html and CF looks for it on catch-all failures).
  *
- * The vibe: three iconic starter mobs — Orange Mushroom, Green
- * Slime, Ribbon Pig — rendered in their damage-taken (hit1)
- * state, looking dejected that the page you asked for doesn't
- * exist in the datamine. Liven-voice copy and CTAs back to the
- * useful parts of the site.
+ * The vibe: an original illustrated hero (`404-hero.jpg`) carries
+ * the moment - autumn Maple sky-islands, a tiny explorer squinting
+ * at his map, a confused Slime and Mushroom, and a shimmering portal
+ * to nowhere. The title text ("404 / Path is a Dead End") is baked
+ * INTO the artwork, so the visible <h1> is SR-only: screen readers,
+ * search crawlers, and social-preview scrapers still get semantic
+ * text while sighted users get the art uncluttered.
  *
- * Sprite strategy: use the existing <Sprite> component with a
- * fallback chain [hit1, stand]. Orange Mushroom has a solid
- * hit1 endpoint on maplestory.io (verified 200); Slime and
- * Ribbon Pig can be flaky on hit1, so they'll gracefully drop
- * to stand and users still see a mob. Zero build-time risk of
- * a broken image.
+ * Sprint 82 shipped a sprite-trio version of this page (Orange
+ * Mushroom + Slime + Ribbon Pig damage sprites with speech bubbles).
+ * The illustrated hero replaces that whole treatment - the art
+ * already contains a slime and mushroom, so duplicating them below
+ * was busy. Sprite trio removed in Sprint 99.
  *
- * Theme: lith (that ocean-blue coastal vibe fits the "you got
- * washed off the map" narrative). Uses the same theme system as
- * every other page, so scrollbars/accents/etc. auto-swap.
+ * Theme: henesys - matches the autumn palette in the hero art.
+ * The old lith (ocean-blue) treatment fought the warm reds/oranges.
+ *
+ * The `image` prop overrides BaseLayout's default og:image so a
+ * shared broken link shows the themed 404 art on Discord/Twitter/etc
+ * instead of the generic Henesys backdrop.
  */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Sprite from "../components/Sprite.astro";
-import { DEFAULT_VERSION } from "../lib/maplestory-cdn";
-
-// wzIds sourced from src/data/db/mobs.json.
-// Orange Mushroom's crying face (hit1) is the iconic v83 sprite
-// every returning player recognizes; it's what sold the whole
-// "themed 404" idea in the first place.
-const MOB_ROOT = `https://maplestory.io/api/${DEFAULT_VERSION}/mob`;
-const mobs = [
-	{
-		name: "Orange Mushroom",
-		wzId: 1210102,
-		bubble: "Even *I* couldn't 404 this hard.",
-	},
-	{
-		name: "Green Slime",
-		wzId: 210100,
-		bubble: "Blorp. This page is dust.",
-	},
-	{
-		name: "Ribbon Pig",
-		wzId: 1210101,
-		bubble: "Oink oink I mean, that's not a thing.",
-	},
-] as const;
-
-function spriteSrcs(wzId: number): string[] {
-	// hit1 (crying/damaged) first; stand as a proven fallback.
-	// Sprite's built-in onerror chain handles the swap silently.
-	return [`${MOB_ROOT}/${wzId}/render/hit1`, `${MOB_ROOT}/${wzId}/render/stand`];
-}
 ---
 
 <BaseLayout
 	title="404 - Page not found - Liven's Classic Maple Guide"
-	description="This page doesn't exist in the Classic World datamine. Orange Mushroom, Slime, and Ribbon Pig are all pretty upset about it."
+	description="This page doesn't exist in the Classic World datamine. Our explorer can't find it on his map either."
 	currentPath="/404"
-	theme="lith"
+	theme="henesys"
 	decorations={false}
+	image="/images/404-hero.jpg"
 >
 	<section class="not-found">
-		<div class="not-found__mobs" aria-hidden="true">
-			{
-				mobs.map((mob) => (
-					<figure class="not-found__mob">
-						<Sprite
-							srcs={spriteSrcs(mob.wzId)}
-							alt={`${mob.name} taking damage`}
-							loading="eager"
-							class="not-found__sprite"
-						/>
-						<figcaption class="not-found__bubble">{mob.bubble}</figcaption>
-					</figure>
-				))
-			}
-		</div>
+		{/* SR-only h1: the art carries the visual title ("404 / Path
+		    is a Dead End") but screen readers and crawlers can't OCR
+		    an image, so keep the semantic heading available in the
+		    accessibility tree. */}
+		<h1 class="sr-only">404 - Path is a dead end</h1>
+
+		<img
+			class="not-found__hero"
+			src="/images/404-hero.jpg"
+			alt="A tiny explorer stands on an autumn floating-island cliff, puzzling over a map next to a green Slime and a red Mushroom. A shimmering purple portal glows nearby. Overhead: '404 - Path is a Dead End' in gold lettering."
+			width="1672"
+			height="941"
+			loading="eager"
+			fetchpriority="high"
+		/>
 
 		<div class="not-found__copy">
-			<p class="not-found__eyebrow">404 - Route not in datamine</p>
-			<h1 class="not-found__title">You wandered off the world map.</h1>
 			<p class="not-found__lede">
 				The URL you followed doesn't exist in Classic World, v83 GMS,
 				or any other build we've catalogued. Might have been moved,
 				might have been a typo in Nexon's dev branch, might just be
-				a haunted link. Either way, three starter mobs are pretty
-				bummed about it.
+				a haunted link. Our explorer's just as confused as you are.
 			</p>
 			<p class="not-found__lede not-found__lede--secondary">
 				Let's get you back somewhere useful:
@@ -144,104 +115,24 @@ function spriteSrcs(wzId: number): string[] {
 		text-align: center;
 	}
 
-	/* Mob squad row */
-	.not-found__mobs {
-		display: flex;
-		align-items: flex-end;
-		justify-content: center;
-		gap: 2.4rem;
-		flex-wrap: wrap;
-	}
-	.not-found__mob {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.75rem;
-		margin: 0;
-	}
-	/* Sprint 82.1 fix: <Sprite> renders <img> via set:html for its
-	   onerror fallback chain, which skips Astro's scoped-style
-	   attribute stamping. Wrapping sprite-targeted rules in
-	   :global() lets them cascade through without needing the
-	   data-astro-cid attribute. The parent .not-found__mob IS
-	   scoped (rendered in the template body), so specificity
-	   stays local - we're not polluting global CSS. */
-	.not-found__mob :global(.not-found__sprite) {
-		/* MapleStory.io ships mob renders at native pixel sizes
-		   (~50-70px each). Setting `width` drives the upscale;
-		   `max-width` alone would just cap and let the sprite
-		   render tiny. `image-rendering: pixelated` keeps the
-		   ~2x upscale crisp instead of bilinear-blurred. */
-		width: 140px;
+	/* Hero illustration. The art is 1672x941 (~16:9) with the title
+	   text baked in, so we let it flex to container width and cap
+	   at a comfortable reading size. Rounded corners + shadow to
+	   match the site's card treatment; border-color follows the
+	   active theme for coherence. */
+	.not-found__hero {
+		display: block;
+		width: 100%;
+		max-width: 720px;
 		height: auto;
-		max-width: 140px;
-		image-rendering: pixelated;
-		image-rendering: crisp-edges;
-		/* Little bob to hint at "sad" without going full cartoon.
-		   Motion drops to nothing under prefers-reduced-motion. */
-		animation: nf-bob 2.6s ease-in-out infinite;
-	}
-	.not-found__mob:nth-child(2) :global(.not-found__sprite) {
-		animation-delay: -0.6s;
-	}
-	.not-found__mob:nth-child(3) :global(.not-found__sprite) {
-		animation-delay: -1.4s;
-	}
-	@keyframes nf-bob {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(4px); }
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.not-found__mob :global(.not-found__sprite) {
-			animation: none;
-		}
-	}
-
-	/* Speech bubbles - little text callouts under each mob */
-	.not-found__bubble {
-		position: relative;
-		max-width: 160px;
-		padding: 0.45rem 0.7rem;
-		background: color-mix(in srgb, var(--surface-card) 94%, transparent);
+		border-radius: 0.75rem;
 		border: 1px solid var(--border-card);
-		border-radius: 0.55rem;
-		font-size: 0.8rem;
-		line-height: 1.35;
-		color: var(--text-body);
 		box-shadow: var(--shadow-content-card);
-		font-style: italic;
-	}
-	/* Bubble tail pointing up at the sprite */
-	.not-found__bubble::before {
-		content: "";
-		position: absolute;
-		top: -6px;
-		left: 50%;
-		transform: translateX(-50%) rotate(45deg);
-		width: 10px;
-		height: 10px;
-		background: inherit;
-		border-top: 1px solid var(--border-card);
-		border-left: 1px solid var(--border-card);
 	}
 
 	/* Copy block */
 	.not-found__copy {
 		width: 100%;
-	}
-	.not-found__eyebrow {
-		font-size: 0.78rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--accent-primary);
-		margin: 0 0 0.4rem;
-	}
-	.not-found__title {
-		font-size: clamp(1.6rem, 4vw, 2.4rem);
-		line-height: 1.15;
-		color: var(--text-heading);
-		margin: 0 0 0.9rem;
 	}
 	.not-found__lede {
 		font-size: 1.02rem;
@@ -319,20 +210,6 @@ function spriteSrcs(wzId: number): string[] {
 		background: color-mix(in srgb, var(--surface-card) 60%, transparent);
 		border: 1px solid var(--border-card);
 		color: var(--text-heading);
-	}
-
-	@media (max-width: 640px) {
-		.not-found__mobs {
-			gap: 1.2rem;
-		}
-		.not-found__mob :global(.not-found__sprite) {
-			width: 96px;
-			max-width: 96px;
-		}
-		.not-found__bubble {
-			max-width: 120px;
-			font-size: 0.72rem;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
