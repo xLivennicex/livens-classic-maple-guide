@@ -235,6 +235,41 @@ h3 {
 	font-family: var(--font-heading);
 }
 
+/* ---------- Hero-copy halo over scenic backdrops ----------
+
+   Sprint 99: qa-kitten caught that hero <p class="lede"> paragraphs
+   dissolved into the autumn backdrop art on mobile - the autumn
+   scrim in seasons.css is intentionally transparent at the top so
+   the moody dusk artwork reads through, which costs hero copy
+   contrast wherever a hero sits above the parchment part of the
+   gradient.
+
+   Fix mirrors the .brand strong/small treatment from earlier: a
+   dual-layer light halo (tight opaque core + soft outer glow)
+   that lifts text off the artwork without darkening the base
+   color. Every existing hero container in the codebase either
+   contains "hero" in its class name (calc-hero, calc-hub-hero,
+   hero-plate, jb-hero, launch-hero, hero__*) or is one of the
+   two named exceptions (section-heading, gallery-header) - so
+   the selector attribute-matches broadly and adds the two
+   exceptions explicitly.
+
+   :where() gives this rule zero specificity, so per-page .lede /
+   h1 overrides continue to win their color/size/weight fights.
+   Only the text-shadow lands, and it's cheaply overrideable
+   per-theme via --hero-halo (e.g. dark halo for a hypothetical
+   night-mode) exactly like --brand-halo. */
+:where(
+	[class*="hero" i],
+	.section-heading,
+	.gallery-header
+) :where(h1, .eyebrow, .lede) {
+	text-shadow: var(--hero-halo,
+		0 1px 0 rgba(255, 253, 246, 0.75),
+		0 0 4px rgba(255, 253, 246, 0.55),
+		0 0 10px rgba(255, 253, 246, 0.35));
+}
+
 /* ---------- Layout wrappers ---------- */
 
 .page-width {
