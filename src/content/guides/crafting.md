@@ -234,6 +234,8 @@ The normal flow is:
 7. Continue crafting while observing the character-level gates.
 8. Complete the level-25 master-recognition quest after building sufficient crafting skill.
 
+> **Full walkthroughs for the arc's two hub quests:** step 6 (the all-masters helper phase) and step 8 (the master-recognition finale) each have dedicated editorial pages on this site. [Crafting Apprentices in Need of Help](/quests/crafting-apprentices-in-need-of-help) covers the L15 helper quest where all six masters need you at once, each awarding their profession's Kit. [Crafting Masters Graduation](/quests/crafting-masters-graduation) covers the L25 finale where each master calls you back to prove your mastery in exchange for a specialized Crafting Catalyst. The individual per-master recognition quests are linked inline throughout the discipline sections above via their MeowDB tracker pages.
+
 You do not need to choose a discipline based on your combat class. A Warrior can learn Tailoring or Arcforge, and a Magician can learn Smithing. Equipment class and stat requirements still determine who can use the finished item.
 
 ## The Crafting Workflow

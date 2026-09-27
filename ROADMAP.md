@@ -212,13 +212,29 @@ _All items below were verified against the codebase on 2026-09-26._
 - **Ellinia BGM** - `public/audio/ellinia.mp3` is the only remaining
   hole in the audio directory (henesys / kerning / lith / perion /
   sleepywood are all shipped).
-- **Citizenship guide deep-dive** - `src/content/guides/citizenship.md`
-  is still 23 KB and missing the 30+ Citizenship quests in the 506xxx
-  datamine block: Community Board donations (506019-506032, twelve
-  tiers), Chief Stan backstory arc (506041-506045), "To Henesys, the
-  Prairie Town" entry quest (506000).
-- **Crafting guide expansion** - `crafting.md` is still 34 KB, text-
-  only. Datamine recipe data isn't surfaced as tables yet.
+- **Citizenship guide deeper dive** - Sprint 99 MVP pass added
+  quest-ID cross-links for the three headline story chains
+  (A Family Reunited 506036-506040, After the Festival Ends /
+  Chief Stan arc 506041-506045, Jake's Trauma 506137-506141) plus
+  the two town-entry quests and the Community Board donation
+  pattern. Still uncovered: individual per-quest editorial
+  walkthroughs for the 88-quest 506xxx block. The 18 resident
+  "First Greeting / Asking After" pairs (nine per town) and the 17
+  donation tiers currently just have auto-generated dossiers. A
+  future pass could add an editorial page per chain rather than
+  bloating the systems guide further.
+- **Crafting guide recipe surfacing** - `crafting.md` (34 KB) still
+  doesn't surface recipe data as tables, but the underlying
+  assumption in earlier roadmap entries was wrong: **the datamine
+  has no structured recipe data yet** (no `crafting.json` file
+  exists in `src/data/db/`). Sprint 99 added inline cross-links to
+  the two hub-quest editorials (`crafting-apprentices-in-need-of-
+  help` and `crafting-masters-graduation`) which cover the L15 and
+  L25 arc beats. Building actual recipe tables requires a WZ-
+  extraction pass to pull recipe metadata (ingredients, output
+  items, success rates, catalyst effects) into a new `crafting.json`
+  first; that's a datamine expansion project, not a content
+  authoring one.
 - **Ronnie House-Building chain editorials** - quests 10206-10209
   (L41) exist in the datamine (auto-generated pages render) but no
   hand-authored walkthroughs. Direct continuation of the Ronnie /

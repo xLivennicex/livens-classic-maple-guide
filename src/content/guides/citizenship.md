@@ -311,25 +311,47 @@ All recorded civic scrolls had a 100% success rate. Their "Lesser" designation r
 
 ## Citizenship Story Quests
 
-Citizenship also adds character-driven quests that expand the identity of each town.
+Beyond the daily greeting quests and repeatable Community Board donations, Citizenship layers a set of character-driven quest chains on top of each town. The CoT2 datamine surfaces **88 quests in the 506xxx block**, split into two mirror halves — 506000–506045 for Henesys, 506100–506141 for Kerning City — each with a town-entry quest, a set of "First Greeting" / "Asking After" pairs for the town residents, tiered Community Board donation repeatables, and one or two story arcs.
+
+Each town's entry quest is where the citizenship pledge is formalized in-world: [To Henesys, the Prairie Town](/quests/506000) or [To the Gray City, Kerning City](/quests/506100). The tiered [Donating to Henesys](/quests/506019) repeatables (17 tiers, quest IDs 506019–506035) and their Kerning counterparts are how you actually convert mesos and materials into contribution once you have picked a town.
 
 ### Henesys
 
-**A Family Reunited — Level 17**
+**A Family Reunited — Level 17** *(quests 506036 → 506040)*
 
-This chain follows Bruce, Mrs. Ming Ming, and Ayan. Its COT2 quest records include Bruce's Dilemma, Mrs. Ming Ming's Advice, Bruce's Cooking Ingredients, A Father's Love for His Daughter, and The Best Dad.
+Follows Bruce, Mrs. Ming Ming, and Ayan through a five-step family reunion:
 
-**After the Festival Ends — Level 27**
+1. [Bruce's Dilemma](/quests/506036)
+2. [Mrs. Ming Ming's Advice](/quests/506037)
+3. [Bruce's Cooking Ingredients](/quests/506038)
+4. [A Father's Love for His Daughter](/quests/506039)
+5. [The Best Dad](/quests/506040)
 
-This chain explores Mrs. Ming Ming and Chief Stan's past. Its records include Mrs. Ming Ming's Concern, Chief Stan's Past, Chief Stan's Hammer, Memories of Youth, and Regained Vitality.
+**After the Festival Ends — Level 27** *(quests 506041 → 506045)*
+
+Explores Mrs. Ming Ming and Chief Stan's shared past — Henesys's headline late-Citizenship story arc:
+
+1. [Mrs. Ming Ming's Concern](/quests/506041)
+2. [Chief Stan's Past](/quests/506042)
+3. [Chief Stan's Hammer](/quests/506043)
+4. [Memories of Youth](/quests/506044)
+5. [Regained Vitality](/quests/506045)
 
 ### Kerning City
 
-**Jake's Trauma — Level 17**
+**Jake's Trauma — Level 17** *(quests 506137 → 506141)*
 
-This chain begins with Jake's fear of Stirges and sends the player through a search for a cure. Its records include Stirge Phobia, Making the Medicine, The Final Ingredient for the Cure, Grandfather's Vitamin Gummy, and It's All in the Mind.
+Begins with Jake's fear of Stirges and sends the player through a search for a cure:
+
+1. [Stirge Phobia](/quests/506137)
+2. [Making the Medicine](/quests/506138)
+3. [The Final Ingredient for the Cure](/quests/506139)
+4. [Grandfather's Vitamin Gummy](/quests/506140)
+5. [It's All in the Mind](/quests/506141)
 
 These story quests are separate from the ordinary greeting, daily, and weekly contribution loops. Complete them when they appear so they do not become buried beneath repeatable board assignments.
+
+> **The rest of the 506xxx block:** the three headline chains above cover Citizenship's editorial story beats, but the datamine has plenty more — the "First Greeting" / "Asking After" pairs for each town's residents (Rina, Mrs. Ming Ming, Camila, Bruce, Maya, Pia, Anne, and others in Henesys; Alex, Shumi, Nella, Icarus, Jane Doe, Jake, Mr. Pickall, and others in Kerning) plus every donation tier. Each one has an auto-generated dossier at `/quests/{id}` — the dynamic quest route builds a page for every datamine entry, so any citizenship quest not editorially named above is still one URL away.
 
 ## Switching Towns
 
