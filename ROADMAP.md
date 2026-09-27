@@ -175,129 +175,119 @@ Every source lives in `src/data/sources.ts` with a full archive entry.
 
 ## Current Status
 
-**Shipped (Phase 1):**
-- Homepage with mission statement, jobs grid, launch checklist link
-- Launch Hub with 8 sections, source citations, open-question list
-- Sources archive (Ossyria Report + COT2 stub) with Wayback backup
-- Countdown timers for Founder's Access and Official Launch
-- 6-theme token system (Henesys done; 5 towns as stubs)
-- Henesys scenic background, MapleStory cursors, per-theme BGM
-- Reusable components: `SourceBadge`, `StatusBadge`, `VerificationNotice`,
-  `LastUpdated`, `SourceCard`, `AccuracyLedger`, `JobCard`,
-  `Countdown`, `MusicPlayer`, `MapleLeaf`, `LaunchTimeline`,
-  `InfoCard`, `BaseLayout`
+_Last audited: 2026-09-26 (Sprint 99). This section only tracks what's
+still open; see the Changelog below for the running log of what's
+shipped. If you catch an item here that's actually done, please move
+it into the changelog rather than leaving it to drift again._
 
-**Blocked / awaiting input:**
-- BGM composer credits (need artist names for proper attribution)
-- WebP conversion of background images (needs `sharp` or user-provided
-  WebP)
+**Deployed:** production at `https://livens-classic-maple.pages.dev/`
+via Cloudflare Pages (auto-deploys on push to `main`). Static Astro
+build; last build was 5,732 pages with Pagefind index + sitemap.
 
-**Next up:**
-- **YOU: push to GitHub and click Deploy on Cloudflare Pages.**
-  Everything on this side is ready. Follow `DEPLOY.md` step by
-  step - it's ~10 minutes end-to-end.
-- **Maple Island items backfill.** The 6 new quests reference
-  items that don't yet have pages: Egg (2010002), Orange
-  (2010004), Fruit Knife (1332001), Razor (1332000), The
-  Green Relaxer (3010000). Ship at least Egg + Orange +
-  Green Relaxer for full reverse-linking (dagger items lower
-  priority since Thieves have better options in Victoria).
-- **Content QA audit round 2.** The Diamond/Diamond Ore
-  slip caught during round 5 verification suggests other
-  editorial claims made from memory may have similar bugs.
-  Systematic verification pass: read every quest editorial,
-  cross-check ID references against the datamine.
-- **More Maple Island tutorials** - remaining discovered but
-  unshipped: Sam's Suggestion (1006), Mai's Training chain
-  (1009-1010), Biggs's Collection (1011), Pio's Recycled
-  Goods (1012), Rain's Maple Quiz 1 & 2 (1013-1014).
-- **Cursed Doll tier 5 hat variants.** Steel Nordic Helm
-  is the flagship; the other 17 variants (Nordic Mithril/
-  Gold; 5 Guiltians; 5 Distinctions; 5 Pilfers) could get
-  lighter stub pages that cross-link back to the flagship.
-- **Citizenship guide deep-dive.** Datamine has 30+ Citizenship
-  quests in the 506xxx block: Community Board donation quests
-  (506019-506032, twelve tiers of donating to Henesys!), the
-  Chief Stan backstory arc (506041-506045), plus 'To Henesys,
-  the Prairie Town' (506000) entry quest. Our current
-  citizenship.md guide (23KB) is likely missing most of this.
-  Big rewrite opportunity.
-- **Crafting guide expansion.** crafting.json (93KB) has
-  recipe data we're not yet surfacing. Current crafting.md
-  (34KB) is text-only - could add recipe tables cross-linked
-  to the ore items already referenced in Cursed Doll chain.
-- **Ronnie's House-Building chain** (10206-10209, L41) -
-  direct continuation of the Ronnie storyline, follows
-  Sleepywood chain thematically.
-- **HPQ / LPQ / OPQ status:** absent from datamine as of
-  Aug 2026. Re-scan when datamine updates. If they remain
-  cut in Classic World, document that decision on the
-  /party-quests page.
-- **More items for reward tables:** Diamond (referenced in
-  Sleepywood chain step 6 as trade to Rowen), other Cursed
-  Doll tier 5 hats (Steel Nordic Helm etc.), common weapon
-  drops from L20-40 mobs.
-- **Content QA pass:** the Ribboned Pig Headband stat fix
-  suggests every existing item file might have similar v83-
-  baseline stats that Classic World rebalanced. Systematic
-  audit needed: cross-check every item page's numeric stats
-  against osmsdataexplorer.com.
-- Ludibrium PQ / Orbis PQ / Monster Carnival PQ if/when their
-  entry-quest IDs surface in the datamine. Currently absent -
-  they may be gated content not yet in CoT 2 Founder's Access.
-- Level 40 hat variants from Cursed Doll chain tier 5:
-  Steel Nordic Helm (1002139), Dark Guiltian (1002144), Dark
-  Distinction (1002151), Dark Pilfer (1002156). Old Wisconsin
-  is the flagship page; the others could be lighter stubs that
-  cross-link back to the chain.
-- Wire the `Leveling` and `Tools` nav slots to real pages (they
-  still point at `#`). Leveling could aggregate the training
-  routes from each class page; Tools could host EXP calculators
-  and equipment optimizers eventually.
-- Upgrade the search widget from Pagefind's Default UI to
-  Component UI (v1.5+) for the modal-style search overlay and
-  better a11y - purely a polish pass; current Default UI works.
-- Extract Estelle's sprite from the CoT 2 client via HaRepacker-
-  Resurrected (or find an alternate maplestory.io variant) so
-  her quest hero gets its picture.
-- Dedicated `/jobs/{class}/{branch}` pages once we have enough
-  authored per-branch content (full skill trees, per-branch
-  training routes, per-branch equipment progression). The
-  preview-skills pattern is intentionally the tease before the
-  deep dive.
-- Third-job progression pages. CoT 2 dashboard has all 25 class
-  entries; we're currently covering 4 (first job) + 10 (second
-  job branches, preview only) = 14 of them.
-- Extend quest chain seeds - Sera's Mirror step 2 exists in
-  the datamine but not yet on the site; the 4 advancement
-  quests each need their 3 follow-up chain steps too. Following
-  each chain to completion resolves the `nextQuest` links.
-- Identify the CoT 2 PQ entry quests (Kerning City PQ, etc)
-  and seed them into the party-quest category so `/party-quests`
-  actually populates.
-- Investigate v83 unique-reward quests (bathrobe / bone helmet /
-  skull earrings) - initial dump search returned zero matches in
-  CoT 2, meaning they were either renamed for Classic World or
-  rolled into the crafting system. Requires a dedicated grep
-  session against the full 712-item + 348-recipe dump.
-- Grow the items collection beyond the 5 seeds (target: every item
-  named in the four job guides gets an entry - lookup + editorial
-  authoring per item; sprite is free via wzId)
-- Add a "Mentioned items" section to each job guide that pulls
-  from the items collection, tightening the cross-linking loop
-- Second Whispering Willow Path variant (user has two versions;
-  either pick one or wire a way to swap between them)
-- Additional system guides (drop-in .md files now that Phase 3 shipped)
-- BGM tracks for Ellinia (`public/audio/ellinia.wav`), Kerning
-  (`public/audio/kerning.wav`), and Sleepywood
-  (`public/audio/sleepywood.wav`)
-- Deploy the site! No hosting configured yet - Cloudflare Pages
-  is the obvious pick for a static Astro build
-- Phase 4b - Monsters collection (same pattern as items; enables
-  the `droppedBy` cross-links on item pages to actually resolve)
-- Optional: extract the shared `SourceType` / `verificationStatus`
-  enum to a const both sources.ts and content.config.ts import,
-  killing the drift risk called out in the schema comment
+**High-level what's live** (non-exhaustive - the whole reference layer,
+guide corpus, and calculator suite; see the changelog for the full
+timeline):
+
+- Reference DBs: `/items`, `/mobs`, `/npcs`, `/maps`, `/quests`,
+  `/bosses` (each auto-generated from datamine + per-entity editorial
+  layer where authored)
+- Guide corpus: 15 hand-authored guides in `/guides/*`, 4 job
+  second-job guides, plus job dynamic route `/jobs/[job]`
+- Calculators hub: damage / drops / EXP / mesos, all under
+  `/calculators/*` with a data-driven hub landing (Sprint 99)
+- 56 curated item editorials, 90 quest editorials
+- Full seasonal theme system (autumn/summer toggle), per-theme BGM,
+  music player, jukebox, gallery, hall-of-fame, Forgotten Hollow
+  region hub + easter egg
+- Themed 404 with illustrated hero + broken-link og:image (Sprint 99)
+- 6 seasonal backgrounds (kerning, ellinia, perion, lith, sleepywood,
+  forgotten-hollow, all with shared henesys fallback)
+
+### Currently open
+
+_All items below were verified against the codebase on 2026-09-26._
+
+**Content backlog:**
+
+- **Ellinia BGM** - `public/audio/ellinia.mp3` is the only remaining
+  hole in the audio directory (henesys / kerning / lith / perion /
+  sleepywood are all shipped).
+- **Citizenship guide deep-dive** - `src/content/guides/citizenship.md`
+  is still 23 KB and missing the 30+ Citizenship quests in the 506xxx
+  datamine block: Community Board donations (506019-506032, twelve
+  tiers), Chief Stan backstory arc (506041-506045), "To Henesys, the
+  Prairie Town" entry quest (506000).
+- **Crafting guide expansion** - `crafting.md` is still 34 KB, text-
+  only. Datamine recipe data isn't surfaced as tables yet.
+- **Ronnie House-Building chain editorials** - quests 10206-10209
+  (L41) exist in the datamine (auto-generated pages render) but no
+  hand-authored walkthroughs. Direct continuation of the Ronnie /
+  Sleepywood storyline.
+- **Maple Island tutorial editorials** - quests 1006 (Sam's
+  Suggestion), 1009-1010 (Mai's Training), 1011 (Biggs's Collection),
+  1012 (Pio's Recycled Goods), 1013-1014 (Rain's Maple Quiz 1 & 2)
+  all datamine-present, no editorial `.md` files.
+- **Cursed Doll tier 5 hat variants** - Steel Nordic Helm is the
+  flagship; 17 lighter stubs needed for Nordic Mithril / Gold + the
+  five Guiltians + five Distinctions + five Pilfers, each cross-
+  linking back to the flagship.
+- **Third-job progression pages** - covering roughly 14 of 25 CoT 2
+  class entries; the rest need first-pass authoring.
+- **Content QA audit round 2** - ongoing; every session catches new
+  drift between editorial claims and datamine reality. Systematic
+  pass reads every quest editorial and cross-checks IDs, item stats,
+  and drop tables.
+- **Extend quest chain seeds** - Sera's Mirror step 2 exists in the
+  datamine but not yet linked; the 4 advancement quests each need
+  their 3 follow-up chain steps to resolve `nextQuest` links.
+- **CoT 2 PQ entry quests** - identify + seed Kerning City PQ etc.
+  so `/party-quests` populates instead of staying stub-shaped.
+
+**Tech debt / polish:**
+
+- **WebP/AVIF conversion** of the six 2-3 MB theme background PNGs -
+  page-load AND og:image weight both benefit. Needs `sharp` via
+  `@astrojs/image` or a manual pre-conversion step.
+- **Pagefind Default UI -> Component UI (v1.5+)** for modal-style
+  search overlay + better a11y. Current default UI works, this is
+  polish.
+- **`.guide-hero__tagline` selector coverage** - the Sprint 99 hero-
+  copy halo (`global.css`) covers `h1 / .eyebrow / .lede` inside any
+  hero container. Every current guide hero renders on a parchment
+  panel so the tagline is legible without a halo; if a future guide
+  hero moves off parchment onto the seasonal backdrop, add
+  `.guide-hero__tagline` to the selector.
+- **`SourceType` / `verificationStatus` enum extraction** - currently
+  duplicated across `sources.ts` and `content.config.ts`; hoist to
+  one const that both import to kill the drift risk called out in
+  the schema comment.
+
+**Blocked / awaiting external input:**
+
+- BGM composer credits (need artist names for proper attribution).
+- Estelle's sprite - not on maplestory.io; needs extraction from the
+  CoT 2 client via HaRepacker-Resurrected, or find an alt variant.
+- **HPQ / LPQ / OPQ / Ludibrium PQ / Orbis PQ / Monster Carnival PQ**
+  entry quests - absent from datamine as of Aug 2026. May be gated
+  content not yet in Founder's Access. Re-scan on datamine refresh;
+  if they remain cut in Classic World, document that decision on
+  `/party-quests`.
+- **v83 unique-reward quests** (bathrobe / bone helmet / skull
+  earrings) - initial dump search returned zero CoT 2 matches. Either
+  renamed for Classic World or rolled into crafting. Requires a
+  dedicated grep session against the full 712-item + 348-recipe dump.
+- **Whispering Willow Path** - user has two versions; either pick one
+  or wire a way to swap between them.
+
+**Known deferred bugs / rough edges** (worth logging so they don't get
+forgotten):
+
+- **Cloudflare Pages deploy stuck** as of 2026-09-26 evening - 5
+  commits pushed to `origin/main` (including the OG hostname fix
+  `70cb827` that stops link preview cards from breaking), production
+  hasn't picked them up 30+ minutes later. Needs a dashboard check
+  next session: is a build queued, failed, or is the webhook
+  disconnected?
 
 ---
 
