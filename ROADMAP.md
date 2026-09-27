@@ -235,18 +235,22 @@ _All items below were verified against the codebase on 2026-09-26._
   items, success rates, catalyst effects) into a new `crafting.json`
   first; that's a datamine expansion project, not a content
   authoring one.
-- **Ronnie House-Building chain editorials** - quests 10206-10209
-  (L41) exist in the datamine (auto-generated pages render) but no
-  hand-authored walkthroughs. Direct continuation of the Ronnie /
-  Sleepywood storyline.
+- ~~**Ronnie House-Building chain editorials**~~ - SHIPPED 2026-09-26.
+  See `src/content/quests/ronnie-house-building-chain.md` (4-step
+  chain covering quests 10206-10209 as one canonical article,
+  matching the sleepywood-sauna-robe-chain pattern). Cross-linked
+  to all target mobs and the sibling Sauna chain.
 - **Maple Island tutorial editorials** - quests 1006 (Sam's
   Suggestion), 1009-1010 (Mai's Training), 1011 (Biggs's Collection),
   1012 (Pio's Recycled Goods), 1013-1014 (Rain's Maple Quiz 1 & 2)
   all datamine-present, no editorial `.md` files.
-- **Cursed Doll tier 5 hat variants** - Steel Nordic Helm is the
-  flagship; 17 lighter stubs needed for Nordic Mithril / Gold + the
-  five Guiltians + five Distinctions + five Pilfers, each cross-
-  linking back to the flagship.
+- ~~**Cursed Doll tier 5 hat variants**~~ - SHIPPED 2026-09-26.
+  All 17 sibling stubs live under `src/content/items/` (Mithril +
+  Gold Nordic, 5 Guiltians, 5 Distinctions, 5 Pilfers). Generated
+  from items.json via `scripts/generate-cursed-doll-stubs.mjs`
+  which is idempotent - re-run if the datamine changes stat
+  profiles or adds a color variant. Steel Nordic Helm flagship
+  editorial remains the family primer.
 - **Third-job progression pages** - covering roughly 14 of 25 CoT 2
   class entries; the rest need first-pass authoring.
 - **Content QA audit round 2** - ongoing; every session catches new
