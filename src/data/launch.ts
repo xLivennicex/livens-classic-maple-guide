@@ -14,15 +14,20 @@ export const launchDates: LaunchMilestone[] = [
 ];
 
 // Used by the top announcement bar. Keep it short.
-export const nextMilestoneHeadline = "Founder's Packages on sale - ends October 14";
+export const nextMilestoneHeadline = "Nexon published the launch FAQ - Founder's Access opens October 6";
 
-// Precise countdown targets. Time is estimated at 11 AM Eastern Time
-// unless we have a hard deadline (like the sale-end at PDT midnight).
-// October 6 and October 21 both fall inside US Daylight Saving Time
-// (which ends the first Sunday of November), so the offset is -04:00,
-// not -05:00. Sale end is a Nexon-published hard deadline in PDT.
-// If Nexon announces a different opening time, change these
-// constants and everything downstream updates.
+// Precise countdown targets. Times confirmed by Nexon's Sep 29 2026
+// launch FAQ (URL in launchFaqUrl below). Both Founder's Access and
+// Grand Launch open at 11:00 AM PACIFIC time (PDT = UTC-7 during DST
+// - DST ends first Sunday of November so both dates fall inside it).
+//
+// Sprint 100 correction: previous values used -04:00 (Eastern) with a
+// stale "Estimated 11 AM Eastern" sublabel. That was a pre-FAQ guess
+// and would have fired the countdown 3 hours EARLY. Nexon's FAQ
+// explicitly lists 11 AM PDT (2 PM EDT / 8 PM CEST / 4 AM AEST Oct 7
+// / Oct 22) so we now use the authoritative -07:00.
+//
+// Sale-end was already correct (11:59 PM PDT = 06:59 UTC next day).
 export interface CountdownTarget {
 	label: string;
 	iso: string;
@@ -36,13 +41,13 @@ export const countdownTargets: {
 } = {
 	foundersAccess: {
 		label: "Founder's Access",
-		iso: "2026-10-06T11:00:00-04:00",
-		sublabel: "Estimated 11:00 AM Eastern - October 6",
+		iso: "2026-10-06T11:00:00-07:00",
+		sublabel: "11:00 AM Pacific - October 6 (2 PM Eastern, 8 PM CEST)",
 	},
 	officialLaunch: {
-		label: "Official Launch",
-		iso: "2026-10-21T11:00:00-04:00",
-		sublabel: "Estimated 11:00 AM Eastern - October 21",
+		label: "Grand Launch",
+		iso: "2026-10-21T11:00:00-07:00",
+		sublabel: "11:00 AM Pacific - October 21 (2 PM Eastern, 8 PM CEST)",
 	},
 	packageSaleEnds: {
 		label: "Founder's Package sale ends",
@@ -50,6 +55,14 @@ export const countdownTargets: {
 		sublabel: "Ends 11:59 PM Pacific - October 14",
 	},
 };
+
+// Nexon's official launch FAQ. Published Sep 29 2026. Cited from the
+// homepage announcement callout and from /launch's Official Sources.
+// If Nexon publishes a follow-up FAQ with a new URL, update this one
+// constant and both cite-sites re-render.
+export const launchFaqUrl =
+	"https://www.nexon.com/maplestory/news/general/45385/maple-story-classic-world-faq";
+export const launchFaqPublishedISO = "2026-09-29";
 
 // ==================== Founder's Packages (Nexon official) ====================
 //

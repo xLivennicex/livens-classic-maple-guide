@@ -17,7 +17,7 @@ import {
 	npcSpriteSrcs,
 	itemIconSrcs,
 } from "../lib/maplestory-cdn";
-import { countdownTargets } from "../data/launch";
+import { countdownTargets, launchFaqUrl } from "../data/launch";
 import generatedAt from "../data/db/generated-at.json";
 
 // Reference-database tile config. Kept as a static array so ordering
@@ -167,6 +167,37 @@ const prepChecklist = [
 				stepping in for the first time, with sources you can check and honest
 				blank spots where the answers aren't in yet.
 			</p>
+
+			{/*
+			 * Sprint 100: Nexon FAQ callout. The official launch FAQ went
+			 * live Sep 29 2026 with 23 verbatim answers (URL sourced
+			 * from data/launch.ts). Placed here between the lede and
+			 * the scope stats so it's above-the-fold on desktop and
+			 * still first-visible-thing-after-the-hero-copy on mobile.
+			 * Purposefully compact - it's a signpost, not a summary.
+			 * The full launch coverage lives at /launch and expands
+			 * the FAQ into our own sections.
+			 */}
+			<aside class="hero__faq-callout" role="complementary">
+				<span class="hero__faq-eyebrow">
+					Fresh from Nexon &middot; Sep 29
+				</span>
+				<p class="hero__faq-body">
+					<strong>The official launch FAQ is live.</strong> Nexon just
+					published
+					<a
+						href={launchFaqUrl}
+						rel="noopener external"
+						target="_blank"
+					>23 answers</a>
+					on pre-download, account linking, macOS support, controllers,
+					and Founder's Package details. Our own
+					<a href="/launch">launch checklist</a> stays authoritative
+					for what's still unconfirmed. Founder's Access opens
+					<strong>October 6</strong>; Grand Launch is
+					<strong>October 21</strong> - both at 11 AM Pacific.
+				</p>
+			</aside>
 
 			{/*
 			 * Sprint 90: scope banner - immediate proof-of-database.
@@ -447,6 +478,55 @@ const prepChecklist = [
 	 *   dividers colliding (border-inline-start on siblings
 	 *   only kicks in on horizontal flex context).
 	 */
+	/* Sprint 100: FAQ announcement callout. Warm amber card that
+	   sits between the lede and the scope stats. Picks up the
+	   same rgba(210, 120, 45, X) amber the scope divider uses, so
+	   the callout reads as "same design system, different tone"
+	   rather than a foreign banner. Kept compact (max-width
+	   matches lede) and reasonably restrained - it's a signpost,
+	   not a takeover. */
+	.hero__faq-callout {
+		display: block;
+		margin: 1.4rem 0 0;
+		padding: 0.85rem 1rem 0.95rem;
+		background: rgba(255, 242, 218, 0.72);
+		border: 1px solid rgba(210, 120, 45, 0.4);
+		border-left: 3px solid rgba(210, 120, 45, 0.75);
+		border-radius: 6px;
+		max-width: 60ch;
+		box-shadow: 0 1px 0 rgba(255, 253, 246, 0.6) inset;
+	}
+
+	.hero__faq-eyebrow {
+		display: block;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: rgb(170, 90, 30);
+		margin-bottom: 0.35rem;
+	}
+
+	.hero__faq-body {
+		margin: 0;
+		font-size: 0.94rem;
+		line-height: 1.5;
+		color: var(--text-primary, #2a1d10);
+	}
+
+	.hero__faq-body a {
+		color: rgb(150, 70, 20);
+		text-decoration: underline;
+		text-decoration-thickness: 1.5px;
+		text-underline-offset: 2px;
+	}
+
+	.hero__faq-body a:hover,
+	.hero__faq-body a:focus-visible {
+		color: rgb(110, 45, 5);
+		text-decoration-thickness: 2px;
+	}
+
 	.hero__scope {
 		display: flex;
 		flex-wrap: wrap;
