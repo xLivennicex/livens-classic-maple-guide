@@ -449,6 +449,31 @@ export const sources: ArchivedSource[] = [
 			"Level 10 weapons NPC-sell for MORE mesos in Classic World than they did in v83",
 		],
 	},
+	{
+		slug: "reddit-xbucc-complete-builds",
+		title: "Complete Builds for all Classes - 1st & 2nd Job",
+		publisher: "u/xBucc on r/MSClassicWorld",
+		publishedOn: "October 2, 2026",
+		sourceType: "community-reported",
+		topics: ["Builds", "Skill Allocation", "F2P"],
+		originalUrl:
+			"https://www.reddit.com/r/MSClassicWorld/comments/1wvx41t/complete_builds_for_all_classes_1st_2nd_job/",
+		archiveUrl:
+			"https://web.archive.org/web/2026*/https://www.reddit.com/r/MSClassicWorld/comments/1wvx41t/",
+		checkedOn: "2026-10-03",
+		status: "current",
+		summary:
+			"Community-authored 1-page SP build infographics for all classes (1st and 2nd job), aimed at F2P + bossing focus with no SP resets planned. Includes a linked Google Sheet with per-skill rationale. 540+ upvotes but contested in the top comments: OP acknowledged the Archer section is wrong, and the Magician, Thief, Warrior, and Page builds all drew substantive critiques from highly-upvoted replies. Linked from /guides/community-resources with an honest framing of what the resource is and isn't.",
+		confirmedFacts: [
+			"OP (u/xBucc) acknowledged the Archer builds are incorrect and amended them in the linked spreadsheet (NOT in the original Reddit images)",
+			"Top-upvoted critique (66 pts): Magician builds max Magic Claw too early, causing mana-cost problems during leveling",
+			"Top-upvoted critique (39 pts): Assassin builds do not max Dark Sight",
+			"Top-upvoted critique (32 pts): Page builds skip HP recovery in favor of Precise Strikes; hybrid Page builds give up Final Attack",
+			"Top-upvoted critique (28 pts): All Warrior builds max both weapon mastery and booster but skip Final Attack entirely",
+			"Community debate: whether F2P should prioritize meso-efficient leveling (cheaper potions) over bossing-ready endgame SP",
+			"The resource is one person's opinion, not datamine-verified; use it as a starting point for comparison, not as authority",
+		],
+	},
 ];
 
 // Convenience accessor so pages can reference sources by slug without
