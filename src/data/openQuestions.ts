@@ -22,17 +22,13 @@ export interface OpenQuestion {
 }
 
 export const openQuestions: OpenQuestion[] = [
-	{
-		question: "What is the exact launch opening time?",
-		category: "Timing",
-		detail:
-			"October 21 is confirmed as the official launch date, but the time of day servers open has not been announced.",
-		expectedFrom: "Nexon pre-launch announcement",
-	},
 	// RESOLVED 2026-09-02 - tier / pricing / contents revealed in
 	// "Founder's Packages Now On Sale" (nexon-founders-packages-on-sale).
 	// RESOLVED 2026-09-02 - Nexon explicitly confirmed progression
 	// carryover in the same announcement.
+	// RESOLVED 2026-09-29 - exact launch opening time revealed in the
+	// Nexon Classic World FAQ (both Founder's Access and Grand Launch
+	// open at 11:00 AM PDT; see nexon-classic-world-faq source).
 	// Kept as comments for archaeology; delete when this file gets big.
 	{
 		question: "What are the exact Mark of Beta requirements and rewards?",
@@ -45,7 +41,14 @@ export const openQuestions: OpenQuestion[] = [
 		question: "Which systems will change between COT2 and launch?",
 		category: "Systems",
 		detail:
-			"Closed-test builds often differ from launch builds. No changelog comparing Closed Online Test 2 to the launch build has been published.",
+			"Closed-test builds often differ from launch builds. Inkwell confirmed on Oct 2 that Grand Launch will include 'another completely new piece of content' beyond Forgotten Hollow and the Citizenship system, but no changelog comparing COT2 to the launch build has been published.",
 		expectedFrom: "Nexon patch notes at or before Founder's Access",
+	},
+	{
+		question: "What is the full post-launch content roadmap?",
+		category: "Systems",
+		detail:
+			"Inkwell confirmed on Oct 2 that a new boss is in development and that 3rd Job plus some regions will release sequentially (though NOT in original historical order). A detailed post-launch roadmap will be shared at MapleStory Fest in October 2026.",
+		expectedFrom: "MapleStory Fest, October 2026",
 	},
 ];

@@ -64,6 +64,18 @@ export const launchFaqUrl =
 	"https://www.nexon.com/maplestory/news/general/45385/maple-story-classic-world-faq";
 export const launchFaqPublishedISO = "2026-09-29";
 
+// "Inkwell on the Future of Global MapleStory and Classic World" -
+// the 19-question CPO interview published Oct 2 2026 that laid out
+// the Classic World design philosophy, monetization commitments
+// (cosmetics + convenience only; no stat / growth Cash Shop items),
+// and roadmap teasers (new boss, MapleStory Fest October reveal).
+// Cited from the homepage callout and /launch's "Developer vision"
+// section plus Official Sources. Same single-source-of-truth pattern
+// as launchFaqUrl.
+export const inkwellInterviewUrl =
+	"https://www.nexon.com/maplestory/news/general/45681/inkwell-on-the-future-of-global-maple-story-and-classic-world";
+export const inkwellInterviewPublishedISO = "2026-10-02";
+
 // ==================== Founder's Packages (Nexon official) ====================
 //
 // Source: https://www.nexon.com/mscw/pre-launch-sales

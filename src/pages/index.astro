@@ -17,7 +17,7 @@ import {
 	npcSpriteSrcs,
 	itemIconSrcs,
 } from "../lib/maplestory-cdn";
-import { countdownTargets, launchFaqUrl } from "../data/launch";
+import { countdownTargets, launchFaqUrl, inkwellInterviewUrl } from "../data/launch";
 import generatedAt from "../data/db/generated-at.json";
 
 // Reference-database tile config. Kept as a static array so ordering
@@ -169,31 +169,41 @@ const prepChecklist = [
 			</p>
 
 			{/*
-			 * Sprint 100: Nexon FAQ callout. The official launch FAQ went
-			 * live Sep 29 2026 with 23 verbatim answers (URL sourced
-			 * from data/launch.ts). Placed here between the lede and
-			 * the scope stats so it's above-the-fold on desktop and
-			 * still first-visible-thing-after-the-hero-copy on mobile.
-			 * Purposefully compact - it's a signpost, not a summary.
-			 * The full launch coverage lives at /launch and expands
-			 * the FAQ into our own sections.
+			 * Sprint 101: pivoted the callout to lead with the Oct 2
+			 * Inkwell interview (newer + more editorially dense than
+			 * the Sep 29 FAQ) while still linking the FAQ as the
+			 * practical reference. Both URLs are sourced from
+			 * data/launch.ts so a future URL change updates once.
+			 * Placed between the lede and scope stats so it stays
+			 * above-the-fold on desktop and first-after-the-hero-copy
+			 * on mobile. Still intentionally compact - signpost, not
+			 * summary. The full launch coverage lives at /launch,
+			 * including a dedicated Developer vision section built
+			 * from the Inkwell quotes.
 			 */}
 			<aside class="hero__faq-callout" role="complementary">
 				<span class="hero__faq-eyebrow">
-					Fresh from Nexon &middot; Sep 29
+					Fresh from Nexon &middot; Oct 2
 				</span>
 				<p class="hero__faq-body">
-					<strong>The official launch FAQ is live.</strong> Nexon just
-					published
+					<strong>Inkwell on the future of Classic World.</strong>
+					Nexon just published a
+					<a
+						href={inkwellInterviewUrl}
+						rel="noopener external"
+						target="_blank"
+					>19-question CPO interview</a>
+					covering the monetization pledge (cosmetics only, no stat
+					items), update cadence philosophy, a new boss in development,
+					and a MapleStory Fest roadmap reveal this month. See our
+					<a href="/launch#developer-vision">Developer vision</a>
+					section for the key quotes, plus the
 					<a
 						href={launchFaqUrl}
 						rel="noopener external"
 						target="_blank"
-					>23 answers</a>
-					on pre-download, account linking, macOS support, controllers,
-					and Founder's Package details. Our own
-					<a href="/launch">launch checklist</a> stays authoritative
-					for what's still unconfirmed. Founder's Access opens
+					>official launch FAQ</a>
+					(Sep 29) for the practical details. Founder's Access opens
 					<strong>October 6</strong>; Grand Launch is
 					<strong>October 21</strong> - both at 11 AM Pacific.
 				</p>

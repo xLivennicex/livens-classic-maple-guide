@@ -8,10 +8,11 @@ import VerificationNotice from "../components/VerificationNotice.astro";
 import LastUpdated from "../components/LastUpdated.astro";
 import { sources } from "../data/sources";
 import { openQuestions, type QuestionCategory } from "../data/openQuestions";
+import { inkwellInterviewUrl } from "../data/launch";
 
 // Date the human editor last reviewed every claim on this page against
 // its cited sources. Change this whenever content is verified again.
-const LAST_CHECKED = "2026-08-22";
+const LAST_CHECKED = "2026-10-03";
 
 // Table of contents. Labels are phrased as visitor questions so the
 // navigation itself answers "what can I learn here?" at a glance.
@@ -21,6 +22,7 @@ const jumpNav = [
 	{ href: "#grand-launch", label: "Grand Launch" },
 	{ href: "#mark-of-beta", label: "Mark of Beta" },
 	{ href: "#confirmed", label: "Confirmed features" },
+	{ href: "#developer-vision", label: "Developer vision" },
 	{ href: "#open-questions", label: "Not yet announced" },
 	{ href: "#sources", label: "Sources" },
 ];
@@ -45,13 +47,38 @@ const confirmedFeatures: {
 	},
 	{
 		feature: "Official launch on October 21",
-		detail: "The game opens to all players, ending Founder's Access.",
-		sourceSlug: "nexon-ossyria-exploration-report",
+		detail: "The game opens to all players, ending Founder's Access. Both the Founder's Access opening (October 6) and Grand Launch (October 21) begin at 11:00 AM Pacific.",
+		sourceSlug: "nexon-classic-world-faq",
 	},
 	{
 		feature: "Mark of Beta limited-time quest",
 		detail: "A time-boxed launch-window quest rewarding an iconic in-game item; runs through late November.",
 		sourceSlug: "nexon-ossyria-exploration-report",
+	},
+	{
+		feature: "Cosmetics-only Cash Shop commitment",
+		detail: "Inkwell has stated Classic World's Cash Shop will focus on cosmetics and 'appropriate convenience items', explicitly avoiding items that directly affect character stats or growth.",
+		sourceSlug: "nexon-inkwell-future-of-classic-world",
+	},
+	{
+		feature: "New content at Grand Launch beyond COT2",
+		detail: "Inkwell confirmed Grand Launch will include 'another completely new piece of content' beyond Forgotten Hollow and the Citizenship system that debuted during Closed Online Test 2.",
+		sourceSlug: "nexon-inkwell-future-of-classic-world",
+	},
+	{
+		feature: "New boss in development (post-launch)",
+		detail: "A new boss is being built for Classic World. It is NOT part of the Grand Launch content; it arrives in a later update. Full post-launch roadmap preview is scheduled for MapleStory Fest in October 2026.",
+		sourceSlug: "nexon-inkwell-future-of-classic-world",
+	},
+	{
+		feature: "Dedicated Classic World team with MapleStory veterans",
+		detail: "Classic World has its own development team (built WITHOUT reducing Global MapleStory's team) led by Inkwell, with original MapleStory veterans Nemi (game design) and Dr. Lim (art direction) directly involved.",
+		sourceSlug: "nexon-inkwell-future-of-classic-world",
+	},
+	{
+		feature: "Deliberately slower update cadence",
+		detail: "Content order will NOT follow original MapleStory's historical release sequence. 3rd Job and some regions release where it makes sense; some content is adapted; some is completely new. Internal design principle: 'the beauty of taking it slow.'",
+		sourceSlug: "nexon-inkwell-future-of-classic-world",
 	},
 ];
 
@@ -136,21 +163,29 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			sourceSlugs={[
+				"nexon-ossyria-exploration-report",
+				"nexon-classic-world-faq",
+				"nexon-inkwell-future-of-classic-world",
+			]}
 		/>
 
 		<div class="card prose">
 			<p>
 				The <strong>official ("grand") launch</strong> is
-				<strong>October 21</strong>. Founder's Access ends and the game
-				opens to all players. The exact time of day servers open has
-				not been announced.
+				<strong>October 21 at 11:00 AM Pacific</strong> (2 PM Eastern,
+				8 PM CEST, 4 AM AEST October 22). Founder's Access ends and
+				the game opens to all players.
 			</p>
 			<p>
-				Content available at grand launch beyond what appears during
-				Founder's Access has not yet been fully detailed. The launch
-				announcement is titled <em>Ossyria Exploration Report</em>,
-				pointing to Ossyria-region content as a featured element.
+				The launch announcement is titled <em>Ossyria Exploration
+				Report</em>, pointing to Ossyria-region content as a featured
+				element. Inkwell has since confirmed Grand Launch will also
+				include <em>another completely new piece of content</em>
+				beyond the Forgotten Hollow zone and Citizenship system that
+				appeared in Closed Online Test 2 - though the specifics have
+				not yet been detailed. See
+				<a href="#developer-vision">Developer vision</a> for more.
 			</p>
 		</div>
 	</section>
@@ -211,6 +246,109 @@ const questionsByCategory = openQuestions.reduce<
 				</li>
 			))}
 		</ul>
+	</section>
+
+	<!-- ============================================================ -->
+	{/* Sprint 101: Developer vision section seeded from Inkwell's
+	   Oct 2 2026 interview. These three pull quotes are the
+	   editorially highest-signal moments from a 19-question
+	   article - the monetization commitment (resolves a long-
+	   standing community anxiety), the "beauty of taking it slow"
+	   design intent (sets realistic expectations for update cadence),
+	   and the long-term framing (reframes Classic World from a
+	   nostalgia project into a 10-year investment). We quote
+	   verbatim so the editorial responsibility stays with Nexon,
+	   and link out to the full interview for context. */}
+	<section id="developer-vision" class="launch-section">
+		<h2 class="section-panel-title">Developer vision</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-inkwell-future-of-classic-world"]}
+			note="Direct quotes from CPO Hanbyeol Oh ('Inkwell'), head of Global MapleStory, in Nexon's Oct 2 2026 interview. Links to the full 19-question article for context."
+		/>
+
+		<div class="card prose">
+			<p>
+				On October 2, 2026, Nexon published a long-form interview with
+				<strong>Hanbyeol Oh (Inkwell)</strong>, CPO of Nexon America and
+				head of Global MapleStory, covering the design philosophy, team
+				structure, and long-term direction of Classic World. The three
+				commitments below are the most consequential for players
+				deciding whether to buy in. Each is quoted verbatim.
+			</p>
+		</div>
+
+		<figure class="inkwell-pullquote">
+			<blockquote>
+				<p>
+					In an experience like Classic World, the time players invest is
+					itself a fundamental part of progression - the progression should
+					feel earned through time and effort. Because of that, we want to
+					avoid selling Cash Shop items that directly affect character stats
+					or growth. Our basic approach is to focus primarily on cosmetics
+					and appropriate convenience items.
+				</p>
+			</blockquote>
+			<figcaption>
+				<strong>Inkwell</strong> on monetization &middot;
+				<span class="inkwell-pullquote__meaning">
+					The clearest public commitment yet that Classic World will not
+					become a stat-gated Cash Shop grind.
+				</span>
+			</figcaption>
+		</figure>
+
+		<figure class="inkwell-pullquote">
+			<blockquote>
+				<p>
+					Internally, we sometimes talk about "the beauty of taking it
+					slow." A lot of online games today are built around very fast
+					progression, constant updates, and competition. We intentionally
+					want Classic World to feel somewhat different. We want players to
+					be able to step away for a while and come back without feeling,
+					"I am hopelessly behind."
+				</p>
+			</blockquote>
+			<figcaption>
+				<strong>Inkwell</strong> on update cadence &middot;
+				<span class="inkwell-pullquote__meaning">
+					Sets expectations that Classic World will update slower than
+					regular Global MapleStory - by design, not by neglect.
+				</span>
+			</figcaption>
+		</figure>
+
+		<figure class="inkwell-pullquote">
+			<blockquote>
+				<p>
+					Classic World may look back toward the past, but ironically, I
+					think of it as a project designed to help prepare MapleStory for
+					the future.
+				</p>
+			</blockquote>
+			<figcaption>
+				<strong>Inkwell</strong> on the long-term framing &middot;
+				<span class="inkwell-pullquote__meaning">
+					The planning horizon Inkwell names explicitly in the interview is
+					"3, 5, and 10 years from now" - not just the launch window.
+				</span>
+			</figcaption>
+		</figure>
+
+		<div class="card prose inkwell-footer">
+			<p>
+				Inkwell also confirmed the full post-launch roadmap preview is
+				scheduled for <strong>MapleStory Fest in October 2026</strong>,
+				including a new boss in development. Read the complete 19-question
+				interview on
+				<a
+					href={inkwellInterviewUrl}
+					rel="noopener external"
+					target="_blank"
+				>nexon.com</a>.
+			</p>
+		</div>
 	</section>
 
 	<!-- ============================================================ -->
@@ -398,6 +536,60 @@ const questionsByCategory = openQuestions.reduce<
 
 	.confirmed-list__source {
 		text-decoration: none;
+	}
+
+	/* Sprint 101: Inkwell pullquote styling. Figure/blockquote pair
+	   intentionally OUTSIDE .card so pullquotes read as editorial
+	   emphasis rather than another cardboard panel. Theme-shifting
+	   via existing CSS vars so the quote picks up whatever theme
+	   BaseLayout hands this page (Henesys today, something else
+	   if we ever reskin /launch). Left border weight > top/right/
+	   bottom to echo the hero FAQ callout on the homepage without
+	   literally reusing that class - keeps /launch and / visually
+	   related but not identical. */
+	.inkwell-pullquote {
+		margin: 1rem 0;
+		padding: 1.1rem 1.25rem 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary, rgb(210, 120, 45));
+		border-radius: 0.5rem;
+		box-shadow: 0 1px 0 rgba(255, 253, 246, 0.5) inset;
+	}
+
+	.inkwell-pullquote blockquote {
+		margin: 0;
+		padding: 0;
+	}
+
+	.inkwell-pullquote blockquote p {
+		margin: 0;
+		font-size: 1.02rem;
+		line-height: 1.6;
+		color: var(--text-heading);
+		font-style: italic;
+	}
+
+	.inkwell-pullquote figcaption {
+		margin-top: 0.65rem;
+		padding-top: 0.6rem;
+		border-top: 1px dashed var(--border-card);
+		font-size: 0.88rem;
+		line-height: 1.5;
+		color: var(--text-brand-tagline);
+	}
+
+	.inkwell-pullquote figcaption strong {
+		color: var(--text-heading);
+	}
+
+	.inkwell-pullquote__meaning {
+		display: inline;
+		color: var(--text-brand-tagline);
+	}
+
+	.inkwell-footer {
+		margin-top: 1rem;
 	}
 
 	.open-questions__group {
