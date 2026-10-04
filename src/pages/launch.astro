@@ -80,6 +80,36 @@ const confirmedFeatures: {
 		detail: "Content order will NOT follow original MapleStory's historical release sequence. 3rd Job and some regions release where it makes sense; some content is adapted; some is completely new. Internal design principle: 'the beauty of taking it slow.'",
 		sourceSlug: "nexon-inkwell-future-of-classic-world",
 	},
+	{
+		feature: "Hard Lv. 100 cap at Founder's Access",
+		detail: "The Oct 3 release notes state the maximum character level is Lv. 100. No soft-cap or XP-curve throttling is documented. Whether this cap raises at Grand Launch has not been announced.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
+	{
+		feature: "Three character slots per account",
+		detail: "Up to 3 characters can be created per account. Deleting a character triggers an unspecified waiting period before removal from the account.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
+	{
+		feature: "Five bosses at Founder's Access",
+		detail: "Mano, Mushmom, Shade, Zombie Mushmom, and Jr. Balrog are the bosses available during the Founder's Access period.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
+	{
+		feature: "Beauty Album system",
+		detail: "A new Classic World system that lets you save hairstyles, face styles, and skin colors so you can return to a saved look without re-earning the cosmetics.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
+	{
+		feature: "Forgotten Hollow delayed past Founder's Access",
+		detail: "The Classic-World-exclusive zone from Closed Online Test 2 will NOT be available during Founder's Access. Nexon states the 'path leading there hasn't been discovered yet' and plans to add it at an unspecified later date.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
+	{
+		feature: "Mark of Beta begins at Grand Launch",
+		detail: "The release notes clarify Mark of Beta is NOT a Founder's Access quest - it begins on October 21 at Grand Launch and runs through late November.",
+		sourceSlug: "nexon-founders-access-release-notes",
+	},
 ];
 
 // Group open questions by category for the "Not yet announced" section.
@@ -133,19 +163,24 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-founders-packages-on-sale", "nexon-founders-package-purchase-guide"]}
+			sourceSlugs={[
+				"nexon-founders-packages-on-sale",
+				"nexon-founders-package-purchase-guide",
+				"nexon-founders-access-release-notes",
+			]}
 		/>
 
 		<FoundersPackagesCard />
 
 		<div class="card prose">
 			<p>
-				<strong>Founder's Access</strong> begins <strong>October 6</strong>
-				for the Orange Mushroom and Zakum tiers, giving those buyers
-				roughly two weeks of early play before <strong>Grand Launch on
-				October 21</strong>. Nexon has confirmed that all progression
-				made during Founder's Access <em>carries into Grand Launch</em> -
-				characters, levels, items, and mesos persist.
+				<strong>Founder's Access</strong> begins <strong>October 6 at
+				6:00 PM UTC</strong> (= 11 AM Pacific) for the Orange Mushroom
+				and Zakum tiers, giving those buyers roughly two weeks of early
+				play before <strong>Grand Launch on October 21</strong>. Nexon
+				has confirmed that all progression made during Founder's Access
+				<em>carries into Grand Launch</em> - characters, levels, items,
+				and mesos persist.
 			</p>
 			<p>
 				One purchase per account per platform. Steam only sells the
@@ -154,6 +189,90 @@ const questionsByCategory = openQuestions.reduce<
 				webstore only, and both new purchases and upgrades stop at
 				<strong>11:59 PM PDT on October 14</strong>.
 			</p>
+		</div>
+
+		{/* Sprint 102: dedicated "what's actually in Founder's Access"
+		   subsection. The Oct 3 release notes dropped the full content
+		   manifest for the FA period, including a hard Lv. 100 cap,
+		   the 5-boss roster, 3 character slots, and - importantly -
+		   several explicit WITHHOLDINGS (Forgotten Hollow delayed,
+		   Mark of Beta locked to Grand Launch, 3rd Job absent from
+		   the entire document). We call those out explicitly because
+		   several earlier editorial passes implied otherwise. */}
+		<h3 class="section-panel-subtitle" id="founders-content">
+			What's actually in Founder's Access
+		</h3>
+		<div class="card prose">
+			<p>
+				Nexon's Oct 3 release notes enumerate the Founder's Access
+				content in detail. The headline numbers:
+			</p>
+			<ul>
+				<li>
+					<strong>Maximum character level: Lv. 100</strong> at Founder's
+					Access. Nexon has not published whether this cap persists at
+					Grand Launch or raises for later content tiers.
+				</li>
+				<li>
+					<strong>Up to 3 characters per account.</strong> Character
+					deletion has an unspecified waiting period before removal.
+				</li>
+				<li>
+					<strong>Five bosses available:</strong> Mano, Mushmom, Shade,
+					Zombie Mushmom, Jr. Balrog.
+				</li>
+				<li>
+					<strong>Job advancements:</strong> 1st Job at Lv. 10 (via
+					Dances with Balrog, Grendel the Really Old, Athena Pierce,
+					or Dark Lord). 2nd Job at Lv. 30 (via the same NPC).
+				</li>
+				<li>
+					<strong>Crafting unlocks at Lv. 10</strong> across six
+					professions (Silas Irons / Smithing, Mr. Thunder /
+					Weaponcrafting, Francois / Tailoring, Vicious / Woodcrafting,
+					JM From tha Streetz / Leatherworking, Chrishrama / Arcforge).
+				</li>
+				<li>
+					<strong>Citizenship unlocks at Lv. 12</strong> via Arthur
+					(Henesys) or Roxy (Kerning City).
+				</li>
+				<li>
+					<strong>First Time Together KPQ requires Lv. 21.</strong>
+				</li>
+				<li>
+					<strong>Beauty Album</strong> (new feature) saves hairstyles,
+					faces, and skin colors so you can swap between saved looks.
+				</li>
+			</ul>
+
+			<div class="callout callout--heads-up">
+				<strong>What's NOT in Founder's Access:</strong>
+				<ul>
+					<li>
+						<strong>Forgotten Hollow</strong> - the Classic-World-
+						exclusive zone that debuted in Closed Online Test 2 will
+						not be available at Founder's Access. Nexon says the "path
+						leading there hasn't been discovered yet" and will "add
+						this at a later date." No specific date given.
+					</li>
+					<li>
+						<strong>Mark of Beta</strong> is locked to Grand Launch
+						(October 21). See the <a href="#mark-of-beta">Mark of Beta
+						section</a> below.
+					</li>
+					<li>
+						<strong>3rd Job</strong> is absent from the release notes
+						entirely, consistent with Inkwell's statement that it will
+						release sequentially after launch.
+					</li>
+					<li>
+						<strong>Victoria Island content past Lv. 100.</strong>
+						The hard cap means Ossyria-region content advertised in
+						the Ossyria Exploration Report may not fully arrive at
+						Founder's Access, pending Nexon's follow-up.
+					</li>
+				</ul>
+			</div>
 		</div>
 	</section>
 
@@ -196,16 +315,22 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-ossyria-exploration-report"]}
-			note="Quest tasks and reward requirements are not yet publicly detailed."
+			sourceSlugs={[
+				"nexon-ossyria-exploration-report",
+				"nexon-founders-access-release-notes",
+			]}
+			note="Start date and window are now confirmed via the Oct 3 release notes; specific quest tasks and reward mechanics are still unpublished."
 		/>
 
 		<div class="card prose">
 			<p>
-				The <strong>Mark of Beta</strong> is a limited-time quest tied
-				to Classic World's launch window. It rewards an iconic in-game
-				item associated with participating in the opening period, and
-				it runs through <strong>late November</strong>.
+				The <strong>Mark of Beta</strong> is a limited-time quest
+				rewarding an iconic in-game item for participating in the
+				opening period. The Oct 3 Founder's Access release notes
+				clarified a detail that earlier announcements left ambiguous:
+				<strong>Mark of Beta is NOT available during Founder's Access.
+				It begins at Grand Launch on October 21, 2026</strong> and
+				runs through late November.
 			</p>
 			<p>
 				Specific quest steps, prerequisites, and reward mechanics have
@@ -216,9 +341,10 @@ const questionsByCategory = openQuestions.reduce<
 
 			<div class="callout callout--heads-up">
 				<strong>Why this matters:</strong> the quest window is
-				approximately seven weeks from Founder's Access opening.
-				Players who want the reward should plan to complete it during
-				the launch window rather than saving it for later.
+				approximately five to six weeks from Grand Launch. If you
+				play only during Founder's Access expecting to "warm up" with
+				Mark of Beta, you'll miss it entirely - the quest doesn't
+				exist in-game until Oct 21.
 			</div>
 		</div>
 	</section>

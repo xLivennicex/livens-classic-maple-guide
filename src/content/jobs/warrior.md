@@ -259,6 +259,6 @@ faq:
   - question: "Can I change my mind at second job?"
     answer: "No. Second job is a one-time choice per character. If you want to try another branch, you make a new Warrior."
   - question: "Do I need to grind Mark of Beta on this character?"
-    answer: "<em>Awaiting confirmation.</em> Mark of Beta details are not public yet. If it is per-character rather than per-account, it will affect early-game choices - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."
+    answer: "Partial answer: the Oct 3 Founder's Access release notes confirmed Mark of Beta <strong>begins at Grand Launch on October 21</strong>, not during Founder's Access. If you're planning to level a main during Founder's Access, Mark of Beta is NOT a Founder's Access concern. Specific per-character vs per-account mechanics are still unpublished - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."
     badge: "awaiting-confirmation"
 ---

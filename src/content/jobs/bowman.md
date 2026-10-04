@@ -291,6 +291,6 @@ faq:
     answer: "<em>v83 baseline:</em> Yes. A maxed Critical Shot triggers on a large percentage of ranged attacks for +50% damage. Combined with Double Shot's two-arrow output, it is the largest single damage multiplier available to a first-job Bowman - which is why it's the second skill to max after Double Shot itself."
     badge: "historical-archive"
   - question: "Do I need to grind Mark of Beta on this character?"
-    answer: "<em>Awaiting confirmation.</em> Mark of Beta details are not public yet. If it is per-character rather than per-account, it will affect early-game choices - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."
+    answer: "Partial answer: the Oct 3 Founder's Access release notes confirmed Mark of Beta <strong>begins at Grand Launch on October 21</strong>, not during Founder's Access. If you're planning to level a main during Founder's Access, Mark of Beta is NOT a Founder's Access concern. Specific per-character vs per-account mechanics are still unpublished - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."
     badge: "awaiting-confirmation"
 ---

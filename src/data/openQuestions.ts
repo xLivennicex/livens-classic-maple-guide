@@ -34,15 +34,22 @@ export const openQuestions: OpenQuestion[] = [
 		question: "What are the exact Mark of Beta requirements and rewards?",
 		category: "Mark of Beta",
 		detail:
-			"The quest is confirmed to run through late November as a limited-time event, but the specific tasks, reward chain, and eligibility rules have not been detailed publicly.",
-		expectedFrom: "Nexon quest details or in-game data at Founder's Access launch",
+			"Partially answered. The Oct 3 release notes confirmed Mark of Beta begins at Grand Launch (October 21), not during Founder's Access, and runs through late November. Specific quest tasks, reward chain, and per-character-vs-per-account eligibility rules are still unpublished.",
+		expectedFrom: "Nexon follow-up patch notes before Grand Launch",
 	},
 	{
-		question: "Which systems will change between COT2 and launch?",
+		question: "When does the Lv. 100 cap raise, and will Grand Launch keep the same cap?",
 		category: "Systems",
 		detail:
-			"Closed-test builds often differ from launch builds. Inkwell confirmed on Oct 2 that Grand Launch will include 'another completely new piece of content' beyond Forgotten Hollow and the Citizenship system, but no changelog comparing COT2 to the launch build has been published.",
-		expectedFrom: "Nexon patch notes at or before Founder's Access",
+			"The Oct 3 release notes confirmed a hard Lv. 100 cap during Founder's Access, with no documented soft-cap or XP-curve throttling. Nexon has NOT published whether this cap persists at Grand Launch (Oct 21), whether it raises for Ossyria-region content, or on what cadence. Inkwell's Oct 2 interview framed 3rd Job as 'sequential, not at launch.'",
+		expectedFrom: "Nexon patch notes closer to Grand Launch or MapleStory Fest October roadmap reveal",
+	},
+	{
+		question: "When will Forgotten Hollow become available?",
+		category: "Systems",
+		detail:
+			"The Oct 3 release notes explicitly withheld Forgotten Hollow from Founder's Access ('the path leading there hasn't been discovered yet! We plan to add this at a later date'). Inkwell on Oct 2 teased 'another completely new piece of content' at Grand Launch - whether Forgotten Hollow IS that content, or is scheduled separately, has not been clarified.",
+		expectedFrom: "Nexon patch notes between Founder's Access and Grand Launch",
 	},
 	{
 		question: "What is the full post-launch content roadmap?",
