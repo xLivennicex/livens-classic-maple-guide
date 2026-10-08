@@ -229,7 +229,9 @@ Your second job hits at L30 and you're suddenly a real character. These maps let
 
 ### The Valley of Death — the drops map
 
-- **Map:** [The Valley of Death](/maps/10006031) — in Classic World's exclusive [Forgotten Hollow](/hollow) zone.
+> ⏳ **Temporarily cut in Founder's Access** — the entire Forgotten Hollow region was removed from the Founder's Access client and is expected to return in a later patch. Keeping this section as a bookmark for when the Hollow comes back.
+
+- **Map:** **The Valley of Death** (map 10006031) — in Classic World's exclusive [Forgotten Hollow](/hollow) zone.
 - **Mobs:** [Rafflesia](/mobs/59) x10 on lower two floors, [Zombie Mushroom](/mobs/21) x8 and [Zombie Lupin](/mobs/38) x8 on upper floors.
 - **Layout:** Obvious party map — four floors, one role per floor.
 - **Why every class wants to be here:**
@@ -265,7 +267,9 @@ Your second job hits at L30 and you're suddenly a real character. These maps let
 
 ### The End of Fleeting Light — mirror-map party heaven
 
-- **Map:** [The End of Fleeting Light](/maps/10006070) — in [Forgotten Hollow](/hollow).
+> ⏳ **Temporarily cut in Founder's Access** — Forgotten Hollow was removed from the Founder's Access client. Section preserved for the region's eventual return.
+
+- **Map:** **The End of Fleeting Light** (map 10006070) — in [Forgotten Hollow](/hollow).
 - **Mobs:** [Aqumander](/mobs/57) x9 (weak to lightning), [Duskmander](/mobs/60) x7 (weak to ice), [Rafflesia](/mobs/59) x11 on upper platforms.
 - **Layout:** Two mirrored halves — Rafflesia occupy the upper four platforms, salamanders roam the lower levels. **Not really an elemental grinding map** despite the weaknesses — the two salamander types are so heavily mixed that constant element swapping isn't practical. This is a "layout + density" map, not an elemental min-max map.
 - **Party fit:** Perfect full party of 6, one per platform.
@@ -282,7 +286,9 @@ Your second job hits at L30 and you're suddenly a real character. These maps let
 
 ### Another Sanctuary — capstone Victoria map
 
-- **Map:** [Another Sanctuary](/maps/10006162) — deep in [Forgotten Hollow](/hollow).
+> ⏳ **Temporarily cut in Founder's Access** — Forgotten Hollow was removed from the Founder's Access client. Section preserved for the region's eventual return.
+
+- **Map:** **Another Sanctuary** (map 10006162) — deep in [Forgotten Hollow](/hollow).
 - **Mobs:** [Rotten Mushroom](/mobs/62) x10 (upper), [Sporewood](/mobs/63) x7 (lower — stronger), [Golden Stirge](/mobs/56) x3 mixed in.
 - **Layout:** Cleanly divided — Rotten Mushrooms upstairs, stronger Sporewoods downstairs.
 - **Why it might be your last efficient Victoria stop:**

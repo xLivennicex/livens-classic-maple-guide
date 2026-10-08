@@ -245,7 +245,7 @@ This section covers every throwing star in Classic World's datamine, ranked by W
 
 | Star | Item ID | Req Lv | **WATK** | Stack size | Shop price | Drop sources (Level range) |
 |---|:---:|:---:|:---:|:---:|:---:|---|
-| **[Subi](/items/2070000)** | 2070000 | 10 | **+15** | 500 | 250 | [Jr. Sentinel](/mobs/1001) (L23), [Mano](/mobs/700004) (L20 mini-boss) |
+| **[Subi](/items/2070000)** | 2070000 | 10 | **+15** | 500 | 250 | [Mano](/mobs/700004) (L20 mini-boss). (Jr. Sentinel also dropped these in CoT2, cut from Founder's Access.) |
 | **[Wolbi](/items/2070001)** | 2070001 | 10 | **+17** | 500 | 500 | [Fire Boar](/mobs/30) (L32), Leatty (L32), Jr. Cellion (L33) |
 | **[Snowball](/items/2070008)** | 2070008 | 10 | **+17** | 800 | 500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37) |
 | **[Mokbi](/items/2070002)** | 2070002 | 10 | **+19** | 700 | 1,000 | Jr. Wraith (L35), [Cold Eye](/mobs/37) (L40), [Stone Golem](/mobs/47) (L55), Jr. Pepe (L35) |

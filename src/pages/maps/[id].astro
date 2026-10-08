@@ -49,6 +49,15 @@ const KIND_LABELS: Record<string, string> = {
 // mostly going to fight if I sit here?"
 const mobsByCount = [...d.mobs].sort((a, b) => b.count - a.count);
 
+// A client datamine may list exits to maps that got cut in the
+// current patch (e.g. Henesys still points at the Mushroom Shrine
+// map 88000000 after Founder's Access removed it). Rendering a
+// chip that 404s is worse UX than silently dropping it, so filter
+// exits to resolvable destinations only. The dropped exits still
+// exist in the raw dossier for anyone inspecting the data.
+const allMapIds = new Set(mapDossiers.map((m) => m.id));
+const resolvedExits = (d.exits ?? []).filter((e) => allMapIds.has(e.toMapId));
+
 // Pre-resolve NPC/mob NAMES for the schematic-layout tooltips.
 // The dossier stores positions as {id, x, y} without labels; we
 // look up names here so the SVG `<title>` element (native tooltip)
@@ -271,13 +280,13 @@ const pageTheme = themeForLocation(
 	    there?" navigation. Dedup on toMapId so a map with two
 	    portals both leading to the same destination doesn't
 	    render two identical chips. */}
-	{d.exits && d.exits.length > 0 && (
+	{resolvedExits.length > 0 && (
 		<section class="section">
 			<h2 class="section-panel-title">
-				Portals <span class="count">({new Set(d.exits.map((e) => e.toMapId)).size} destination{new Set(d.exits.map((e) => e.toMapId)).size === 1 ? "" : "s"})</span>
+				Portals <span class="count">({new Set(resolvedExits.map((e) => e.toMapId)).size} destination{new Set(resolvedExits.map((e) => e.toMapId)).size === 1 ? "" : "s"})</span>
 			</h2>
 			<div class="portal-grid">
-				{[...new Map(d.exits.map((e) => [e.toMapId, e])).values()].map((exit) => (
+				{[...new Map(resolvedExits.map((e) => [e.toMapId, e])).values()].map((exit) => (
 					<a class="portal-chip" href={`/maps/${exit.toMapId}`}>
 						<span class="portal-chip__arrow">→</span>
 						<div class="portal-chip__body">
