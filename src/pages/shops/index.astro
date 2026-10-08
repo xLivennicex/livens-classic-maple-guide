@@ -1,0 +1,147 @@
+---
+/**
+ * /shops - index of all modeled Victoria Island vendors.
+ *
+ * Groups shops by town so the reader can scan "where can I buy X in
+ * Henesys?" by eye. Shows inventory count + verification status so
+ * schema-only shops are clearly flagged.
+ */
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { shops } from "../../data/shop-inventory";
+
+// Group by town, preserving the natural journey order defined in
+// shop-inventory.ts (we don't sort - the file author chose the order).
+const byTown = new Map<string, typeof shops>();
+for (const s of shops) {
+	if (!byTown.has(s.town)) byTown.set(s.town, [] as any);
+	(byTown.get(s.town) as any).push(s);
+}
+
+const totalShops = shops.length;
+const totalItems = shops.reduce((n, s) => n + s.items.length, 0);
+const modeledShops = shops.filter((s) => s.items.length > 0).length;
+---
+
+<BaseLayout title="Vendor shops of Victoria Island" theme="sleepywood">
+	<article class="shops-index">
+		<header>
+			<h1>Vendor shops of Victoria Island</h1>
+			<p class="lede">
+				Every NPC vendor whose shop map is in the Founder's Access
+				datamine. Buy prices come from the client's items.json; which
+				NPCs stock which items is editorial, inferred from classic
+				MapleStory convention and verified where possible.
+			</p>
+			<p class="stats">
+				<strong>{totalShops}</strong> shops across
+				<strong>{byTown.size}</strong> towns &middot;
+				<strong>{modeledShops}</strong> with inventory modeled &middot;
+				<strong>{totalItems}</strong> item-entries
+			</p>
+		</header>
+
+		{[...byTown.entries()].map(([town, townShops]) => (
+			<section class="town-group">
+				<h2>{town}</h2>
+				<ul class="shop-cards">
+					{townShops.map((s) => (
+						<li class="shop-card">
+							<a href={`/shops/${s.slug}`} class="shop-link">
+								<span class="shop-name">{s.storeName}</span>
+								<span class="shop-npc">
+									{s.npcNames.join(" / ")}
+								</span>
+								<span class="shop-stats">
+									{s.items.length === 0
+										? "schema only"
+										: `${s.items.length} items`}
+									{" "}&middot;{" "}
+									<span class={`st st-${s.inventoryStatus}`}>
+										{s.inventoryStatus}
+									</span>
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		))}
+
+		<footer class="shops-footer">
+			<h3>Why this list is incomplete</h3>
+			<p>
+				Our datamine (osmsdataexplorer.com) ships items, quests,
+				crafting, maps, and name-lookup tables but <strong>not shop
+				commodity data</strong>. We know every shop map exists and
+				which NPC stands in each (from maps.json), and we know every
+				item's buy price (from items.json), but the pairing - "Luna
+				sells Red Potion for 5 mesos" - is editorial.
+			</p>
+			<p>
+				If you spot an incorrect item, missing SKU, or wrong price
+				during Founder's Access playtime, PR it at
+				<a
+					href="https://github.com/xLivennicex/livens-classic-maple-guide"
+					target="_blank"
+					rel="noopener"
+					>github.com/xLivennicex/livens-classic-maple-guide</a
+				>
+				and we'll fold it in.
+			</p>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.shops-index { max-width: 60rem; margin: 0 auto; padding: 1rem; }
+	.lede { color: var(--text-muted); font-size: 1.05rem; }
+	.stats { color: var(--text-muted); font-size: 0.95rem; }
+
+	.town-group { margin-top: 2rem; }
+	.town-group h2 {
+		margin-bottom: 0.6rem;
+		padding-bottom: 0.3rem;
+		border-bottom: 1px solid var(--border-card);
+	}
+	.shop-cards {
+		list-style: none; padding: 0; margin: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+		gap: 0.6rem;
+	}
+	.shop-card { }
+	.shop-link {
+		display: flex; flex-direction: column; gap: 0.3rem;
+		padding: 0.8rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.4rem;
+		text-decoration: none; color: var(--text-primary);
+	}
+	.shop-link:hover {
+		border-color: var(--accent, #4a9eff);
+	}
+	.shop-name { font-weight: bold; }
+	.shop-npc {
+		font-size: 0.85rem; color: var(--text-muted);
+		font-style: italic;
+	}
+	.shop-stats { font-size: 0.8rem; color: var(--text-muted); }
+	.st {
+		display: inline-block; padding: 0 0.4rem;
+		border-radius: 0.2rem;
+		font-size: 0.75rem; text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+	.st-verified { background: #1e3b1e; color: #90ee90; }
+	.st-inferred { background: #3b331e; color: #e8d070; }
+	.st-schema-only { background: #3b1e1e; color: #e89090; }
+
+	.shops-footer {
+		margin-top: 3rem; padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-size: 0.9rem; color: var(--text-muted);
+	}
+	.shops-footer h3 { color: var(--text-primary); }
+</style>

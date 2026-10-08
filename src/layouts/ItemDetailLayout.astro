@@ -28,6 +28,7 @@ import { itemIconUrl, mobSpriteUrl, mobSpriteSrcs, themePlaceholderUrl } from ".
 import Sprite from "../components/Sprite.astro";
 import mobDossiers from "../data/db/mobs.json";
 import { canonicalMobId, mobHref } from "../lib/mob-dedup";
+import { getShopsSellingItem } from "../data/shop-inventory";
 
 interface QuestRef {
 	questId: string;
@@ -205,6 +206,12 @@ const rangeLabel = (r: StatRange | undefined) =>
 // Default 'sleepywood' matches the database theme so all reference
 // pages feel like the same section of the site.
 const theme = "sleepywood";
+
+// Shop vendor sources: which NPCs stock this item and for how much.
+// Populated for consumables + throwing stars; empty for weapons/armor
+// (shops schema exists but Weapon/Armor inventories are not yet
+// modeled - see src/data/shop-inventory.ts for scope).
+const vendorSources = getShopsSellingItem(d.id);
 ---
 
 <BaseLayout
@@ -378,15 +385,42 @@ const theme = "sleepywood";
 		</section>
 	)}
 
-	{/* Economy strip - NPC sell price */}
+	{/* Economy strip - vendor buy price + which NPCs stock it */}
 	{d.npcSellPrice !== null && (
 		<section class="section">
 			<div class="econ-strip">
 				<div class="econ-cell">
-					<span class="econ-label">NPC sell price</span>
+					<span class="econ-label">
+						{vendorSources.length > 0 ? "Vendor buy price" : "NPC price"}
+					</span>
 					<span class="econ-value">{fmt(d.npcSellPrice)} mesos</span>
 				</div>
 			</div>
+
+			{vendorSources.length > 0 && (
+				<div class="vendor-list">
+					<h3 class="vendor-list-title">
+						Sold by <span class="count">({vendorSources.length} shop{vendorSources.length === 1 ? "" : "s"})</span>
+					</h3>
+					<ul class="vendor-ul">
+						{vendorSources.map(({ shop, price, note }) => (
+							<li class="vendor-row">
+								<span class="vendor-npc">
+									<a href={`/shops/${shop.slug}`}>{shop.npcNames.join(" / ")}</a>
+								</span>
+								<span class="vendor-meta">
+									{shop.storeName} · {shop.town}
+									{shop.inventoryStatus === "inferred" && (
+										<span class="vendor-flag" title="Inventory inferred from classic MapleStory convention; awaiting Founder's Access verification.">inferred</span>
+									)}
+								</span>
+								<span class="vendor-price">{fmt(price)} mesos</span>
+								{note && <p class="vendor-note">{note}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
 		</section>
 	)}
 
@@ -842,6 +876,65 @@ const theme = "sleepywood";
 		letter-spacing: 0.05em; color: var(--text-muted);
 	}
 	.econ-value { font-weight: bold; font-family: monospace; }
+
+	/* "Sold by" vendor list, directly under the econ strip */
+	.vendor-list {
+		margin-top: 1rem;
+		padding: 1rem;
+		background: var(--surface-card);
+		border: 1px solid var(--border-card);
+		border-radius: 0.5rem;
+	}
+	.vendor-list-title {
+		font-size: 0.95rem; margin: 0 0 0.6rem;
+		color: var(--text-primary);
+	}
+	.vendor-list-title .count {
+		font-weight: normal; color: var(--text-muted);
+		font-size: 0.85rem;
+	}
+	.vendor-ul { list-style: none; padding: 0; margin: 0; }
+	.vendor-row {
+		display: grid;
+		grid-template-columns: minmax(10rem, 1fr) minmax(14rem, 2fr) auto;
+		gap: 0.75rem;
+		align-items: baseline;
+		padding: 0.45rem 0;
+		border-bottom: 1px dashed var(--border-card);
+	}
+	.vendor-row:last-child { border-bottom: none; }
+	.vendor-npc a {
+		font-weight: bold; color: var(--text-primary);
+		text-decoration: none;
+	}
+	.vendor-npc a:hover { text-decoration: underline; }
+	.vendor-meta { font-size: 0.85rem; color: var(--text-muted); }
+	.vendor-flag {
+		display: inline-block;
+		margin-left: 0.4rem;
+		padding: 0 0.4rem;
+		font-size: 0.7rem; text-transform: uppercase;
+		letter-spacing: 0.05em;
+		background: var(--surface-elevated, #2a2a2a);
+		border-radius: 0.25rem;
+		cursor: help;
+	}
+	.vendor-price {
+		font-family: monospace; font-weight: bold;
+		white-space: nowrap;
+	}
+	.vendor-note {
+		grid-column: 1 / -1;
+		margin: 0.3rem 0 0;
+		font-size: 0.8rem; color: var(--text-muted);
+		font-style: italic;
+	}
+	@media (max-width: 600px) {
+		.vendor-row {
+			grid-template-columns: 1fr auto;
+		}
+		.vendor-meta { grid-column: 1 / -1; }
+	}
 
 	.acq-grid {
 		display: grid;

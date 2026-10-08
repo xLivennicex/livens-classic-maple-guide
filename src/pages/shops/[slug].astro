@@ -1,0 +1,261 @@
+---
+/**
+ * /shops/[slug] - per-shop detail page.
+ *
+ * Shows an NPC vendor's inventory with buy prices, plus a map link
+ * back to the shop's physical location. For shops whose inventory
+ * hasn't been modeled yet (storeType weapon/armor/repair), explain
+ * the gap honestly instead of rendering an empty table.
+ *
+ * Data source: src/data/shop-inventory.ts (hand-authored).
+ */
+
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { shops } from "../../data/shop-inventory";
+import itemDossiers from "../../data/db/items.json";
+import mapDossiers from "../../data/db/maps.json";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+	// Resolve each shop item -> dossier so we can show its real name
+	// and category without a client-side lookup. Builds a slim view
+	// model so the template stays dumb.
+	const itemById = new Map(itemDossiers.map((it: any) => [it.id, it]));
+	const mapById = new Map(mapDossiers.map((m: any) => [m.id, m]));
+
+	return shops.map((shop) => ({
+		params: { slug: shop.slug },
+		props: {
+			shop,
+			resolvedItems: shop.items.map((entry) => {
+				const dossier = itemById.get(entry.itemId);
+				return {
+					id: entry.itemId,
+					name: dossier?.name ?? `(unknown item ${entry.itemId})`,
+					category: dossier?.subCategory ?? dossier?.category ?? "?",
+					price: entry.price,
+					note: entry.note,
+				};
+			}),
+			mapName: mapById.get(shop.mapId)?.name ?? shop.storeName,
+		},
+	}));
+};
+
+const { shop, resolvedItems, mapName } = Astro.props as {
+	shop: (typeof shops)[number];
+	resolvedItems: Array<{
+		id: number;
+		name: string;
+		category: string;
+		price: number;
+		note?: string;
+	}>;
+	mapName: string;
+};
+
+// Simple editorial copy per store type - keeps the explanation
+// consistent across every shop page without hand-writing each one.
+const storeTypeBlurb: Record<string, string> = {
+	department:
+		"Standard Victoria Island Department Store - stocks potions, food, buff items, and Return Scrolls.",
+	weapon:
+		"Weapon vendor. Typically carries low-level weapons appropriate to the town's job class.",
+	armor:
+		"Armor vendor. Typically carries beginner-tier armor pieces and shields.",
+	"self-defence":
+		"Kerning City's Thief-focused store. Carries throwing stars (ranged ammo) alongside standard consumables.",
+	repair:
+		"Equipment repair service. Does not sell items.",
+	crafting:
+		"Crafting station - not a vendor. Lets you craft items from gathered materials.",
+};
+
+const inventoryTotal = resolvedItems.length;
+---
+
+<BaseLayout title={shop.storeName} theme="sleepywood">
+	<article class="shop-page">
+		<header class="shop-header">
+			<p class="shop-breadcrumb">
+				<a href="/shops">All shops</a> &rsaquo; {shop.town}
+			</p>
+			<h1>{shop.storeName}</h1>
+			<p class="shop-type">
+				{storeTypeBlurb[shop.storeType] ?? ""}
+			</p>
+			<dl class="shop-facts">
+				<dt>Shopkeeper{shop.npcNames.length > 1 ? "s" : ""}</dt>
+				<dd>{shop.npcNames.join(", ")}</dd>
+				<dt>Location</dt>
+				<dd>
+					<a href={`/maps/${shop.mapId}`}>{mapName}</a> &middot; {shop.town}
+				</dd>
+				<dt>Inventory status</dt>
+				<dd>
+					{shop.inventoryStatus === "verified" && (
+						<span class="status-verified">
+							Verified in Founder's Access
+						</span>
+					)}
+					{shop.inventoryStatus === "inferred" && (
+						<span class="status-inferred">
+							Inferred from classic MapleStory convention. Needs
+							Founder's Access playtime verification.
+						</span>
+					)}
+					{shop.inventoryStatus === "schema-only" && (
+						<span class="status-schema">
+							Schema only - we know this NPC runs a shop but
+							haven't modeled the inventory yet. Help us: PR
+							your findings at the github repo.
+						</span>
+					)}
+				</dd>
+			</dl>
+
+			{shop.notes && (
+				<aside class="shop-note">
+					<p>{shop.notes}</p>
+				</aside>
+			)}
+		</header>
+
+		<section class="shop-inventory">
+			<h2>
+				Inventory
+				<span class="count">({inventoryTotal} item{inventoryTotal === 1 ? "" : "s"})</span>
+			</h2>
+			{inventoryTotal === 0 ? (
+				<p class="muted">
+					We haven't catalogued this shop's items yet. If you've
+					visited in-game, please share what you saw at the project
+					github.
+				</p>
+			) : (
+				<table class="inventory-table">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Category</th>
+							<th class="numeric">Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						{resolvedItems.map((it) => (
+							<tr>
+								<td>
+									<a href={`/items/${it.id}`}>{it.name}</a>
+									{it.note && (
+										<p class="row-note">{it.note}</p>
+									)}
+								</td>
+								<td class="cat">{it.category}</td>
+								<td class="numeric price">
+									{it.price.toLocaleString()} mesos
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			)}
+		</section>
+
+		<footer class="shop-footer">
+			<p>
+				<strong>Price source:</strong> buy prices come directly from
+				the client's items.json (<a
+					href="https://osmsdataexplorer.com/data/current/"
+					target="_blank"
+					rel="noopener">Founder's Access datamine</a
+				>). Which NPCs stock which items is editorial - the datamine
+				does not expose shop/vendor mappings.
+			</p>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.shop-page { max-width: 56rem; margin: 0 auto; padding: 1rem; }
+	.shop-breadcrumb {
+		font-size: 0.9rem; color: var(--text-muted);
+		margin: 0 0 0.4rem;
+	}
+	.shop-breadcrumb a { color: var(--text-muted); }
+	.shop-header h1 { margin: 0.2rem 0; }
+	.shop-type { color: var(--text-muted); margin: 0.4rem 0 1rem; }
+
+	.shop-facts {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 0.4rem 1rem;
+		margin: 1rem 0;
+	}
+	.shop-facts dt { font-weight: bold; color: var(--text-muted); }
+	.shop-facts dd { margin: 0; }
+
+	.status-verified {
+		display: inline-block;
+		padding: 0.1rem 0.5rem;
+		background: #1e3b1e; color: #90ee90;
+		border-radius: 0.3rem; font-size: 0.85rem;
+	}
+	.status-inferred {
+		display: inline-block;
+		padding: 0.1rem 0.5rem;
+		background: #3b331e; color: #e8d070;
+		border-radius: 0.3rem; font-size: 0.85rem;
+	}
+	.status-schema {
+		display: inline-block;
+		padding: 0.1rem 0.5rem;
+		background: #3b1e1e; color: #e89090;
+		border-radius: 0.3rem; font-size: 0.85rem;
+	}
+
+	.shop-note {
+		margin: 1rem 0; padding: 0.8rem 1rem;
+		background: var(--surface-card);
+		border-left: 3px solid var(--accent, #4a9eff);
+		border-radius: 0.3rem;
+		font-size: 0.9rem;
+	}
+	.shop-note p { margin: 0; }
+
+	.shop-inventory h2 { margin-top: 1.5rem; }
+	.shop-inventory h2 .count {
+		font-size: 0.85rem; color: var(--text-muted); font-weight: normal;
+	}
+
+	.inventory-table {
+		width: 100%; border-collapse: collapse;
+		margin-top: 0.8rem;
+	}
+	.inventory-table th,
+	.inventory-table td {
+		padding: 0.5rem 0.6rem;
+		border-bottom: 1px solid var(--border-card);
+		text-align: left;
+	}
+	.inventory-table th {
+		font-size: 0.85rem; text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+	}
+	.inventory-table .numeric { text-align: right; font-family: monospace; }
+	.inventory-table .cat {
+		font-size: 0.85rem; color: var(--text-muted);
+	}
+	.inventory-table .price { font-weight: bold; }
+	.row-note {
+		margin: 0.2rem 0 0; font-size: 0.8rem;
+		color: var(--text-muted); font-style: italic;
+	}
+	.muted { color: var(--text-muted); font-style: italic; }
+
+	.shop-footer {
+		margin-top: 2rem; padding-top: 1rem;
+		border-top: 1px solid var(--border-card);
+		font-size: 0.85rem; color: var(--text-muted);
+	}
+</style>
