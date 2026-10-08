@@ -49,6 +49,24 @@ editorial: |
   son, hands you Alex's late mother's watch as a token, and
   asks you to bring Alex home safely.</p>
 
+  <h3 id="watch">Where the Old Gold Watch comes from</h3>
+
+  <p>If you tried to accept this quest and your inventory
+  didn't have the Old Gold Watch yet, that's because
+  <strong>Alex hands it to you via dialogue</strong> when you
+  first accept the quest - not from a mob drop, reactor, or
+  shop. Go back to Alex on the Kerning City rooftop
+  (<a href="/quests/alexs-request">Alex's Request</a>, step 1
+  of this chain), accept the step-3 quest from him, and the
+  watch (<a href="/items/4031006">item 4031006</a>) will
+  appear in your ETC tab. Then take it to Chief Stan in
+  Henesys to complete the chain.</p>
+
+  <p>Our datamine lists the Old Gold Watch as a quest
+  objective but doesn't record NPC-dialogue handoffs on the
+  item itself, which is why <code>audit:reactors</code> flags
+  it as orphaned. It isn't - Alex has it.</p>
+
   <p><strong>Why the earring is a big deal:</strong> Level 20
   earrings drop rarely from mobs in this level range. Getting
   a guaranteed one from a story chain means you have a slot
@@ -88,5 +106,5 @@ sourceSlugs:
 
 # ==== Layout ====
 theme: "henesys"
-lastUpdated: "2026-08-23"
+lastUpdated: "2026-10-08"
 ---
