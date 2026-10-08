@@ -18,7 +18,15 @@
 
 import { readFileSync } from "node:fs";
 
-const src = readFileSync("src/data/victoria-island.ts", "utf8");
+const rawSrc = readFileSync("src/data/victoria-island.ts", "utf8");
+
+// Strip any blocks wrapped in `// AUDIT:SKIP-START ... // AUDIT:SKIP-END`
+// comments. These are intentionally-missing references preserved in-source
+// across patch churn (e.g. Forgotten Hollow in Founder's Access) — flagging
+// them would be noise, not signal. See `restorePending` in VictoriaTown.
+const SKIP_RE = /\/\/\s*AUDIT:SKIP-START[\s\S]*?\/\/\s*AUDIT:SKIP-END/g;
+const src = rawSrc.replace(SKIP_RE, "");
+const skippedBlocks = (rawSrc.match(SKIP_RE) ?? []).length;
 
 // Extract all `keyName: [...]` array literals of quoted strings. Not a
 // real TS parser - crude regex - but the data file is disciplined so
@@ -64,6 +72,9 @@ function main() {
 	const maps = JSON.parse(readFileSync("src/data/db/maps.json", "utf8"));
 
 	console.log("=== Victoria Island editorial reference audit ===");
+	if (skippedBlocks > 0) {
+		console.log(`(skipping ${skippedBlocks} AUDIT:SKIP block${skippedBlocks === 1 ? "" : "s"} — see restorePending)`);
+	}
 
 	const misses =
 		report("NPCs", extractArrayOfStrings(src, "signatureNpcs"), toNameSet(npcs)) +

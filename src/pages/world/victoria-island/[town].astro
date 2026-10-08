@@ -45,18 +45,21 @@ export async function getStaticPaths() {
 }
 
 const { town } = Astro.props;
-const townDossier = mapDossiers.find((m) => m.id === town.mapId);
-if (!townDossier) {
-	throw new Error(`victoria-island/${town.slug}: town map ${town.mapId} not found in maps.json`);
-}
+// townDossier may legitimately be missing if the current client dump
+// has cut this region (e.g. Forgotten Hollow in Founder's Access).
+// The page still renders — a `restorePending` banner replaces the hero
+// data strip and the data columns gracefully show zero counts. When
+// the region returns on the next `npm run db`, everything refills
+// automatically with no code change.
+const townDossier = mapDossiers.find((m) => m.id === town.mapId) ?? null;
 
 // ==================== Data joins ====================
 const areaMaps = getTownAreaMaps(town.mapId, mapDossiers);
 const { interiors, hunts, other } = bucketTownMaps(areaMaps, town.mapId);
-const townNpcs = getTownNpcs(townDossier, npcDossiers);
+const townNpcs = townDossier ? getTownNpcs(townDossier, npcDossiers) : [];
 const allQuests = getTownQuests(townNpcs, questDossiers);
 const questBands = groupQuestsByBand(allQuests);
-const exits = resolveExits(townDossier, mapDossiers);
+const exits = townDossier ? resolveExits(townDossier, mapDossiers) : [];
 
 // Adjacent towns (siblings in victoriaTowns) - used for the
 // "continue exploring" strip so readers can hop between dossiers
@@ -109,17 +112,55 @@ const stats = {
 			<p class="town-hero__blurb">{town.blurb}</p>
 		</div>
 		<div class="town-hero__minimap">
-			<Sprite
-				srcs={mapThumbnailSrcs(townDossier.id, townDossier.wzId)}
-				alt={`${town.name} minimap`}
-				placeholder={themePlaceholderUrl(town.theme)}
-				loading="eager"
-			/>
-			<a class="town-hero__minimap-link" href={`/maps/${townDossier.id}`}>
-				Full map dossier &rarr;
-			</a>
+			{townDossier ? (
+				<>
+					<Sprite
+						srcs={mapThumbnailSrcs(townDossier.id, townDossier.wzId)}
+						alt={`${town.name} minimap`}
+						placeholder={themePlaceholderUrl(town.theme)}
+						loading="eager"
+					/>
+					<a class="town-hero__minimap-link" href={`/maps/${townDossier.id}`}>
+						Full map dossier &rarr;
+					</a>
+				</>
+			) : (
+				<img
+					src={themePlaceholderUrl(town.theme)}
+					alt=""
+					class="town-hero__minimap-placeholder"
+				/>
+			)}
 		</div>
 	</header>
+
+	{town.restorePending && (
+		<aside class="town-pending" role="note">
+			<span class="town-pending__badge">⏳ Temporarily cut from this patch</span>
+			<p class="town-pending__reason">{town.restorePending.reason}</p>
+			{(town.restorePending.quests?.length || town.restorePending.huntingMaps?.length) && (
+				<details class="town-pending__details">
+					<summary>Preserved for return</summary>
+					{town.restorePending.quests && town.restorePending.quests.length > 0 && (
+						<>
+							<p class="town-pending__label">Quests ({town.restorePending.quests.length}):</p>
+							<ul class="town-pending__list">
+								{town.restorePending.quests.map((q) => <li>{q}</li>)}
+							</ul>
+						</>
+					)}
+					{town.restorePending.huntingMaps && town.restorePending.huntingMaps.length > 0 && (
+						<>
+							<p class="town-pending__label">Hunting maps ({town.restorePending.huntingMaps.length}):</p>
+							<ul class="town-pending__list">
+								{town.restorePending.huntingMaps.map((h) => <li>{h.name} — <em>{h.note}</em></li>)}
+							</ul>
+						</>
+					)}
+				</details>
+			)}
+		</aside>
+	)}
 
 	<!-- ============================================================ -->
 	<div class="stats-bar">
@@ -461,6 +502,45 @@ const stats = {
 		color: var(--accent-primary); text-decoration: none;
 	}
 	.town-hero__minimap-link:hover { text-decoration: underline; }
+	.town-hero__minimap-placeholder {
+		width: 100%; max-height: 12rem; object-fit: contain;
+		border-radius: 6px; border: 2px dashed var(--accent-primary);
+		opacity: 0.55;
+		background: rgba(0,0,0,0.03);
+	}
+
+	/* "Temporarily cut" banner — only renders for towns with
+	   `restorePending`. Keeps the per-town page from looking broken
+	   when the current client dropped the region. */
+	.town-pending {
+		margin: 0 0 1.5rem;
+		padding: 1rem 1.25rem;
+		border-left: 4px solid #c48a2b;
+		background: rgba(196, 138, 43, 0.08);
+		border-radius: 0 6px 6px 0;
+		color: var(--text-primary);
+	}
+	.town-pending__badge {
+		display: inline-block;
+		font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+		text-transform: uppercase;
+		padding: 0.2rem 0.6rem;
+		background: #c48a2b; color: #fff;
+		border-radius: 3px;
+		margin-bottom: 0.55rem;
+	}
+	.town-pending__reason { margin: 0.25rem 0 0.5rem; font-size: 0.95rem; line-height: 1.45; }
+	.town-pending__details { margin-top: 0.5rem; font-size: 0.9rem; }
+	.town-pending__details summary { cursor: pointer; font-weight: 600; }
+	.town-pending__label {
+		margin: 0.6rem 0 0.2rem; font-size: 0.82rem; font-weight: 600;
+		text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.85;
+	}
+	.town-pending__list {
+		margin: 0 0 0.2rem 1.2rem; padding: 0;
+		font-style: italic;
+	}
+	.town-pending__list em { opacity: 0.75; font-style: italic; }
 
 	/* -------- Stats bar -------- */
 	.stats-bar {

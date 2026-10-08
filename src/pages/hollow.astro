@@ -29,6 +29,14 @@ import mapsData from "../data/db/maps.json";
 import questsData from "../data/db/quests.json";
 import mobsData from "../data/db/mobs.json";
 import { mobHref } from "../lib/mob-dedup";
+import { victoriaTowns } from "../data/victoria-island";
+
+/* Single source of truth for the "temporarily cut" state — if the
+ * forgotten-hollow entry in victoria-island.ts has a `restorePending`
+ * block, this page shows a banner. When the region returns, deleting
+ * `restorePending` from that one file removes the banner here too. */
+const hollowTown = victoriaTowns.find((t) => t.slug === "forgotten-hollow");
+const restorePending = hollowTown?.restorePending ?? null;
 
 /* Canonical IDs from the CoT2 client datamine. Every Forgotten
  * Hollow region map lives in the 10006000-10006999 range - I
@@ -124,6 +132,21 @@ const exits = map?.exits ?? [];
 	theme="forgotten-hollow"
 	decorations={false}
 >
+	{restorePending && (
+		<aside class="hollow-pending" role="note">
+			<span class="hollow-pending__badge">⏳ Temporarily cut from this patch</span>
+			<p class="hollow-pending__reason">{restorePending.reason}</p>
+			<p class="hollow-pending__meta">
+				The hub below renders live data from the current datamine, which
+				currently has {regionMaps.length} map{regionMaps.length === 1 ? "" : "s"},
+				{" "}{questsHere.length} quest{questsHere.length === 1 ? "" : "s"},
+				and {regionMobs.length} mob{regionMobs.length === 1 ? "" : "s"} for
+				Forgotten Hollow. When Nexon restores the region, the hub refills itself
+				automatically on the next <code>npm run db</code>.
+			</p>
+		</aside>
+	)}
+
 	<section class="hollow-hero">
 		<div class="hollow-hero__panel">
 			<p class="hollow-hero__eyebrow">Victoria Island - Shallow Passage</p>
@@ -157,9 +180,11 @@ const exits = map?.exits ?? [];
 					</div>
 				</dl>
 			)}
-			<a class="hollow-hero__cta" href={`/maps/${HOLLOW_MAP_ID}`}>
-				Open the full map page
-			</a>
+			{map && (
+				<a class="hollow-hero__cta" href={`/maps/${HOLLOW_MAP_ID}`}>
+					Open the full map page
+				</a>
+			)}
 		</div>
 	</section>
 
@@ -255,6 +280,36 @@ const exits = map?.exits ?? [];
 </BaseLayout>
 
 <style>
+	/* "Temporarily cut" banner. Pinned above the hero so visitors
+	   know immediately why the hub below looks sparse. Styling
+	   stays warm/parchment to blend with the hollow theme rather
+	   than screaming error-red. */
+	.hollow-pending {
+		margin: 1rem auto 0;
+		max-width: 760px;
+		padding: 1rem 1.25rem;
+		border-left: 4px solid #c48a2b;
+		background: rgba(74, 58, 26, 0.72);
+		color: #fff6e0;
+		border-radius: 0 8px 8px 0;
+		backdrop-filter: blur(2px);
+	}
+	.hollow-pending__badge {
+		display: inline-block;
+		font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+		text-transform: uppercase;
+		padding: 0.2rem 0.6rem;
+		background: #c48a2b; color: #2a1f0d;
+		border-radius: 3px;
+		margin-bottom: 0.55rem;
+	}
+	.hollow-pending__reason { margin: 0.25rem 0 0.5rem; font-size: 0.95rem; line-height: 1.45; }
+	.hollow-pending__meta { margin: 0; font-size: 0.85rem; opacity: 0.85; line-height: 1.4; }
+	.hollow-pending__meta code {
+		background: rgba(255,255,255,0.12); padding: 0.08rem 0.3rem;
+		border-radius: 3px; font-size: 0.82rem;
+	}
+
 	/* Hero: tall enough that the grotto artwork gets breathing
 	   room before content starts. Panel is a warm-parchment
 	   overlay so the flavor text stays readable against the

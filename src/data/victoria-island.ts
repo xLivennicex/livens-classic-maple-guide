@@ -74,6 +74,18 @@ export interface VictoriaTown {
 	//   card color in the render.
 	lore?: string[];
 	activities?: TownActivity[];
+	// Content that was present in a previous datamine but is temporarily
+	// cut from the current client (e.g. Forgotten Hollow in Founder's
+	// Access). Preserved in-source so the names survive patch churn and
+	// can be moved back into signatureQuests/huntingMaps the moment the
+	// region returns. audit:vi explicitly skips these — see the
+	// `AUDIT:SKIP-START` sentinel comments wrapping each `restorePending`
+	// block below.
+	restorePending?: {
+		reason: string;                   // short human explainer for the UI banner
+		quests?: string[];                // quest names that currently don't resolve
+		huntingMaps?: { name: string; note: string }[];  // same shape as `huntingMaps`
+	};
 }
 
 export type ActivityCategory =
@@ -602,13 +614,11 @@ export const victoriaTowns: VictoriaTown[] = [
 		tagline: "The bioluminescent grotto tucked behind Ellinia.",
 		blurb: "A cave-fairy town reached through Ellinia's back roads. Zelya greets returning explorers with the Return Scroll, Nyroth runs the emotional-support arc of the questline, and the Bluebell Buds keep the spore-lanterns lit. Level 39-50 content bridging into the deeper Cave Fairy Sanctuary and Primeval Forest.",
 		signatureNpcs: ["Zelya", "Nyroth", "Myra", "Grendel the Really Old"],
-		signatureQuests: [
-			"Welcome to the Hollow",
-			"Zelya's Map",
-			"Nyroth's Fragile Hope",
-			"Matters of the Heart",
-			"The Sage's Burden",
-		],
+		// Founder's Access cut the entire Forgotten Hollow questline. The NPCs
+		// still exist in npcs.json but with empty `questsGiven` arrays. The
+		// quest names are preserved in `restorePending` below so they survive
+		// the patch churn and can be moved back here when the region returns.
+		signatureQuests: [],
 		// Sprint 97.4: full mob roster from the datamine cross-reference.
 		// 20 unique mobs across the 27-map region. Listed here are the
 		// CoT2-original spawns (upstream maplestory.io/GMS/83 has no
@@ -629,17 +639,33 @@ export const victoriaTowns: VictoriaTown[] = [
 			"Golden Stirge",
 			"Rotten Mushmom",
 		],
-		huntingMaps: [
-			{ name: "Primeval Forest I", note: "First hunt map east of the Hollow. Aqumander + Glowshroom + Echopus starter mix." },
-			{ name: "Primeval Forest II", note: "Progression - Golden Stirge added to the spawn table." },
-			{ name: "Collision of Ice and Fire", note: "Themed pocket map with Rafflesia + Aqumander + Glowshroom." },
-			{ name: "The Valley of Death", note: "Grim mid-region hunt - Zombie Mushroom + Zombie Lupin + Rafflesia." },
-			{ name: "The End of Fleeting Light", note: "Level 45+ questline hub. Duskmander + Aqumander + Rafflesia." },
-			{ name: "Decayed Tunnel III", note: "Late-region tunnel with Rafflesia + Myewood + Golden Stirge." },
-			{ name: "Precipice of Darkness", note: "Boss-adjacent map - Duskmander + Rotten Mushroom + Zombie Lupin + Zombie Mushroom." },
-			{ name: "Someone Else's Grave", note: "Rotten Mushmom (region mini-boss) + Rotten Mushroom + Fairy 3 + Zombie Mushroom. Marquee target for the mid-level party." },
-			{ name: "Dilapidated Tomb", note: "Sporewood + Rotten Mushroom + Fairy 2 spawn. Late-region tomb approach." },
-		],
+		// Same deal: all nine hunting sub-maps were removed from the
+		// Founder's Access client (region range 10006001-10006999 is empty
+		// except for one orphan map stub). Preserved below in `restorePending`.
+		huntingMaps: [],
+		// AUDIT:SKIP-START - temporarily cut in Founder's Access, pending restoration
+		restorePending: {
+			reason: "Cut from the Founder's Access client. Entire region (quests + 26 sub-maps) is expected to return in a later patch; names preserved here for easy re-enable.",
+			quests: [
+				"Welcome to the Hollow",
+				"Zelya's Map",
+				"Nyroth's Fragile Hope",
+				"Matters of the Heart",
+				"The Sage's Burden",
+			],
+			huntingMaps: [
+				{ name: "Primeval Forest I", note: "First hunt map east of the Hollow. Aqumander + Glowshroom + Echopus starter mix." },
+				{ name: "Primeval Forest II", note: "Progression - Golden Stirge added to the spawn table." },
+				{ name: "Collision of Ice and Fire", note: "Themed pocket map with Rafflesia + Aqumander + Glowshroom." },
+				{ name: "The Valley of Death", note: "Grim mid-region hunt - Zombie Mushroom + Zombie Lupin + Rafflesia." },
+				{ name: "The End of Fleeting Light", note: "Level 45+ questline hub. Duskmander + Aqumander + Rafflesia." },
+				{ name: "Decayed Tunnel III", note: "Late-region tunnel with Rafflesia + Myewood + Golden Stirge." },
+				{ name: "Precipice of Darkness", note: "Boss-adjacent map - Duskmander + Rotten Mushroom + Zombie Lupin + Zombie Mushroom." },
+				{ name: "Someone Else's Grave", note: "Rotten Mushmom (region mini-boss) + Rotten Mushroom + Fairy 3 + Zombie Mushroom. Marquee target for the mid-level party." },
+				{ name: "Dilapidated Tomb", note: "Sporewood + Rotten Mushroom + Fairy 2 spawn. Late-region tomb approach." },
+			],
+		},
+		// AUDIT:SKIP-END
 		landmarks: ["Cave Fairy Sanctuary", "Cave Fairy Department Store", "Arcane Station"],
 		featuredContent: {
 			label: "Themed region page",
