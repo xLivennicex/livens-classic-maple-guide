@@ -12,6 +12,7 @@
     "astro": "astro",
     "db": "node scripts/build-database.mjs",
     "db:build": "node scripts/build-database.mjs && astro build && pagefind --site dist",
+    "snapshot": "node scripts/snapshot-datamine.mjs",
     "audit:links": "node scripts/audit-links.mjs",
     "audit:sprites": "node scripts/audit-sprites.mjs",
     "audit:vi": "node scripts/audit-vi-references.mjs",
