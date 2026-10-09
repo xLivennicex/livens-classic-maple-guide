@@ -31,33 +31,113 @@ export interface KpqStage {
 // The full reward payout from `Proof of Companionship` (quest 10311)
 // grounded against quests.json - kept here as-is for callers who
 // don't want to reach into quest dossiers directly.
+//
+// UPDATED 2026-10-08: EXP + mesos re-synced from the latest Founder's
+// Access datamine (1870 EXP / 687 mesos vs the earlier CoT2 snapshot's
+// 2193 / 614). Scroll chance also corrected from the misleading '1%'
+// to the actual 25%-each weighted random (each scroll has prop=1 in
+// the datamine, so one of the four is picked at ~25% rate on completion).
 export const KPQ_REWARDS = {
-	exp: 2193,
-	mesos: 614,
+	exp: 1870,
+	mesos: 687,
 	itemChance: [
-		{ name: "Earring STR Scroll: Intermediate", id: 2040301, chance: "1%" },
-		{ name: "Earring DEX Scroll: Intermediate", id: 2040305, chance: "1%" },
-		{ name: "Earring INT Scroll: Intermediate", id: 2040309, chance: "1%" },
-		{ name: "Earring LUK Scroll: Intermediate", id: 2040313, chance: "1%" },
+		{ name: "Earring STR Scroll: Intermediate", id: 2040301, chance: "~25%" },
+		{ name: "Earring DEX Scroll: Intermediate", id: 2040305, chance: "~25%" },
+		{ name: "Earring INT Scroll: Intermediate", id: 2040309, chance: "~25%" },
+		{ name: "Earring LUK Scroll: Intermediate", id: 2040313, chance: "~25%" },
 	],
 	// Additional per-stage EXP (rough Classic-era ballpark).
 	// Classic World reportedly reduced overall KPQ EXP payout;
 	// per-stage precise EXP values are not currently datamined.
 	stageExp: "~200-400 EXP per stage cleared (Classic World: reduced vs v83)",
-	// Boss drops - CoT 2 DATAMINE-VERIFIED from mob dossier 800003.
+	// Boss drops - FA DATAMINE-VERIFIED from mob dossier 800003.
 	// Only two items in King Slime's drop table this build:
 	bossDrops: [
 		{
 			itemId: 1072128,
 			name: "Squishy Shoes",
-			note: "L28 All-class shoes. +1 STR / +1 DEX / +1 INT / +1 LUK, +18 PDD, 5 slots. Renamed from 'Slime Shoes' in Classic World; stats are the iconic all-stat blessing. This is the reason to run KPQ.",
+			score: 7,
+			note: "L28 All-class shoes. +1 STR / +1 DEX / +1 INT / +1 LUK, +18 PDD, 5 slots. Renamed from 'Slime Shoes' in Classic World; stats are the iconic all-stat blessing. The reason to run KPQ.",
 		},
 		{
 			itemId: 4001001,
 			name: "Coupon",
+			score: 1,
 			note: "Quest ETC used in Kerning City quest chains. Not a market item.",
 		},
 	],
+} as const;
+
+/**
+ * Bonus Room drops: FA datamine shows the Bonus Room (map 80000500)
+ * is populated with 12 Green Mushrooms (Lv15) and 24 Horny Mushrooms
+ * (Lv22) rather than the v83-era passive wooden boxes. These are the
+ * 'chest rewards' - party members whack mushrooms during the 60-sec
+ * timer and vacuum up whatever they drop.
+ *
+ * Scores are the raw drop-weight values from mobs.json. Higher score
+ * = more common drop. Treat as weighted probability within the mob's
+ * table (NOT an absolute percentage).
+ */
+export const KPQ_BONUS_ROOM_DROPS = {
+	greenMushroom: {
+		mobId: 13,
+		mobName: "Green Mushroom",
+		spawnCount: 12,
+		note: "The Pan Lid and Claw Attack Scroll: Intermediate farm target.",
+		drops: [
+			{ itemId: 1092002, name: "Pan Lid", score: 25, kind: "Equip", note: "Lv10 all-class shield." },
+			{ itemId: 4000063, name: "Fragment of Magic", score: 14, kind: "Etc" },
+			{ itemId: 4000013, name: "Green Mushroom Cap", score: 11, kind: "Etc" },
+			{ itemId: 1002043, name: "Green Feather Hat", score: 10, kind: "Equip" },
+			{ itemId: 1072018, name: "Green Woodsman Boots", score: 8, kind: "Equip" },
+			{ itemId: 4010004, name: "Silver Ore", score: 7, kind: "Etc" },
+			{ itemId: 1322003, name: "Mace", score: 7, kind: "Equip", note: "Lv15 Warrior/Mage 1H blunt weapon." },
+			{ itemId: 1382002, name: "Emerald Staff", score: 6, kind: "Equip", note: "Lv15 Mage staff." },
+			{ itemId: 1040033, name: "Green Bennis Chainmail", score: 4, kind: "Equip" },
+			{ itemId: 4020003, name: "Emerald Ore", score: 4, kind: "Etc" },
+			{ itemId: 2044701, name: "Claw Attack Scroll: Intermediate", score: 3, kind: "Use", note: "60% +2 wATT on claws. Rare and valuable." },
+			{ itemId: 2000003, name: "Blue Potion", score: 3, kind: "Use" },
+			{ itemId: 2048000, name: "Pet Equip Speed Scroll: Lesser", score: 3, kind: "Use" },
+			{ itemId: 2043102, name: "One-Handed Axe Attack Scroll: Greater", score: 2, kind: "Use", note: "30% +3 wATT on 1H axes." },
+			{ itemId: 2000000, name: "Red Potion", score: 2, kind: "Use" },
+			{ itemId: 4031068, name: "Animal Fossil", score: 2, kind: "Etc", note: "Fossil Research chain material." },
+			{ itemId: 2061000, name: "Arrows for Crossbows", score: 2, kind: "Use" },
+			{ itemId: 4010005, name: "Orihalcon Ore", score: 2, kind: "Etc" },
+			{ itemId: 1040008, name: "Green Archer Top", score: 1, kind: "Equip" },
+			{ itemId: 1061030, name: "Blue Qi Pao Pants", score: 1, kind: "Equip" },
+			{ itemId: 1062002, name: "Sandblasted Jeans", score: 1, kind: "Equip" },
+		],
+	},
+	hornyMushroom: {
+		mobId: 19,
+		mobName: "Horny Mushroom",
+		spawnCount: 24,
+		note: "The main chest-reward volume - 24 reactors with Magic Potions, crafting ores, and a Two-Handed Blunt Attack Scroll: Greater at the tail.",
+		drops: [
+			{ itemId: 2000001, name: "Orange Potion", score: 12, kind: "Use" },
+			{ itemId: 4000019, name: "Horny Mushroom Cap", score: 7, kind: "Etc" },
+			{ itemId: 2002001, name: "Magic Potion", score: 7, kind: "Use", note: "Buff potion - the useful consumable here." },
+			{ itemId: 2000003, name: "Blue Potion", score: 7, kind: "Use" },
+			{ itemId: 4010000, name: "Bronze Ore", score: 7, kind: "Etc" },
+			{ itemId: 4020006, name: "Topaz Ore", score: 7, kind: "Etc" },
+			{ itemId: 1041037, name: "Blue Shark", score: 7, kind: "Equip", note: "Lv25 Warrior top." },
+			{ itemId: 1082002, name: "Steel Fingerless Gloves", score: 5, kind: "Equip" },
+			{ itemId: 1302010, name: "Cutlus", score: 5, kind: "Equip", note: "Lv35 Warrior 1H sword - sellable at vendor for 7500 mesos." },
+			{ itemId: 1002106, name: "Brown Jester", score: 5, kind: "Equip" },
+			{ itemId: 1332007, name: "Iron Dagger", score: 4, kind: "Equip", note: "Lv25 Thief dagger." },
+			{ itemId: 2060000, name: "Arrows for Bows", score: 3, kind: "Use" },
+			{ itemId: 1442004, name: "Mithril Pole Arm", score: 3, kind: "Equip", note: "Lv30 Warrior polearm." },
+			{ itemId: 1002117, name: "Blue Guise", score: 3, kind: "Equip" },
+			{ itemId: 1061039, name: "Sky Sneak Pants", score: 2, kind: "Equip" },
+			{ itemId: 1060028, name: "Black Sneak Pants", score: 2, kind: "Equip" },
+			{ itemId: 1002126, name: "Blue Pole-Feather Hat", score: 2, kind: "Equip" },
+			{ itemId: 1002113, name: "Blue Hawkeye", score: 1, kind: "Equip" },
+			{ itemId: 4020005, name: "Sapphire Ore", score: 1, kind: "Etc" },
+			{ itemId: 2044202, name: "Two-handed Blunt Weapon Attack Scroll: Greater", score: 1, kind: "Use", note: "30% +3 wATT on 2H blunts." },
+			{ itemId: 1092003, name: "Steel Shield", score: 1, kind: "Equip", note: "Lv15 Warrior shield." },
+		],
+	},
 } as const;
 
 export const KPQ_META = {
@@ -187,19 +267,22 @@ export const kpqStages: KpqStage[] = [
 	{
 		slug: "bonus-room",
 		number: "bonus",
-		title: "Bonus Room",
-		subtitle: "60 seconds. Grab everything.",
-		objective: "Break the boxes on the ground for free items. Nothing to fight - pure loot.",
+		title: "Bonus Room (mushroom pinata)",
+		subtitle: "60 seconds. 36 mushroom reactors. Loot everything.",
+		mobs: ["Green Mushroom", "Horny Mushroom"],
+		objective: "FA datamine (map 80000500) shows 12 Green Mushrooms (Lv15) and 24 Horny Mushrooms (Lv22) as passive reactors. Whack them, grab the drops. Full drop tables in KPQ_BONUS_ROOM_DROPS.",
 		timeLimit: "60 seconds.",
 		strategy: [
-			"Every member should spread out and hit boxes as fast as possible.",
-			"Boxes drop scrolls, consumables, small equipment, and sometimes mesos.",
-			"Pick up loot as you go - the timer is unforgiving.",
-			"When the timer expires, the portal to the boss room opens.",
+			"Spread out immediately - 36 mushrooms and 4-6 players means each member gets ~6-9 kills if everyone splits.",
+			"Horny Mushrooms (24 spawn) are the volume play - potions, Magic Potions, crafting ores, and the Two-Handed Blunt Attack Scroll: Greater all live here.",
+			"Green Mushrooms (12 spawn) are rarer but front-loaded with Pan Lid (common), Fragment of Magic (quest etc), and the Claw Attack Scroll: Intermediate as the chase item.",
+			"Pick up loot AS YOU GO - the timer is unforgiving. 60 seconds disappears fast if you're hoarding.",
+			"When the timer expires or all mushrooms die, the party moves to the boss room.",
 		],
 		gotchas: [
-			"Loot on the ground disappears if not picked up - be greedy.",
-			"Dropping the loot to distribute it later works, but risks running out of time.",
+			"Mushrooms are passive but still mobs - no XP (they're low-level filler) but a slow Lv21 Beginner might still take 2-3 hits per mushroom. Factor that into your coverage plan.",
+			"Loot on the ground disappears when the stage ends. Pick up as you drop.",
+			"The datamine captures 36 static mushroom spawns - whether they respawn mid-timer isn't exposed. Treat as a one-shot pinata until FA playtime verifies.",
 		],
 	},
 	{

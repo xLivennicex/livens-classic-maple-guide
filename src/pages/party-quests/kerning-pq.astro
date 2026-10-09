@@ -15,7 +15,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import {
-	KPQ_META, KPQ_REWARDS,
+	KPQ_META, KPQ_REWARDS, KPQ_BONUS_ROOM_DROPS,
 	kpqStages, partyCompositions,
 } from "../../data/party-quests/kerning-pq";
 import mobDossiers from "../../data/db/mobs.json";
@@ -47,6 +47,16 @@ const iconicMobs = KPQ_META.iconicMobs
 const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 	...r,
 	item: itemById.get(r.id),
+}));
+
+// Bonus Room 'chest' drops - resolve each mushroom's drop table to
+// real item dossiers so sprites + hrefs render without template logic.
+const bonusTables = [
+	KPQ_BONUS_ROOM_DROPS.greenMushroom,
+	KPQ_BONUS_ROOM_DROPS.hornyMushroom,
+].map((table) => ({
+	...table,
+	drops: table.drops.map((d) => ({ ...d, item: itemById.get(d.itemId) })),
 }));
 ---
 
@@ -306,11 +316,63 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 					{KPQ_META.notableChanges.map((change) => <li>{change}</li>)}
 				</ul>
 				<p class="cw-callout__source">
-					Sourced from CoT 2 client datamine +
+					Sourced from Founder's Access client datamine +
 					<a href="/training-routes#levels-20-25-bubblings-and-kpq">Eleveny's training video</a>.
 				</p>
 			</aside>
 		)}
+	</section>
+
+	<!-- ============================================================ -->
+	<!-- Bonus Room 'chest' rewards - the mushroom pinata that follows -->
+	<!-- the boss. Full drop tables sourced from mobs.json (Green Mushroom -->
+	<!-- id 13, Horny Mushroom id 19), rendered as side-by-side tables -->
+	<!-- sorted by datamine score (weighted drop rate, higher = more common). -->
+	<section aria-labelledby="bonus-heading">
+		<h2 id="bonus-heading" class="section-title">Bonus Room chest rewards</h2>
+		<p class="section-lede">
+			After King Slime dies the party teleports to a time-limited
+			bonus room (map 80000500) with 36 passive mushroom reactors.
+			Whack them for drops. These two tables are the complete
+			datamined loot pool - scores are the raw drop weights from
+			<code>mobs.json</code>; higher = more common.
+		</p>
+		<div class="bonus-grid">
+			{bonusTables.map((t) => (
+				<article class="bonus-card">
+					<header class="bonus-card__head">
+						<h3>{t.mobName} <span class="bonus-card__count">x{t.spawnCount}</span></h3>
+						<p class="bonus-card__note">{t.note}</p>
+					</header>
+					<table class="bonus-table">
+						<thead>
+							<tr><th>Item</th><th>Kind</th><th class="numeric">Score</th></tr>
+						</thead>
+						<tbody>
+							{t.drops.map((d) => (
+								<tr>
+									<td>
+										<a href={`/items/${d.itemId}`}>{d.name}</a>
+										{d.note && <p class="bonus-table__note">{d.note}</p>}
+									</td>
+									<td class="bonus-table__kind">{d.kind}</td>
+									<td class="numeric">{d.score}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</article>
+			))}
+		</div>
+		<p class="bonus-footnote">
+			<strong>Prioritization:</strong> if you can only tag some of
+			the 36 reactors, hit Horny Mushrooms first - they're the
+			volume (24 spawn) and carry Magic Potions, Cutlus (sellable
+			Lv35 1H sword), and crafting ores. Green Mushrooms are rarer
+			(12 spawn) but the Claw Attack Scroll: Intermediate and 1H
+			Axe Attack Scroll: Greater sit in their tail - worth hunting
+			if a Thief or Warrior in the party wants them.
+		</p>
 	</section>
 
 	<!-- ============================================================ -->
@@ -648,6 +710,55 @@ const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
 	.scroll img { width: 28px; height: 28px; image-rendering: pixelated; }
 	.scroll em { font-style: normal; color: var(--text-muted); font-size: 0.78rem; margin-left: auto; }
 	.scroll span { flex: 1; min-width: 0; }
+
+	/* -------- Bonus Room drop tables -------- */
+	.bonus-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+		gap: 1rem;
+	}
+	.bonus-card {
+		background: var(--surface-card); border: 1px solid var(--border-card);
+		border-radius: 8px; padding: 1rem 1.1rem;
+	}
+	.bonus-card__head h3 {
+		margin: 0; color: var(--accent-primary); font-size: 1.05rem;
+	}
+	.bonus-card__count {
+		color: var(--text-muted); font-weight: normal; font-size: 0.85rem;
+		margin-left: 0.35rem;
+	}
+	.bonus-card__note {
+		margin: 0.25rem 0 0.75rem;
+		font-size: 0.85rem; color: var(--text-secondary); font-style: italic;
+	}
+	.bonus-table {
+		width: 100%; border-collapse: collapse; font-size: 0.88rem;
+	}
+	.bonus-table th, .bonus-table td {
+		text-align: left; padding: 0.35rem 0.4rem;
+		border-bottom: 1px solid var(--border-card);
+		vertical-align: top;
+	}
+	.bonus-table th {
+		font-size: 0.72rem; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--text-muted);
+	}
+	.bonus-table .numeric {
+		text-align: right; font-family: monospace;
+	}
+	.bonus-table__kind {
+		font-size: 0.78rem; color: var(--text-muted);
+	}
+	.bonus-table__note {
+		margin: 0.15rem 0 0; font-size: 0.78rem;
+		color: var(--text-muted); font-style: italic;
+	}
+	.bonus-table a { color: var(--accent-primary); }
+	.bonus-footnote {
+		margin-top: 1rem; font-size: 0.88rem;
+		color: var(--text-secondary); line-height: 1.55;
+	}
 
 	/* -------- Comps -------- */
 	.comp-grid {
