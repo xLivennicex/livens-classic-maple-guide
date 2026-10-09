@@ -15,7 +15,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import {
-	KPQ_META, KPQ_REWARDS, KPQ_BONUS_ROOM_DROPS,
+	KPQ_META, KPQ_REWARDS, KPQ_BONUS_ROOM_DROPS, KPQ_ENTRY_REQUIREMENTS,
 	kpqStages, partyCompositions,
 } from "../../data/party-quests/kerning-pq";
 import mobDossiers from "../../data/db/mobs.json";
@@ -122,6 +122,76 @@ const bonusTables = [
 			</span>
 		</div>
 	</header>
+
+	<!-- ============================================================ -->
+	<!-- Entry requirements - what you need to walk through Lakelis's -->
+	<!-- portal. Datamine-grounded (quests.json id 10311: no items, no -->
+	<!-- fee, no prerequisite quest). Explicitly calls out the common -->
+	<!-- 'do I need a ticket?' question with the answer: NO. -->
+	<section class="entry-reqs" aria-labelledby="entry-heading">
+		<h2 id="entry-heading" class="section-title">Entry requirements</h2>
+		<p class="section-lede">
+			KPQ's gate is social, not economic. The datamine confirms zero
+			items consumed, zero mesos, no prerequisite quest - just a
+			party of 4+ at Lv{KPQ_ENTRY_REQUIREMENTS.levelMin}+ talking to
+			<strong>{KPQ_ENTRY_REQUIREMENTS.entryNpc}</strong> at the
+			<a href={`/maps/${KPQ_ENTRY_REQUIREMENTS.entryMapId}`}>{KPQ_ENTRY_REQUIREMENTS.entryMapName}</a> entrance.
+		</p>
+		<div class="entry-grid">
+			<div class="entry-card">
+				<span class="entry-card__label">Level</span>
+				<strong>Lv {KPQ_ENTRY_REQUIREMENTS.levelMin}-{KPQ_ENTRY_REQUIREMENTS.levelMax}</strong>
+				<span class="entry-card__meta">
+					Min {KPQ_ENTRY_REQUIREMENTS.levelMin} datamine-verified.
+					Max {KPQ_ENTRY_REQUIREMENTS.levelMax} is v83 convention.
+				</span>
+			</div>
+			<div class="entry-card">
+				<span class="entry-card__label">Party size</span>
+				<strong>{KPQ_ENTRY_REQUIREMENTS.partySizeMin}-{KPQ_ENTRY_REQUIREMENTS.partySizeMax}</strong>
+				<span class="entry-card__meta">
+					Range is v83 convention; FA may enforce exactly 6. Needs playtime verification.
+				</span>
+			</div>
+			<div class="entry-card entry-card--highlight">
+				<span class="entry-card__label">Ticket / item required</span>
+				<strong>NONE</strong>
+				<span class="entry-card__meta">
+					Datamine-verified: zero items in <code>items.json</code> have
+					<code>requiredByQuests[].questId === "10311"</code>. Unlike
+					LPQ which requires Tickets to Construction Site, KPQ is
+					walk-in.
+				</span>
+			</div>
+			<div class="entry-card">
+				<span class="entry-card__label">Entry fee</span>
+				<strong>0 mesos</strong>
+				<span class="entry-card__meta">Lakelis takes you in free.</span>
+			</div>
+			<div class="entry-card">
+				<span class="entry-card__label">Prerequisite quest</span>
+				<strong>None</strong>
+				<span class="entry-card__meta">
+					Fresh Lv{KPQ_ENTRY_REQUIREMENTS.levelMin} characters can enter
+					immediately. No chain gating.
+				</span>
+			</div>
+			<div class="entry-card">
+				<span class="entry-card__label">Cooldown</span>
+				<strong>None</strong>
+				<span class="entry-card__meta">
+					Farm back-to-back. Clear King Slime, turn in to Lakelis,
+					re-queue.
+				</span>
+			</div>
+		</div>
+		<aside class="entry-footnote">
+			<h3>Verification notes</h3>
+			<ul>
+				{KPQ_ENTRY_REQUIREMENTS.notes.map((note) => <li>{note}</li>)}
+			</ul>
+		</aside>
+	</section>
 
 	<!-- ============================================================ -->
 	<section class="progress-panel" aria-labelledby="progress-heading">
@@ -710,6 +780,56 @@ const bonusTables = [
 	.scroll img { width: 28px; height: 28px; image-rendering: pixelated; }
 	.scroll em { font-style: normal; color: var(--text-muted); font-size: 0.78rem; margin-left: auto; }
 	.scroll span { flex: 1; min-width: 0; }
+
+	/* -------- Entry requirements -------- */
+	.entry-reqs { margin-bottom: 1.5rem; }
+	.entry-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 0.75rem;
+	}
+	.entry-card {
+		background: var(--surface-card); border: 1px solid var(--border-card);
+		border-radius: 8px; padding: 0.9rem 1rem;
+		display: flex; flex-direction: column; gap: 0.2rem;
+	}
+	.entry-card--highlight {
+		border-left: 3px solid var(--accent-primary);
+		background: color-mix(in srgb, var(--accent-primary) 6%, var(--surface-card));
+	}
+	.entry-card__label {
+		font-size: 0.72rem; text-transform: uppercase;
+		letter-spacing: 0.05em; color: var(--text-muted);
+	}
+	.entry-card strong {
+		font-size: 1.2rem; color: var(--accent-primary);
+		margin-top: 0.1rem;
+	}
+	.entry-card__meta {
+		font-size: 0.78rem; color: var(--text-muted);
+		line-height: 1.4; margin-top: 0.3rem;
+	}
+	.entry-card code {
+		font-size: 0.72rem;
+		background: color-mix(in srgb, var(--text-muted) 15%, transparent);
+		padding: 0.05rem 0.3rem; border-radius: 3px;
+	}
+	.entry-footnote {
+		margin-top: 1rem; padding: 0.9rem 1.1rem;
+		background: color-mix(in srgb, var(--text-muted) 6%, transparent);
+		border-radius: 8px;
+		font-size: 0.88rem;
+	}
+	.entry-footnote h3 {
+		margin: 0 0 0.5rem; font-size: 0.95rem;
+		color: var(--text-primary);
+	}
+	.entry-footnote ul {
+		margin: 0; padding-left: 1.2rem; line-height: 1.55;
+		color: var(--text-secondary);
+	}
+	.entry-footnote li { margin-bottom: 0.4rem; }
+	.entry-footnote li:last-child { margin-bottom: 0; }
 
 	/* -------- Bonus Room drop tables -------- */
 	.bonus-grid {

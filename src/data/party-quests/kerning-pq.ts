@@ -140,6 +140,51 @@ export const KPQ_BONUS_ROOM_DROPS = {
 	},
 } as const;
 
+/**
+ * Entry requirements for KPQ, grounded against the Founder's Access
+ * datamine (quests.json id 10311 + items.json requiredByQuests scan).
+ *
+ * NOTABLY: KPQ needs NO ticket item. We verified this against items.json
+ * by scanning for any item with `requiredByQuests[].questId === "10311"` -
+ * zero hits. This is unlike LPQ (Ludibrium) which requires Tickets to
+ * Construction Site B1/B2/B3 at four distinct Ludibrium NPCs. KPQ's
+ * barrier is purely social (round up 4 players at Lv21+) not economic.
+ *
+ * ALSO NOTE: no prerequisite quest, no entry fee, no gate items. The
+ * `prerequisiteQuest`, `prerequisiteItems`, and `cost` fields on quest
+ * 10311 are all undefined in the datamine - the ONLY hard gate is
+ * `levelMin: 21`.
+ *
+ * The classic '4-6 party size' convention and 'max level 30' cap are
+ * NOT in the datamine - those are KPQ convention from v83 and need
+ * Founder's Access playtime to confirm the exact enforced ranges.
+ */
+export const KPQ_ENTRY_REQUIREMENTS = {
+	levelMin: 21,
+	levelMax: 30,
+	levelMaxVerified: false, // v83 convention; FA may differ
+	partySizeMin: 4,
+	partySizeMax: 6,
+	partySizeVerified: false, // v83 convention; FA may enforce exactly 6
+	items: [] as Array<{ id: number; name: string; count: number }>, // zero - datamine-verified
+	entryFeeMesos: 0,
+	prerequisiteQuest: null as string | null,
+	prerequisiteQuestName: null as string | null,
+	cooldownMinutes: 0, // no cooldown - run as many times as you want
+	entryNpc: "Lakelis",
+	entryNpcWzId: 9020000,
+	entryMapId: 10003000,
+	entryMapName: "Kerning City",
+	notes: [
+		"NO ticket item required to enter. Unlike LPQ (Ludibrium Party Quest) which requires Tickets to Construction Site B1/B2/B3 at the entry NPCs, KPQ has zero item gatekeeping - datamine-verified against items.json by scanning for items with requiredByQuests[].questId === '10311' (zero hits).",
+		"NO prerequisite quest chain. You can run KPQ as a brand-new Lv21 character the moment you hit the level requirement.",
+		"NO entry fee. Lakelis takes you in free; the only cost is the time investment per run.",
+		"NO cooldown between runs. Once your party clears King Slime and takes the Lakelis turn-in, you can immediately re-queue for another run.",
+		"The party-size minimum of 4 is v83 convention - the datamine doesn't expose the party-size gate. Classic World may enforce exactly 6, in which case solo-at-21 and duo plans don't work. Verify at Founder's Access.",
+		"The level-30 upper cap is also v83 convention. Lv31+ characters may still enter in FA, which would make 'carry' runs for underleveled friends feasible. Verify at Founder's Access.",
+	],
+} as const;
+
 export const KPQ_META = {
 	name: "Kerning Party Quest",
 	shortName: "KPQ",
@@ -191,78 +236,91 @@ export const kpqStages: KpqStage[] = [
 	{
 		slug: "stage-1-platforms",
 		number: 1,
-		title: "Stage 1: Platform Jump",
-		subtitle: "Rope up to the top, hit the ropes to open the portal.",
-		objective: "Every party member climbs to their designated platform and touches the rope. All 6 ropes must be touched to open the portal to Stage 2.",
-		timeLimit: "6 minutes.",
+		title: "Stage 1: Platform Jump + Ligator Kill",
+		subtitle: "FA map 80000000 spawns 22 Ligators. Classic v83 adds a 6-rope platform puzzle.",
+		mobs: ["Ligator"],
+		objective: "FA datamine shows 22 Lv32 Ligators static-spawned on map 80000000. Classic v83 KPQ convention adds a 6-rope platform puzzle at the top of the room - unclear whether FA preserved it. Clear the Ligators AND (if the puzzle exists) have each party member touch a rope at the top.",
+		timeLimit: "6 minutes (v83 convention; FA time limit not datamined).",
 		strategy: [
-			"Six platforms at different heights, each with a rope on top.",
-			"Assign one platform to each member - Bowmen and Mages take the highest, Warriors take mid, Thieves and Beginners take low.",
-			"Everyone climbs simultaneously and touches their rope.",
-			"Portal at the top-right opens when the 6th rope is touched.",
+			"Priority 1: AOE down the 22 Ligators (datamine-confirmed static spawn). They're Lv32 with modest HP - any party can clear them in a minute or two.",
+			"Priority 2 (v83 pattern, needs FA verification): the top of the room has 6 platforms at ascending heights with a rope on each. Each party member climbs ONE rope and touches the top. All 6 ropes touched = portal opens.",
+			"Platform assignment convention: Bowmen and Mages take the highest ropes (they have range for weirder angles), Warriors take mid, Thieves and Beginners take ground-level.",
+			"Portal spawn: top-right of the stage. One party member touches it to teleport everyone to Stage 2.",
 		],
 		gotchas: [
-			"Falling off a rope resets you to the ground - climb again.",
-			"If time runs out, the party is kicked back to Lakelis (no reward).",
+			"Falling off a rope mid-climb drops you back to the ground - just climb again.",
+			"If the time limit expires, the party is kicked back to Lakelis with no reward and no earring scroll.",
+			"The datamine captures 22 Ligators as a STATIC spawn - we don't know if the room restocks when killed. Play as if it's one wave.",
 		],
+		partyRoleTip: "Clerics should hold Heal until the Ligator pile is cleared, then save MP for Stage 4 and the boss.",
 	},
 	{
 		slug: "stage-2-cards",
 		number: 2,
-		title: "Stage 2: Match Cards",
-		subtitle: "Kill Curse Eyes and Ligators for numbered plates.",
+		title: "Stage 2: Match Cards (the puzzle stage)",
+		subtitle: "Kill mobs for numbered cards, carry one each, stand on your matching pressure plate.",
 		mobs: ["Curse Eye", "Ligator"],
-		objective: "Kill mobs to drop 4-6 numbered cards. Party members take one card each and stand on the matching pressure plate at the bottom. When the plates form a valid pattern, the portal opens.",
-		timeLimit: "6 minutes.",
+		objective: "Mobs drop numbered cards (1-6). Each party member picks up ONE card. The bottom of the stage has 6 pressure plates in a row. Each member stands on the plate matching their card number. When all plates are correctly occupied simultaneously, the portal opens.",
+		timeLimit: "6 minutes (v83 convention; FA time limit not datamined).",
 		strategy: [
-			"Curse Eyes and Ligators spawn continuously - kill them and pick up the numbered cards they drop.",
-			"Each member takes ONE card (dont hoard - each member needs one).",
-			"Six pressure plates at the bottom, each expecting a specific number.",
-			"Stand on the plate matching your card number.",
-			"When all plates are correctly occupied, the portal opens.",
+			"MOBS: Curse Eye (Lv35) and Ligator (Lv32) spawn repeatedly. Datamine shows this map (80000100) has no static mobs - the spawns are script-driven when the party enters.",
+			"CARDS: killing mobs drops numbered cards. Each card has a visible number 1-6. Only ONE card per party member - do NOT hoard, or others will go hungry.",
+			"PLATES: six pressure plates at the bottom of the room, left-to-right. Each plate is labeled 1-6. Stand on the plate matching your card.",
+			"PATTERN: when all 6 plates are occupied by members holding the matching card, the portal opens. If anyone has the wrong card or stands on the wrong plate, the pattern is INVALID and the portal stays closed.",
+			"CURSE EYE focus: Curse Eye has a self-heal skill. Burst them in 1-2 hits before the heal ticks or they'll waste your time.",
 		],
 		gotchas: [
-			"Multiple cards in one inventory can cause 'stuck' pattern - drop the extras.",
-			"Curse Eye has a heal skill - focus fire to burst them down.",
-			"If the pattern is stuck, one member should step off and reshuffle.",
+			"Holding 2+ cards at once blocks other members from picking up their card. Drop extras immediately.",
+			"If a card is dropped on the floor and nobody picks it up, the pattern can't complete. Someone has to grab it.",
+			"If the pattern looks right but the portal won't open, one member steps off a plate, waits a beat, then steps back - this re-fires the plate check.",
+			"Classic 4-member parties can shortcut: only 4 plates need to be occupied in some v83 variants. Confirm which plates are 'active' on your first run.",
 		],
+		partyRoleTip: "Party leader should call out plate assignments by card number as cards drop: '1 to me, 2 for Alex, 3 for Bri...'",
 	},
 	{
 		slug: "stage-3-barrels",
 		number: 3,
-		title: "Stage 3: The Barrels",
-		subtitle: "Jump barrel-to-barrel in the right order.",
-		objective: "A row of numbered barrels. One member at a time jumps onto their assigned barrel; the portal opens once all 6 barrels have been correctly stood on.",
-		timeLimit: "6 minutes.",
+		title: "Stage 3: Barrel Jump Sequence",
+		subtitle: "A row of hidden-number barrels. Jump on them in the correct order.",
+		objective: "A platform row of 6 barrels, each hiding a secret number (1-6). The barrels must be jumped on in numeric order 1 -> 2 -> 3 -> 4 -> 5 -> 6. Jumping out of order resets progress. Portal opens when barrel 6 is correctly hit.",
+		timeLimit: "6 minutes (v83 convention; FA time limit not datamined).",
 		strategy: [
-			"Barrels have hidden numbers - the leader assigns each member a barrel by position.",
-			"One member at a time jumps up - if you go out of order, the sequence resets.",
-			"Once all 6 correct barrels are hit in order, the portal opens.",
+			"The numbers on the barrels are hidden until a player jumps up and reveals one. Then everyone can see which barrel is which.",
+			"Standard v83 flow: one 'scout' member jumps on each barrel in sequence to reveal the numbers. The rest of the party watches and memorizes.",
+			"Once numbers are revealed, barrels must be touched 1 through 6 in order. Any party member can touch, but you can't skip.",
+			"Jumping on an out-of-order barrel RESETS the sequence back to 1. Don't rush.",
+			"Barrel positions are randomized each run - the barrel in slot 1 isn't always numbered '1'. Scout first, then execute.",
 		],
 		gotchas: [
-			"Jumping on the wrong barrel resets progress - communicate order first.",
-			"Beginners have the weakest jumps - assign them the ground-level barrels.",
+			"Beginners have the shortest jump height - they struggle to reach barrels on higher platforms. Assign them the ground-level barrel reveals.",
+			"If two members jump on different barrels simultaneously, you can corrupt the sequence tracker. Go one at a time.",
+			"The datamine does not expose barrel reactors (no reactor data in maps.json for 80000200). All barrel mechanics are inferred from v83 KPQ - FA may have reworked the puzzle entirely.",
 		],
+		partyRoleTip: "Assign one 'scout' to reveal barrels and one 'executor' to touch them in order. Rest of party stays off the barrels.",
 	},
 	{
 		slug: "stage-4-coins",
 		number: 4,
 		title: "Stage 4: Get Coin, Insert Coin",
-		subtitle: "Kill Wraiths and Bubblings for coins, feed the slots.",
+		subtitle: "Kill mobs for coins, drop one coin into each of 6 numbered slots.",
 		mobs: ["Wraith", "Jr. Wraith", "Bubbling"],
-		objective: "Kill mobs to collect coins. Each party member inserts their coin into a numbered slot. Portal opens when all 6 slots are fed.",
-		timeLimit: "6 minutes.",
+		objective: "Mobs drop coins when killed. Each party member picks up ONE coin, walks to a numbered insertion slot, and drops the coin in. All 6 slots must be fed before the portal to the Bonus Room opens.",
+		timeLimit: "6 minutes (v83 convention; FA time limit not datamined).",
 		strategy: [
-			"Wraiths spawn constantly - they drop the coins.",
-			"Each member picks up ONE coin then walks to a slot.",
-			"Insert the coin at the slot - youll get a chat confirmation.",
-			"Once all 6 slots are fed, the portal to the Bonus Room opens.",
+			"MOBS (v83 pattern): Wraith (ghost-type, hits hard), Jr. Wraith (smaller faster version), Bubbling (slime-type, ranged attack). FA datamine shows 0 static spawns on map 80000300 - spawns are script-driven.",
+			"COINS: killing a mob has a chance to drop one coin. One coin per party member needed - 6 coins total for a 6-party.",
+			"SLOTS: there are 6 numbered insertion slots arranged in the stage. Walk to a slot, interact with it, drop a coin in.",
+			"PORTAL: once all 6 slots have a coin, the portal to the Bonus Room opens.",
+			"4-member variant: in some v83 configurations, only 4 coins are needed for a 4-party. Confirm on first run.",
 		],
 		gotchas: [
-			"Wraiths are aggressive and hit hard - keep HP topped up.",
-			"Jr. Wraith is faster/weaker - dont waste MP on Wraiths if Jr. Wraiths spawn near you.",
-			"Bubblings are ranged and can hit through walls - watch for them behind platforms.",
+			"Wraiths are aggressive and hit hard at Lv21-25. Clerics should keep Heal up throughout.",
+			"Jr. Wraiths are faster but weaker - don't waste Magic Claw / Lucky Seven on them if a full Wraith is also in range.",
+			"Bubblings are ranged and can hit through platforms - watch for them in the back of the room.",
+			"If someone picks up a 2nd coin by accident, DROP it immediately. Hoarding coins blocks other members from feeding their slot.",
+			"Mob roster conflict: existing docs list Wraith / Jr. Wraith / Bubbling but FA's map 80000300 is empty of static mobs. Treat the mob list as v83 convention until FA playtime verifies.",
 		],
+		partyRoleTip: "Leader assigns a slot to each member before mobs spawn: 'Alex gets slot 1, Bri slot 2...'",
 	},
 	{
 		slug: "bonus-room",
