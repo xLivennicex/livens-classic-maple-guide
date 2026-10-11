@@ -641,6 +641,67 @@ export const sources: ArchivedSource[] = [
 			"The resource is one person's opinion, not datamine-verified; use it as a starting point for comparison, not as authority",
 		],
 	},
+	{
+		slug: "msclassic-wiki-elemental-125x",
+		title: "Elemental Damage has been changed to 1.25x",
+		publisher: "Lunitidal (msclassic.wiki moderator)",
+		publishedOn: "January 27, 2026",
+		sourceType: "community-reported",
+		topics: ["Elemental damage", "Mage mechanics", "CoT 2 playtest"],
+		originalUrl:
+			"https://msclassic.wiki/forums/general-discussion/elemental-damage-has-been-changed-to-125x-tqhroi",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"Playtest-math-verified confirmation from msclassic.wiki moderator Lunitidal that Classic World rebalanced the elemental damage multiplier from v83's 1.5x down to 1.25x during Closed Online Test 2. Observed via direct damage testing against fire-weak Ligators and ice-weak content. The reduction is the single most impactful mage-balance change in CoT 2: elemental weapon choice still matters but with ~17% less weight than v83 convention assumed.",
+		confirmedFacts: [
+			"Elemental damage multiplier in Classic World is 1.25x, not v83's 1.5x",
+			"Change confirmed via direct playtest math against fire-weak Ligators",
+			"Mage weapon picks shift toward 'high raw MATK' over 'match element at any cost'",
+			"Change was present in Closed Online Test 2 (Jan 2026) and carried into Founder's Access",
+		],
+	},
+	{
+		slug: "msclassic-wiki-victoria-leveling",
+		title: "Leveling routes with just Victoria",
+		publisher: "msclassic.wiki community (Tsukino, Lunitidal, Xeta, Dyno)",
+		publishedOn: "January 14 - February 4, 2026",
+		sourceType: "community-reported",
+		topics: ["Training routes", "Forgotten Hollow", "Party XP", "CoT 2 playtest"],
+		originalUrl:
+			"https://msclassic.wiki/forums/general-discussion/leveling-routes-with-just-victoria-z825hp",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"Multi-user thread on msclassic.wiki laying out training routes for Classic World's Founder's Access when only Victoria Island + Forgotten Hollow are accessible. Confirmed observations: Forgotten Hollow fills the L30-50 content gap that v83 Victoria-only runs famously struggle with (Curse Eye territory starts ~Lv 35, deeper golem maps ~Lv 50); Classic World's party XP buff ranges from +35% to +170% depending on composition. Thread participants include WIKI mod Lunitidal and tester Tsukino.",
+		confirmedFacts: [
+			"Forgotten Hollow starts around Lv 35 (Curse Eye maps) and extends to Lv 50 (deeper golem maps) in CoT 2",
+			"Party XP buff in Classic World is +35% to +170% depending on composition",
+			"Lv 1-50 took approximately 82.5 hours over 9 days in closed beta on I/L mage (chaomoonx, r/Maplestory)",
+			"Henesys Hunting Ground 1-2 is traditional Lv 10-15 but becomes a 'war zone' at launch due to competition; interior Victoria maps are quieter alternatives",
+			"Victoria-Island-only training works through Lv 50 thanks to Forgotten Hollow addition; v83's problematic 30-50 gap is addressed",
+		],
+	},
+	{
+		slug: "reddit-everything-changed-cot2",
+		title: "Everything that has changed for Classic World 2nd playtest",
+		publisher: "r/Maplestory community",
+		publishedOn: "October 2025",
+		sourceType: "community-reported",
+		topics: ["CoT 2 changes", "HP wash", "Earring crit damage", "Game mechanics"],
+		originalUrl:
+			"https://www.reddit.com/r/Maplestory/comments/1qhgi8x/",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"r/Maplestory community compilation of changes between CoT 1 and CoT 2 for Classic World. The two mechanical changes with biggest gear-progression implications: HP washing was removed entirely (Bishops/Night Lords/Buccaneers can no longer trade MP into HP), and earrings gained a new crit-damage stat line (not present in v83). Earring farming becomes a damage upgrade path rather than just a stat stick.",
+		confirmedFacts: [
+			"HP washing mechanic is removed from Classic World (confirmed in 2nd playtest)",
+			"Earring items can now roll a crit-damage stat line (new in CoT 2, not present in v83 GMS)",
+			"Players should invest mesos into gear scrolling, not into AP wash potions",
+			"Earring scrolling priority shifted upward due to new damage line",
+		],
+	},
 ];
 
 // Convenience accessor so pages can reference sources by slug without
