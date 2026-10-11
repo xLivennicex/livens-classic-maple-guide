@@ -266,6 +266,120 @@ export const sources: ArchivedSource[] = [
 		],
 	},
 
+	// Nexon Founder's Mystery Fashion Crate rates - the primary source
+	// for per-item drop percentages. Nexon publishes the complete 50-row
+	// weighted pool as a dedicated "RATES" post, separate from the sale
+	// announcement. The outfit groupings on the sale page don't carry
+	// percentages; those live here.
+	{
+		slug: "nexon-founders-fashion-crate-rates",
+		title: "Founder's Mystery Fashion Crate Rates",
+		publisher: "NEXON",
+		publishedOn: "October 5, 2026",
+		sourceType: "official-announcement",
+		topics: [
+			"Cash Shop",
+			"Mystery Fashion Crate",
+			"Drop Rates",
+			"Founder's Access",
+		],
+		originalUrl:
+			"https://www.nexon.com/maplestory/general-post/45538",
+		archiveUrl:
+			"https://web.archive.org/web/2026*/https://www.nexon.com/maplestory/general-post/45538",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"The authoritative per-item drop-rate table for the Founder's Mystery Fashion Crate. All 50 items listed with their nominal percentages (16 at 1.00%, 4 at 2.00%, 28 at 2.50%, 2 at 3.00%). Nexon's rounding disclaimer notes that displayed values may not sum to exactly 100%.",
+		confirmedFacts: [
+			"The Founder's Mystery Fashion Crate reward pool contains 50 items",
+			"Nexon's published rate histogram: 16 x 1.00%, 4 x 2.00%, 28 x 2.50%, 2 x 3.00%",
+			"Nominal rate sum = 100.00%; Nexon disclaims rounding",
+			"Patissier Hat and Patissier Uniform share the highest per-item rate at 3.00% each",
+			"The 1.00% tier is the 'rare' bucket (16 items), containing Angel Halo, Toga, Baby Angel Wings, Angel Wand, Cherub's Bow, Orange Toy Hammer, Black Sunglasses, Dollish Pink, Bunny Ears, Bunny Earmuffs, Orange Mushroom Balloon, Slime T-Shirt, Slime Slippers, Slime Earrings, Yellow Spatula, White Label Ring",
+			"Weapon-cover equips (any weapon): Angel Wand, Orange Toy Hammer, Yellow Spatula",
+			"Weapon-cover equip (bows only): Cherub's Bow",
+			"Nexon does NOT label items with common/rare/epic tiers; the pool is a flat weighted list",
+		],
+	},
+
+	// Nexon Aurora Mystery Fashion Crate rates - sibling crate purchased
+	// with Aurora Stamps (which are earned from duping Founder's crates).
+	// Smaller pool (26 items) and flatter distribution than Founder's.
+	// Note: Nexon's sale page has a broken link that routes to the
+	// Dyeable Items list (45821) instead of this rates page.
+	{
+		slug: "nexon-aurora-fashion-crate-rates",
+		title: "Aurora Mystery Fashion Crate Rates",
+		publisher: "NEXON",
+		publishedOn: "October 5, 2026",
+		sourceType: "official-announcement",
+		topics: [
+			"Cash Shop",
+			"Mystery Fashion Crate",
+			"Drop Rates",
+			"Aurora Stamps",
+		],
+		originalUrl:
+			"https://www.nexon.com/maplestory/general-post/45659",
+		archiveUrl:
+			"https://web.archive.org/web/2026*/https://www.nexon.com/maplestory/general-post/45659",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"The per-item drop-rate table for the Aurora Mystery Fashion Crate - purchased with Aurora Stamps rather than NX directly. 26-item pool with a markedly flatter distribution than Founder's (rarest 1.50%, commonest 5.75%). Includes the Ink-and-Wash rings, Starlight/Chocolate scepters, and Black Cat Beanie that meso.watch highlights as live Windia crate pulls.",
+		confirmedFacts: [
+			"The Aurora Mystery Fashion Crate reward pool contains 26 items",
+			"Price: 20 Aurora Stamps for 1, 200 Aurora Stamps for 10",
+			"Nexon's published rate histogram: 2 x 1.50%, 5 x 2.00%, 4 x 2.50%, 2 x 4.50%, 9 x 5.00%, 4 x 5.75%",
+			"Nominal rate sum = 100.00%",
+			"Four Ink-and-Wash and Chocolate ring variants share the highest rate at 5.75% each",
+			"The 1.50% rarest tier: White Choco Bunny, Soft Chocolate Fondue Scepter",
+			"Sale window: October 6, 2026 (EoM UTC) through January 13, 2027 at 7:59 AM UTC - matches the Aurora Stamp Shop Season 1 window",
+			"Weapon-cover equips (any weapon): Soft Chocolate Fondue Scepter, Starlight Heart Scepter, Detective Glass",
+		],
+	},
+
+	// Nexon cash-shop sale announcement for the Founder's Access window.
+	// Houses the mechanics that aren't on the dedicated rate pages:
+	// pricing (NX cost per crate and 11-pack), sale window, 7-day item
+	// duration, the dupe -> Aurora Stamp conversion that creates the
+	// crate economy loop, region blocks, and gifting restrictions.
+	{
+		slug: "nexon-founders-access-cash-shop-sale",
+		title: "Founder's Access Cash Shop Sale",
+		publisher: "NEXON",
+		publishedOn: "October 5, 2026",
+		sourceType: "official-announcement",
+		topics: [
+			"Cash Shop",
+			"Mystery Fashion Crate",
+			"Aurora Stamps",
+			"Region Restrictions",
+			"Founder's Access",
+		],
+		originalUrl:
+			"https://www.nexon.com/maplestory/news/sale/45819",
+		archiveUrl:
+			"https://web.archive.org/web/2026*/https://www.nexon.com/maplestory/news/sale/45819",
+		checkedOn: "2026-10-11",
+		status: "current",
+		summary:
+			"The umbrella sale post covering the Founder's Access cash shop lineup. Documents the Founder's Mystery Fashion Crate pricing (3,500 NX for 1 / 35,000 NX for 11), 7-day duration on obtained equips, the dupe-to-Aurora-Stamp conversion mechanic, region-specific restrictions (BE/SK/BR cannot purchase; NL purchases are account-bound), gifting requirements (recipient must be Lv. 12+), and sale window.",
+		confirmedFacts: [
+			"Founder's Mystery Fashion Crate price: 3,500 NX for 1, 35,000 NX for 11 (buy-10-get-1-free)",
+			"Founder's Mystery Fashion Crate sale window: October 6, 2026 (end of maintenance, UTC) through October 28, 2026 at 7:59 AM UTC",
+			"Items pulled from the crate expire 7 days after being pulled",
+			"Right-click an unwanted reward BEFORE equipping to convert it into 1 Aurora Stamp",
+			"The dupe-to-Aurora-Stamp conversion is the only pity-equivalent mechanic; there is no 'guaranteed epic in N crates' system",
+			"Aurora Stamp Shop Season 1 window: October 6, 2026 (EoM UTC) through January 13, 2027 at 7:59 AM UTC",
+			"Belgium, Slovakia, and Brazil cannot purchase Mystery items at all",
+			"Netherlands can purchase but Mystery items become account-bound",
+			"Gifting any Cash Shop item requires the recipient to be Lv. 12+",
+			"The crate is a direct NX cash-shop purchase; it is NOT bundled with any Founder's Pack tier",
+		],
+	},
+
 	// Nexon COT1 release notes - the earlier test window that first
 	// introduced Crafting as a Classic World system. Distinct from the
 	// COT2 release notes; some systems (like Crafting Catalysts) got

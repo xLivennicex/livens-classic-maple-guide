@@ -979,6 +979,20 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 	margin: 1rem 0 1.25rem;
 	border-collapse: collapse;
 	font-size: 0.92rem;
+
+	/* Scroll-shadow affordance (Lea Verou technique).
+	 * The two linear-gradients are `background-attachment: local` so they
+	 * stay stuck to the scroll content and disappear at each edge of the
+	 * scroll range. The two radial-gradients are `background-attachment:
+	 * scroll` so they stay anchored to the visible viewport and only show
+	 * when there's hidden content in that direction. Zero markup change,
+	 * works everywhere `overflow: auto` works. */
+	background:
+		linear-gradient(90deg, var(--bg-cloud) 30%, transparent) 0 0 / 20px 100% no-repeat,
+		linear-gradient(270deg, var(--bg-cloud) 30%, transparent) 100% 0 / 20px 100% no-repeat,
+		radial-gradient(ellipse farthest-side at 0 50%, rgba(0, 0, 0, 0.18), transparent) 0 0 / 14px 100% no-repeat,
+		radial-gradient(ellipse farthest-side at 100% 50%, rgba(0, 0, 0, 0.18), transparent) 100% 0 / 14px 100% no-repeat;
+	background-attachment: local, local, scroll, scroll;
 }
 
 .markdown-content thead {
@@ -992,6 +1006,18 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 	font-weight: bold;
 	border: 1px solid var(--border-card-strong);
 	white-space: nowrap;
+}
+
+/* Narrow viewports: let headers wrap. 'nowrap' is fine on desktop
+ * where column widths are generous, but it's the main driver of
+ * horizontal overflow on 390px mobile. */
+@media (max-width: 520px) {
+	.markdown-content th {
+		white-space: normal;
+	}
+	.markdown-content td {
+		word-break: break-word;
+	}
 }
 
 .markdown-content td {

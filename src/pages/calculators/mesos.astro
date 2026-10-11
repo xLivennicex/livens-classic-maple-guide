@@ -186,6 +186,26 @@ const mobsJson = JSON.stringify(grindMobs);
 				<p><strong>Session total</strong> = Net/hr * (SessionMin / 60)</p>
 				<p><strong>Hours to goal</strong> = Goal / Net/hr (returns infinity if net/hr <= 0 - i.e. pots cost more than you earn)</p>
 			</details>
+
+			<aside class="calc-cross-link">
+				<h2 class="calc-cross-link__h">Live Free Market prices (external)</h2>
+				<p>
+					This calculator estimates <em>farmed</em> meso income. For how
+					much other players are actually <em>paying for items</em> on the
+					Free Market right now, check
+					<a href="https://meso.watch" rel="noopener">meso.watch</a> -
+					a Classic World-specific price tracker that OCRs player shops
+					from public Twitch VODs. Typical sale price, last-3-sales
+					average, and per-shop sightings per item, updated continuously.
+					Pair it with this calculator to decide "farm or buy?" for any
+					big-ticket goal.
+				</p>
+				<p class="calc-cross-link__also">
+					Chasing a <a href="/fashion-crate">Fashion Crate cosmetic</a>
+					instead of a stat upgrade? The dedicated guide covers Nexon's
+					published drop rates and the dupe-to-Aurora-Stamp economy.
+				</p>
+			</aside>
 		</section>
 	</div>
 
@@ -390,4 +410,22 @@ document.addEventListener("astro:page-load", () => {
 		cursor: pointer; font-weight: 600; color: var(--text-primary);
 	}
 	.calc-details p { margin: 0.4rem 0; }
+
+	.calc-cross-link {
+		margin-top: 1.5rem;
+		padding: 0.9rem 1.1rem;
+		background: color-mix(in srgb, var(--accent-primary) 6%, var(--bg-cloud));
+		border: 1px solid var(--border-card);
+		border-left: 4px solid var(--accent-primary);
+		border-radius: 0.5rem;
+		font-size: 0.92rem;
+		line-height: 1.55;
+	}
+	.calc-cross-link__h {
+		margin: 0 0 0.5rem;
+		font-size: 1rem;
+		color: var(--text-heading);
+	}
+	.calc-cross-link p { margin: 0 0 0.6rem; }
+	.calc-cross-link__also { font-size: 0.88rem; color: var(--text-body); }
 </style>

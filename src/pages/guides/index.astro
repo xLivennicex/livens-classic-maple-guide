@@ -18,7 +18,14 @@ interface GuideCard {
 	title: string;
 	href: string;
 	blurb: string;
-	category: "reference" | "orientation" | "economy" | "cot2-diff" | "class-choice" | "planned";
+	category:
+		| "reference"
+		| "orientation"
+		| "economy"
+		| "cash-shop"
+		| "cot2-diff"
+		| "class-choice"
+		| "planned";
 	badge?: string;
 }
 
@@ -49,6 +56,13 @@ const GUIDES: GuideCard[] = [
 		href: "/guides/meso-saving",
 		blurb: "Where your first million goes and where it shouldn't. Potion overspending, gear rebuying, scroll gambling - the three sinks that keep new players broke.",
 		category: "economy",
+	},
+	{
+		title: "Founder's Mystery Fashion Crate: Rates & Pool",
+		href: "/fashion-crate",
+		blurb: "The full 50-item reward pool with Nexon's published drop rates, the Aurora Stamp dupe-to-pity economy, region restrictions, and the honest math on 'is it worth it'. Primary-sourced; cross-linked to meso.watch for live free-market pricing.",
+		category: "cash-shop",
+		badge: "NEW - Oct 11",
 	},
 	{
 		title: "Items You Should Never Sell",
@@ -128,11 +142,13 @@ const GUIDES: GuideCard[] = [
 // reference guides, then anything in "planned".
 const cot2Diff = GUIDES.filter((g) => g.category === "cot2-diff");
 const classChoice = GUIDES.filter((g) => g.category === "class-choice");
+const cashShop = GUIDES.filter((g) => g.category === "cash-shop");
 const otherShipped = GUIDES.filter(
 	(g) =>
 		g.category !== "planned" &&
 		g.category !== "cot2-diff" &&
-		g.category !== "class-choice",
+		g.category !== "class-choice" &&
+		g.category !== "cash-shop",
 );
 const planned = GUIDES.filter((g) => g.category === "planned");
 ---
@@ -198,6 +214,31 @@ const planned = GUIDES.filter((g) => g.category === "planned");
 				</a>
 			))}
 		</div>
+
+		{cashShop.length > 0 && (
+			<>
+				<h2 class="grid-heading grid-heading--cash-shop">
+					Cash Shop deep-dives
+					<span class="grid-heading__lede">
+						Nexon's rate-disclosed gacha and the economy loops around
+						it. Primary-sourced from Nexon rate pages, cross-linked
+						to meso.watch for live free-market pricing.
+					</span>
+				</h2>
+				<div class="cards">
+					{cashShop.map((g) => (
+						<a class={`card card--${g.category}`} href={g.href}>
+							<div class="card__head">
+								<h3>{g.title}</h3>
+								{g.badge && <span class="card__badge">{g.badge}</span>}
+							</div>
+							<p class="card__blurb">{g.blurb}</p>
+							<span class="card__cta">Read the guide -&gt;</span>
+						</a>
+					))}
+				</div>
+			</>
+		)}
 
 		<h2 class="grid-heading">Beginner reference &amp; orientation</h2>
 		<div class="cards">
