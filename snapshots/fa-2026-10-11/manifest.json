@@ -1,0 +1,40 @@
+{
+  "label": "fa-2026-10-11",
+  "capturedAt": "2026-10-11T15:07:01.837Z",
+  "source": "https://osmsdataexplorer.com/data/current",
+  "totalBytes": 1658058,
+  "files": [
+    {
+      "name": "items.json",
+      "bytes": 510712,
+      "sha256": "988a5f992fcc25e96a5c4392ee728c76d2058c8f660c1c862ca786464bf5561d"
+    },
+    {
+      "name": "quests.json",
+      "bytes": 481186,
+      "sha256": "48a0275c30e110343c6a7e06b6530a3428b37e21ccb2ac3aa03d31c5a424cc57"
+    },
+    {
+      "name": "crafting.json",
+      "bytes": 93645,
+      "sha256": "0323c51a7bbb18138856dbb1077de835f2005113af1bc79cd99dbba362804ac1"
+    },
+    {
+      "name": "lookups.json",
+      "bytes": 223222,
+      "sha256": "5c05e0805dd5606a52c89c34ea86a438e758da9090efa296bcff06eabc2876a4"
+    },
+    {
+      "name": "maps.json",
+      "bytes": 349293,
+      "sha256": "95b1ea7539d67af1201fceeb3c1572d1168480dabd934b7cd5ed69688b52e988"
+    }
+  ],
+  "notes": [
+    "Captured before 2026-10-21 Grand Launch which may rebalance or",
+    "clobber the Founder's Access datamine. If upstream drifts, you",
+    "can rebuild from this snapshot by pointing build-database.mjs's",
+    "BASE constant at the local snapshot folder (requires a minor",
+    "fetch -> readFile shim; see FUTURE WORK in snapshot-datamine.mjs)."
+  ]
+}
