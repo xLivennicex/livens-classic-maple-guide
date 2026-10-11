@@ -1,0 +1,384 @@
+---
+/**
+ * <MesoWatchHotItems> — hand-curated homepage card featuring items
+ * worth watching on the Free Market, with each row cross-linking to
+ * meso.watch for live typical-price, last-3-sales, and shop sightings.
+ *
+ * This is a HAND-CURATED list, not a scrape. meso.watch's ToS
+ * (https://meso.watch/terms, §2) explicitly prohibits automated
+ * ingestion of their price data, but §1 permits "quoting a small
+ * number of prices with a visible credit and link to meso.watch" —
+ * which is exactly this card's shape. To update:
+ *
+ *   1. Edit the HOT_ITEMS array below (keep to <= 12 entries).
+ *   2. Update `lastReviewed` to today's date.
+ *   3. Commit. No scraping, no automated refresh.
+ *
+ * Items are chosen by the author based on in-game observation of
+ * what's trading at non-trivial prices during the Founder's Access
+ * window. Mix of crate rares (Founder's + Aurora) and classic
+ * endgame items (Zakum Helmet) so the card has range.
+ *
+ * Sprite source: our items DB (WZ IDs verified). Fallback to the
+ * placeholder-item.svg if the CDN 404s.
+ *
+ * Attribution: footer links to meso.watch with explicit "data by"
+ * credit per their ToS §1 requirement. Each item link opens
+ * meso.watch in a new tab (not an in-page iframe) so the user is
+ * clearly on their site when they land.
+ */
+
+import Sprite from "./Sprite.astro";
+import { itemIconSrcs } from "../lib/maplestory-cdn";
+
+type HotItemCategory =
+	| "founders-rare"
+	| "aurora-rare"
+	| "crate-common"
+	| "endgame"
+	| "event-drop";
+
+interface HotItem {
+	wzId: number;
+	name: string;
+	category: HotItemCategory;
+	why: string;
+}
+
+// Curated 2026-10-11 by @liven. Mix of crate chases + evergreen
+// endgame items. Order = editorial priority (first = most hyped).
+const HOT_ITEMS: HotItem[] = [
+	{
+		wzId: 1007077,
+		name: "Angel Halo",
+		category: "founders-rare",
+		why: "Founder's crate 1% rare. Half of the Angel outfit meta.",
+	},
+	{
+		wzId: 1107011,
+		name: "Baby Angel Wings",
+		category: "founders-rare",
+		why: "Founder's crate 1% cape rare. Pairs with Angel Halo + Toga.",
+	},
+	{
+		wzId: 1057020,
+		name: "Toga",
+		category: "founders-rare",
+		why: "Founder's crate 1% overall. Completes the Angel look.",
+	},
+	{
+		wzId: 1702048,
+		name: "Soft Chocolate Fondue Scepter",
+		category: "aurora-rare",
+		why: "Aurora crate rarest tier (1.50%). Weapon-cover any class.",
+	},
+	{
+		wzId: 1702046,
+		name: "Starlight Heart Scepter",
+		category: "aurora-rare",
+		why: "Aurora 2% rare. Universal weapon cover, limited supply.",
+	},
+	{
+		wzId: 1112223,
+		name: "Ink-and-Wash Painting Name Tag Ring",
+		category: "aurora-rare",
+		why: "Headline Aurora chase. Highest observed shop sightings.",
+	},
+	{
+		wzId: 1007145,
+		name: "Black Cat Beanie",
+		category: "crate-common",
+		why: "Aurora 5% common. High-volume listings, stable prices.",
+	},
+	{
+		wzId: 1007144,
+		name: "White Choco Bunny",
+		category: "aurora-rare",
+		why: "Aurora 1.50% rarest tier. Thin supply at FA cap.",
+	},
+	{
+		wzId: 1702004,
+		name: "Angel Wand",
+		category: "founders-rare",
+		why: "Founder's 1% weapon-cover any class. Completes Angel kit.",
+	},
+	{
+		wzId: 1702012,
+		name: "Yellow Spatula",
+		category: "founders-rare",
+		why: "Founder's 1% weapon-cover meme. Niche but trades.",
+	},
+	{
+		wzId: 1002180,
+		name: "Zakum Helmet",
+		category: "endgame",
+		why: "Classic Lv 50+ helm. Already trading as pre-launch flex.",
+	},
+	{
+		wzId: 4031065,
+		name: "Scroll of Secrets",
+		category: "event-drop",
+		why: "GM-event drop. Thin supply, hoarded by scrollers.",
+	},
+];
+
+const CATEGORY_LABELS: Record<HotItemCategory, string> = {
+	"founders-rare": "Founder's rare",
+	"aurora-rare": "Aurora rare",
+	"crate-common": "Crate common",
+	endgame: "Endgame",
+	"event-drop": "GM event",
+};
+
+// Last date a human eyeballed this list and decided it still makes
+// sense. Shown in the footer so readers know how fresh the editorial
+// pick is. Prices themselves are live-at-click (meso.watch), not
+// baked into this file.
+const lastReviewed = "October 11, 2026";
+
+// meso.watch URL. We link to the homepage per their ToS §1 ("share
+// a link to the site"). We do NOT construct speculative per-item
+// deep-links because we haven't been granted (or even inspected)
+// their URL scheme. Users land on the homepage and search by name.
+const MESO_WATCH_URL = "https://meso.watch";
+---
+
+<section class="section meso-watch-section" aria-labelledby="meso-watch-heading">
+	<div class="section-heading">
+		<div>
+			<span class="eyebrow">Live Free Market</span>
+			<h2 id="meso-watch-heading">Hot items worth watching</h2>
+		</div>
+		<p class="meso-watch-lede">
+			Hand-picked items trading at interesting prices on the Free
+			Market right now. Click any to search for the item on
+			<a href={MESO_WATCH_URL} rel="noopener" target="_blank">meso.watch</a>,
+			which tracks typical sale price, last-3-sales average, and
+			shop sightings via public Twitch VOD footage.
+		</p>
+	</div>
+
+	<ul class="meso-watch-grid">
+		{HOT_ITEMS.map((item) => (
+			<li class="meso-watch-card">
+				<a
+					class="meso-watch-card__link"
+					href={MESO_WATCH_URL}
+					rel="noopener"
+					target="_blank"
+					aria-label={`Search ${item.name} on meso.watch (opens in new tab)`}
+				>
+					<div class="meso-watch-card__sprite">
+						<Sprite
+							srcs={itemIconSrcs(item.wzId)}
+							alt=""
+							placeholder="/images/placeholders/placeholder-item.svg"
+							loading="lazy"
+						/>
+					</div>
+					<div class="meso-watch-card__body">
+						<div class="meso-watch-card__head">
+							<span class={`meso-watch-card__cat meso-watch-card__cat--${item.category}`}>
+								{CATEGORY_LABELS[item.category]}
+							</span>
+							<h3 class="meso-watch-card__name">{item.name}</h3>
+						</div>
+						<p class="meso-watch-card__why">{item.why}</p>
+						<span class="meso-watch-card__cta">
+							Check price on meso.watch
+							<svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12">
+								<path d="M3 2h7v7M10 2L2 10" fill="none" stroke="currentColor" stroke-width="1.5" />
+							</svg>
+						</span>
+					</div>
+				</a>
+				<a
+					class="meso-watch-card__item-link"
+					href={`/items/${item.wzId}`}
+					aria-label={`${item.name} datamine stats and drop sources on this site`}
+				>
+					Stats & sources →
+				</a>
+			</li>
+		))}
+	</ul>
+
+	<footer class="meso-watch-footer">
+		<p>
+			<strong>Data:</strong>
+			<a href={MESO_WATCH_URL} rel="noopener" target="_blank">meso.watch</a>
+			(Twitch-VOD-OCR'd player shops).
+			<strong>Picks:</strong> hand-curated by Liven, last reviewed{" "}
+			<time datetime="2026-10-11">{lastReviewed}</time>.
+			Not an exhaustive list; see
+			<a href={MESO_WATCH_URL} rel="noopener" target="_blank">meso.watch</a>
+			for the full catalog and all live prices.
+		</p>
+	</footer>
+</section>
+
+<style>
+	.meso-watch-section {
+		margin-top: 2.5rem;
+	}
+	.meso-watch-lede {
+		max-width: 56ch;
+		font-size: 0.95rem;
+		color: var(--text-body);
+		line-height: 1.55;
+		margin: 0;
+	}
+	.meso-watch-lede a {
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+
+	.meso-watch-grid {
+		list-style: none;
+		margin: 1.5rem 0 1rem;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 0.9rem;
+	}
+
+	.meso-watch-card {
+		position: relative;
+		background: var(--bg-cloud);
+		border: 1px solid var(--border-card);
+		border-radius: 0.6rem;
+		overflow: hidden;
+		transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+	}
+	.meso-watch-card:hover,
+	.meso-watch-card:focus-within {
+		transform: translateY(-2px);
+		border-color: var(--accent-primary);
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	}
+
+	.meso-watch-card__link {
+		display: flex;
+		gap: 0.85rem;
+		padding: 0.85rem 0.95rem 0.6rem;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.meso-watch-card__sprite {
+		flex-shrink: 0;
+		width: 48px;
+		height: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: color-mix(in srgb, var(--accent-primary) 7%, transparent);
+		border-radius: 0.4rem;
+		padding: 4px;
+	}
+	/* `:global()` needed because <Sprite> emits an <img> without
+	 * Astro's scoped data-attr, so the scoped selector misses.
+	 * Keeps `pixelated` for crisp upscaling of small sprite assets. */
+	.meso-watch-card__sprite :global(img) {
+		max-width: 100%;
+		max-height: 100%;
+		image-rendering: pixelated;
+	}
+
+	.meso-watch-card__body {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+	.meso-watch-card__head {
+		margin-bottom: 0.3rem;
+	}
+	.meso-watch-card__cat {
+		display: inline-block;
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.1rem 0.45rem;
+		border-radius: 999px;
+		margin-bottom: 0.25rem;
+	}
+	.meso-watch-card__cat--founders-rare {
+		background: color-mix(in srgb, #d4a017 20%, var(--bg-cloud));
+		color: #8a5f00;
+	}
+	.meso-watch-card__cat--aurora-rare {
+		background: color-mix(in srgb, #a855f7 15%, var(--bg-cloud));
+		color: #6b2fb3;
+	}
+	.meso-watch-card__cat--crate-common {
+		background: color-mix(in srgb, var(--text-muted) 15%, var(--bg-cloud));
+		color: var(--text-muted);
+	}
+	.meso-watch-card__cat--endgame {
+		background: color-mix(in srgb, #dc2626 15%, var(--bg-cloud));
+		color: #991b1b;
+	}
+	.meso-watch-card__cat--event-drop {
+		background: color-mix(in srgb, #16a34a 15%, var(--bg-cloud));
+		color: #0f7a35;
+	}
+	.meso-watch-card__name {
+		margin: 0.1rem 0 0;
+		font-size: 0.98rem;
+		font-weight: 700;
+		color: var(--text-heading);
+		line-height: 1.3;
+	}
+	.meso-watch-card__why {
+		margin: 0.35rem 0 0.5rem;
+		font-size: 0.82rem;
+		line-height: 1.45;
+		color: var(--text-body);
+	}
+	.meso-watch-card__cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--accent-primary);
+	}
+	.meso-watch-card__cta svg {
+		opacity: 0.75;
+	}
+
+	.meso-watch-card__item-link {
+		display: block;
+		padding: 0.4rem 0.95rem 0.55rem;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+		text-decoration: none;
+		border-top: 1px solid var(--border-card);
+		background: color-mix(in srgb, var(--text-muted) 3%, transparent);
+	}
+	.meso-watch-card__item-link:hover,
+	.meso-watch-card__item-link:focus-visible {
+		color: var(--accent-primary);
+		background: color-mix(in srgb, var(--accent-primary) 7%, transparent);
+	}
+
+	.meso-watch-footer {
+		margin-top: 1rem;
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		line-height: 1.55;
+	}
+	.meso-watch-footer p {
+		margin: 0;
+	}
+	.meso-watch-footer a {
+		color: var(--accent-primary);
+		font-weight: 600;
+	}
+
+	@media (max-width: 520px) {
+		.meso-watch-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

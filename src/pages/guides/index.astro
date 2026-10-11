@@ -23,6 +23,7 @@ interface GuideCard {
 		| "orientation"
 		| "economy"
 		| "cash-shop"
+		| "post-30"
 		| "cot2-diff"
 		| "class-choice"
 		| "planned";
@@ -62,6 +63,13 @@ const GUIDES: GuideCard[] = [
 		href: "/fashion-crate",
 		blurb: "The full 50-item reward pool with Nexon's published drop rates, the Aurora Stamp dupe-to-pity economy, region restrictions, and the honest math on 'is it worth it'. Primary-sourced; cross-linked to meso.watch for live free-market pricing.",
 		category: "cash-shop",
+		badge: "NEW - Oct 11",
+	},
+	{
+		title: "Bosses at 30+: FA Progression Ladder",
+		href: "/bosses-at-30-plus",
+		blurb: "Every boss you'll actually fight after 2nd job in Founder's Access, in level order. King Slime through Zombie Mushmom with datamine stats, access routes, party comp, and the honest 'L70-100 is a content ceiling' answer. Covers the Shade/Cleric angle most players miss.",
+		category: "post-30",
 		badge: "NEW - Oct 11",
 	},
 	{
@@ -143,12 +151,14 @@ const GUIDES: GuideCard[] = [
 const cot2Diff = GUIDES.filter((g) => g.category === "cot2-diff");
 const classChoice = GUIDES.filter((g) => g.category === "class-choice");
 const cashShop = GUIDES.filter((g) => g.category === "cash-shop");
+const post30 = GUIDES.filter((g) => g.category === "post-30");
 const otherShipped = GUIDES.filter(
 	(g) =>
 		g.category !== "planned" &&
 		g.category !== "cot2-diff" &&
 		g.category !== "class-choice" &&
-		g.category !== "cash-shop",
+		g.category !== "cash-shop" &&
+		g.category !== "post-30",
 );
 const planned = GUIDES.filter((g) => g.category === "planned");
 ---
@@ -214,6 +224,31 @@ const planned = GUIDES.filter((g) => g.category === "planned");
 				</a>
 			))}
 		</div>
+
+		{post30.length > 0 && (
+			<>
+				<h2 class="grid-heading grid-heading--post-30">
+					Post-30 progression
+					<span class="grid-heading__lede">
+						What to actually do after you pick your 2nd job branch.
+						Boss ladders, grind rotations, gear progression, and
+						honest answers about the Founder's Access content ceiling.
+					</span>
+				</h2>
+				<div class="cards">
+					{post30.map((g) => (
+						<a class={`card card--${g.category}`} href={g.href}>
+							<div class="card__head">
+								<h3>{g.title}</h3>
+								{g.badge && <span class="card__badge">{g.badge}</span>}
+							</div>
+							<p class="card__blurb">{g.blurb}</p>
+							<span class="card__cta">Read the guide -&gt;</span>
+						</a>
+					))}
+				</div>
+			</>
+		)}
 
 		{cashShop.length > 0 && (
 			<>

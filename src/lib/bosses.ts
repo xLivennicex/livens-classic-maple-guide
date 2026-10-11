@@ -43,6 +43,11 @@ interface BossManifestEntry {
 	recommendedLevelMin: number;
 	recommendedLevelMax: number;
 	theme?: SiteTheme; // optional override when spawn-based auto-detection is wrong or missing
+	// Nexon-confirmed as available during Founder's Access (Oct 6, 2026).
+	// true = yes, confirmed in release notes. false = explicitly NOT in FA
+	// (e.g. Crimson Balrog ferry event, held for Grand Launch). undefined =
+	// not yet classified (treat as uncertain, surface accordingly).
+	faRoster?: boolean;
 	narrative?: BossNarrative;
 }
 
@@ -52,6 +57,7 @@ export interface BossDossier {
 	recommendedLevelMin: number;
 	recommendedLevelMax: number;
 	themeOverride?: SiteTheme;
+	faRoster?: boolean;
 	narrative: BossNarrative;
 	mob: (typeof mobDossiers)[number]; // full mob dossier passthrough
 }
@@ -92,6 +98,7 @@ function buildBossList(): BossDossier[] {
 			recommendedLevelMin: entry.recommendedLevelMin,
 			recommendedLevelMax: entry.recommendedLevelMax,
 			themeOverride: entry.theme,
+			faRoster: entry.faRoster,
 			narrative: entry.narrative ?? {},
 			mob: best,
 		});
@@ -114,6 +121,21 @@ export const allBosses: BossDossier[] = buildBossList();
 export function getBossBySlug(slug: string): BossDossier | undefined {
 	return allBosses.find((b) => b.slug === slug);
 }
+
+/**
+ * Bosses confirmed live during Founder's Access (Oct 6 - Oct 20, 2026)
+ * per Nexon's Oct 3 Release Notes. Sorted by mob level ascending so the
+ * list reads as a progression ladder. Bosses with faRoster=false or
+ * undefined are excluded.
+ */
+export const faRosterBosses: BossDossier[] = allBosses.filter(
+	(b) => b.faRoster === true,
+);
+
+/** Non-FA bosses (held for Grand Launch or editorially-unclear). */
+export const nonFaBosses: BossDossier[] = allBosses.filter(
+	(b) => b.faRoster !== true,
+);
 
 /**
  * Human-readable threat label + a CSS class suffix for styling.
