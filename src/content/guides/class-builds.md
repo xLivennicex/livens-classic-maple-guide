@@ -186,6 +186,15 @@ raw damage.
 
 <h2 id="warrior-page">Page</h2>
 
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Page
+build guide</strong> covering the Threaten + Power Guard tank
+identity, sword vs BW (blunt weapon) decision math, SP priority,
+and the honest CW endgame tanking question (HP wash removal hurts
+Page harder than Fighter).
+<strong><a href="/page-build">Read the full Page guide →</a></strong>
+</div>
+
 <p><strong>Branch pitch:</strong> the tanky warrior with the party support
 side-dish (Threaten, Power Guard, and later Combo Attack scaling).
 Lower raw DPS than Fighter but survives everything.</p>
@@ -221,6 +230,14 @@ Recovery (solo-friendly) vs Final Attack (party-friendly).
 - Primary training route: same as Fighter.
 
 <h2 id="warrior-spearman">Spearman</h2>
+
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Spearman
+build guide</strong> covering Hyper Body as the identity party-buff,
+spear vs polearm decision, SP priority, and why CW's HP wash removal
+makes Spearman MORE valuable (not less) at every party.
+<strong><a href="/spearman-build">Read the full Spearman guide →</a></strong>
+</div>
 
 <p><strong>Branch pitch:</strong> the party HP buffer (Hyper Body) and
 the only class that can push your effective HP ceiling in a HP-wash-free
@@ -473,6 +490,15 @@ Same as Hunter: pure DEX.
   class-defining.
 
 <h2 id="thief-bandit">Bandit</h2>
+
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Bandit
+build guide</strong> covering Savage Blow + Steal, Fast vs Faster
+dagger speed class decision math, pure LUK allocation, and a
+<strong>Chief Bandit Meso Explosion preview</strong> (3rd job, Grand
+Launch) that shapes your 2nd-job investment now.
+<strong><a href="/bandit-build">Read the full Bandit guide →</a></strong>
+</div>
 
 <p><strong>Branch pitch:</strong> melee thief with the Savage Blow combo
 + **Meso Explosion** (Chief Bandit at 3rd job) which is the single
