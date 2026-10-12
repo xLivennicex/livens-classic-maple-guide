@@ -375,6 +375,15 @@ knowing for Grand Launch.
 Arrow Bomb. The classic KSer for Mushmom and Jr. Balrog thanks to
 Strafe's range and burst.</p>
 
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Archer
+build guide</strong> covering Hunter and Crossbowman side-by-side with
+datamine ATK numbers L10-70, SP priority for both branches, pure DEX
+allocation math, arrows + Soul Arrow scrolling philosophy, armor
+progression, and the bossing + KS verdict.
+<strong><a href="/archer-build">Read the full Archer guide →</a></strong>
+</div>
+
 ### SP priority (2nd job)
 
 | Priority | Skill | Target level |
@@ -411,6 +420,10 @@ then Arrow Bomb for farming, Final Attack for sustained DPS.
 <p><strong>Branch pitch:</strong> higher raw damage per shot than
 Hunter at the cost of attack speed. Iron Arrow pierce AoE is uniquely
 good against stacked mobs (think Zombie Mushmom + adds).</p>
+
+<p>See the <strong><a href="/archer-build#hunter-vs-crossbowman">Archer
+deep-dive guide</a></strong> for the full Hunter-vs-Crossbowman decision
+math, Iron Arrow pierce mechanics, and L10-70 crossbow progression.</p>
 
 ### SP priority (2nd job)
 
