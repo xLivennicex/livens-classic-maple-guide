@@ -806,15 +806,66 @@ function buildMapDossier(m, quests, mobNames, npcNames, npcNameToId, wzId = null
 		return { toMapId: toId, toMapName: name };
 	});
 
+	// --- Name + region recovery for upstream datamine gaps ---
+	//
+	// Some WZ map records ship without a `name` or with region=Other
+	// despite having a mapMark that clearly places them in Victoria
+	// Island (job-advancement trial dungeons, Free Market subzones,
+	// Forgotten Hollow boss rooms). Without this fallback, those
+	// maps get silently filtered from the /maps catalog index
+	// (which requires a non-empty name) and show region=Other even
+	// when they're canonically Victoria Island content.
+	//
+	// Rules in priority order:
+	//   1. If the map id is in MANUAL_MAP_NAME_OVERRIDES, use the
+	//      hand-curated name. Used for named-boss sanctums the WZ
+	//      ships with an empty mapName (e.g. Rotten Mushmom's room).
+	//   2. If the map has an empty name AND has a mapMark, synthesize
+	//      "{MapMark} ({id})" so the catalog doesn't drop the entry.
+	//   3. If region=Other AND mapMark matches a Victoria/Ossyria
+	//      subzone, upgrade region to the implied continent so the
+	//      /maps catalog groups it correctly.
+	const MANUAL_MAP_NAME_OVERRIDES = {
+		// Forgotten Hollow Rotten Mushmom spawn sanctum. WZ ships this
+		// map (10006121) with empty mapName/streetName but it hosts the
+		// Rotten Mushmom boss plus adds. Discovered during the Oct 11
+		// Burnt Land / Wild Boar audit.
+		10006121: "Rotten Mushmom's Lair",
+	};
+	const VICTORIA_MAPMARKS = new Set([
+		"ForgottenHollow",
+		"Perion",
+		"Ellinia",
+		"Henesys",
+		"Kerning",
+		"Sleepywood",
+		"Victoria",
+		"FreeMarket",
+	]);
+	let recoveredName = m.name;
+	let recoveredRegion = m.region;
+	if (!recoveredName || recoveredName.trim() === "") {
+		if (MANUAL_MAP_NAME_OVERRIDES[m.id]) {
+			recoveredName = MANUAL_MAP_NAME_OVERRIDES[m.id];
+		} else if (m.map_mark) {
+			recoveredName = `${m.map_mark} (${m.id})`;
+		} else {
+			recoveredName = `Map ${m.id}`;
+		}
+	}
+	if (recoveredRegion === "Other" && m.map_mark && VICTORIA_MAPMARKS.has(m.map_mark)) {
+		recoveredRegion = "Victoria Island";
+	}
+
 	return {
 		id: m.id,
 		// maplestory.io WZ ID - null when name lookup didn't
 		// resolve. Powers sprite/render URLs plus world-map cross-
 		// links (world map pins use WZ IDs, ours use internal IDs).
 		wzId,
-		name: m.name,
+		name: recoveredName,
 		streetName: m.street_name ?? null,
-		region: m.region,
+		region: recoveredRegion,
 		minimap: m.minimap ?? null,
 		bgm: m.bgm ?? null,
 		mapMark: m.map_mark ?? null,

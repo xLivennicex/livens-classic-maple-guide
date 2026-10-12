@@ -106,22 +106,30 @@ investments at Lv 50+. Density beats per-kill size this bracket.
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Lupin](/mobs/35) | 37 | ~36 | [Monkey Swamp I](/maps) |
-| [Fire Boar](/mobs/30) | 32 | ~31 | [The Burnt Land V](/maps) |
-| [Curse Eye](/mobs/31) | 35 | ~34 | [Sleepy Dungeon V](/maps) · Forgotten Hollow |
-| [Jr. Wraith](/mobs/32) | 35 | ~34 | [Line 2 Area 1](/maps) |
-| [Ligator](/mobs/29) | 32 | ~31 | [The Swamp of Despair I](/maps) |
-| [Lorang](/mobs/36) | 37 | ~36 | A Look-Out Shed Around the Beach |
+| [Lupin](/mobs/35) | 37 | ~36 | [Monkey Swamp I](/maps/10003095) |
+| [Fire Boar](/mobs/30) | 32 | ~31 | [The Burnt Land I-V](/maps/10004111) |
+| [Curse Eye](/mobs/31) | 35 | ~34 | [Sleepy Dungeon V](/maps/10005054) · Forgotten Hollow |
+| [Jr. Wraith](/mobs/32) | 35 | ~34 | [Line 2 Area 1](/maps/10003066) |
+| [Ligator](/mobs/29) | 32 | ~31 | [The Swamp of Despair I](/maps/10003090) |
+| [Lorang](/mobs/36) | 37 | ~36 | [A Look-Out Shed Around the Beach](/maps/10007010) |
 
 ### Pick-your-rotation
 
-- **Pure meso focus:** Lupin → Monkey Swamp I. 21 drop entries + ~36
-  mesos per kill. Secondary drops (see [NPC-sell gems](#npc-sell-gems))
-  include Lupin Doll (100m NPC). Best raw meso density this bracket.
-- **Meso + EXP balance:** Fire Boar at Burnt Land V. 33 drop entries,
-  Red Viper bow / Steely Throwing Knives occasional drops. The
+- **Pure meso focus:** Lupin → [Monkey Swamp I](/maps/10003095). 21 drop
+  entries + ~36 mesos per kill. Secondary drops (see
+  [NPC-sell gems](#npc-sell-gems)) include Lupin Doll (100m NPC). Best
+  raw meso density this bracket.
+- **Meso + EXP balance:** Fire Boar across the 5 Burnt Land maps
+  ([I](/maps/10004111) · [II](/maps/10004112) · [III](/maps/10004113) ·
+  [IV](/maps/10004114) · [V](/maps/10004115)) east of Perion. 33 drop
+  entries, Red Viper bow / Steely Throwing Knives occasional drops.
+  Burnt Land IV / V have the densest Fire Boar spawns. The
   [Training routes guide](/training-routes#levels-30-40-the-second-job-power-spike)
   covers the EXP side.
+- **Wild Boar option:** sub-30 Wild Boars still work at Lv 30-34 if
+  you want a low-pressure grind. Hit [Land of Wild Boar](/maps/10004041)
+  or [The Land of Wild Boar II](/maps/10004091) — both are hidden
+  streets off the Perion-East corridor.
 - **Meso + gear farm:** Curse Eye at Forgotten Hollow early maps.
   Mediocre meso rate but you're already there if you're training in
   Forgotten Hollow (which fills the L30-50 gap in CW — see
@@ -144,22 +152,22 @@ Swamp III (Zombie Lupins) and the Pig Park iron-hog cycle.
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Cold Eye](/mobs/37) | 40 | ~39 | [Tunnel That Lost Light I-II](/maps) |
-| [Iron Hog](/mobs/24) | 42 | ~41 | [Pig Park II](/maps) · [Pig Park](/maps) |
-| [Zombie Lupin](/mobs/38) | 40 | ~39 | [Monkey Swamp III](/maps) · Tree Dungeon |
-| [Wraith](/mobs/43) | 48 | ~47 | [Line 2 Area 3](/maps) |
-| [Clang](/mobs/44) | 48 | ~47 | Lorang and Clang beach loops |
-| [Tortie](/mobs/41) | 46 | ~45 | Hot Sand |
-| [Copper Drake](/mobs/40) | 45 | ~44 | [East Rocky Mountain VII](/maps) · Dangerous Valley |
+| [Cold Eye](/mobs/37) | 40 | ~39 | [Tunnel That Lost Light I](/maps/10005076) · [II](/maps/10005077) |
+| [Iron Hog](/mobs/24) | 42 | ~41 | [Pig Park II](/maps/10001004) · [Pig Park](/maps/10001003) |
+| [Zombie Lupin](/mobs/38) | 40 | ~39 | [Monkey Swamp III](/maps/10003097) · [Tree Dungeon](/maps/10002022) |
+| [Wraith](/mobs/43) | 48 | ~47 | [Line 2 Area 3](/maps/10003068) |
+| [Clang](/mobs/44) | 48 | ~47 | [Lorang and Clang](/maps/10007030) beach loops |
+| [Tortie](/mobs/41) | 46 | ~45 | [Hot Sand](/maps/10007040) |
+| [Copper Drake](/mobs/40) | 45 | ~44 | [East Rocky Mountain VII](/maps/10004056) · [Dangerous Valley](/maps/10004101) |
 
 ### Pick-your-rotation
 
-- **Pure meso focus:** Iron Hog at Pig Park II. 17 drop entries + the
-  Lv 42 meso rate make this the best raw income grind at this bracket.
-  Bonus: Iron Hog drops Sledgehammer (Lv 35 Warrior 2H blunt) which
-  sells on the Free Market.
-- **Meso + Etc drops:** Zombie Lupin at Monkey Swamp III. 17 drops
-  including the full Lupin Doll chain. Multiple Etc drops at
+- **Pure meso focus:** Iron Hog at [Pig Park II](/maps/10001004). 17
+  drop entries + the Lv 42 meso rate make this the best raw income
+  grind at this bracket. Bonus: Iron Hog drops Sledgehammer (Lv 35
+  Warrior 2H blunt) which sells on the Free Market.
+- **Meso + Etc drops:** Zombie Lupin at [Monkey Swamp III](/maps/10003097).
+  17 drops including the full Lupin Doll chain. Multiple Etc drops at
   NPC-sellable prices.
 - **Line 2 Wraiths:** 48 mesos/kill, dense spawns, and Wraith overalls
   are a known mid-bracket gear drop. Pairs nicely with the
@@ -181,22 +189,23 @@ drop value.
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Stone Golem](/mobs/48) | 55 | ~54 | [Golem's Temple III](/maps) · [Entrance of Golem's Temple](/maps) |
-| [Dark Stone Golem](/mobs/49) | 58 | ~57 | [Sleepy Dungeon V](/maps) · [Sleepy Dungeon III](/maps) |
-| [Drake](/mobs/45) | 50 | ~49 | [Drake's Meal Table](/maps) · [Tunnel That Lost Light I](/maps) |
-| [Croco](/mobs/46) | 52 | ~51 | Dangerous Croko I-II |
-| [Malady](/mobs/47) | 55 | ~54 | [The Forest of Evil I-II](/maps) |
+| [Stone Golem](/mobs/48) | 55 | ~54 | [Golem's Temple III](/maps/10001105) · [Entrance of Golem's Temple](/maps/10001102) |
+| [Dark Stone Golem](/mobs/49) | 58 | ~57 | [Sleepy Dungeon V](/maps/10005054) · [Sleepy Dungeon III](/maps/10005052) |
+| [Drake](/mobs/45) | 50 | ~49 | [Drake's Meal Table](/maps/10005090) · [Tunnel That Lost Light I](/maps/10005076) |
+| [Croco](/mobs/46) | 52 | ~51 | [Dangerous Croko I](/maps/10003093) · [II](/maps/10003094) |
+| [Malady](/mobs/47) | 55 | ~54 | [Forest of Evil I](/maps/10002025) · [II](/maps/10002026) |
 
 ### Pick-your-rotation
 
-- **Pure meso focus:** Dark Stone Golem at Sleepy Dungeon V. 57
-  mesos/kill, 6 drop entries including Earth Stone which NPC-sells for
-  real money. Fastest meso income this bracket, period.
-- **Meso + rare drops:** Drake at Drake's Meal Table. 49 mesos/kill
-  plus [Dragon Skin](/items/4000050) which NPC-sells for 200m. One
-  Dragon Skin per ~50 kills averages out to another ~4 mesos/kill
-  bonus income.
-- **Croco at Dangerous Croko I-II:** The one most people skip because
+- **Pure meso focus:** Dark Stone Golem at [Sleepy Dungeon V](/maps/10005054).
+  57 mesos/kill, 6 drop entries including Earth Stone which NPC-sells
+  for real money. Fastest meso income this bracket, period.
+- **Meso + rare drops:** Drake at [Drake's Meal Table](/maps/10005090).
+  49 mesos/kill plus [Dragon Skin](/items/4000050) which NPC-sells
+  for 200m. One Dragon Skin per ~50 kills averages out to another
+  ~4 mesos/kill bonus income.
+- **Croco at [Dangerous Croko I](/maps/10003093) / [II](/maps/10003094):**
+  The one most people skip because
   the map layout is awkward, but 51 mesos/kill + decent drops. Worth
   trying if the main spots are camped.
 
@@ -210,8 +219,8 @@ Wild Kargos stack high meso drops with reasonable kill speed for a
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Wild Kargo](/mobs/51) | 62 | ~60 | [Wild Kargo's Area](/maps) · [Drake's Meal Table](/maps) |
-| [Red Drake](/mobs/50) | 60 | ~59 | [Dangerous Valley II](/maps) |
+| [Wild Kargo](/mobs/51) | 62 | ~60 | [Wild Kargo's Area](/maps/10005091) · [Drake's Meal Table](/maps/10005090) |
+| [Red Drake](/mobs/50) | 60 | ~59 | [Dangerous Valley II](/maps/10004102) |
 
 Yes, just two viable targets. Classic World's Lv 60-70 bracket is
 thin on content — see the [FA content ceiling
@@ -220,12 +229,13 @@ for context on why.
 
 ### Pick-your-rotation
 
-- **Wild Kargo + Drake's Meal Table loop:** multi-mob map, high meso
-  density, workable solo-or-duo. 60 mesos/kill with Dragon Skin side
-  drops. **Most profitable grind in FA for the 60-70 range.**
-- **Red Drake at Dangerous Valley II:** 59 mesos/kill but single-mob
-  spawn means slower per-session clear. Worth the swap if Drake's
-  Meal Table is camped.
+- **Wild Kargo + [Drake's Meal Table](/maps/10005090) loop:** multi-mob
+  map, high meso density, workable solo-or-duo. 60 mesos/kill with
+  Dragon Skin side drops. **Most profitable grind in FA for the 60-70
+  range.**
+- **Red Drake at [Dangerous Valley II](/maps/10004102):** 59 mesos/kill
+  but single-mob spawn means slower per-session clear. Worth the swap
+  if Drake's Meal Table is camped.
 
 <h2 id="level-70-100-meso-rotation">Level 70-100: Taurospear territory</h2>
 
@@ -238,17 +248,18 @@ grind-to-grand-launch holding pattern.
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Taurospear](/mobs/53) | 75 | ~73 | [Sanctuary Entrance IV](/maps) · [Sanctuary Entrance III](/maps) |
-| [Tauromacis](/mobs/52) | 70 | ~68 | [Sanctuary Entrance I-II](/maps) |
+| [Taurospear](/mobs/53) | 75 | ~73 | [Sanctuary Entrance IV](/maps/10005104) · [III](/maps/10005103) |
+| [Tauromacis](/mobs/52) | 70 | ~68 | [Sanctuary Entrance I](/maps/10005101) · [II](/maps/10005102) |
 
 ### Pick-your-rotation
 
-- **Taurospear at Sanctuary Entrance IV:** 73 mesos/kill, drops
-  [Black Crystal Ore](/items/4020008) (500m NPC) and various catalysts.
-  **This is your main income stream L70+ in FA.** Taurospear's drop
-  table is the best Etc-side-income combo in FA.
-- **Tauromacis at Sanctuary Entrance I-II:** 68 mesos/kill, similar
-  drop profile. Easier spawns than Taurospear for solo.
+- **Taurospear at [Sanctuary Entrance IV](/maps/10005104):** 73 mesos/kill,
+  drops [Black Crystal Ore](/items/4020008) (500m NPC) and various
+  catalysts. **This is your main income stream L70+ in FA.**
+  Taurospear's drop table is the best Etc-side-income combo in FA.
+- **Tauromacis at [Sanctuary Entrance I](/maps/10005101) / [II](/maps/10005102):**
+  68 mesos/kill, similar drop profile. Easier spawns than Taurospear
+  for solo.
 
 ### The Lv 80-100 reality check
 
