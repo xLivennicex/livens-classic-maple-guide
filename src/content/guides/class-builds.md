@@ -139,6 +139,15 @@ endgame kit.
 and the highest crit uptime of any warrior. Final Attack and Power Guard
 make this the most interactive 2nd-job warrior playstyle.</p>
 
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Fighter
+build guide</strong> covering sword vs axe weapon ladder L10-70 with
+datamine ATK numbers, 1H+shield vs 2H decision math, scrolling
+philosophy for Fighter's dual-slot setup, armor + shield progression,
+and the bossing-readiness verdict.
+<strong><a href="/fighter-build">Read the full Fighter guide →</a></strong>
+</div>
+
 ### SP priority (2nd job)
 
 | Priority | Skill | Target level |
