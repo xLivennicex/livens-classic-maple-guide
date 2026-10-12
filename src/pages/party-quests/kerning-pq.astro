@@ -16,6 +16,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import {
 	KPQ_META, KPQ_REWARDS, KPQ_BONUS_ROOM_DROPS, KPQ_ENTRY_REQUIREMENTS,
+	KPQ_STAGE1_QUESTIONS, KPQ_LFG_SHORTHAND, KPQ_MAGIC_BOX_POOL,
 	kpqStages, partyCompositions,
 } from "../../data/party-quests/kerning-pq";
 import mobDossiers from "../../data/db/mobs.json";
@@ -42,12 +43,15 @@ const iconicMobs = KPQ_META.iconicMobs
 	.map((name) => mobByName.get(name))
 	.filter(Boolean);
 
-// Scroll rewards from quest turn-in - resolve to real item dossiers
-// so the sprites render.
-const rewardScrolls = KPQ_REWARDS.itemChance.map((r) => ({
+// Scroll rewards from the FIRST-RUN quest turn-in (Proof of
+// Companionship) - resolve to real item dossiers so the sprites render.
+const rewardScrolls = KPQ_REWARDS.firstRunQuest.itemChance.map((r) => ({
 	...r,
 	item: itemById.get(r.id),
 }));
+
+// Companion's Magic Box item (per-run reward for every member).
+const magicBoxItem = itemById.get(KPQ_REWARDS.magicBox.itemId);
 
 // Bonus Room 'chest' drops - resolve each mushroom's drop table to
 // real item dossiers so sprites + hrefs render without template logic.
@@ -133,7 +137,7 @@ const bonusTables = [
 		<p class="section-lede">
 			KPQ's gate is social, not economic. The datamine confirms zero
 			items consumed, zero mesos, no prerequisite quest - just a
-			party of 4+ at Lv{KPQ_ENTRY_REQUIREMENTS.levelMin}+ talking to
+			party of {KPQ_ENTRY_REQUIREMENTS.partySizeMin}+ at Lv{KPQ_ENTRY_REQUIREMENTS.levelMin}+ talking to
 			<strong>{KPQ_ENTRY_REQUIREMENTS.entryNpc}</strong> at the
 			<a href={`/maps/${KPQ_ENTRY_REQUIREMENTS.entryMapId}`}>{KPQ_ENTRY_REQUIREMENTS.entryMapName}</a> entrance.
 		</p>
@@ -142,15 +146,14 @@ const bonusTables = [
 				<span class="entry-card__label">Level</span>
 				<strong>Lv {KPQ_ENTRY_REQUIREMENTS.levelMin}-{KPQ_ENTRY_REQUIREMENTS.levelMax}</strong>
 				<span class="entry-card__meta">
-					Min {KPQ_ENTRY_REQUIREMENTS.levelMin} datamine-verified.
-					Max {KPQ_ENTRY_REQUIREMENTS.levelMax} is v83 convention.
+					Lv {KPQ_ENTRY_REQUIREMENTS.levelMin}-{KPQ_ENTRY_REQUIREMENTS.levelMax} enforced in Classic World per community sources (Oct 9, 2026). Lv 31+ characters cannot enter.
 				</span>
 			</div>
 			<div class="entry-card">
 				<span class="entry-card__label">Party size</span>
 				<strong>{KPQ_ENTRY_REQUIREMENTS.partySizeMin}-{KPQ_ENTRY_REQUIREMENTS.partySizeMax}</strong>
 				<span class="entry-card__meta">
-					Range is v83 convention; FA may enforce exactly 6. Needs playtime verification.
+					Per CW community sources: at least {KPQ_ENTRY_REQUIREMENTS.partySizeMin} members required. Solo and duo parties cannot start the PQ.
 				</span>
 			</div>
 			<div class="entry-card entry-card--highlight">
@@ -211,8 +214,9 @@ const bonusTables = [
 	<section class="mobs-strip" aria-labelledby="mobs-heading">
 		<h2 id="mobs-heading" class="section-title">Mobs you'll fight</h2>
 		<p class="section-lede">
-			Six iconic Classic-era mobs appear across the KPQ. Click any card
-			for the full dossier: drops, spawn maps, quest cross-refs.
+			Only four mob types appear across Classic World KPQ, concentrated
+			in Stage 1 and the boss stage. Stages 2-4 are pure puzzles with
+			zero mobs. Click any card for the full dossier.
 		</p>
 		<div class="mobs-grid">
 			{iconicMobs.map((m) => (
@@ -232,36 +236,109 @@ const bonusTables = [
 	<section aria-labelledby="lfg-heading">
 		<h2 id="lfg-heading" class="section-title">LFG shout templates</h2>
 		<p class="section-lede">
-			Copy any of these to your clipboard for the standard Kerning-town
-			shouts. Adjust to taste; "S&gt;" means "seeking".
+			Classic World shouts use the <code>J&gt;</code> prefix for <strong>Joining</strong>
+			(looking to join) and <code>S&gt;</code> for <strong>Selling</strong>.
+			Don't mix them up - <code>S&gt;KPQ</code> reads as "selling a KPQ
+			carry service", not "looking for a group".
 		</p>
+
+		<aside class="lfg-key">
+			<div>
+				<code class="lfg-key__prefix lfg-key__prefix--join">{KPQ_LFG_SHORTHAND.joining.prefix}</code>
+				<strong>{KPQ_LFG_SHORTHAND.joining.meaning}</strong>
+				<ul>
+					{KPQ_LFG_SHORTHAND.joining.examples.map((e) => (
+						<li><code>{e.shout}</code> — {e.meaning}</li>
+					))}
+				</ul>
+			</div>
+			<div>
+				<code class="lfg-key__prefix lfg-key__prefix--sell">{KPQ_LFG_SHORTHAND.selling.prefix}</code>
+				<strong>{KPQ_LFG_SHORTHAND.selling.meaning}</strong>
+				<ul>
+					{KPQ_LFG_SHORTHAND.selling.examples.map((e) => (
+						<li><code>{e.shout}</code> — {e.meaning}</li>
+					))}
+				</ul>
+			</div>
+			<p class="lfg-key__note">{KPQ_LFG_SHORTHAND.note}</p>
+		</aside>
+
 		<div class="shout-grid">
-			<button type="button" class="shout" data-kpq-copy="S> KPQ Any @@@@ (Lv 21-30)">
-				<code>S&gt; KPQ Any @@@@ (Lv 21-30)</code>
-				<span>Generic - any 4 more</span>
+			<button type="button" class="shout" data-kpq-copy="J>KPQ any @@@ (Lv21-30)">
+				<code>J&gt;KPQ any @@@ (Lv21-30)</code>
+				<span>Generic - looking to join, any 3 more</span>
 			</button>
-			<button type="button" class="shout" data-kpq-copy="S> KPQ Cleric + 3 more @@@@ Lv 21+">
-				<code>S&gt; KPQ Cleric + 3 more @@@@ Lv 21+</code>
-				<span>Needs a Cleric priority</span>
+			<button type="button" class="shout" data-kpq-copy="J>KPQ cleric slot open">
+				<code>J&gt;KPQ cleric slot open</code>
+				<span>Cleric priority (if that's you)</span>
 			</button>
-			<button type="button" class="shout" data-kpq-copy="LF> KPQ party - starting Lakelis now">
-				<code>LF&gt; KPQ party - starting Lakelis now</code>
-				<span>Looking for one - leader ready</span>
+			<button type="button" class="shout" data-kpq-copy="J>KPQ starting Lakelis now">
+				<code>J&gt;KPQ starting Lakelis now</code>
+				<span>Leader has party, needs one more</span>
 			</button>
-			<button type="button" class="shout" data-kpq-copy="S> KPQ Bowman/Mage ranged DPS @@@@">
-				<code>S&gt; KPQ Bowman/Mage ranged DPS @@@@</code>
-				<span>Ranged rush comp</span>
+			<button type="button" class="shout" data-kpq-copy="J>PQ any">
+				<code>J&gt;PQ any</code>
+				<span>Open to any party quest</span>
+			</button>
+			<button type="button" class="shout" data-kpq-copy="J>Party any Lv25">
+				<code>J&gt;Party any Lv25</code>
+				<span>Looking for any party at your level</span>
 			</button>
 		</div>
+	</section>
+
+	<!-- ============================================================ -->
+	<section aria-labelledby="stage1-questions-heading">
+		<h2 id="stage1-questions-heading" class="section-title">Stage 1 question pool - Cloto's trivia</h2>
+		<p class="section-lede">
+			Every non-leader party member gets one of these questions from
+			Cloto in Stage 1. The answer is a number - that's how many
+			Coupons you must hold when turning in. Collect <em>exactly</em>
+			that count from Ligator kills, drop extras, talk to Cloto.
+			Confirmed questions below are from MapleClassic Wiki + MeowDB
+			(both Oct 9, 2026).
+		</p>
+		<table class="question-pool">
+			<thead>
+				<tr>
+					<th>Cloto's question</th>
+					<th>Answer</th>
+					<th>Confidence</th>
+				</tr>
+			</thead>
+			<tbody>
+				{KPQ_STAGE1_QUESTIONS.map((q) => (
+					<tr class={`question-pool__row question-pool__row--${q.confidence}`}>
+						<td>
+							<strong>{q.question}</strong>
+							{"notes" in q && q.notes && <p class="question-pool__note">{q.notes}</p>}
+						</td>
+						<td class="question-pool__answer"><strong>{q.answer}</strong></td>
+						<td>
+							<span class={`conf conf--${q.confidence}`}>{q.confidence}</span>
+						</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+		<aside class="question-tip">
+			<strong>Leader trick:</strong> the party leader never gets a question.
+			If someone draws a harder question (35-coupon, say), swap party
+			leader - old leader drops to member, re-talks to Cloto, draws a
+			fresh question.
+		</aside>
 	</section>
 
 	<!-- ============================================================ -->
 	<section aria-labelledby="stages-heading">
 		<h2 id="stages-heading" class="section-title">Stage-by-stage walkthrough</h2>
 		<p class="section-lede">
-			Six stages plus the Bonus Room and boss. Time limit resets per
-			stage; if the party runs out of time, you're all sent back to
-			Lakelis with no reward.
+			Four puzzle stages, one boss stage (King Slime), and a bonus
+			mushroom room. <strong>No waiting room in Classic World</strong> -
+			you go from Lakelis in Kerning City straight to Stage 1. Inside
+			the PQ, Cloto is the NPC you interact with for every stage check;
+			Nella sits in the Bonus Room / Exit.
 		</p>
 		<div class="stages">
 			{kpqStages.map((stage) => (
@@ -332,22 +409,46 @@ const bonusTables = [
 	<section aria-labelledby="rewards-heading">
 		<h2 id="rewards-heading" class="section-title">Rewards</h2>
 		<p class="section-lede">
-			Payout from turning in <em>{KPQ_META.questName}</em>
-			{kpqQuest && <> (<a href={`/quests/${KPQ_META.questId}`}>quest {KPQ_META.questId}</a>)</>}
-			once you defeat King Slime.
+			Three reward tiers in Classic World KPQ: a per-run Magic Box
+			for every member, a one-time quest reward for your first ever
+			clear, and a chance drop from King Slime himself.
 		</p>
+
 		<div class="reward-grid">
-			<div class="reward-card">
-				<span class="reward-card__label">Base EXP</span>
-				<strong>{KPQ_REWARDS.exp.toLocaleString()}</strong>
-				<span class="reward-card__meta">plus {KPQ_REWARDS.stageExp}</span>
-			</div>
-			<div class="reward-card">
-				<span class="reward-card__label">Mesos</span>
-				<strong>{KPQ_REWARDS.mesos}</strong>
-			</div>
 			<div class="reward-card reward-card--wide">
-				<span class="reward-card__label">Scroll drops (random)</span>
+				<span class="reward-card__label">Per-run reward (every member, every clear)</span>
+				<div class="magic-box">
+					{magicBoxItem && (
+						<Sprite
+							srcs={[itemIconUrl(KPQ_REWARDS.magicBox.itemId)]}
+							alt=""
+							placeholder={themePlaceholderUrl("kerning")}
+						/>
+					)}
+					<div>
+						<strong>
+							<a href={`/items/${KPQ_REWARDS.magicBox.itemId}`}>{KPQ_REWARDS.magicBox.name}</a>
+						</strong>
+						<p class="magic-box__note">{KPQ_REWARDS.magicBox.note}</p>
+						<p class="magic-box__source">
+							<em>Obtained:</em> {KPQ_REWARDS.magicBox.obtainedFrom}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="reward-card reward-card--wide">
+				<span class="reward-card__label">First-ever clear only - Proof of Companionship quest</span>
+				<p class="reward-card__meta">
+					Turn in to <strong>{KPQ_REWARDS.firstRunQuest.turnInNpc}</strong> at {KPQ_REWARDS.firstRunQuest.turnInMap}
+					{kpqQuest && <> (<a href={`/quests/${KPQ_META.questId}`}>quest {KPQ_META.questId}</a>)</>}.
+				</p>
+				<div class="first-run-grid">
+					<div><strong>{KPQ_REWARDS.firstRunQuest.exp.toLocaleString()}</strong><span>EXP</span></div>
+					<div><strong>{KPQ_REWARDS.firstRunQuest.mesos}</strong><span>mesos</span></div>
+					<div><strong>+{KPQ_REWARDS.firstRunQuest.fame}</strong><span>fame</span></div>
+				</div>
+				<p class="reward-card__meta">Plus one Intermediate Earring scroll (25% each):</p>
 				<div class="scroll-grid">
 					{rewardScrolls.map((r) => (
 						<a class="scroll" href={r.item ? `/items/${r.item.id}` : "#"}>
@@ -363,9 +464,11 @@ const bonusTables = [
 						</a>
 					))}
 				</div>
+				<p class="reward-card__meta"><em>{KPQ_REWARDS.firstRunQuest.note}</em></p>
 			</div>
+
 			<div class="reward-card reward-card--wide">
-				<span class="reward-card__label">King Slime drop pool <em>(CoT 2 datamined)</em></span>
+				<span class="reward-card__label">Boss drop (chance from King Slime)</span>
 				<ul class="reward-card__list">
 					{KPQ_REWARDS.bossDrops.map((d) => (
 						<li>
@@ -374,6 +477,27 @@ const bonusTables = [
 						</li>
 					))}
 				</ul>
+			</div>
+
+			<div class="reward-card reward-card--wide">
+				<span class="reward-card__label">Companion's Magic Box possible contents <em>(community-sourced, not weighted)</em></span>
+				<p class="reward-card__meta">{KPQ_MAGIC_BOX_POOL.note}</p>
+				<details class="magic-pool">
+					<summary>Equipment ({KPQ_MAGIC_BOX_POOL.equipment.length})</summary>
+					<ul>{KPQ_MAGIC_BOX_POOL.equipment.map((e) => <li>{e}</li>)}</ul>
+				</details>
+				<details class="magic-pool">
+					<summary>Scrolls ({KPQ_MAGIC_BOX_POOL.scrolls.length})</summary>
+					<ul>{KPQ_MAGIC_BOX_POOL.scrolls.map((s) => <li>{s}</li>)}</ul>
+				</details>
+				<details class="magic-pool">
+					<summary>Potions ({KPQ_MAGIC_BOX_POOL.potions.length})</summary>
+					<ul>{KPQ_MAGIC_BOX_POOL.potions.map((p) => <li>{p}</li>)}</ul>
+				</details>
+				<details class="magic-pool">
+					<summary>Materials ({KPQ_MAGIC_BOX_POOL.materials.length})</summary>
+					<ul>{KPQ_MAGIC_BOX_POOL.materials.map((m) => <li>{m}</li>)}</ul>
+				</details>
 			</div>
 		</div>
 
@@ -386,8 +510,10 @@ const bonusTables = [
 					{KPQ_META.notableChanges.map((change) => <li>{change}</li>)}
 				</ul>
 				<p class="cw-callout__source">
-					Sourced from Founder's Access client datamine +
-					<a href="/training-routes#levels-20-25-bubblings-and-kpq">Eleveny's training video</a>.
+					Sourced from Classic World community (MapleClassic Wiki,
+					MeowDB, MMOJUGG, Henesys.gg, MapleStory Quest - all dated
+					Oct 8-9, 2026) + Founder's Access client datamine. Full
+					rewrite 2026-10-12.
 				</p>
 			</aside>
 		)}
@@ -926,4 +1052,75 @@ const bonusTables = [
 		.kpq-hero { grid-template-columns: 1fr; padding: 1.25rem 1rem; }
 		.kpq-hero h1 { font-size: 1.7rem; }
 	}
+
+	/* LFG shorthand key (added 2026-10-12). */
+	.lfg-key {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1rem;
+		padding: 1rem;
+		background: color-mix(in oklab, var(--panel-bg) 85%, var(--accent-primary) 15%);
+		border: 1px solid var(--panel-border);
+		border-radius: 10px;
+		margin: 1rem 0;
+	}
+	.lfg-key > div { display: flex; flex-direction: column; gap: 0.5rem; }
+	.lfg-key__prefix {
+		display: inline-block;
+		font-size: 1.5rem;
+		font-weight: 700;
+		padding: 0.25rem 0.75rem;
+		border-radius: 6px;
+		width: fit-content;
+	}
+	.lfg-key__prefix--join { background: color-mix(in oklab, #22c55e 25%, transparent); color: #22c55e; }
+	.lfg-key__prefix--sell { background: color-mix(in oklab, #f59e0b 25%, transparent); color: #f59e0b; }
+	.lfg-key ul { margin: 0.25rem 0; padding-left: 1.1rem; }
+	.lfg-key li { margin: 0.3rem 0; font-size: 0.9rem; }
+	.lfg-key li code { background: var(--panel-bg); padding: 0.1rem 0.4rem; border-radius: 4px; }
+	.lfg-key__note { grid-column: 1 / -1; margin: 0; font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+
+	/* Stage 1 question pool table. */
+	.question-pool {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1rem 0;
+		background: var(--panel-bg);
+		border: 1px solid var(--panel-border);
+		border-radius: 10px;
+		overflow: hidden;
+	}
+	.question-pool th, .question-pool td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--panel-border); }
+	.question-pool th { background: color-mix(in oklab, var(--panel-bg) 80%, var(--accent-primary) 20%); font-weight: 700; }
+	.question-pool tbody tr:last-child td { border-bottom: 0; }
+	.question-pool__answer { text-align: center; font-size: 1.3rem; }
+	.question-pool__note { margin: 0.3rem 0 0; font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+	.question-pool__row--contested { opacity: 0.75; }
+	.conf { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.15rem 0.5rem; border-radius: 999px; }
+	.conf--confirmed { background: color-mix(in oklab, #22c55e 25%, transparent); color: #22c55e; }
+	.conf--contested { background: color-mix(in oklab, #f59e0b 25%, transparent); color: #f59e0b; }
+	.question-tip {
+		background: color-mix(in oklab, var(--panel-bg) 85%, var(--accent-primary) 15%);
+		border: 1px solid var(--panel-border);
+		border-left: 3px solid var(--accent-primary);
+		padding: 0.75rem 1rem;
+		border-radius: 6px;
+		margin: 0.75rem 0;
+		font-size: 0.9rem;
+	}
+
+	/* Magic Box reward card. */
+	.magic-box { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+	.magic-box img { max-width: 48px; }
+	.magic-box__note { margin: 0.3rem 0; font-size: 0.9rem; }
+	.magic-box__source { margin: 0.3rem 0; font-size: 0.82rem; color: var(--text-muted); }
+	.first-run-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 0.75rem 0; }
+	.first-run-grid > div { text-align: center; padding: 0.5rem; background: var(--panel-bg); border-radius: 6px; border: 1px solid var(--panel-border); }
+	.first-run-grid strong { display: block; font-size: 1.2rem; }
+	.first-run-grid span { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+	.magic-pool { margin: 0.4rem 0; }
+	.magic-pool summary { cursor: pointer; padding: 0.4rem 0.6rem; background: var(--panel-bg); border-radius: 6px; border: 1px solid var(--panel-border); font-weight: 600; }
+	.magic-pool[open] summary { margin-bottom: 0.4rem; }
+	.magic-pool ul { margin: 0.3rem 0 0.5rem 1.2rem; padding: 0; }
+	.magic-pool li { font-size: 0.85rem; margin: 0.1rem 0; }
 </style>
