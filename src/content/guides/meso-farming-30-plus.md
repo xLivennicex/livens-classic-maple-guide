@@ -60,17 +60,15 @@ Free-Market prices on items you plan to buy or sell, see
 </div>
 
 <div class="callout callout--warning">
-<strong>FA map access caveat (user-flagged Oct 11):</strong> some
-<em>deeper</em> Victoria Island subzones that exist in the datamine
-(e.g. <strong>Burnt Land V</strong>, deeper Golem's Temple floors,
-Sanctuary Entrance IV) may be gated during Founder's Access even though
-their map pages render on this site. The datamine includes the maps,
-but Nexon can gate portals / NPC-ride access independently. <strong>If
-you can't reach the map referenced in a row, step back one subzone in
-the same chain</strong> (Burnt Land IV instead of V, Sanctuary Entrance
-II instead of IV, etc.) — the mob composition and meso rate are
-essentially identical. We're actively collecting player-verified
-access reports; ping us if you hit a wall and we'll update the row.
+<strong>FA map access caveat:</strong> some <em>deeper</em>
+Victoria Island subzones that exist in the datamine (e.g.
+<strong>Burnt Land V</strong>, Sanctuary Entrance IV, deeper
+Golem's Temple floors) may be gated during Founder's Access. If
+you can't portal to a map referenced here, step back one subzone
+in the chain (Burnt Land IV→III, Sanctuary IV→II/III) — the mob
+composition is near-identical. See the full gating catalog at
+<strong><a href="/fa-access-status">FA Content Access Status</a></strong>
+for the central reference + how to report an issue.
 </div>
 
 <h2 id="how-meso-income-works">How meso income works</h2>

@@ -311,12 +311,13 @@ Your second job hits at L30 and you're suddenly a real character. These maps let
 
 ### Sanctuary Entrance IV — the taro pit
 
-> **FA map access caveat (Oct 11):** this map and other deeper subzones
+> **FA map access caveat:** this map and other deeper subzones
 > (Burnt Land V, deep Golem's Temple floors) have been **reported
-> gated during Founder's Access** by multiple players even though the
-> map pages exist on this site. If you can't portal through, step back
-> one subzone in the chain (Sanctuary Entrance II or III) — the mob
-> composition and loot table are nearly identical.
+> gated during Founder's Access** by players. If you can't portal
+> through, step back one subzone in the chain (Sanctuary Entrance II
+> or III) — the mob composition and loot table are nearly identical.
+> See **[FA Content Access Status](/fa-access-status)** for the
+> central gating catalog.
 
 - **Map:** [Sanctuary Entrance IV](/maps/10005104) — deep Ant Tunnel past Cursed Sanctuary.
 - **Mobs:** [Tauromacis](/mobs/52) x2, [Taurospear](/mobs/53) x5, [Cold Eye](/mobs/23) x5.
