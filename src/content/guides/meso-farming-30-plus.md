@@ -59,6 +59,20 @@ Free-Market prices on items you plan to buy or sell, see
 <em>farming</em>; those cover <em>planning</em> and <em>trading</em>.
 </div>
 
+<div class="callout callout--warning">
+<strong>FA map access caveat (user-flagged Oct 11):</strong> some
+<em>deeper</em> Victoria Island subzones that exist in the datamine
+(e.g. <strong>Burnt Land V</strong>, deeper Golem's Temple floors,
+Sanctuary Entrance IV) may be gated during Founder's Access even though
+their map pages render on this site. The datamine includes the maps,
+but Nexon can gate portals / NPC-ride access independently. <strong>If
+you can't reach the map referenced in a row, step back one subzone in
+the same chain</strong> (Burnt Land IV instead of V, Sanctuary Entrance
+II instead of IV, etc.) — the mob composition and meso rate are
+essentially identical. We're actively collecting player-verified
+access reports; ping us if you hit a wall and we'll update the row.
+</div>
+
 <h2 id="how-meso-income-works">How meso income works</h2>
 
 Three income streams, roughly in order of volume:
@@ -119,11 +133,13 @@ investments at Lv 50+. Density beats per-kill size this bracket.
   entries + ~36 mesos per kill. Secondary drops (see
   [NPC-sell gems](#npc-sell-gems)) include Lupin Doll (100m NPC). Best
   raw meso density this bracket.
-- **Meso + EXP balance:** Fire Boar across the 5 Burnt Land maps
-  ([I](/maps/10004111) · [II](/maps/10004112) · [III](/maps/10004113) ·
-  [IV](/maps/10004114) · [V](/maps/10004115)) east of Perion. 33 drop
-  entries, Red Viper bow / Steely Throwing Knives occasional drops.
-  Burnt Land IV / V have the densest Fire Boar spawns. The
+- **Meso + EXP balance:** Fire Boar across the Burnt Land chain east of
+  Perion. Access shakes out as [I](/maps/10004111) → [II](/maps/10004112) →
+  [III](/maps/10004113) typically open; **[IV](/maps/10004114) and
+  [V](/maps/10004115) have been reported gated in some FA sessions.**
+  33 drop entries, Red Viper bow / Steely Throwing Knives occasional
+  drops. If IV/V are locked, Burnt Land II or III have equivalent Fire
+  Boar density. The
   [Training routes guide](/training-routes#levels-30-40-the-second-job-power-spike)
   covers the EXP side.
 - **Wild Boar option:** sub-30 Wild Boars still work at Lv 30-34 if
