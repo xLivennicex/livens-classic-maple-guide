@@ -258,6 +258,15 @@ Jr. Balrog, Zombie Mushmom, and (post-launch) Zakum runs.
 
 <h2 id="magician-fire-poison">Fire / Poison</h2>
 
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Wizard
+build guide</strong> covering F/P and I/L side-by-side with CW's
+1.25x elemental math, SP priority for both branches, Magic Guard
+MP-shield mechanics, freeze-lock vs poison-DOT identity question,
+and the grind-rotation verdict for each.
+<strong><a href="/wizard-build">Read the full Wizard guide →</a></strong>
+</div>
+
 <p><strong>Branch pitch:</strong> AoE damage over time via Poison Mist +
 single-target burst via Fire Arrow. Best mage for grinding dense
 spawn maps; weakest against undead content (which includes Shade and
@@ -299,6 +308,11 @@ around "I'll always farm fire-weak zones."
 
 <h2 id="magician-ice-lightning">Ice / Lightning</h2>
 
+<p>See the <strong><a href="/wizard-build#fp-vs-il">Wizard
+deep-dive guide</a></strong> for the full F/P-vs-I/L decision math,
+freeze-lock mechanics, Thunder Bolt AoE discussion, and the slight
+CW-specific ice-weak map advantage.</p>
+
 <p><strong>Branch pitch:</strong> freeze-and-blast via Cold Beam / Ice
 Strike + raw single-target via Thunderbolt. The classic grinder — slow
 clear but reliably safe thanks to Ice freeze lock.</p>
@@ -328,6 +342,15 @@ Same as F/P: pure INT or 4:1 INT:LUK.
   map. Monkey Swamp, Golem's Temple.
 
 <h2 id="magician-cleric">Cleric</h2>
+
+<div class="callout callout--framing">
+<strong>Full deep dive:</strong> we have a <strong>dedicated Cleric
+build guide</strong> covering the HP wash removal reality (hitting
+endgame Priest/Bishop hardest), Heal culture + undead grind rotations,
+SP priority (Heal/Teleport/Invincible/Bless/Holy Arrow), armor + wand
+progression, and the mandatory-party-invite verdict.
+<strong><a href="/cleric-build">Read the full Cleric guide →</a></strong>
+</div>
 
 <p><strong>Branch pitch:</strong> party support (Heal, Bless) + undead
 specialist via Holy Arrow. The most-wanted party invite in the game.
