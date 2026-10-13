@@ -170,7 +170,7 @@ editorial: |
   <a href="/quests/sleepywood-sauna-robe-chain">Sleepywood
   Sauna Robe Chain</a> - he's the "Hungry Ronnie" step
   between Mr. Wetbottom and Rina at Level 32. If you're
-  clearing all the classic v83 side content, you'll meet
+  clearing all the traditional MapleStory side content, you'll meet
   Ronnie twice: once in his tree-tunnel snack-begging role
   around L32, and again here around L41 as a fairy homebuilder.
   He's earned his meme status.</p>

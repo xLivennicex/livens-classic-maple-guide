@@ -51,7 +51,7 @@ editorial: |
 
   <p><strong>Why this quest matters:</strong> character
   customization. The Skullcap / Headband set was the first
-  visible cosmetic personalization most v83 players ever
+  visible cosmetic personalization most traditional MapleStory players ever
   had. Ten years later, longtime players still remember
   which color they got on Maple Island. In-game screenshots
   from 2004-2008 era MapleStory show these hats everywhere.</p>

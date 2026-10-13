@@ -14,7 +14,7 @@ editorial: |
   <p>Elixir restores <strong>35% of MaxHP AND 35% of MaxMP</strong>
   per use, in a single button press. Unlike Blue Potion or the
   basic HP potions, Elixir has a <strong>cooldown between uses</strong>
-  (typically ~30 seconds in v83, TBD in Classic World).</p>
+  (typically ~30 seconds traditionally, TBD in Classic World).</p>
 
   <p><strong>Why the cooldown matters:</strong> the cooldown is
   what keeps Elixir from trivializing damage - you can't spam
@@ -50,7 +50,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2000004), name, restore amounts (35% HP + 35% MP), and cooldown-based-usage mechanic all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Exact cooldown duration retains v83 baseline (~30s) pending CoT 2 verification."
+verificationNote: "Item ID (2000004), name, restore amounts (35% HP + 35% MP), and cooldown-based-usage mechanic all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Exact cooldown duration retains traditional MapleStory baseline (~30s) pending CoT 2 verification."
 sourceSlugs:
   - "osmsdataexplorer"
 

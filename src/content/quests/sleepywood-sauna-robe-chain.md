@@ -72,7 +72,7 @@ rewards:
 editorial: |
   <p>The Sleepywood Sauna Robe chain is one of MapleStory's
   longest single-continent quest chains, and one of the most
-  culturally beloved. It's why every v83 player has a memory of
+  culturally beloved. It's why every traditional MapleStory player has a memory of
   the Sleepywood VIP Sauna, and why Ronnie became a running
   meme in Classic MapleStory circles ("Ronnie's still hungry"
   is basically shorthand for the fetch-quest treadmill).</p>
@@ -173,7 +173,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "All 9 quest IDs (10500-10508), NPCs (Mr. Wetbottom 1061003, Ronnie 1061004, Rina 1010100, Rowen the Fairy 1032101), level requirement (32+), rewards per step, and the Sauna Robe payoff (Blue 1050010 male / Red 1051004 female, L30, +1 all stats, +75 PDD, +10 MHP/MMP, 10 slots, 1.5x sauna recovery) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Drop rate estimates for Curse Eye Tails and Pig's Heads are v83 community estimates pending CoT 2 measurement."
+verificationNote: "All 9 quest IDs (10500-10508), NPCs (Mr. Wetbottom 1061003, Ronnie 1061004, Rina 1010100, Rowen the Fairy 1032101), level requirement (32+), rewards per step, and the Sauna Robe payoff (Blue 1050010 male / Red 1051004 female, L30, +1 all stats, +75 PDD, +10 MHP/MMP, 10 slots, 1.5x sauna recovery) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Drop rate estimates for Curse Eye Tails and Pig's Heads are traditional MapleStory community estimates pending CoT 2 measurement."
 sourceSlugs:
   - "osmsdataexplorer"
 

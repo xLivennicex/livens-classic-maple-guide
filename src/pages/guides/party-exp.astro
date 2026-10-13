@@ -1,7 +1,7 @@
 ---
 /**
  * /guides/party-exp - the "why party is better than solo, actually"
- * guide. Covers the v83 EXP formula, party splits, PQ progression, and
+ * guide. Covers the traditional MapleStory EXP formula, party splits, PQ progression, and
  * grinding spots by level bracket.
  *
  * SEO target: 'maplestory classic party exp guide', 'maplestory
@@ -11,7 +11,7 @@
  * counter-intuitive: two attackers of similar level in a party
  * outperform two soloing.
  *
- * All EXP formula math is v83-era GMS canonical. If MSCW changes the
+ * All EXP formula math is earlier-era MapleStory GMS canonical. If MSCW changes the
  * formula post-launch, verify against the community datamine before
  * updating - don't guess.
  */
@@ -21,7 +21,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <BaseLayout
 	title="Party EXP & Grinding Guide - Liven's Classic Maple Guide"
-	description="How party EXP actually splits, why 2-3 attacker parties out-level solo runs, the classic PQ progression from KPQ through LMPQ, and grinding spots by level bracket. Real v83 formulas, not vibes."
+	description="How party EXP actually splits, why 2-3 attacker parties out-level solo runs, the classic PQ progression from KPQ through LMPQ, and grinding spots by level bracket. Real traditional MapleStory formulas, not vibes."
 	currentPath="/guides"
 	theme="kerning"
 	decorations={false}
@@ -32,7 +32,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			<h1>Party EXP &amp; Grinding</h1>
 			<p class="lede">
 				Party EXP feels like it should punish you - splitting a kill
-				means less each, right? Wrong. The v83 formula gives a bonus
+				means less each, right? Wrong. The traditional MapleStory formula gives a bonus
 				that makes a well-balanced party out-earn a soloer by 20-60%
 				per hour. Here's the math, the PQ progression that exploits it,
 				and where to grind when the queues are dead.
@@ -43,7 +43,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 	<article class="prose">
 		<div class="callout callout--framing">
 			<strong>Important framing note:</strong> the formula and specific
-			bonus percentages below reflect the <strong>v83 GMS canonical
+			bonus percentages below reflect the <strong>traditional MapleStory canonical
 			party formula</strong>, not a datamine-verified CoT 2 value.
 			Party formulas typically live in server code (not client files),
 			so the CoT 2 datamine doesn't surface them. Nexon has retuned
@@ -55,13 +55,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			Progression</a> for a fuller discussion of what CoT 2 has
 			confirmed vs. left uncertain, and
 			<a href="/guides/whats-new-in-cot2">What's New in CoT 2</a> for
-			the broader v83-vs-CoT2 changelog.
+			the broader traditional MapleStory-vs-CoT2 changelog.
 		</div>
 
-		<h2 id="the-formula">The party EXP formula (v83 canonical, unverified for CoT 2)</h2>
+		<h2 id="the-formula">The party EXP formula (traditional MapleStory canon, unverified for CoT 2)</h2>
 		<p>
-			MapleStory v83 party EXP has a bonus multiplier designed to reward
-			grouping. The canonical v83 formula for how much EXP each
+			MapleStory traditional MapleStory party EXP has a bonus multiplier designed to reward
+			grouping. The canonical traditional MapleStory formula for how much EXP each
 			partymate gets from a mob kill:
 		</p>
 		<pre class="callout"><code>partyExp(member) = mobBaseExp * (0.6 / partySize + 0.4 * (memberLevel / totalPartyLevel))</code></pre>
@@ -91,7 +91,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 		<h2 id="solo-vs-party">Solo vs. party: the numbers</h2>
 		<p>
 			Concrete example: two identical Lv 30 Warriors farming Zombie
-			Mushrooms (base EXP: ~90 per kill in v83). Two scenarios:
+			Mushrooms (base EXP: ~90 per kill traditionally). Two scenarios:
 		</p>
 		<ul>
 			<li>

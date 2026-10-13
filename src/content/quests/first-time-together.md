@@ -54,7 +54,7 @@ rewards:
     label: "1 random Intermediate Earring Stat Scroll"
     itemId: 2040301
     itemSlug: "earring-str-scroll-intermediate"
-    details: "Random pick from four options: STR (2040301), DEX (2040305), INT (2040309), or LUK (2040313). Each is a 60%-success chance to add +2 of its stat to an earring. Rare drops in v83; made accessible via KPQ in Classic World."
+    details: "Random pick from four options: STR (2040301), DEX (2040305), INT (2040309), or LUK (2040313). Each is a 60%-success chance to add +2 of its stat to an earring. Rare drops traditionally; made accessible via KPQ in Classic World."
   - type: "item"
     label: "Earring DEX Scroll (Intermediate) - alternate outcome"
     itemId: 2040305
@@ -233,7 +233,7 @@ editorial: |
       ores, and lower-tier starter gear.</li>
   </ol>
 
-  <p>In v83, Intermediate earring scrolls were boss-drop-only and
+  <p>Traditionally, Intermediate earring scrolls were boss-drop-only and
   traded on the Free Market for six-figure sums. Making them a PQ
   reward flips the entire mid-game earring economy - budget
   accessories become upgradeable without farming Zakum for a week.</p>
@@ -257,7 +257,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Datamine-verified via osmsdataexplorer.com Founder's Access dump: Quest ID 10311 (completion rewards 1870 EXP / 687 mesos / 1-of-4 earring scroll), NPC Lakelis (9020000), level requirement 21+, party size 4, boss King Slime (800003, Lv40, 8000HP). KPQ stage maps 80000000-80000600 confirmed via maps.json. Stage mob spawns pulled from mobs.json: Stage 1 = 22 Ligators, Last Stage = 6 Jr. Necki + 3 Curse Eye + 1 King Slime, Bonus = 12 Green Mushrooms + 24 Horny Mushrooms. Full bonus-stage drop tables (42 unique items across both mushrooms) sourced from mobs.json drops arrays with datamine score weights. King Slime's own drop table (Squishy Shoes score 7, Coupon score 1) also datamine-verified. Puzzle-stage mechanics for maps 80000100-80000300 are NOT in the datamine (no mobs, no NPC scripts exposed) - documented from v83 KPQ convention, needs FA playtime verification."
+verificationNote: "Datamine-verified via osmsdataexplorer.com Founder's Access dump: Quest ID 10311 (completion rewards 1870 EXP / 687 mesos / 1-of-4 earring scroll), NPC Lakelis (9020000), level requirement 21+, party size 4, boss King Slime (800003, Lv40, 8000HP). KPQ stage maps 80000000-80000600 confirmed via maps.json. Stage mob spawns pulled from mobs.json: Stage 1 = 22 Ligators, Last Stage = 6 Jr. Necki + 3 Curse Eye + 1 King Slime, Bonus = 12 Green Mushrooms + 24 Horny Mushrooms. Full bonus-stage drop tables (42 unique items across both mushrooms) sourced from mobs.json drops arrays with datamine score weights. King Slime's own drop table (Squishy Shoes score 7, Coupon score 1) also datamine-verified. Puzzle-stage mechanics for maps 80000100-80000300 are NOT in the datamine (no mobs, no NPC scripts exposed) - documented from traditional MapleStory KPQ convention, needs FA playtime verification."
 sourceSlugs:
   - "osmsdataexplorer"
 

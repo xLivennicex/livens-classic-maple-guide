@@ -5,7 +5,7 @@
 // cross-referenced with 5 post-launch CW community sources
 // (MapleClassic Wiki, MeowDB, MMOJUGG, MapleStory Quest, Henesys.gg;
 // all dated Oct 8-9, 2026). The previous version was heavily
-// v83-contaminated and described a KPQ that doesn't exist in CW.
+// traditional MapleStory-contaminated and described a KPQ that doesn't exist in CW.
 //
 // What changed vs the previous version:
 //   - REMOVED the "waiting room" stage - CW drops you straight into Stage 1
@@ -371,7 +371,7 @@ export const KPQ_ENTRY_REQUIREMENTS = {
 		"NO prerequisite quest chain. Brand-new Lv 21 characters can queue immediately.",
 		"NO entry fee. Lakelis takes you in free.",
 		"NO cooldown between runs. Clear and re-queue immediately.",
-		"NO waiting room in Classic World. You go from Lakelis straight to Stage 1 - this changed from the v83 version.",
+		"NO waiting room in Classic World. You go from Lakelis straight to Stage 1 - this changed from the traditional MapleStory version.",
 		"Level 30 upper cap is enforced - Lv 31+ characters cannot enter.",
 		"Party size 3-6 confirmed by community sources. The game won't start with 2 members or solo.",
 	],
@@ -401,12 +401,12 @@ export const KPQ_META = {
 	tagline:
 		"Six-player trivia + puzzle gauntlet. Classic Maple's rite of passage, reworked in Classic World.",
 	notableChanges: [
-		"NO waiting room - party goes from Lakelis straight to Stage 1 (vs v83's lobby map).",
-		"NO Wraith / Jr. Wraith anywhere - the v83 ghost mobs don't appear in CW KPQ.",
-		"Stage 1 is a trivia-and-coupon mechanic - Cloto gives each non-leader member a question with a numeric answer, you hunt 22 Ligators for Coupons and turn in the exact count. Previously (v83) this was a platform-rope puzzle.",
-		"Stage 2 is a 4-rope puzzle (3 of 4 occupied, 4 combinations). Previously (v83) this was mob killing.",
-		"Stage 3 is cats-on-logs platform puzzle (5 platforms with 1-5 cats, 3 occupied, 10 combinations). Previously (v83) this was the barrel puzzle.",
-		"Stage 4 is barrels (6 numbered 1-6, 3 occupied, 20 combinations). Previously (v83) this was coin-insertion.",
+		"NO waiting room - party goes from Lakelis straight to Stage 1 (vs traditional MapleStory's lobby map).",
+		"NO Wraith / Jr. Wraith anywhere - the traditional MapleStory ghost mobs don't appear in CW KPQ.",
+		"Stage 1 is a trivia-and-coupon mechanic - Cloto gives each non-leader member a question with a numeric answer, you hunt 22 Ligators for Coupons and turn in the exact count. Previously (traditional MapleStory) this was a platform-rope puzzle.",
+		"Stage 2 is a 4-rope puzzle (3 of 4 occupied, 4 combinations). Previously (traditional MapleStory) this was mob killing.",
+		"Stage 3 is cats-on-logs platform puzzle (5 platforms with 1-5 cats, 3 occupied, 10 combinations). Previously (traditional MapleStory) this was the barrel puzzle.",
+		"Stage 4 is barrels (6 numbered 1-6, 3 occupied, 20 combinations). Previously (traditional MapleStory) this was coin-insertion.",
 		"King Slime: Lv 32, 16,820 HP per MapleClassic Wiki (community source). Summons regular Slimes at 50% HP. On death splits into 11 regular Slimes (optional kill). Datamine shows Lv 40 / 8,000 HP but the wiki is more recent.",
 		"Rewards: every member gets a Companion's Magic Box (item 2430000) per clear. First-ever clear also triggers Proof of Companionship for an Intermediate Earring scroll turn-in to Lakelis.",
 		"Squishy Shoes (item 1072128, L28 all-stat +1/+1/+1/+1, 5 slots) is King Slime's chance drop - the iconic KPQ chase item.",

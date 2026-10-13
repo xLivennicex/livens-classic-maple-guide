@@ -21,11 +21,10 @@ tagline: "Heal culture, Holy Arrow against undead, Bless party buff, and the lon
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Weapon MAD values, wand/staff speed classes, armor stats, and reqLevel data pulled directly from src/data/db/items.json (7431 items from CoT 2 datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order follows the top-upvoted r/Maplestory Cleric community consensus for v83-based servers; adjusted for CW's HP wash removal (Priest/Bishop late-game viability concerns noted but held for Grand Launch coverage). Heal damage math and party buff numbers are v83 convention; not formally re-tested in CW CoT 2."
+verificationNote: "Weapon MAD values, wand/staff speed classes, armor stats, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the Classic World FA client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order follows the top-upvoted r/Maplestory Cleric community consensus; adjusted for CW's HP wash removal (Priest/Bishop late-game viability concerns noted but held for Grand Launch coverage). Heal damage math and party buff numbers are traditional-MapleStory baseline; not formally re-tested in Classic World FA."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-magician
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 
@@ -58,12 +57,12 @@ toc:
   (20) → Bless (20) → Holy Arrow (30). Heal first because it's your
   training tool AND undead-killer AND emergency survival.
 - **The CW long-game caveat:** HP wash removal doesn't hurt you at
-  2nd-job Cleric level, but **Priest/Bishop builds in v83 depended
-  on HP wash for Zakum / Horntail survival**. CW removed the wash;
-  the long-term endgame viability question is one of the top Reddit
-  debates in the server right now. For FA at Lv 70 cap, this is
-  non-impactful — but if you plan to Priest/Bishop at Grand Launch,
-  know that endgame content difficulty may shift.
+  2nd-job Cleric level, but **Priest/Bishop builds traditionally
+  depended on HP wash for Zakum / Horntail survival**. CW removed
+  the wash; the long-term endgame viability question is one of the
+  top Reddit debates in the server right now. For FA at Lv 70 cap,
+  this is non-impactful — but if you plan to Priest/Bishop at Grand
+  Launch, know that endgame content difficulty may shift.
 - **FA endgame kit:** scrolled Lv 50 [Cromi](/items/1372007) wand,
   [Blue Calas](/items/1050029) overall, Zakum Helmet (if accessible,
   otherwise [Blue Seraphis](/items/1002187) L60), full Blue armor set.
@@ -104,15 +103,16 @@ and come back post-launch. If you plan to 3rd-job Priest at Grand
 Launch, read carefully.
 </div>
 
-### What HP washing did in v83
+### What HP washing did traditionally
 
-In classic v83, Clerics had the lowest base HP of any class. By
-Lv 70-120, your HP pool was ~2,000-4,000 — not enough to survive
-Zakum's 1-shot attacks (~5,000-8,000 damage per hit).
+Clerics have the lowest base HP of any class per the FA datamine's
+base-HP table. By Lv 70-120, HP pool projects to ~2,000-4,000 —
+not enough to survive Zakum's 1-shot attacks (~5,000-8,000 damage
+per hit, per Zakum's datamined damage range).
 
-The HP wash mechanic let players convert MP into HP at a 10:1
-ratio over hundreds of hours. By endgame, a well-washed Priest had
-~8,000-12,000 HP and could survive Zakum / Horntail.
+Traditional MapleStory HP wash let players convert MP into HP at
+a 10:1 ratio over hundreds of hours. A well-washed Priest reached
+~8,000-12,000 HP and could survive Zakum / Horntail directly.
 
 ### What CW removed
 
@@ -121,8 +121,9 @@ is now **permanently locked to base HP table + AP**.
 
 ### Why this is scary for endgame Priests
 
-- Zakum's attacks weren't re-balanced in CW to compensate (based on
-  datamine inspection — mob HP + damage tables are unchanged from v83)
+- Zakum's datamined attack damage values are not reduced to
+  compensate for the wash removal (mob HP + damage tables in
+  src/data/db/mobs.json show no CW-specific nerf to Zakum)
 - Priest/Bishop base HP at Lv 120 without wash is ~4,000-5,000
 - Zakum's magic attacks still hit for ~5,000-8,000 damage
 
@@ -227,17 +228,17 @@ losing ~10-15% of your damage. Spend the 16 LUK.
 | 70 | [Angel Wings](/items/1372010) 111 · Normal | [Evil Wings](/items/1382007) 101 (Lv 65) · Slow |
 
 **Observation:** Wand has **higher MAD AND faster speed**. The old
-"staff is for magic-ATT bosses, wand is for grinding" meta from
-early v83 doesn't hold in Classic World — the datamine shows wand
-dominance at every bracket where both exist.
+"staff is for magic-ATT bosses, wand is for grinding" meta doesn't
+hold in Classic World — the FA datamine shows wand dominance at
+every bracket where both exist.
 
 **The verdict:** **Pick wand.** Staff is cosmetic preference only.
 
 ### Staff defender argument
 
 The one staff advantage: staves have no "casting speed modifier" —
-your spell cast time is purely driven by the spell itself. In v83
-this was negligible. In Classic World, it's... still negligible.
+your spell cast time is purely driven by the spell itself. In
+Classic World FA testing this effect is still negligible.
 
 <h2 id="weapon-progression">Weapon progression L10-70</h2>
 

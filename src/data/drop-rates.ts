@@ -1,5 +1,5 @@
 /**
- * v83 drop-rate estimation from the datamine's `score` field.
+ * traditional MapleStory drop-rate estimation from the datamine's `score` field.
  *
  * ============================================================
  * WHAT IS `score` AND WHY DON'T WE HAVE REAL PERCENTAGES?
@@ -10,10 +10,10 @@
  * current dataset) that orders drops by relative frequency,
  * not a percentage.
  *
- * Why not a percentage? The v83 client-side drop tables encode
+ * Why not a percentage? The traditional MapleStory client-side drop tables encode
  * relative weights, not absolute rates. The ACTUAL drop rate
  * depends on the server's rate multipliers, which every private
- * server tunes differently. NEXON's live server rates for v83
+ * server tunes differently. NEXON's live server rates for traditional MapleStory
  * are not part of the public datamine.
  *
  * This module provides a community-consensus mapping from score

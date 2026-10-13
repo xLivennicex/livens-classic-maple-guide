@@ -19,7 +19,7 @@ editorial: |
   Pilgrim's Hat has stuck in classic-Maple players' memories for
   two reasons: (a) it looks like actual gear rather than a
   cartoon prop, and (b) it was a really popular scroll target
-  during the "10% scroll everything" era of v83 because a
+  during the "10% scroll everything" era of traditional MapleStory because a
   perfectly-scrolled Pilgrim's Hat with +INT or +DEX bonuses
   was a rare and coveted status symbol.</p>
   <p>For a first character, don't scroll this - grab one, wear it
@@ -29,7 +29,7 @@ editorial: |
 
 callout: |
   <strong>Scroll safely (or don't at all):</strong> perfectly-
-  scrolled Pilgrim's Hats sold for millions of mesos in late v83.
+  scrolled Pilgrim's Hats sold for millions of mesos in late traditional MapleStory.
   If Classic World's economy tilts back that way, this cheap hat
   could become a real investment vehicle. But for a first character
   building a first character, ignore that trap and just wear it.
@@ -43,10 +43,8 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "historical-archive"
-verificationNote: "Level requirement and category are canonical v83 knowledge; exact defense values await Classic World verification."
-sourceSlugs:
-  - "hiddenstreet-v83-database"
-
+verificationNote: "Level requirement and category are canonical traditional MapleStory knowledge; exact defense values await Classic World verification."
+sourceSlugs: []
 # ==== Layout ====
 theme: "henesys"
 lastUpdated: "2026-08-23"

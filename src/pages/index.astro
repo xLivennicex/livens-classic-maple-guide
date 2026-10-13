@@ -25,13 +25,13 @@ import generatedAt from "../data/db/generated-at.json";
 // + copy is trivially reorderable and reads at-a-glance. Counts pull
 // from generated-at.json (5-key JSON, no dossier bundles imported).
 //
-// Sprint 75: emoji icons replaced with real v83-era sprites. Each
+// Sprint 75: emoji icons replaced with real earlier-era MapleStory sprites. Each
 // tile picks a canonical representative from its collection:
-//   - Mobs: Orange Mushroom (id 9, wzId 1210102) - iconic v83 mob
+//   - Mobs: Orange Mushroom (id 9, wzId 1210102) - iconic traditional MapleStory mob
 //   - NPCs: Roger (id 3, wzId 2000) - starter NPC on Maple Island
 //   - Quests: Return Scroll icon (item 2030000) - most evocative
 //     of "adventure/questing" among available item icons
-//   - Items: Zakum Helmet (1002180) - v83 endgame trophy item
+//   - Items: Zakum Helmet (1002180) - traditional MapleStory endgame trophy item
 //   - Maps: Henesys minimap (100000000) - most-visited town
 //   - World map: static SVG globe (no single canonical map sprite;
 //     inline SVG keeps request count at zero and scales cleanly)
@@ -76,7 +76,7 @@ const referenceTiles = [
 		href: "/quests", name: "Quests", count: generatedAt.questCount,
 		desc: "Chain length, level range, giver NPC, rewards.",
 		// Sprint 75.2: Liven asked for "quest board NPC" for this
-		// tile. Turns out v83's only board-type NPC (Community
+		// tile. Turns out traditional MapleStory's only board-type NPC (Community
 		// Board, id 235/431) has no wzId AND no meowdb sprite,
 		// so we go for the next-best classic quest metaphor:
 		// Chief Stan (wzId 1012003) - the Amherst tutorial NPC
@@ -268,7 +268,7 @@ const prepChecklist = [
 	     New hidden zone tucked under Ellinia, unlocked via the
 	     "Welcome to the Hollow" quest chain at Lv 45. Deserves
 	     top-of-page real estate because it's the single biggest
-	     new-content story between v83-era Maple and MSCW. -->
+	     new-content story between earlier-era MapleStory Maple and MSCW. -->
 	<section class="section spotlight" aria-labelledby="hollow-heading">
 		<div class="spotlight__inner">
 			<div class="spotlight__copy">
@@ -738,7 +738,7 @@ const prepChecklist = [
 		justify-content: center;
 	}
 	/* Sprint 75: sprite render. Pixel-art nearest-neighbor scaling
-	   preserves the crispness of v83-era 32-64px sprites. Objects
+	   preserves the crispness of earlier-era MapleStory 32-64px sprites. Objects
 	   contain within the 40px box so wide sprites (bosses, minimaps)
 	   don't blow out the card layout. */
 	.ref-card__icon :global(.ref-card__sprite) {

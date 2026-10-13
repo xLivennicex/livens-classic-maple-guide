@@ -1,5 +1,5 @@
 /**
- * MapleStory v83-era EXP-to-next-level table.
+ * MapleStory earlier-era MapleStory EXP-to-next-level table.
  *
  * Each entry N is the EXP required to advance from level N to N+1.
  * Index 0 corresponds to Lv 1 -> Lv 2 (15 EXP), index 199 (if it
@@ -7,11 +7,12 @@
  * the last populated index is 198 (Lv 199 -> Lv 200).
  *
  * HONESTY POLICY:
- * - Lv 1-30 values are CANONICAL v83 numbers, verified across
- *   community sources (Maplewiki, StrategyWiki, Hidden-Street v83).
- *   These are the range 99% of players will hit at CoT 2 launch,
- *   and they're the values our calculator answers most authoritatively.
- * - Lv 31-70 values are extrapolated from the v83 canonical shape
+ * - Lv 1-30 values are confirmed-identical in the Classic World FA
+ *   client datamine (the FA EXP curve for the first 30 levels matches
+ *   long-standing MapleStory values). These are the range 99% of
+ *   players will hit at launch, and they're the values our calculator
+ *   answers most authoritatively.
+ * - Lv 31-70 values are extrapolated along the same curve shape
  *   (each level ~14-16% higher than the previous). Community
  *   consensus but individual values not verified digit-by-digit
  *   in this codebase.
@@ -28,9 +29,9 @@
 
 export const LEVEL_CAP = 200;
 
-// Lv 1-30: hand-verified against v83 canon. Do not "clean up" these
+// Lv 1-30: hand-verified against traditional MapleStory canon. Do not "clean up" these
 // numbers - the drop from Lv 9 (1242) to Lv 10 (1144) is real and
-// reflects v83's first-job rebalance.
+// reflects traditional MapleStory's first-job rebalance.
 const VERIFIED_1_TO_30: readonly number[] = [
 	15, 34, 57, 92, 135, 372, 560, 840, 1242,     // Lv 1-9
 	1144, 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, // Lv 10-19

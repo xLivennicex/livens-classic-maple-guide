@@ -22,12 +22,11 @@ tagline: "F/P vs I/L settled with CW's 1.25x elemental multiplier. Magic Guard s
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Weapon MAD values, speed classes, armor stats, and reqLevel data pulled directly from src/data/db/items.json (7431 items from CoT 2 datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier confirmed, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority for both F/P and I/L corrects the xBucc Reddit community-build cluster errors noted in the OP's own addendum. 1.25x elemental math uses the Lunitidal msclassic.wiki writeup as primary source; damage multiplier is confirmed-live in CW per Day 1 player tests. Mob elemental weaknesses sourced from mobs.json (CoT 2 datamine) + v83 convention lookups where mob flags are null."
+verificationNote: "Weapon MAD values, speed classes, armor stats, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the Classic World FA client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier confirmed, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority for both F/P and I/L corrects the xBucc Reddit community-build cluster errors noted in the OP's own addendum. 1.25x elemental math uses the Lunitidal msclassic.wiki writeup as primary source; damage multiplier is confirmed-live in Classic World per Day 1 player tests. Mob elemental weaknesses sourced from mobs.json (FA datamine) + traditional MapleStory lookups where mob flags are null."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
   - msclassic-wiki-elemental-125x
-  - ayumilove-v83-magician
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 
@@ -282,10 +281,10 @@ full progression tables.
 
 ### Element-specific armor variants
 
-**Datamine shows no element-specific armor variants in CoT 2.**
-The old v83 rumor about F/P wearing fire-resist gear or I/L wearing
-cold-resist gear doesn't apply — Classic World mage armor is
-element-neutral MDEF only.
+**The FA datamine shows no element-specific armor variants.** The
+old rumor about F/P wearing fire-resist gear or I/L wearing cold-
+resist gear doesn't apply — Classic World mage armor is element-
+neutral MDEF only.
 
 <h2 id="grind-rotations">Grind rotations</h2>
 

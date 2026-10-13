@@ -95,7 +95,7 @@ editorial: |
   Bring a stack of White Potions if you're at exactly L30.</p>
 
 callout: |
-  <strong>Don't wait past level 30.</strong> The old v83 pattern of
+  <strong>Don't wait past level 30.</strong> The old traditional MapleStory pattern of
   "grind to 31 or 32 for extra buffer then advance" still works,
   but there's no mechanical benefit anymore - you just delay access
   to your second-job skill tree. Advance at 30, complete the full
@@ -111,7 +111,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "All 4 chain quest IDs (20000, 20001, 20002, 20003), NPCs (Dances with Balrog 1022000 Perion, Warrior Job Instructor at West Rocky Mountain IV), per-step EXP (3,150 each = 12,600 total), and quest names/descriptions pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Second-job branch mechanics (Fighter/Page/Spearman) inherited from GMS/v83 tradition; CoT 2 confirmed to preserve branch structure."
+verificationNote: "All 4 chain quest IDs (20000, 20001, 20002, 20003), NPCs (Dances with Balrog 1022000 Perion, Warrior Job Instructor at West Rocky Mountain IV), per-step EXP (3,150 each = 12,600 total), and quest names/descriptions pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Second-job branch mechanics (Fighter/Page/Spearman) inherited from GMS/traditional MapleStory tradition; CoT 2 confirmed to preserve branch structure."
 sourceSlugs:
   - "osmsdataexplorer"
 

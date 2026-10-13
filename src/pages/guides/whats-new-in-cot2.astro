@@ -1,47 +1,47 @@
 ---
 /**
  * /guides/whats-new-in-cot2 - the anchor "here's what's actually
- * different from v83" reference piece.
+ * different from traditional MapleStory" reference piece.
  *
  * SEO target: 'maplestory classic worlds new content', 'MSCW vs
- * v83 differences', 'maplestory classic worlds what changed',
+ * traditional MapleStory differences', 'maplestory classic worlds what changed',
  * 'MSCW forgotten hollow'. High-intent returning-player query.
  *
- * The framing thesis: v83 GMS is not the spec. MSCW is v83-INSPIRED
+ * The framing thesis: traditional MapleStory is not the spec. MSCW is traditional MapleStory-INSPIRED
  * but Nexon has visibly reshuffled content, added new zones, added
  * new systems (Citizenship, Crafting), and tuned numbers we don't
  * yet know the full extent of. Every guide on the site now cross-
  * links back here so returning players know what to un-remember.
  *
- * Data source: everything called "CoT 2-only" below is derived from
- * cross-referencing the datamine (items.json, maps.json, quests.json)
- * against v83 GMS content lists on Hidden Street / OldSchool wikis.
- * Maps without wzIds are v83-absent by definition (wzId comes from
- * maplestory.io v83 GMS asset db).
+ * Data source: everything called "Classic-World-only" below is
+ * derived from the FA client datamine (items.json, maps.json,
+ * quests.json). We flag maps as 'new to CW' when they have no wzId
+ * (wzId mapping comes from maplestory.io's older-asset DB, so a
+ * null wzId means the map is new to Classic World).
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-	title="What's New in Classic World (CoT 2 vs v83) - Liven's Classic Maple Guide"
-	description="MapleStory Classic World is not straight-up v83 GMS. Nexon added Forgotten Hollow, the Citizenship system, Crafting, Physical Fitness Test jump quests, plus reworked skills and shifted mob/quest EXP. This is the honest returning-player rundown of what's actually different."
+	title="What's New in Classic World (CoT 2 vs traditional MapleStory) - Liven's Classic Maple Guide"
+	description="MapleStory Classic World is not straight-up traditional MapleStory. Nexon added Forgotten Hollow, the Citizenship system, Crafting, Physical Fitness Test jump quests, plus reworked skills and shifted mob/quest EXP. This is the honest returning-player rundown of what's actually different."
 	currentPath="/guides"
 	theme="lith"
 	decorations={false}
 >
 	<section class="section-heading">
 		<div>
-			<span class="eyebrow eyebrow--guide">CoT 2 vs v83 Reality Check</span>
+			<span class="eyebrow eyebrow--guide">CoT 2 vs traditional MapleStory Reality Check</span>
 			<h1>What's New in Classic World</h1>
 			<p class="lede">
-				Every returning player Googles "MapleStory Classic is like v83
+				Every returning player Googles "MapleStory Classic is like traditional MapleStory
 				right?" and gets a vibes-based "kinda?" back. Here's the honest
 				answer: Nexon added <strong>entire new zones</strong> (Forgotten
 				Hollow), <strong>two brand-new systems</strong> (Citizenship,
 				Crafting), rewrote at least <strong>one first-job skill list</strong>
 				(Bowman), and shifted mob/quest EXP values across the board. The
-				v83 wiki is a starting point, not a spec.
+				traditional MapleStory wiki is a starting point, not a spec.
 			</p>
 		</div>
 	</section>
@@ -56,10 +56,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			live-server behavior and note the diffs on each system's page.
 		</div>
 
-		<h2 id="new-zones">New zones that don't exist in v83</h2>
+		<h2 id="new-zones">New zones that don't exist traditionally</h2>
 		<p>
-			The datamine surfaces 78 named maps that have no v83-GMS wzId
-			(the identifier maplestory.io uses to serve v83 assets). These
+			The datamine surfaces 78 named maps that have no traditional MapleStory-GMS wzId
+			(the identifier maplestory.io uses to serve traditional MapleStory assets). These
 			are the CoT 2 exclusives, broken down by region:
 		</p>
 
@@ -104,7 +104,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			The Citizenship system introduced a physical <strong>Town Hall</strong>
 			in Henesys (and presumably Kerning City) that houses citizenship
 			registration, contribution turn-ins, and shop rotations. This
-			building doesn't exist in v83 at all - see the
+			building doesn't exist traditionally at all - see the
 			<a href="/citizenship">Citizenship guide</a> for how the whole
 			system works.
 		</p>
@@ -136,7 +136,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h3>Citizenship (Henesys or Kerning City)</h3>
 		<p>
-			<strong>Not a v83 system at all.</strong> At Lv 12, you pick a
+			<strong>Not a traditional MapleStory system at all.</strong> At Lv 12, you pick a
 			town allegiance, earn contribution via daily quests and events,
 			and climb 10 grades to unlock town-exclusive gear, chairs, and
 			cosmetic access. Kicks off the region-locked shop meta and
@@ -149,7 +149,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h3>Crafting</h3>
 		<p>
-			<strong>Also not a v83 system.</strong> Weaponcrafting +
+			<strong>Also not a traditional MapleStory system.</strong> Weaponcrafting +
 			Woodcrafting kits let you assemble gear from datamined ETC drops
 			and materials. Ties into the "never sell ETC" beginner advice
 			hard - if you sold your Leaves at Lv 12, you can't craft the Lv
@@ -162,7 +162,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h2 id="skill-reworks">First-job skill changes</h2>
 		<p>
-			CoT 2 keeps most v83 first-job skill kits intact but there are
+			CoT 2 keeps most traditional MapleStory first-job skill kits intact but there are
 			confirmed changes on two classes. Full details in
 			<a href="/guides/skill-changes">the Skill Changes guide</a>.
 			Summary:
@@ -175,13 +175,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			</li>
 			<li>
 				<strong>Bowman:</strong> lost <em>Blessing of Amazon</em>
-				(the classic v83 party attack buff), gained <em>Power
+				(the traditional MapleStory party attack buff), gained <em>Power
 				Knockback</em> (crowd-control AoE that always crits).
 				Significant build re-think for returners.
 			</li>
 			<li>
 				<strong>Magician + Thief:</strong> all six first-job skills
-				match the v83 baseline exactly. No changes. (Datamine calls
+				match the traditional MapleStory baseline exactly. No changes. (Datamine calls
 				Thief "Rogue" internally, but the visible class name is
 				unchanged.)
 			</li>
@@ -190,7 +190,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 		<h2 id="exp-shifts">EXP curve shifts</h2>
 		<p>
 			Both mob EXP and quest EXP values in the datamine differ from
-			commonly-cited v83 numbers, though the shifts are inconsistent
+			commonly-cited traditional MapleStory numbers, though the shifts are inconsistent
 			(some go up, some down, some stay the same). This is the least
 			settled area right now - we know the numbers are different but we
 			don't have a confirmed pattern.
@@ -203,8 +203,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h2 id="what-hasnt-changed">What HASN'T changed (that you can still trust)</h2>
 		<p>
-			Not everything in v83 muscle memory is worth un-learning. Verified
-			<strong>identical to v83</strong> in the CoT 2 datamine:
+			Not everything traditionally muscle memory is worth un-learning. Verified
+			<strong>identical to traditional MapleStory</strong> in the CoT 2 datamine:
 		</p>
 		<ul>
 			<li>
@@ -219,7 +219,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 				equipment stat scaling all unchanged.
 			</li>
 			<li>
-				<strong>Item categories + IDs:</strong> Every v83 item ID
+				<strong>Item categories + IDs:</strong> Every traditional MapleStory item ID
 				that carried over kept its ID. Red Potion is still 2000000.
 				Chaos Scroll is still Chaos Scroll. Set bonuses still exist.
 			</li>
@@ -241,7 +241,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 		</p>
 		<ul>
 			<li>
-				<strong>Exact party EXP formula.</strong> The v83 formula was
+				<strong>Exact party EXP formula.</strong> The traditional MapleStory formula was
 				<code>0.6/partySize + 0.4*(memberLv/totalLv)</code> - our
 				<a href="/guides/party-exp">Party EXP guide</a> uses it as a
 				working assumption, but we haven't confirmed CoT 2 uses the
@@ -280,7 +280,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			</li>
 			<li>
 				<a href="/guides/skill-changes">Skill Changes Per Class</a> -
-				before you commit to a class based on v83 memory, check what
+				before you commit to a class based on traditional MapleStory memory, check what
 				changed in the kit.
 			</li>
 			<li>
@@ -291,7 +291,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			<li>
 				<a href="/citizenship">Citizenship</a> and
 				<a href="/crafting">Crafting</a> - the two new systems that
-				have zero v83 analog and gate serious progression.
+				have zero traditional MapleStory analog and gate serious progression.
 			</li>
 			<li>
 				<a href="/guides/getting-started">Getting Started</a> - our

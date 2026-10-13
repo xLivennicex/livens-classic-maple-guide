@@ -15,7 +15,7 @@ editorial: |
   failure - <em>not</em> at the same time as the 60% success
   roll), the earring is destroyed.</p>
 
-  <p>In v83 these scrolls were world-drop only, hoarded and
+  <p>Traditionally these scrolls were world-drop only, hoarded and
   traded on the Free Market for six-figure meso sums. Classic
   World bakes them into the <a href="/quests/first-time-together">Kerning Party Quest</a>
   reward table (as one of four possible drops, alongside DEX,
@@ -43,7 +43,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040301), name, stat (STR), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains v83 mechanics pending CoT 2 confirmation."
+verificationNote: "Item ID (2040301), name, stat (STR), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains traditional MapleStory mechanics pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

@@ -15,10 +15,8 @@ decorations: true
 
 # ==================== Verification ====================
 verificationStatus: "closed-test-info"
-verificationNote: "First-job skill lists, skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, damage, AP requirements) still reflect the v83-era baseline pending live Classic World verification once Founder's Access begins on October 6."
+verificationNote: "First-job skill lists, skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, damage, AP requirements) still reflect the earlier-era MapleStory baseline pending live Classic World verification once Founder's Access begins on October 6."
 sourceSlugs:
-  - "ayumilove-v83-warrior"
-  - "hiddenstreet-v83-database"
   - "osmsdataexplorer"
 
 # ==================== TOC ====================
@@ -67,15 +65,15 @@ advancement:
 
 # ==================== AP allocation ====================
 apAllocation:
-  summary: "<strong>The short version (v83 baseline):</strong> pour points into STR every level. DEX only exists to keep your hit rate acceptable. You get 5 AP per level starting at level 2 - by level 30 (second job) you've allocated 25 (starting) + 140 (from levels) = ~165 AP total."
+  summary: "<strong>The short version (traditional MapleStory baseline):</strong> pour points into STR every level. DEX only exists to keep your hit rate acceptable. You get 5 AP per level starting at level 2 - by level 30 (second job) you've allocated 25 (starting) + 140 (from levels) = ~165 AP total."
   builds:
     - name: "Pure STR (glass cannon)"
       description: "Every AP into STR. Maximum damage output; you will miss more often, especially on same-level or higher mobs. Popular in party-heavy playstyles where a Cleric can buff your accuracy."
     - name: "DEX = (character level - 1)  [recommended for solo]"
-      description: "Keep DEX one below your level for reliable hit rate. Slightly lower damage; substantially more consistent. This is what most v83 guides recommended for first-time Warriors."
+      description: "Keep DEX one below your level for reliable hit rate. Slightly lower damage; substantially more consistent. This is what most traditional MapleStory guides recommended for first-time Warriors."
     - name: "Milestone check at L30"
       description: "For the DEX-per-level build: ~135 STR, ~30 DEX. For pure STR: ~165 STR, 25 DEX (starting). Either way, you should also have accumulated enough STR to equip your second-job weapon by advancement day."
-  notes: "The DEX-level rule is the more forgiving choice for a first character and the recommendation most v83 guides made. Whether the hit-rate formula still behaves this way in Classic World is one of the values we will verify at launch."
+  notes: "The DEX-level rule is the more forgiving choice for a first character and the recommendation most traditional MapleStory guides made. Whether the hit-rate formula still behaves this way in Classic World is one of the values we will verify at launch."
   callout: |
     <strong>Common AP mistakes to avoid:</strong>
     <ul>
@@ -92,55 +90,55 @@ apAllocation:
         a 90-STR requirement, plan your leveling AP to hit
         that number by level 30.</li>
       <li><strong>AP resets exist but cost mesos or NX.</strong>
-        The v83-era AP Reset scrolls could be purchased for
+        The earlier-era MapleStory AP Reset scrolls could be purchased for
         mesos in-game. Classic World's economy for these is
         TBD - plan your build assuming resets are expensive.</li>
     </ul>
 
 # ==================== Skills ====================
 skills:
-  order: "<strong>CoT 2 update:</strong> first job now gives you SIX skills, not the five old v83 guides list - CoT 2 added <em>Precise Strikes</em>, a passive Accuracy + Critical Rate boost. The recommended v83 order still applies for the original five: <strong>1 point in Improved HP Recovery,</strong> then max Improved MaxHP Increase, then max Power Strike, then max Slash Blast, then Iron Body with anything left over. Slot Precise Strikes at 1-point utility once you're at 30, or skip it entirely if you're committed to a min-max build."
+  order: "<strong>CoT 2 update:</strong> first job now gives you SIX skills, not the five old traditional MapleStory guides list - CoT 2 added <em>Precise Strikes</em>, a passive Accuracy + Critical Rate boost. The recommended traditional MapleStory order still applies for the original five: <strong>1 point in Improved HP Recovery,</strong> then max Improved MaxHP Increase, then max Power Strike, then max Slash Blast, then Iron Body with anything left over. Slot Precise Strikes at 1-point utility once you're at 30, or skip it entirely if you're committed to a min-max build."
   entries:
     - name: "Improved Max HP Recovery"
       skillId: "1000000"
       type: "Passive"
-      maxLevel: "16 (v83)"
+      maxLevel: "16 (traditional MapleStory)"
       summary: "Faster natural HP regeneration over time."
       suggested: "1 point (prerequisite for other passives)"
     - name: "Improved Max HP Increase"
       skillId: "1000001"
       type: "Passive"
-      maxLevel: "10 (v83)"
+      maxLevel: "10 (traditional MapleStory)"
       summary: "Bonus HP gained per level-up. Compounds with every level, so investing early pays for the rest of the character's life."
-      suggested: "Max out first (v83 baseline)"
+      suggested: "Max out first (traditional MapleStory baseline)"
     - name: "Precise Strikes"
       skillId: "1000002"
       type: "Passive"
       maxLevel: "15 (CoT 2 verified)"
       summary: "<strong>New in CoT 2.</strong> Repeated practice with your weapon increases Accuracy and Critical Rate. A passive quality-of-life boost - Accuracy helps you actually connect with same-level or higher mobs, and Crit is genuinely rare on Warriors."
-      suggested: "1 point utility, or fully skip in favor of the classic v83 damage-first build"
+      suggested: "1 point utility, or fully skip in favor of the traditional MapleStory damage-first build"
     - name: "Iron Body"
       skillId: "1001000"
       type: "Buff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Temporary boost to Weapon Defense."
       suggested: "Skip early or 1-point utility; damage skills come first"
     - name: "Power Strike"
       skillId: "1001001"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Single strong hit. Higher damage-per-point than Slash Blast against single targets."
-      suggested: "Max after HP passive (v83 baseline)"
+      suggested: "Max after HP passive (traditional MapleStory baseline)"
     - name: "Slash Blast"
       skillId: "1001002"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Short-range AoE hit. The AoE pick once you start training on grouped mobs."
-      suggested: "Max after Power Strike (v83 baseline)"
+      suggested: "Max after Power Strike (traditional MapleStory baseline)"
 
 # ==================== Training routes ====================
 training:
-  intro: "v83 baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access."
+  intro: "traditional MapleStory baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access."
   routes:
     - levels: "Levels 1 - 10 (Beginner)"
       where: "Maple Island"
@@ -172,7 +170,7 @@ equipment:
     - name: "Level 18 chain (Alex reconciliation):"
       description: "Run <a href=\"/quests/alexs-request\">Alex's Request</a> through <a href=\"/quests/mothers-gold-watch\">Mother's Gold Watch</a> for guaranteed <a href=\"/items/weighted-earrings\">Weighted Earrings</a> (L20, +22 MDD, 5 slots). This is your KPQ scroll target."
     - name: "Level 20 - 27 (mushroom hats):"
-      description: "Zombie's Lost Gold Tooth (sword) or a Fusion Axe were common v83 upgrades. Also consider <a href=\"/items/ribboned-pig-headband\">Ribboned Pig Headband</a> at L27 (+26 PDD, +7 MMP, 7 slots) from <a href=\"/quests/estelles-special-sauce\">Estelle's Special Sauce</a>."
+      description: "Zombie's Lost Gold Tooth (sword) or a Fusion Axe were common traditional MapleStory upgrades. Also consider <a href=\"/items/ribboned-pig-headband\">Ribboned Pig Headband</a> at L27 (+26 PDD, +7 MMP, 7 slots) from <a href=\"/quests/estelles-special-sauce\">Estelle's Special Sauce</a>."
     - name: "Level 21+ (KPQ scroll investment):"
       description: "Start running <a href=\"/quests/first-time-together\">Kerning Party Quest</a> for <a href=\"/items/earring-str-scroll-intermediate\">Earring STR Scrolls (Intermediate)</a> (+2 STR at 60% success). Apply to your Weighted Earrings from the Alex chain."
     - name: "Level 30 milestone Overall:"
@@ -193,7 +191,7 @@ secondJobs:
     - name: "Fighter"
       subtitleLabel: "Weapon"
       subtitleValue: "Sword or Axe"
-      summary: "Highest sustained single-target damage in v83. Party utility via Rage (+ATT buff). Straightforward, damage-first playstyle."
+      summary: "Highest sustained single-target damage traditionally. Party utility via Rage (+ATT buff). Straightforward, damage-first playstyle."
       bestFor: "Players who want pure DPS and a simple decision tree"
       previewSkills:
         - name: "Sword Mastery / Axe Mastery"
@@ -234,7 +232,7 @@ secondJobs:
       previewSkills:
         - name: "Spear Mastery / Polearm Mastery"
           skillId: "1300000"
-          summary: "Passive - min-damage floor for your chosen polearm weapon. Polearm scales more consistently vs single targets; Spear had better historical numbers vs bosses in v83."
+          summary: "Passive - min-damage floor for your chosen polearm weapon. Polearm scales more consistently vs single targets; Spear had better historical numbers vs bosses traditionally."
         - name: "Iron Will"
           skillId: "1301004"
           summary: "Party buff - adds Weapon Defense AND Magic Defense to allies. Spearman's iconic party contribution. Not damage, but every group appreciates fewer deaths."
@@ -248,13 +246,13 @@ secondJobs:
 # ==================== FAQ ====================
 faq:
   - question: "Do I need to do a job advancement quest, or just talk?"
-    answer: "<em>Awaiting confirmation.</em> v83 was talk-only; some later versions added a \"prove yourself\" combat trial. Which one Classic World uses will be visible at Founder's Access."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory was talk-only; some later versions added a \"prove yourself\" combat trial. Which one Classic World uses will be visible at Founder's Access."
     badge: "awaiting-confirmation"
   - question: "Is pure STR still viable at launch?"
-    answer: "<em>Awaiting confirmation.</em> Depends on the hit-rate formula. In v83 pure STR was playable but painful. If Classic World keeps the same math, DEX = (level - 1) stays the safer general recommendation."
+    answer: "<em>Awaiting confirmation.</em> Depends on the hit-rate formula. Traditionally pure STR was playable but painful. If Classic World keeps the same math, DEX = (level - 1) stays the safer general recommendation."
     badge: "awaiting-confirmation"
   - question: "Which second job does the most damage?"
-    answer: "<em>v83 baseline:</em> Fighter had the highest sustained single-target output; Spearman won on AoE; Page had the best party utility but the lowest raw DPS. Classic World may rebalance any of these."
+    answer: "<em>traditional MapleStory baseline:</em> Fighter had the highest sustained single-target output; Spearman won on AoE; Page had the best party utility but the lowest raw DPS. Classic World may rebalance any of these."
     badge: "historical-archive"
   - question: "Can I change my mind at second job?"
     answer: "No. Second job is a one-time choice per character. If you want to try another branch, you make a new Warrior."

@@ -3,7 +3,7 @@
 // World. Each entry cites the event/year it came from and estimates
 // the chance of a Classic World reappearance.
 //
-// EDIT freely: add, reorder, retier. WZ IDs are v83 canonical (from
+// EDIT freely: add, reorder, retier. WZ IDs are traditional MapleStory canon (from
 // maplestory.io search); the <Sprite> component in HallOfFameCard
 // gracefully falls back to a themed placeholder if a specific ID
 // isn't served. Community submissions welcome (open a PR).
@@ -26,7 +26,7 @@ export interface LegacyItem {
 	slug: string;
 	name: string;
 	category: LegacyCategory;
-	// v83 canonical WZ ID. Sprite renders via maplestory.io/api/GMS/83/item/{wzId}/icon.
+	// traditional MapleStory canon WZ ID. Sprite renders via maplestory.io/api/GMS/83/item/{wzId}/icon.
 	// Leave null if we can't find one; a themed placeholder renders instead.
 	wzId: number | null;
 	// Event of origin + years it was distributed. If it recurs annually,
@@ -98,11 +98,11 @@ export const hallOfFameItems: LegacyItem[] = [
 		server: "GMS",
 		blurb: "Cape-slot cosmetic given out during Nexon's 2004 GMS 'Vote 04' civic-participation event. A little elephant balloon that bobbed behind your character - and yes, it's BLUE. Nexon shipped both balloons in the same blue palette rather than color-coding them by party, which is peak 2004 GMS attention-to-detail. A genuinely charming sprite that a lot of veterans still remember pinning behind them at Free Market.",
 		tier: "dreamed",
-		tierNote: "Somehow STILL sitting in the v83 game files at wzId 1102111 - twenty years later, the elephant remembers. Whether Classic World ever re-enables it is another question.",
+		tierNote: "Somehow STILL sitting in the traditional MapleStory game files at wzId 1102111 - twenty years later, the elephant remembers. Whether Classic World ever re-enables it is another question.",
 	},
 	{
 		// Deliberately set wzId to null - the Democratic Balloon was
-		// scrubbed from the v83 GMS data (searches for "donkey" /
+		// scrubbed from the traditional MapleStory data (searches for "donkey" /
 		// "democratic" / "election" all return 0 hits at
 		// maplestory.io/api/GMS/83/item). The <Sprite> component's
 		// themed placeholder is exactly the right visual here: the
@@ -114,7 +114,7 @@ export const hallOfFameItems: LegacyItem[] = [
 		event: "US Presidential Election commemorative",
 		years: "2004",
 		server: "GMS",
-		blurb: "The other half of the 2004 'Vote 04' pair - a donkey balloon that floated behind Democratic-leaning Maplers (also blue, because see above re: Nexon not color-coding by party). Notably absent from the v83 GMS data snapshot: searches for 'donkey', 'democratic', 'election', and 'vote' all return zero hits. Its Republican counterpart survives at wzId 1102111; the Donkey appears to have been quietly removed post-event and never re-added. First casualty of Maple redistricting.",
+		blurb: "The other half of the 2004 'Vote 04' pair - a donkey balloon that floated behind Democratic-leaning Maplers (also blue, because see above re: Nexon not color-coding by party). Notably absent from the traditional MapleStory data snapshot: searches for 'donkey', 'democratic', 'election', and 'vote' all return zero hits. Its Republican counterpart survives at wzId 1102111; the Donkey appears to have been quietly removed post-event and never re-added. First casualty of Maple redistricting.",
 		tier: "dreamed",
 		tierNote: "Sprite lost to time. If anyone has an archived v40-era .wz dump with the Donkey Balloon still intact, we would love to see it - open an issue.",
 	},

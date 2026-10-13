@@ -123,7 +123,7 @@ const guides = defineCollection({
 const skillEntry = z.object({
 	name: z.string(),
 	type: z.string(),      // Passive / Buff / Attack / Debuff
-	maxLevel: z.string(),  // free-form so we can say "20 (v83)"
+	maxLevel: z.string(),  // free-form so we can note historical caveats like "20 (historical)"
 	summary: z.string(),
 	suggested: z.string(),
 	skillId: z.string().regex(/^\d+$/).optional(),

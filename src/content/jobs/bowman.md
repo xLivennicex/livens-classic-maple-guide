@@ -15,10 +15,8 @@ decorations: true
 
 # ==================== Verification ====================
 verificationStatus: "closed-test-info"
-verificationNote: "First-job skill lists, skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com - which is how we caught that Blessing of Amazon was dropped and Power Knockback was added. Numeric stat values (max levels, crit multiplier, damage numbers) still reflect v83-era baseline pending live Classic World verification once Founder's Access begins on October 6."
+verificationNote: "First-job skill lists, skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com - which is how we caught that Blessing of Amazon was dropped and Power Knockback was added. Numeric stat values (max levels, crit multiplier, damage numbers) still reflect earlier-era MapleStory baseline pending live Classic World verification once Founder's Access begins on October 6."
 sourceSlugs:
-  - "ayumilove-v83-bowman"
-  - "hiddenstreet-v83-database"
   - "osmsdataexplorer"
 
 # ==================== TOC ====================
@@ -76,15 +74,15 @@ advancement:
 
 # ==================== AP allocation ====================
 apAllocation:
-  summary: "<strong>The short version (v83 baseline):</strong> pour points into DEX every level. STR only exists to meet equipment level requirements - and even that is optional at low levels."
+  summary: "<strong>The short version (traditional MapleStory baseline):</strong> pour points into DEX every level. STR only exists to meet equipment level requirements - and even that is optional at low levels."
   builds:
     - name: "Pure DEX (\"DEXless never\") [recommended]"
       description: "Every AP into DEX. Maximum damage; Bowmen already have strong innate accuracy from DEX so hit rate rarely becomes a problem."
     - name: "STR = weapon requirement"
-      description: "Keep just enough STR to wear the next weapon tier as it unlocks. Some v83 bows required small STR amounts (usually 5-15). Slightly lower damage; allows earlier access to specific weapon tiers."
+      description: "Keep just enough STR to wear the next weapon tier as it unlocks. Some traditional MapleStory bows required small STR amounts (usually 5-15). Slightly lower damage; allows earlier access to specific weapon tiers."
     - name: "Milestone check at L30"
       description: "For pure DEX: ~150 DEX, 4 STR (starting). For DEX-with-STR-buffer: ~135 DEX, ~30 STR. Bowmen have the simplest AP math of any class - DEX good, everything else bad."
-  notes: "Pure DEX is the standard v83 recommendation for a first Bowman. STR-based equipment thresholds mostly matter for min-max players chasing specific bow upgrades. Whether Classic World preserves the same requirement math is one of the values we will verify at launch."
+  notes: "Pure DEX is the standard traditional MapleStory recommendation for a first Bowman. STR-based equipment thresholds mostly matter for min-max players chasing specific bow upgrades. Whether Classic World preserves the same requirement math is one of the values we will verify at launch."
   callout: |
     <strong>Common AP mistakes to avoid:</strong>
     <ul>
@@ -101,13 +99,13 @@ apAllocation:
         crossbow with a STR requirement, budget the AP.</li>
       <li><strong>Reset scrolls exist.</strong> If you
         over-invested in STR early expecting a specific weapon,
-        v83 sold AP Reset scrolls. Classic World's plan for
+        traditional MapleStory sold AP Reset scrolls. Classic World's plan for
         these is TBD.</li>
     </ul>
 
 # ==================== Skills ====================
 skills:
-  order: "<strong>CoT 2 update:</strong> the classic v83 build advice needs revising. CoT 2 <em>dropped Blessing of Amazon entirely</em> and replaced it with <em>Power Knockback</em>, a crowd-control AoE that always crits. Revised recommended order: <strong>1 point in Arrow Blow</strong> so you have an attack, then MAX <strong>Double Shot</strong> (pure damage winner), then MAX <strong>Critical Shot</strong> (damage multiplier), then evaluate Power Knockback based on your training style - grinders love it, boss hunters skip it. The Eye of Amazon and Focus remain 1-point utility."
+  order: "<strong>CoT 2 update:</strong> the traditional MapleStory build advice needs revising. CoT 2 <em>dropped Blessing of Amazon entirely</em> and replaced it with <em>Power Knockback</em>, a crowd-control AoE that always crits. Revised recommended order: <strong>1 point in Arrow Blow</strong> so you have an attack, then MAX <strong>Double Shot</strong> (pure damage winner), then MAX <strong>Critical Shot</strong> (damage multiplier), then evaluate Power Knockback based on your training style - grinders love it, boss hunters skip it. The Eye of Amazon and Focus remain 1-point utility."
   entries:
     - name: "Power Knockback"
       skillId: "3001003"
@@ -118,36 +116,36 @@ skills:
     - name: "Critical Shot"
       skillId: "3000000"
       type: "Passive"
-      maxLevel: "30 (v83)"
+      maxLevel: "30 (traditional MapleStory)"
       summary: "Chance for every ranged attack to critically hit for +50% damage. THE Bowman damage passive - compounds with every attack you'll ever make."
-      suggested: "Max after Double Shot (v83 baseline)"
+      suggested: "Max after Double Shot (traditional MapleStory baseline)"
     - name: "The Eye of Amazon"
       skillId: "3000001"
       type: "Passive"
-      maxLevel: "8 (v83)"
+      maxLevel: "8 (traditional MapleStory)"
       summary: "Passive attack-range extension. Small effect but Bowmen live and die by range - every extra pixel is one more hit before mobs close."
       suggested: "1 point utility, or skip if SP is tight"
     - name: "Focus"
       skillId: "3001000"
       type: "Buff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Short-term buff to Accuracy and Avoidability. Situational - useful against high-avoid bosses; unnecessary against most training mobs."
       suggested: "1 point utility or skip"
     - name: "Arrow Blow"
       skillId: "3001001"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Single-target ranged attack. Higher damage-per-hit than Double Shot but only one arrow - lower total damage per cast once Double Shot is leveled."
-      suggested: "1 point for early training, then leave (v83 baseline)"
+      suggested: "1 point for early training, then leave (traditional MapleStory baseline)"
     - name: "Double Shot"
       skillId: "3001002"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Two-arrow ranged attack. Higher total damage output than Arrow Blow once maxed and the workhorse skill for the entire first job."
-      suggested: "MAX FIRST after 1 point in Arrow Blow (v83 baseline)"
+      suggested: "MAX FIRST after 1 point in Arrow Blow (traditional MapleStory baseline)"
   infoCard:
     eyebrow: "Why Double Shot before Critical Shot?"
-    heading: "The v83 damage math"
+    heading: "The traditional MapleStory damage math"
     body: |
       <p>Double Shot fires two arrows per cast, so it doubles
       the number of chances Critical Shot has to trigger.
@@ -161,7 +159,7 @@ skills:
 
 # ==================== Training routes ====================
 training:
-  intro: "v83 baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access. Henesys is home turf - most of the early Bowman training circuit happens without ever leaving the town's outer maps."
+  intro: "traditional MapleStory baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access. Henesys is home turf - most of the early Bowman training circuit happens without ever leaving the town's outer maps."
   routes:
     - levels: "Levels 1 - 10 (Beginner)"
       where: "Maple Island"
@@ -267,7 +265,7 @@ secondJobs:
       different playstyle), Hunter and Crossbowman play
       almost identically. The real question is weapon feel,
       not role.</p>
-      <p>If you can't decide, most v83 guides slightly favored
+      <p>If you can't decide, most traditional MapleStory guides slightly favored
       Hunter for training (Arrow Bomb's AoE clears grouped
       mobs faster) and slightly favored Crossbowman for
       bossing (bigger single-shot numbers). Neither is a
@@ -276,19 +274,19 @@ secondJobs:
 # ==================== FAQ ====================
 faq:
   - question: "Do I need to do a job advancement quest, or just talk?"
-    answer: "<em>Awaiting confirmation.</em> v83 was talk-only with the DEX requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory was talk-only with the DEX requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
     badge: "awaiting-confirmation"
   - question: "Is pure DEX viable at launch?"
-    answer: "<em>Awaiting confirmation.</em> In v83 pure DEX was standard - Bowmen already get enough accuracy from their weapons and skills that STR was rarely worth the investment. Classic World's weapon-requirement math will determine whether this holds."
+    answer: "<em>Awaiting confirmation.</em> Traditionally pure DEX was standard - Bowmen already get enough accuracy from their weapons and skills that STR was rarely worth the investment. Classic World's weapon-requirement math will determine whether this holds."
     badge: "awaiting-confirmation"
   - question: "Bow or Crossbow - can I switch later?"
-    answer: "<em>v83 baseline:</em> No. Once you pick Hunter or Crossbowman at level 30, your masteries, boosters, and third-job upgrades all commit to that weapon type. You can technically <em>equip</em> the other weapon but you lose the mastery bonuses, making it a substantial DPS loss. If you regret the choice, roll a new Bowman."
+    answer: "<em>traditional MapleStory baseline:</em> No. Once you pick Hunter or Crossbowman at level 30, your masteries, boosters, and third-job upgrades all commit to that weapon type. You can technically <em>equip</em> the other weapon but you lose the mastery bonuses, making it a substantial DPS loss. If you regret the choice, roll a new Bowman."
     badge: "historical-archive"
   - question: "Why only two branches for Bowman?"
-    answer: "<em>v83 design decision.</em> Wizet split the Bowman kit by weapon type (bow vs crossbow) rather than by role. Warrior and Magician branches differentiate by role (tank/DPS/support, or element). Bowman just picks a weapon. Classic World has not signaled any change to this structure."
+    answer: "<em>traditional MapleStory design decision.</em> Wizet split the Bowman kit by weapon type (bow vs crossbow) rather than by role. Warrior and Magician branches differentiate by role (tank/DPS/support, or element). Bowman just picks a weapon. Classic World has not signaled any change to this structure."
     badge: "historical-archive"
   - question: "Is Critical Shot as good as it sounds?"
-    answer: "<em>v83 baseline:</em> Yes. A maxed Critical Shot triggers on a large percentage of ranged attacks for +50% damage. Combined with Double Shot's two-arrow output, it is the largest single damage multiplier available to a first-job Bowman - which is why it's the second skill to max after Double Shot itself."
+    answer: "<em>traditional MapleStory baseline:</em> Yes. A maxed Critical Shot triggers on a large percentage of ranged attacks for +50% damage. Combined with Double Shot's two-arrow output, it is the largest single damage multiplier available to a first-job Bowman - which is why it's the second skill to max after Double Shot itself."
     badge: "historical-archive"
   - question: "Do I need to grind Mark of Beta on this character?"
     answer: "Partial answer: the Oct 3 Founder's Access release notes confirmed Mark of Beta <strong>begins at Grand Launch on October 21</strong>, not during Founder's Access. If you're planning to level a main during Founder's Access, Mark of Beta is NOT a Founder's Access concern. Specific per-character vs per-account mechanics are still unpublished - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."

@@ -28,7 +28,7 @@ editorial: |
   early-community-legend players used umbrellas on characters
   outside the meta as a novelty. The <em>Yellow</em> Umbrella in
   particular was talked about as a niche low-cost weapon in some
-  v83 guides.</p>
+  traditional MapleStory guides.</p>
   <p>Practically: it's a fine level-24 sword upgrade if you find
   one cheap in the market. Just know that when you show up to
   party quest wielding a parasol, people will notice.</p>
@@ -46,10 +46,8 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "historical-archive"
-verificationNote: "Requirements and category are canonical v83 knowledge; exact attack value awaits Classic World verification."
-sourceSlugs:
-  - "hiddenstreet-v83-database"
-
+verificationNote: "Requirements and category are canonical traditional MapleStory knowledge; exact attack value awaits Classic World verification."
+sourceSlugs: []
 # ==== Layout ====
 theme: "perion"
 lastUpdated: "2026-08-23"

@@ -67,7 +67,7 @@ callout: |
   character.</strong> Citizenship unlocks are permanent per
   character - if you're going to spend hours in Henesys
   anyway (Bowman first job area, Bunny hunting, Henesys PQ
-  hub in v83 - though HPQ is absent in CoT), the citizenship
+  hub traditionally - though HPQ is absent in CoT), the citizenship
   benefits compound over hundreds of hours.
 
 relatedGuides:

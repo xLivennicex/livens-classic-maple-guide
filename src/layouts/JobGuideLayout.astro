@@ -105,7 +105,7 @@ const pageTitle = `${d.title} - Liven's Classic Maple Guide`;
 	<section id="advancement" class="guide-section">
 		<h2 class="section-panel-title">How to become a {d.title}</h2>
 		<div class="card prose">
-			<p><strong>Requirements (v83 baseline):</strong></p>
+			<p><strong>Requirements (traditional MapleStory baseline):</strong></p>
 			<ul>
 				{d.advancement.requirements.map((req) => (
 					<li set:html={req} />
@@ -211,8 +211,8 @@ const pageTitle = `${d.title} - Liven's Classic Maple Guide`;
 					<span class="builds-cta__eyebrow">Level-by-level planner</span>
 					<strong class="builds-cta__heading">View {d.title} skill builds →</strong>
 					<span class="builds-cta__sub">
-						Per-level SP allocation tables in the classic Ayumilove format,
-						with named build variants and reasoning for each choice.
+						Per-level SP allocation tables, with named build variants
+						and reasoning for each choice.
 					</span>
 				</div>
 			</a>
@@ -261,7 +261,7 @@ const pageTitle = `${d.title} - Liven's Classic Maple Guide`;
 				</>
 			)}
 
-			<p><strong>Armor progression (v83 baseline):</strong></p>
+			<p><strong>Armor progression (traditional MapleStory baseline):</strong></p>
 			<ul>
 				{d.equipment.armorProgression.map((phase) => (
 					<li>

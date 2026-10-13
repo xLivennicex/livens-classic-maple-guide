@@ -96,7 +96,7 @@ relatedGuides:
   - "/quests/thiefs-next-journey"
 
 verificationStatus: "closed-test-info"
-verificationNote: "Quest ID (12000), NPC (Huckle 2030012 Orbis Tower hidden room), level (29), rewards (3,037 EXP, 848 mesos, 15x Blue Potion 2000003, 5x Orbis Rock Scroll 4001010) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Orbis Tower access (via Ellinia ferry) verified against v83 map structure; Classic World may adjust routing."
+verificationNote: "Quest ID (12000), NPC (Huckle 2030012 Orbis Tower hidden room), level (29), rewards (3,037 EXP, 848 mesos, 15x Blue Potion 2000003, 5x Orbis Rock Scroll 4001010) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Orbis Tower access (via Ellinia ferry) verified against traditional MapleStory map structure; Classic World may adjust routing."
 sourceSlugs:
   - "osmsdataexplorer"
 

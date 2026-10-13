@@ -63,9 +63,9 @@ Classic World is Nexon finally showing up to the room. That's genuinely great. I
 
 ## Some open questions I don't have answers to
 
-**Will this actually drive players to Classic?** Some, yes. The players who wanted nostalgic v83 gameplay and were only on private servers because the official product didn't exist. They come home.
+**Will this actually drive players to Classic?** Some, yes. The players who wanted nostalgic traditional MapleStory gameplay and were only on private servers because the official product didn't exist. They come home.
 
-But the private-server crowd who play for rebirth systems, class combos, ultra-low-rate progression, no-P2W economies - Classic World doesn't offer any of that. Classic offers *Nexon's version* of nostalgic v83, with a Cash Shop, with a Founder Pack, with Nexon's monetization strategy attached. That's not the same product. Removing alternatives doesn't magically convert those players to a product they never wanted; it just leaves them mad and gameless.
+But the private-server crowd who play for rebirth systems, class combos, ultra-low-rate progression, no-P2W economies - Classic World doesn't offer any of that. Classic offers *Nexon's version* of nostalgic traditional MapleStory, with a Cash Shop, with a Founder Pack, with Nexon's monetization strategy attached. That's not the same product. Removing alternatives doesn't magically convert those players to a product they never wanted; it just leaves them mad and gameless.
 
 **Was the Founder Pack normal?** Games do early-access-with-deluxe-editions all the time - Halloween games, Steam early access, cosmetic bundles. It's fine as a category. But the Founder Pack pricing, the tiered bonuses, the "buy in early or miss out" messaging - that's part of a business strategy, not a favor to the community. When you combine "aggressive monetization at launch" with "aggressive removal of free alternatives" you get a very specific market posture. Nexon knows what they're doing.
 

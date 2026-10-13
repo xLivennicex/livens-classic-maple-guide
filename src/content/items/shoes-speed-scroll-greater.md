@@ -51,7 +51,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040706), name, stat (Speed), tier (Greater), success rate (10%), stat gain (+3), and 'awarded by Ronnie House chain step 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate on failure retains v83 mechanic pending CoT 2 confirmation."
+verificationNote: "Item ID (2040706), name, stat (Speed), tier (Greater), success rate (10%), stat gain (+3), and 'awarded by Ronnie House chain step 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate on failure retains traditional MapleStory mechanic pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

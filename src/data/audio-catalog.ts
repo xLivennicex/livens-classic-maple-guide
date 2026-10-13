@@ -76,7 +76,7 @@ function humanize(name: string): string {
  * anything not listed. Titles match community-canonical names
  * (e.g. hiddenstreet.net's BGM index).
  *
- * Composer credit: Sound Team ASOB (2003-2008 era, all v83 BGMs).
+ * Composer credit: Sound Team ASOB (2003-2008 era, all traditional MapleStory BGMs).
  * Individual composer per-track not always known - most credited
  * to ASOB collectively.
  */

@@ -10,7 +10,7 @@ classReq: "Any"
 npcName: "Camila"
 npcLocation: "Henesys"
 # Camila is a Henesys resident featured in the Community Board
-# resident roster. WZ ID pending confirmation against v83 pool.
+# resident roster. WZ ID pending confirmation against traditional MapleStory pool.
 
 chainName: "Standalone"
 chainStep: 1

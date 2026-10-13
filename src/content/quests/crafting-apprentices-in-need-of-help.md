@@ -10,7 +10,7 @@ classReq: "Any"
 npcName: "Silas Irons / Mr. Thunder / Francois / Vicious / JM / Chrishrama"
 npcLocation: "Perion x2, Ellinia, Henesys, Kerning, Sleepywood"
 # All 6 masters are Classic World-exclusive NPCs; individual
-# WZ IDs unavailable in v83's maplestory.io pool. Documented
+# WZ IDs unavailable traditionally's maplestory.io pool. Documented
 # in docs/npc-id-lookup.md 'Classic World-exclusive NPCs' section.
 
 # Documented as ONE canonical article covering 6 discrete quest
@@ -140,7 +140,7 @@ relatedGuides:
   - "/quests/how-to-enjoy-mushrooms"
 
 verificationStatus: "closed-test-info"
-verificationNote: "All 6 quest IDs (80010 Silas Irons, 80013 Mr. Thunder, 80016 Francois, 80019 Vicious, 80022 JM From tha Streetz, 80025 Chrishrama), level (15), per-quest EXP (705), and Crafting Kit item IDs (Smithing 2002007, Weaponcrafting 2002005, Tailoring 2002009, Woodcrafting 2002006, Leatherworking 2002008, Arcforging 2002010) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Master NPCs are CoT-exclusive; no v83 sprites available."
+verificationNote: "All 6 quest IDs (80010 Silas Irons, 80013 Mr. Thunder, 80016 Francois, 80019 Vicious, 80022 JM From tha Streetz, 80025 Chrishrama), level (15), per-quest EXP (705), and Crafting Kit item IDs (Smithing 2002007, Weaponcrafting 2002005, Tailoring 2002009, Woodcrafting 2002006, Leatherworking 2002008, Arcforging 2002010) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Master NPCs are CoT-exclusive; no traditional MapleStory sprites available."
 sourceSlugs:
   - "osmsdataexplorer"
 

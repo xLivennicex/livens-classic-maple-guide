@@ -2,7 +2,7 @@
 questId: "80000"
 name: "'Mar' the Fairy and the Water of Life"
 category: "unique-reward"
-tagline: "Utility quest - Mar the Ellinia fairy REVIVES YOUR DEAD PET using the Water of Life. No level requirement. The go-to for anyone whose pet has expired. CoT-exclusive naming with a v83-derived mechanic."
+tagline: "Utility quest - Mar the Ellinia fairy REVIVES YOUR DEAD PET using the Water of Life. No level requirement. The go-to for anyone whose pet has expired. CoT-exclusive naming with a traditional MapleStory-derived mechanic."
 
 levelMin: 1
 classReq: "Any"
@@ -105,7 +105,7 @@ relatedGuides:
   - "/quests/cursed-doll-collection-chain"
 
 verificationStatus: "closed-test-info"
-verificationNote: "Quest ID (80000), NPC (Mar the Fairy - Ellinia, CoT-exclusive naming variant of the pet-revival fairy tradition, WZ ID pending verification), level (unset - treated as universal utility), no EXP/meso rewards documented in datamine, all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. The pet revival mechanic is inferred from MapleStory v83 tradition and the quest description explicitly mentioning 'lifeless doll' + 'magic of life'."
+verificationNote: "Quest ID (80000), NPC (Mar the Fairy - Ellinia, CoT-exclusive naming variant of the pet-revival fairy tradition, WZ ID pending verification), level (unset - treated as universal utility), no EXP/meso rewards documented in datamine, all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. The pet revival mechanic is inferred from MapleStory traditional MapleStory tradition and the quest description explicitly mentioning 'lifeless doll' + 'magic of life'."
 sourceSlugs:
   - "osmsdataexplorer"
 

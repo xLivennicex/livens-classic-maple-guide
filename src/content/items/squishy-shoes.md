@@ -26,7 +26,7 @@ editorial: |
   <p>Squishy Shoes are the boss drop from
   <a href="/mobs/800003">King Slime</a>, the final-stage boss
   of the <a href="/party-quests/kerning-pq">Kerning Party
-  Quest</a>. In v83 GMS these were called
+  Quest</a>. In traditional MapleStory these were called
   <strong>Slime Shoes</strong> and were arguably the single
   most-recognized KPQ reward in old-school Maple. Classic
   World renamed them but preserved the stats verbatim - this
@@ -81,7 +81,7 @@ callout: |
   <strong>Naming note:</strong> Classic World rename is
   purely cosmetic - identical stats, identical drop source,
   identical progression role. The rename tracks a broader
-  Classic World theme of softening the "cute" v83 item names
+  Classic World theme of softening the "cute" traditional MapleStory item names
   ("Slime Shoes" was already cute; "Squishy Shoes" leans
   further in). If you see older guides referring to Slime
   Shoes for KPQ rewards, they mean this item.
@@ -96,7 +96,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (1072128), name (Squishy Shoes, renamed from v83 Slime Shoes), category (Shoes), subcategory, level requirement (28), job requirement (All), stats (+1 STR/DEX/INT/LUK, +18 PDD, +7 MDD, 5 slots), and NPC sell price (1,590 mesos) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Drop source (King Slime, mob ID 800003) is the only equipment entry in King Slime's datamined drop table alongside the Coupon quest item (4001001). Rename from 'Slime Shoes' to 'Squishy Shoes' verified by direct name search of items.json. Confirmed as a Classic World FA drop by MapleClassic Wiki + MeowDB (both Oct 9, 2026). Note: King Slime's live FA stats per community sources (Lv 32, ~16,820 HP) differ from the datamine snapshot (Lv 40, 8,000 HP) - community sources are more recent."
+verificationNote: "Item ID (1072128), name (Squishy Shoes, renamed from traditional MapleStory Slime Shoes), category (Shoes), subcategory, level requirement (28), job requirement (All), stats (+1 STR/DEX/INT/LUK, +18 PDD, +7 MDD, 5 slots), and NPC sell price (1,590 mesos) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Drop source (King Slime, mob ID 800003) is the only equipment entry in King Slime's datamined drop table alongside the Coupon quest item (4001001). Rename from 'Slime Shoes' to 'Squishy Shoes' verified by direct name search of items.json. Confirmed as a Classic World FA drop by MapleClassic Wiki + MeowDB (both Oct 9, 2026). Note: King Slime's live FA stats per community sources (Lv 32, ~16,820 HP) differ from the datamine snapshot (Lv 40, 8,000 HP) - community sources are more recent."
 sourceSlugs:
   - "osmsdataexplorer"
 

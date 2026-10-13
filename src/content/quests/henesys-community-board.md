@@ -11,7 +11,7 @@ npcName: "Community Board / Arthur (town clerk)"
 npcLocation: "Henesys - in front of Town Hall"
 # No canonical NPC - the Community Board is a UI element, not a
 # renderable NPC. Arthur is referenced in the datamine text but
-# doesn't have his own WZ ID in v83 (may be CoT-exclusive).
+# doesn't have his own WZ ID traditionally (may be CoT-exclusive).
 
 chainName: "Henesys Community Board"
 chainStep: 71
@@ -126,7 +126,7 @@ callout: |
   the same person. The Community Board is where you first
   meet her narratively. She then re-enters your story much
   later in Sleepywood. Classic World's storytelling web is
-  denser than v83's if you pay attention.
+  denser than in traditional MapleStory's if you pay attention.
 
 relatedGuides:
   - "/quests/to-henesys-the-prairie-town"

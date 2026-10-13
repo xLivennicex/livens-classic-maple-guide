@@ -48,7 +48,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040705), name, stat (Speed), tier (Intermediate), success rate (60%), stat gain (+2), and 'awarded by Ronnie House chain step 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Speed cap (140%) is v83 mechanic pending CoT 2 confirmation."
+verificationNote: "Item ID (2040705), name, stat (Speed), tier (Intermediate), success rate (60%), stat gain (+2), and 'awarded by Ronnie House chain step 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Speed cap (140%) is traditional MapleStory mechanic pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

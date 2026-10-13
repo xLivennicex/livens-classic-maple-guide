@@ -22,7 +22,7 @@
  *
  * 2. `maplestory.io` (GMS/83)
  *    - Monsters, NPCs, maps.
- *    - Long-established fan CDN of pre-extracted v83-era assets.
+ *    - Long-established fan CDN of pre-extracted earlier-era MapleStory assets.
  *    - No longer our item source (see #1).
  *    - Does NOT publicly serve skill icons.
  *
@@ -46,9 +46,9 @@
 
 /**
  * MapleStory client version we're pinning to. Classic World is the
- * v83-era Global MapleStory client, hence "GMS/83". Bumped only if
+ * earlier-era MapleStory Global MapleStory client, hence "GMS/83". Bumped only if
  * Nexon releases a Classic World patch that changes item IDs, which
- * has never actually happened in v83 history but is possible.
+ * has never actually happened traditionally history but is possible.
  */
 export const DEFAULT_VERSION = "GMS/83";
 
@@ -71,7 +71,7 @@ function assertValidWzId(wzId: number, entity: string): void {
 /**
  * Item icon (the small square you see in inventory / shops).
  *
- * Sourced from MeowDB's Classic World icon CDN. The v83 GMS assets
+ * Sourced from MeowDB's Classic World icon CDN. The traditional MapleStory assets
  * on maplestory.io are visually inaccurate for a chunk of items that
  * were reskinned or renamed for Classic World - MeowDB extracts icons
  * from the CoT client directly.
@@ -81,7 +81,7 @@ function assertValidWzId(wzId: number, entity: string): void {
  * NOTE: MeowDB serves ONE icon size (packed inventory icon). If MeowDB
  * doesn't have a particular WZ ID it returns 404 and the browser shows
  * a broken image - visible failure is preferable to silently rendering
- * a wrong v83 sprite. The `version` parameter is accepted for API
+ * a wrong traditional MapleStory sprite. The `version` parameter is accepted for API
  * compatibility with legacy call sites but ignored: MeowDB serves
  * only CoT-current assets.
  */
@@ -161,7 +161,7 @@ export function mobSpriteUrl(mobId: number): string {
  * script resolves each NPC's WZ ID via maplestory.io's name-search
  * endpoint and caches the mapping to `src/data/db/npc-wz-cache.json`;
  * dossier consumers pass `d.wzId`. When wzId is null (crafting
- * stations, post-v83 additions - 36/266 = 14% of NPCs), pass
+ * stations, post-traditional MapleStory additions - 36/266 = 14% of NPCs), pass
  * `null` here and use `npcSpriteUrl` which returns a null-safe URL.
  *
  * Example: npcRenderUrl(2101) -> Heena standing.
@@ -190,7 +190,7 @@ export function npcSpriteUrl(
 	// Prefer MeowDB name-slug URL when a name is provided - it covers
 	// the 39 NPCs (14.7%) that maplestory.io lacks entirely (Arthur,
 	// Bianca, Raymond, Oak, Flint, and the whole Forgotten Hollow crew
-	// added post-v83). Verified 100% coverage on both categories:
+	// added post-traditional MapleStory). Verified 100% coverage on both categories:
 	// legacy NPCs (Heena, Sera, Todd, Maria) and CoT2-exclusive ones.
 	const meowdb = npcSpriteMeowdbUrl(name);
 	if (meowdb) return meowdb;
@@ -349,7 +349,7 @@ const COT2_LOCAL_SPRITE_IDS = new Set<number>([
  * Ordered fallback chain for a mob sprite.
  *   1. Local `/images/mobs/cot2/mob_{id}.png` if we mirrored it
  *      (skips CORS + referer issues on meowdb hotlinks).
- *   2. maplestory.io v83 render (only when wzId is known - the
+ *   2. maplestory.io traditional MapleStory render (only when wzId is known - the
  *      primary source for classic mobs where the WZ ID resolved)
  *   3. MeowDB hotlink (Classic World-accurate but browser-hostile
  *      for some referer configurations - last resort)
@@ -412,7 +412,7 @@ export function mapThumbnailSrcs(
  * NPC sprite chain.
  *   1. MeowDB by name-slug (Classic World-accurate, covers the 39
  *      NPCs maplestory.io lacks including all Forgotten Hollow NPCs)
- *   2. maplestory.io v83 render by wzId (fallback for any NPC MeowDB
+ *   2. maplestory.io traditional MapleStory render by wzId (fallback for any NPC MeowDB
  *      doesn't happen to have; also covers callers that pass wzId
  *      but no name)
  *

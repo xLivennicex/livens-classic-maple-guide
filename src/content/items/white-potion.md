@@ -25,7 +25,7 @@ editorial: |
 callout: |
   <strong>Restore value note:</strong> the exact HP-restore number
   in Classic World is one of the values we're waiting to verify at
-  Founder's Access. v83 baseline was around 1,000 HP per potion,
+  Founder's Access. traditional MapleStory baseline was around 1,000 HP per potion,
   but Nexon has been known to rebalance consumables between versions.
 
 # ==== Cross-links ====
@@ -36,10 +36,8 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "historical-archive"
-verificationNote: "Level requirement and category are canonical v83 knowledge; exact HP-restore value awaits Classic World verification."
-sourceSlugs:
-  - "hiddenstreet-v83-database"
-
+verificationNote: "Level requirement and category are canonical traditional MapleStory knowledge; exact HP-restore value awaits Classic World verification."
+sourceSlugs: []
 # ==== Layout ====
 theme: "henesys"
 lastUpdated: "2026-08-23"

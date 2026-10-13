@@ -16,7 +16,7 @@ editorial: |
 
   <p>Classic World's <a href="/quests/first-time-together">Kerning Party Quest</a>
   reward table gives one of these (or the STR, INT, or LUK
-  variant, randomly) per completion. In v83 they were rare
+  variant, randomly) per completion. Traditionally they were rare
   world drops; Classic World's PQ integration is the intended
   acquisition path.</p>
 
@@ -41,7 +41,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040305), name, stat (DEX), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains v83 mechanics pending CoT 2 confirmation."
+verificationNote: "Item ID (2040305), name, stat (DEX), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains traditional MapleStory mechanics pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

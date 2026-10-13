@@ -14,7 +14,7 @@ eyebrow: "Roadmap"
 heading: "Grand Launch prep for Founder's Access players"
 tagline: "Oct 21, 2026 opens 3rd job, Zakum, and every Ossyria region (10 regions total) in one drop. Here's what to do during the remaining FA window to be ready - and what NOT to spend mesos on."
 verificationStatus: "launch-verified"
-verificationNote: "Content gates sourced from Nexon's Oct 3 Founder's Access release notes + the Inkwell blog on Classic World's future (both already cited across the site). Level progression recommendations grounded against our class guides (Fighter, Page, Spearman, Archer, Cleric, Wizard, Bandit, Assassin build pages). FA access status for maps/bosses cross-references /fa-access-status/ which is the central gating catalog. NO v83-era extrapolation - every mechanic described here is from Nexon-confirmed CW sources or from the CW client datamine."
+verificationNote: "Content gates sourced from Nexon's Oct 3 Founder's Access release notes + the Inkwell blog on Classic World's future (both already cited across the site). Level progression recommendations grounded against our class guides (Fighter, Page, Spearman, Archer, Cleric, Wizard, Bandit, Assassin build pages). FA access status for maps/bosses cross-references /fa-access-status/ which is the central gating catalog. Every mechanic described here is sourced from Nexon-confirmed CW release notes, the Inkwell blog, or the Classic World FA client datamine - no extrapolation from other MapleStory versions."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - nexon-inkwell-future-of-classic-world
@@ -290,11 +290,12 @@ timing: late 2026 to early 2027.
 
 ### Exact 3rd-job skill tuning
 
-Our class guides reference v83-era skill values when previewing
-3rd job content. Nexon may re-tune 3rd-job skills at Grand Launch
-in the same way they re-tuned 1st-job (unified Lv 10 across all
-classes). Don't rely on specific skill damage numbers from v83
-sources until the Oct 21 patch notes drop.
+Our class guides reference traditional MapleStory skill values when
+previewing 3rd job content (because the Classic World FA client
+doesn't yet expose 3rd-job skill tuning). Nexon may re-tune 3rd-job
+skills at Grand Launch in the same way they re-tuned 1st-job
+(unified Lv 10 across all classes). Don't rely on specific skill
+damage numbers until the Oct 21 patch notes drop.
 
 ### Trade / Free Market enforcement
 

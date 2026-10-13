@@ -3,10 +3,10 @@ name: "Ribboned Pig Headband"
 wzId: 1002100
 category: "armor"
 subcategory: "Hat"
-tagline: "The pink pigtail-ribbon headband that has been a Henesys quest trophy since v83. Iconic first-real-cosmetic status symbol."
+tagline: "The pink pigtail-ribbon headband that has been a Henesys quest trophy since traditional MapleStory. Iconic first-real-cosmetic status symbol."
 
 # ==== Requirements ====
-# CoT 2 datamine: reqLevel 27 (v83 sources listed 15 - this is a
+# CoT 2 datamine: reqLevel 27 (traditional MapleStory sources listed 15 - this is a
 # Classic World stat rebalance, not our transcription error).
 levelReq: 27
 jobReq: "Any"
@@ -28,7 +28,7 @@ editorial: |
   respectable mid-game hat: <strong>+26 Weapon Defense</strong>,
   <strong>+7 MaxMP</strong>, <strong>+2 Accuracy</strong>, and 7
   upgrade slots at a <strong>level 27 requirement</strong>. As a
-  fashion piece it's been iconic since v83. If you see a level
+  fashion piece it's been iconic since traditional MapleStory. If you see a level
   27-40 character with a pink pigtail-ribbon hat, they did the
   sauce quest.</p>
   <p>The item slot for the Ribboned Pig Headband is Hat, so it
@@ -51,10 +51,9 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (1002100), name, level requirement (27), Weapon Defense (26), MaxMP (7), Accuracy (2), slot count (7), NPC price (1600 mesos), and \"awarded by Estelle's Special Sauce\" quest linkage are ALL CoT 2 datamine-verified. Previous v83-era placeholder said level 15; Classic World rebalanced this to level 27."
+verificationNote: "Item ID (1002100), name, level requirement (27), Weapon Defense (26), MaxMP (7), Accuracy (2), slot count (7), NPC price (1600 mesos), and \"awarded by Estelle's Special Sauce\" quest linkage are ALL CoT 2 datamine-verified. Previous earlier-era MapleStory placeholder said level 15; Classic World rebalanced this to level 27."
 sourceSlugs:
   - "osmsdataexplorer"
-  - "hiddenstreet-v83-database"
 
 # ==== Layout ====
 theme: "henesys"

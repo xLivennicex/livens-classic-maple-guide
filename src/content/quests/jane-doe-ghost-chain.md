@@ -10,7 +10,7 @@ classReq: "Any"
 npcName: "Jane Doe"
 npcLocation: "Niora Hospital, Kerning City"
 # Jane Doe is a ghost NPC; likely has a distinct WZ ID from
-# regular Kerning residents but not confirmed in v83's asset
+# regular Kerning residents but not confirmed traditionally's asset
 # pool. Marked as pending verification.
 
 chainName: "Jane Doe's Identity"
@@ -99,7 +99,7 @@ relatedGuides:
   - "/quests/sparkling-rock-chain"
 
 verificationStatus: "closed-test-info"
-verificationNote: "Both quest IDs (10309, 10310), NPC (Jane Doe - ghost, WZ ID pending v83 asset verification), level (23), rewards (2,418 EXP + 672 mesos per step, 15x Blue Potion 2000003 on step 1, 1x Old Raggedy Cape 1102000 guaranteed on step 2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
+verificationNote: "Both quest IDs (10309, 10310), NPC (Jane Doe - ghost, WZ ID pending traditional MapleStory asset verification), level (23), rewards (2,418 EXP + 672 mesos per step, 15x Blue Potion 2000003 on step 1, 1x Old Raggedy Cape 1102000 guaranteed on step 2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
 sourceSlugs:
   - "osmsdataexplorer"
 

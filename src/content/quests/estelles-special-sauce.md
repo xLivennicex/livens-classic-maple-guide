@@ -61,7 +61,7 @@ editorial: |
   to Mrs. Ming Ming. That's a lot of travel for a level-15
   character.</p>
   <p>The payoff is the Ribboned Pig Headband - a cosmetic hat
-  that's been coveted since v83. If you skip this chain, you
+  that's been coveted since traditional MapleStory. If you skip this chain, you
   can never get one on that character. That's the entire
   argument for doing the quest: it's the only source. The
   EXP and mesos are decent, but the headband is the reason

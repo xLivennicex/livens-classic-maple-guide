@@ -19,7 +19,6 @@ verificationNote: "Weapon ATK + speed data from src/data/db/items.json datamine.
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-thief
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 toc:
@@ -147,7 +146,7 @@ Prioritize this after mastery + booster.
 
 ### Steal is NOT a troll pick
 
-The xBucc Reddit build cluster and some older v83 guides treat
+The xBucc Reddit build cluster and some older community guides treat
 Steal as "optional" or "skip if lazy." **Don't skip it.** Steal
 is the second-highest value skill in the Bandit kit after Savage
 Blow. The 2x drop chance pays dividends over hundreds of grinding
@@ -253,7 +252,7 @@ table. This includes:
 
 ### Steal proc rate at max rank
 
-- 20 skill levels = ~50% proc chance (approximate, v83 convention)
+- 20 skill levels = ~50% proc chance (approximate, traditional MapleStory baseline - unverified for Classic World)
 - Soul proc on cooldown, roughly once per combat loop
 
 ### Why Steal is OP for mesos
@@ -340,9 +339,10 @@ No. 2nd-job advancement is one-way. Pick carefully at Lv 30.
 
 **Steal doesn't seem to work on bosses - bug?**
 
-Steal proc rate on bosses is lower than on regular mobs (Nexon
-balance decision from v83). It does work, just rarely. Over many
-Mushmom kills you'll notice the stolen bonus drops.
+Steal proc rate on bosses is traditionally lower than on regular mobs
+(long-standing MapleStory balance; FA client datamine does not expose
+separate boss/regular proc values). It does work, just rarely. Over
+many Mushmom kills you'll notice the stolen bonus drops.
 
 **Does Steal work with my party members?**
 

@@ -9,7 +9,7 @@ classReq: "Any"
 
 npcName: "Lewis"
 npcLocation: "Free Market Entrance"
-# Lewis has no v83 maplestory.io NPC entry - Free Market clerk
+# Lewis has no traditional MapleStory maplestory.io NPC entry - Free Market clerk
 # NPCs may have been renamed or are CoT-additions.
 
 # Documented as ONE canonical article covering 4 discrete quest
@@ -111,7 +111,7 @@ relatedGuides:
   - "/items/blue-potion"
 
 verificationStatus: "closed-test-info"
-verificationNote: "All 4 quest IDs (80026-80029), NPCs (Lewis at FM Entrance - no v83 WZ ID found; Chief Stan 1012003; Dances with Balrog 1022000), level (13), per-step rewards (420 EXP, 380 mesos, 10x Blue Potion 2000003 guaranteed on steps 80027 and 80029) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
+verificationNote: "All 4 quest IDs (80026-80029), NPCs (Lewis at FM Entrance - no traditional MapleStory WZ ID found; Chief Stan 1012003; Dances with Balrog 1022000), level (13), per-step rewards (420 EXP, 380 mesos, 10x Blue Potion 2000003 guaranteed on steps 80027 and 80029) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
 sourceSlugs:
   - "osmsdataexplorer"
 

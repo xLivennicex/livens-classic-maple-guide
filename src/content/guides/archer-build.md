@@ -21,11 +21,10 @@ tagline: "Hunter vs Crossbowman settled with real ATK numbers. Pure DEX allocati
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Weapon ATK values, speed classes, armor stats, arrow tiers, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the CoT 2 client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order corrects the xBucc Reddit Archer cluster error (OP acknowledged the Archer section was wrong in the original Reddit post). Hunter vs Crossbowman DPS math uses datamine ATK + speed class values with v83 convention attack-speed-to-hits-per-second mapping; not formally re-tested in CW CoT 2 so treat 'break-even point' as a planning estimate."
+verificationNote: "Weapon ATK values, speed classes, armor stats, arrow tiers, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the Classic World FA client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental multiplier, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order corrects the xBucc Reddit Archer cluster error (OP acknowledged the Archer section was wrong in the original Reddit post). Hunter vs Crossbowman DPS math uses datamine ATK + speed class values with traditional attack-speed-to-hits-per-second mapping; not formally re-tested in Classic World FA so treat 'break-even point' as a planning estimate."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-bowman
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 
@@ -69,10 +68,10 @@ toc:
 
 ### 1. HP wash removal doesn't hurt Archers
 
-Archers were never HP wash targets in v83. Your base HP is middle-tier
-and your playstyle is ranged-with-knockback — you don't eat the
-melee hits that Fighters do. Classic World's HP wash removal is a
-**non-event** for Archer builds.
+Archers were never HP wash targets in traditional MapleStory. Your
+base HP is middle-tier and your playstyle is ranged-with-knockback
+— you don't eat the melee hits that Fighters do. Classic World's HP
+wash removal is a **non-event** for Archer builds.
 
 ### 2. 1.25× elemental is irrelevant
 
@@ -193,9 +192,9 @@ weapons:
 | Lv 50 (Olympus / Rower) | 55 STR | 25 STR starting + 30 wasted APs if you went hybrid — don't |
 | Lv 70 (Red Hinkel / Gross Jaeger) | 70 STR | 25 STR starting + 45 wasted APs — definitely don't |
 
-**Translation:** the old "pump STR for bow reqSTR" meme is a leftover
-from pre-rebalance v83. Current Classic World bow/crossbow reqSTR
-numbers are reachable with just the starting pool. Pure DEX is right.
+**Translation:** the old "pump STR for bow reqSTR" meme no longer
+applies - Classic World's FA datamined bow/crossbow reqSTR numbers
+are reachable with just the starting pool. Pure DEX is right.
 
 ### Accuracy problems?
 
@@ -445,8 +444,8 @@ Light) and Zombie Mushmom farming, Crossbowman wins.
 
 **Can I switch from Hunter to Crossbowman at Lv 50?**
 
-No. 2nd-job advancement is a one-way decision in v83 and Classic
-World. Pick carefully at Lv 30.
+No. 2nd-job advancement is a one-way decision in Classic World.
+Pick carefully at Lv 30.
 
 **Should I pump STR to equip higher-reqSTR bows earlier?**
 
@@ -481,10 +480,10 @@ Dragon-tier weapons in Leafre, Raven's Claws in Phantom Forest, etc.).
 
 **Does Classic World have Hunter → Ranger 3rd job?**
 
-Not in Founder's Access. 3rd job (Ranger / Sniper) unlocks at Lv 70
-in v83 base and should carry forward in CW, but **3rd job
-advancement is held for Grand Launch** (Oct 21, 2026). Hold your
-SP from Lv 70 onwards.
+Not in Founder's Access. 3rd job (Ranger / Sniper) is confirmed to
+unlock at Lv 70 but **3rd job advancement is held for Grand Launch**
+(Oct 21, 2026) per Nexon's release notes. Hold your SP from Lv 70
+onwards.
 
 **I'm F2P. How do I prioritize mesos?**
 

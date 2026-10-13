@@ -4,7 +4,7 @@
  *
  * User picks a mob from the datamine, sets their kill rate + level,
  * and the calculator returns EXP/hour, time to next level, and %
- * of a level per hour. Numbers below Lv 30 are canonical v83; above
+ * of a level per hour. Numbers below Lv 30 are canonical traditional MapleStory; above
  * Lv 30 the calculator flags the result as "approximate" (see
  * src/data/exp-table.ts).
  *
@@ -72,7 +72,7 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 
 <BaseLayout
 	title="EXP Calculator - Liven's Classic Maple Guide"
-	description="Calculate EXP per hour, kills to next level, and grind time estimates for any MapleStory Classic mob. Uses v83-canonical EXP curve; results above Lv 30 flagged as approximate pending CoT 2 verification."
+	description="Calculate EXP per hour, kills to next level, and grind time estimates for any MapleStory Classic mob. Uses traditional MapleStory-canonical EXP curve; results above Lv 30 flagged as approximate pending CoT 2 verification."
 	currentPath="/calculators/exp"
 	theme="henesys"
 	decorations={false}
@@ -89,8 +89,8 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 			<h1>EXP Calculator</h1>
 			<p class="lede">
 				Pick a mob, enter your kill rate, and see EXP/hour and
-				time to level. Numbers pull from the v83 datamine.
-				<strong>Lv 1-30 uses canonical v83 EXP values;</strong>
+				time to level. Numbers pull from the traditional MapleStory datamine.
+				<strong>Lv 1-30 uses canonical traditional MapleStory EXP values;</strong>
 				higher levels use an extrapolated growth curve pending
 				CoT 2 Founder's Access verification.
 			</p>
@@ -430,13 +430,13 @@ document.addEventListener("astro:page-load", () => {
 		// Confidence flag. Warn if any level in the current-to-next
 		// range is outside the verified band.
 		if (level > VERIFIED_MAX) {
-			$accuracy.textContent = "Note: Lv " + VERIFIED_MAX + "+ EXP values are extrapolated from the v83 canonical curve, not hand-verified. Treat time estimates as ballpark until CoT 2 verification.";
+			$accuracy.textContent = "Note: Lv " + VERIFIED_MAX + "+ EXP values are extrapolated from the traditional MapleStory canon curve, not hand-verified. Treat time estimates as ballpark until CoT 2 verification.";
 			$accuracy.className = "calc-accuracy calc-accuracy--warn";
 		} else if (target > VERIFIED_MAX) {
 			$accuracy.textContent = "Note: your target level (" + target + ") is above the verified band. Time-to-target estimate uses extrapolated values.";
 			$accuracy.className = "calc-accuracy calc-accuracy--warn";
 		} else {
-			$accuracy.textContent = "Numbers use canonical v83 EXP values for this level range.";
+			$accuracy.textContent = "Numbers use canonical traditional MapleStory EXP values for this level range.";
 			$accuracy.className = "calc-accuracy calc-accuracy--ok";
 		}
 	}

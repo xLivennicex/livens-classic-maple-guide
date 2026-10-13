@@ -79,7 +79,7 @@ editorial: |
   FM trade.</p>
 
   <h3>Re-runnable?</h3>
-  <p>Lakelis quests are historically re-runnable in v83
+  <p>Lakelis quests are historically re-runnable traditionally
   MapleStory (KPQ + related rewards). CoT's version pending
   live verification - if repeatable, this is one of the best
   L21+ farming opportunities for scroll income.</p>

@@ -42,7 +42,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040313), name, stat (LUK), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains v83 mechanics pending CoT 2 confirmation."
+verificationNote: "Item ID (2040313), name, stat (LUK), tier (Intermediate), success rate (60%), and stat gain (+2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains traditional MapleStory mechanics pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

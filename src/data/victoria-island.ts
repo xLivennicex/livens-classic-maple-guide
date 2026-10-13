@@ -65,7 +65,7 @@ export interface VictoriaTown {
 	//
 	// - `lore`: 2-4 paragraphs of in-world flavor/history. Written
 	//   from the perspective of "a Maple World citizen would tell
-	//   you about this place" - grounded in game canon (v83-era +
+	//   you about this place" - grounded in game canon (earlier-era MapleStory +
 	//   CoT2 additions where documented) but takes editorial liberty
 	//   where the game itself is silent.
 	// - `activities`: a curated list of "things to do" that aren't
@@ -230,7 +230,7 @@ export const victoriaTowns: VictoriaTown[] = [
 		lore: [
 			"Lith Harbor is where Maple World actually begins. It's a real coastal city - stone streets, a proper harbor with multiple ships, an actual mayor (Mai) who does mayor things. The Maple Island tutorial deposits every new player onto Shanks' arrival dock, and from there the map opens up into Victoria Island in every direction.",
 			"The town's identity is defined by its role as a hub. Nobody trains here for long - the free carriage service to Henesys, Ellinia, Perion, and Kerning City means Lith Harbor is mostly a transit point. But every returning Mapler has fond memories of Pig Beach right outside, where you learn what a real fight feels like after months of snails.",
-			"In CoT 2, Lith Harbor gained the Physical Fitness Test (a NEW mainland-wide challenge tied to Citizenship) and the Chief Stan quest chain that introduces the CoT 2 Citizenship system. If you're arriving from Maple Island for the first time, this is where the modern game diverges from v83.",
+			"In CoT 2, Lith Harbor gained the Physical Fitness Test (a NEW mainland-wide challenge tied to Citizenship) and the Chief Stan quest chain that introduces the CoT 2 Citizenship system. If you're arriving from Maple Island for the first time, this is where the modern game diverges from traditional MapleStory.",
 		],
 		activities: [
 			{
@@ -245,12 +245,12 @@ export const victoriaTowns: VictoriaTown[] = [
 			},
 			{
 				title: "Meet Chief Stan and take the Physical Fitness Test",
-				description: "CoT 2 addition. The PFT is a repeatable challenge tied to Citizenship progression. If you're a returning v83 player, this is the first zone-level change you'll notice.",
+				description: "CoT 2 addition. The PFT is a repeatable challenge tied to Citizenship progression. If you're a returning traditional MapleStory player, this is the first zone-level change you'll notice.",
 				category: "quest",
 			},
 			{
 				title: "Register your Citizenship",
-				description: "Another CoT 2 addition. Citizenship unlocks account-wide perks and progression that didn't exist in v83. Do it early - you'll want the buffs.",
+				description: "Another CoT 2 addition. Citizenship unlocks account-wide perks and progression that didn't exist traditionally. Do it early - you'll want the buffs.",
 				category: "quest",
 			},
 			{

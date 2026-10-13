@@ -97,7 +97,7 @@ Every heading between L10 and L70 is a real map — nothing filler. Skip to the 
 
 ### Callout: L10 weapons are the exception to Classic World's NPC-sell rebalance
 
-> Nexon dramatically reduced equipment NPC sell prices across the board in Classic World, making gear-farming for meso far less profitable than in v83. **The L10 weapons in this bracket are one of the few exceptions** — they actually sell for MORE than they did originally. If you see one drop while training, hit F2 to loot and NPC it. This is genuinely one of the better early meso sources.
+> Nexon dramatically reduced equipment NPC sell prices across the board in Classic World, making gear-farming for meso far less profitable than it was in traditional MapleStory. **The L10 weapons in this bracket are one of the few exceptions** — they actually sell for MORE than they did in the datamine's original pricing. If you see one drop while training, hit F2 to loot and NPC it. This is genuinely one of the better early meso sources.
 
 ---
 

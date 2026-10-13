@@ -15,10 +15,8 @@ decorations: true
 
 # ==================== Verification ====================
 verificationStatus: "closed-test-info"
-verificationNote: "First-job skill lists (all six match the v83 baseline exactly - just the class name changed to Rogue in datamine files), skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, DEX-for-advancement quirk, Lucky Seven's LUK-only damage formula, Bandit Steal drop rates) still reflect v83-era baseline pending live Classic World verification once Founder's Access begins on October 6."
+verificationNote: "First-job skill lists (all six match the traditional MapleStory baseline exactly - just the class name changed to Rogue in datamine files), skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, DEX-for-advancement quirk, Lucky Seven's LUK-only damage formula, Bandit Steal drop rates) still reflect earlier-era MapleStory baseline pending live Classic World verification once Founder's Access begins on October 6."
 sourceSlugs:
-  - "ayumilove-v83-thief"
-  - "hiddenstreet-v83-database"
   - "osmsdataexplorer"
 
 # ==================== TOC ====================
@@ -36,7 +34,7 @@ toc:
 overview:
   identity:
     primaryStat: "LUK (for damage)"
-    secondaryStat: "<strong>DEX</strong> - required for job advancement AND basic attacks. The v83 quirk: DEX gates progression, LUK does the damage."
+    secondaryStat: "<strong>DEX</strong> - required for job advancement AND basic attacks. The traditional MapleStory quirk: DEX gates progression, LUK does the damage."
     damageType: "Physical - ranged claw throws (Assassin) OR melee dagger swings (Bandit). Lucky Seven's damage formula is LUK-only, ignoring weapon attack."
     weaponFamilies: "Claws + throwing stars (Assassin branch) OR Daggers (Bandit branch) - locked at 2nd job"
     healthProfile: "<strong>Medium HP, low MP</strong>. Similar profile to Bowman, but with much better active defense via mobility."
@@ -64,14 +62,14 @@ advancement:
     - "At least <strong>25 DEX</strong>"
   steps:
     - "From Lith Harbor (arrival point after Maple Island), take the taxi or travel to <strong>Kerning City</strong>, the neon-lit thief quarter on the east side of Victoria Island."
-    - "Enter the <em>Thief Hideout</em> - accessed through a hidden entrance in the middle of Kerning City (down a manhole in v83) - and speak with <strong>The Dark Lord</strong>, the Thief job instructor."
+    - "Enter the <em>Thief Hideout</em> - accessed through a hidden entrance in the middle of Kerning City (down a manhole traditionally) - and speak with <strong>The Dark Lord</strong>, the Thief job instructor."
     - "Accept the job change. Historically this was a direct conversation with no combat trial - Classic World may reintroduce an advancement quest. See FAQ below."
   followup: "After advancement you gain 1 SP and unlock the first job skill set (listed below)."
   callout: |
     <strong>The DEX-for-advancement quirk.</strong>
     Thieves need 25 DEX to advance, but LUK is their
     damage stat. This trips up every new player. The
-    expected v83 approach is to put JUST enough AP into
+    expected traditional MapleStory approach is to put JUST enough AP into
     DEX to hit 25 (using free level-up AP), and pour
     everything else into LUK from the very first level.
     Overshooting DEX is one of the most common Thief
@@ -79,7 +77,7 @@ advancement:
 
 # ==================== AP allocation ====================
 apAllocation:
-  summary: "<strong>The short version (v83 baseline):</strong> pour points into LUK every level after you hit the 25 DEX advancement gate. DEX beyond that only matters for hit rate against equal-level and higher mobs."
+  summary: "<strong>The short version (traditional MapleStory baseline):</strong> pour points into LUK every level after you hit the 25 DEX advancement gate. DEX beyond that only matters for hit rate against equal-level and higher mobs."
   builds:
     - name: "Pure LUK (\"LUK all day\")"
       description: "After 25 DEX for advancement, every AP into LUK. Maximum damage; hit rate becomes a real problem against same-level+ mobs unless you scroll gear with DEX."
@@ -115,39 +113,39 @@ skills:
     - name: "Nimble Body"
       skillId: "4000000"
       type: "Passive"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Passive bonus to Weapon Accuracy and Avoidability. The shared foundation for both Assassin and Bandit paths - Thieves live and die by hit rate."
-      suggested: "1 point early, then max after your main attack skill (v83 baseline)"
+      suggested: "1 point early, then max after your main attack skill (traditional MapleStory baseline)"
     - name: "Keen Eyes"
       skillId: "4000001"
       type: "Passive"
-      maxLevel: "8 (v83)"
+      maxLevel: "8 (traditional MapleStory)"
       summary: "Passive attack-range extension for throwing weapons. Critical for Assassins (star-throwers); useless for Bandits (melee daggers)."
       suggested: "Assassins: max after Lucky Seven. Bandits: skip entirely."
     - name: "Disorder"
       skillId: "4001000"
       type: "Debuff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Reduces target mob's Attack and Defense for a short duration. Situational; more useful in early Bandit training (melee range) than Assassin's kite-and-throw playstyle."
       suggested: "1 point utility, or skip"
     - name: "Dark Sight"
       skillId: "4001001"
       type: "Buff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Turn invisible to mobs. Breaks on attack. Reduces movement speed while active. The signature Thief utility - useful for escapes, positioning, or walking through a crowded map safely."
       suggested: "1 point utility (higher levels reduce the speed penalty, but 1pt is enough for the escape trick)"
     - name: "Double Stab"
       skillId: "4001002"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Two-hit dagger attack. Melee range. The Bandit's core first-job attack; Assassins skip it entirely because they never intend to hold a dagger."
-      suggested: "Bandits: MAX FIRST (v83 baseline). Assassins: skip."
+      suggested: "Bandits: MAX FIRST (traditional MapleStory baseline). Assassins: skip."
     - name: "Lucky Seven"
       skillId: "4001003"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Throws two stars for damage based PURELY on LUK - weapon Attack is ignored. Unique in the game. The Assassin's identity skill and one of the strongest first-job attacks anywhere because it scales off stat rather than gear."
-      suggested: "Assassins: MAX FIRST (v83 baseline). Bandits: skip or 1 point utility."
+      suggested: "Assassins: MAX FIRST (traditional MapleStory baseline). Bandits: skip or 1 point utility."
   infoCard:
     eyebrow: "Why Lucky Seven is special"
     heading: "The only weapon-independent attack in the game"
@@ -167,7 +165,7 @@ skills:
 
 # ==================== Training routes ====================
 training:
-  intro: "v83 baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access. The Kerning City subway system is home turf - most of the early Thief training circuit happens within a two-map radius of the Dark Lord."
+  intro: "traditional MapleStory baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access. The Kerning City subway system is home turf - most of the early Thief training circuit happens within a two-map radius of the Dark Lord."
   routes:
     - levels: "Levels 1 - 10 (Beginner)"
       where: "Maple Island"
@@ -212,7 +210,7 @@ equipment:
     - name: "Level 36+ (Cursed Doll gloves):"
       description: "Run <a href=\"/quests/cursed-doll-chain\">Cursed Doll Chain</a> tier 4 for <a href=\"/items/gloves-attack-scroll-intermediate\">Gloves Attack Scroll (Intermediate)</a>. Bandits get direct WATT scaling on Double Stab; Assassins benefit less (Lucky Seven is LUK-scaled) but still improves the base per-hit damage."
     - name: "Level 20 - 30:"
-      description: "Overall gear with LUK bonuses is the target. Blackfist Cloak was a common v83 Thief overall for its cost-to-LUK ratio."
+      description: "Overall gear with LUK bonuses is the target. Blackfist Cloak was a common traditional MapleStory Thief overall for its cost-to-LUK ratio."
     - name: "Approaching 30:"
       description: "Save mesos for a real second-job weapon - either a proper claw (Assassin) or a good dagger (Bandit). Second-job weapon tiers are meaningful power jumps."
   callout: |
@@ -247,7 +245,7 @@ secondJobs:
     - name: "Bandit"
       subtitleLabel: "Weapon"
       subtitleValue: "Daggers"
-      summary: "Melee, LUK-scaling. Adds Savage Blow (six-hit dagger attack - highest hit-count skill in the game), Dagger Booster, and Steal - a passive that forces additional item drops from mobs. Bandits literally make more mesos per hour than any other second-job class in v83."
+      summary: "Melee, LUK-scaling. Adds Savage Blow (six-hit dagger attack - highest hit-count skill in the game), Dagger Booster, and Steal - a passive that forces additional item drops from mobs. Bandits literally make more mesos per hour than any other second-job class traditionally."
       bestFor: "Players who love melee dagger combat, want the game's best mesos-per-hour, and don't mind giving up ranged safety"
       previewSkills:
         - name: "Dagger Mastery"
@@ -275,7 +273,7 @@ secondJobs:
       Savage Blow's six hits, and passively steals extra
       drops on every kill. Their rhythm is engage,
       devastate, loot. Highest mesos-per-hour of any 2nd
-      job class in v83 - the drop bonus really adds up
+      job class traditionally - the drop bonus really adds up
       over an hour of training.</p>
       <p>If you love one playstyle, you will find the other
       unbearable. Try to picture yourself playing hour
@@ -284,22 +282,22 @@ secondJobs:
 # ==================== FAQ ====================
 faq:
   - question: "Do I need to do a job advancement quest, or just talk?"
-    answer: "<em>Awaiting confirmation.</em> v83 was talk-only with the DEX requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory was talk-only with the DEX requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
     badge: "awaiting-confirmation"
   - question: "Why DEX for advancement but LUK for damage?"
-    answer: "<em>v83 design decision.</em> Wizet gated Thief advancement behind DEX to force players to think about accuracy before committing to a pure-LUK build. It also creates a natural incentive to pick up DEX gear early. Weird from a first-look perspective, but the pattern has held across every MapleStory version. Classic World has not signaled any change."
+    answer: "<em>traditional MapleStory design decision.</em> Wizet gated Thief advancement behind DEX to force players to think about accuracy before committing to a pure-LUK build. It also creates a natural incentive to pick up DEX gear early. Weird from a first-look perspective, but the pattern has held across every MapleStory version. Classic World has not signaled any change."
     badge: "historical-archive"
   - question: "Is pure LUK viable at launch?"
-    answer: "<em>Awaiting confirmation.</em> In v83, pure LUK needed scrolled gear with DEX bonuses to hit same-level content reliably. Whether Classic World preserves that math determines whether pure LUK stays viable or DEX-level becomes the universal recommendation."
+    answer: "<em>Awaiting confirmation.</em> Traditionally, pure LUK needed scrolled gear with DEX bonuses to hit same-level content reliably. Whether Classic World preserves that math determines whether pure LUK stays viable or DEX-level becomes the universal recommendation."
     badge: "awaiting-confirmation"
   - question: "Assassin or Bandit - which does more damage?"
-    answer: "<em>v83 baseline:</em> Bandit's Savage Blow has higher raw sustained DPS on single targets; the six-hit count makes it exceptional against high-HP mobs. Assassin's Lucky Seven + Critical Throw combo has higher <em>peak</em> damage through crits and works from range. Bandits win mesos-per-hour thanks to Steal. Neither is a trap."
+    answer: "<em>traditional MapleStory baseline:</em> Bandit's Savage Blow has higher raw sustained DPS on single targets; the six-hit count makes it exceptional against high-HP mobs. Assassin's Lucky Seven + Critical Throw combo has higher <em>peak</em> damage through crits and works from range. Bandits win mesos-per-hour thanks to Steal. Neither is a trap."
     badge: "historical-archive"
   - question: "Is Dark Sight worth leveling past 1?"
-    answer: "<em>v83 baseline:</em> Usually no. The movement-speed penalty scales down at higher levels, but 1 point is enough for the standard use case (escape a bad spawn, walk past a mini-boss). Extra SP goes further into damage skills or Nimble Body."
+    answer: "<em>traditional MapleStory baseline:</em> Usually no. The movement-speed penalty scales down at higher levels, but 1 point is enough for the standard use case (escape a bad spawn, walk past a mini-boss). Extra SP goes further into damage skills or Nimble Body."
     badge: "historical-archive"
   - question: "Can I re-spec my Assassin/Bandit choice?"
-    answer: "<em>Awaiting confirmation.</em> v83 had no free re-spec; SP resets required specific event items or cash-shop purchases. Given how different the two Thief branches feel, this is a bigger deal than it is for Warrior or Magician. Whether Classic World offers a launch-window re-spec is unknown."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory had no free re-spec; SP resets required specific event items or cash-shop purchases. Given how different the two Thief branches feel, this is a bigger deal than it is for Warrior or Magician. Whether Classic World offers a launch-window re-spec is unknown."
     badge: "awaiting-confirmation"
   - question: "Do I need to grind Mark of Beta on this character?"
     answer: "Partial answer: the Oct 3 Founder's Access release notes confirmed Mark of Beta <strong>begins at Grand Launch on October 21</strong>, not during Founder's Access. If you're planning to level a main during Founder's Access, Mark of Beta is NOT a Founder's Access concern. Specific per-character vs per-account mechanics are still unpublished - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."

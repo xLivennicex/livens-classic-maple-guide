@@ -1,5 +1,5 @@
 /**
- * v83-canonical damage formulas for the classic MapleStory era.
+ * traditional MapleStory-canonical damage formulas for the classic MapleStory era.
  *
  * ============================================================
  * HONESTY / VERIFICATION POLICY (same as EXP table)
@@ -7,7 +7,7 @@
  * These formulas are what the community has reverse-engineered
  * across ~15 years of private-server sources and Odin-Ms /
  * HeavenMS-family server implementations. They're accurate for
- * v83 within about +/- 5-10% of in-game numbers because private
+ * traditional MapleStory within about +/- 5-10% of in-game numbers because private
  * servers stopped calling the client's damage-calc function
  * around v40 and re-implemented it server-side; small mismatches
  * accumulated over versions.
@@ -19,11 +19,14 @@
  * accuracy note the same way the EXP table does at Lv 30+.
  * ============================================================
  *
- * FORMULA SOURCES (public):
- * - Southperry.net damage guides (2008-2012 era)
- * - MapleTip / MapleWiki formula pages
- * - HiddenStreet's mechanics section
- * - Cross-checked against OdinMS-derived private server code
+ * FORMULA SOURCES:
+ * - These are the long-standing MapleStory damage formulas - the
+ *   mathematical primitives (STR*4 + 2nd-stat for melee, etc.) have
+ *   been consistent across every major MapleStory version.
+ * - Classic World's FA client does not expose formula definitions in
+ *   the datamine (only skill-level progression tables), so these
+ *   formulas remain the operational best-guess for CW damage math
+ *   until community-verified in-game testing confirms or amends them.
  */
 
 // ============================================================
@@ -37,7 +40,7 @@ export type AttackType = "physical" | "magic";
  * physical attacks. Magic weapons (wand, staff) are handled by
  * the magic formula and don't use these multipliers.
  *
- * Multipliers below are the v83-canonical "primary stat mult"
+ * Multipliers below are the traditional MapleStory-canonical "primary stat mult"
  * baked into the max-damage formula. Secondary stat always
  * multiplies by 1 in the max formula.
  */
@@ -99,7 +102,7 @@ export interface DamageOutput {
  *   Example: 60% mastery -> Min = Max * (54 + 10) / 100 = Max * 0.64
  *   Example: 90% mastery -> Min = Max * (81 + 10) / 100 = Max * 0.91
  *
- * Defense reduction (rough v83 approximation):
+ * Defense reduction (rough traditional MapleStory approximation):
  *   PostDef = max(1, damage - (MobPhysicalDef * 0.5))
  *   PostDef floor is 1 because MapleStory never displays 0 damage
  *   even against defense you can't scratch.
@@ -132,7 +135,7 @@ function computePhysical(i: DamageInputs): DamageOutput {
 // ============================================================
 
 /**
- * Widely-cited v83 magic formula:
+ * Widely-cited traditional MapleStory magic formula:
  *   Max = ((MATT^2 / 1000) + MATT) + (INT * SkillPercent / 100)
  *
  * The MATT^2 / 1000 term is the "magic squared" scaling that
@@ -172,7 +175,7 @@ function computeMagic(i: DamageInputs): DamageOutput {
 /**
  * Route to physical or magic formula based on weapon type. Wand
  * and staff are magic; everything else is physical. This
- * matches the actual v83 client behavior - even INT-based classes
+ * matches the actual traditional MapleStory client behavior - even INT-based classes
  * would auto-attack for physical damage if handed a bow, and vice
  * versa.
  */

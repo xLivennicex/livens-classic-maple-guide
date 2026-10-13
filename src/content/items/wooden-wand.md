@@ -37,11 +37,8 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "historical-archive"
-verificationNote: "Base stats reflect v83 baseline. Classic World's magic-attack values on beginner Magician weapons haven't been publicly verified."
-sourceSlugs:
-  - "hiddenstreet-v83-database"
-  - "ayumilove-v83-magician"
-
+verificationNote: "Base stats reflect traditional MapleStory baseline. Classic World's magic-attack values on beginner Magician weapons haven't been publicly verified."
+sourceSlugs: []
 # ==== Layout ====
 theme: "ellinia"
 lastUpdated: "2026-08-23"

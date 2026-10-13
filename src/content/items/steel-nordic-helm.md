@@ -3,7 +3,7 @@ name: "Steel Nordic Helm"
 wzId: 1002139
 category: "armor"
 subcategory: "Hat"
-tagline: "Level 40 Warrior-friendly hat - the classic v83 Perion-tier defensive helmet, and one of the random tier-5 rewards from Rowen's Cursed Doll chain."
+tagline: "Level 40 Warrior-friendly hat - the traditional MapleStory Perion-tier defensive helmet, and one of the random tier-5 rewards from Rowen's Cursed Doll chain."
 
 # ==== Requirements ====
 levelReq: 40

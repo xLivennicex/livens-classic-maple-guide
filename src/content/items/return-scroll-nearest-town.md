@@ -40,7 +40,7 @@ editorial: |
 
   <p><strong>How to acquire:</strong> most towns sell them at
   the general item shop for a modest meso cost (typically
-  1,000-2,000 mesos in v83, likely similar in Classic World).
+  1,000-2,000 mesos traditionally, likely similar in Classic World).
   Buy in bulk - a stack of 100 costs less than one training
   session's mesos, and lasts weeks.</p>
 
@@ -56,7 +56,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2030000), name, mechanic (return to nearest town), and full family of town-specific variant IDs (2030001-2030006) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. NPC purchase prices retain v83 baseline pending live verification."
+verificationNote: "Item ID (2030000), name, mechanic (return to nearest town), and full family of town-specific variant IDs (2030001-2030006) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. NPC purchase prices retain traditional MapleStory baseline pending live verification."
 sourceSlugs:
   - "osmsdataexplorer"
 

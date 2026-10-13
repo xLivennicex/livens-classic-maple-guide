@@ -172,7 +172,7 @@ relatedGuides:
   - "/items/return-scroll-to-forgotten-hollow"
 
 verificationStatus: "closed-test-info"
-verificationNote: "All 7 quest IDs (10600, 10601, 10607-10611), NPCs (Zelya - CoT-exclusive cave fairy no v83 sprite, Grendel the Really Old Ellinia Magician job instructor, Arwen the Fairy 1032100), level (39), per-quest EXP (varies 1,500-5,062) + mesos (500-1,140) + all item rewards (Blue Potion 2000003, Orange Potion 2000001, Return Scroll to Forgotten Hollow 2030007 GUARANTEED, Hat Accuracy Scroll Intermediate/Greater 2040001-2040002 random, Greater Weapon Attack Scroll 14-weapon pool 2043002-2044702 random) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
+verificationNote: "All 7 quest IDs (10600, 10601, 10607-10611), NPCs (Zelya - CoT-exclusive cave fairy no traditional MapleStory sprite, Grendel the Really Old Ellinia Magician job instructor, Arwen the Fairy 1032100), level (39), per-quest EXP (varies 1,500-5,062) + mesos (500-1,140) + all item rewards (Blue Potion 2000003, Orange Potion 2000001, Return Scroll to Forgotten Hollow 2030007 GUARANTEED, Hat Accuracy Scroll Intermediate/Greater 2040001-2040002 random, Greater Weapon Attack Scroll 14-weapon pool 2043002-2044702 random) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
 sourceSlugs:
   - "osmsdataexplorer"
 

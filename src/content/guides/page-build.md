@@ -19,7 +19,6 @@ verificationNote: "Weapon ATK + speed data from src/data/db/items.json datamine.
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-warrior
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 toc:
@@ -141,9 +140,10 @@ damage.
 
 ### Power Guard note
 
-Power Guard scales with your maximum HP. In Classic World (post-HP-wash),
-your HP ceiling is lower than v83, so Power Guard reflects slightly
-less damage. Still worth maxing for the uptime and free DPS.
+Power Guard scales with your maximum HP. Classic World removed HP
+washing, so your HP ceiling is driven by base-table + AP alone and
+Power Guard reflects proportionally less damage than a hypothetical
+washed character. Still worth maxing for the uptime and free DPS.
 
 <h2 id="ap-allocation">AP allocation: pure STR</h2>
 
@@ -216,11 +216,12 @@ This is a late-game-specialist pivot — not recommended for FA play.
 
 <div class="callout callout--warning">
 <strong>Grand Launch endgame concern:</strong> Classic World's HP
-wash removal reduces every class's HP ceiling by ~2-3x compared to
-v83. Page's role was traditionally "tanks Zakum via massive HP pool
-+ Power Guard reflect." Without HP wash, Page's HP pool at Lv 120
-is ~5,000-6,000 vs. v83's ~10,000+. <strong>Whether Page can still
-reliably tank Zakum at Grand Launch is a top community debate</strong>.
+wash removal means every class's HP ceiling is driven by base-table
++ AP alone. Page's traditional role was "tanks Zakum via massive
+HP pool + Power Guard reflect" - in Classic World, Page's HP pool
+at Lv 120 projects to roughly 5,000-6,000 based on the base-table
+values in the FA datamine. <strong>Whether Page can still reliably
+tank Zakum at Grand Launch is a top community debate</strong>.
 Monitor the <a href="/community-resources">r/Maplestory Classic World
 threads</a> as we approach Oct 21.
 </div>

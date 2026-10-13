@@ -1,37 +1,38 @@
 ---
 /**
- * /guides/exp-then-vs-now - the "which v83 EXP numbers still apply?"
+ * /guides/exp-then-vs-now - the "which traditional MapleStory EXP numbers still apply?"
  * reference. Covers mob EXP, quest EXP, and the party EXP formula
  * with an honest "here's what we know / don't know" framing.
  *
  * SEO target: 'maplestory classic exp changes', 'MSCW mob exp
- * different from v83', 'maplestory classic quest exp', 'maplestory
+ * different from traditional MapleStory', 'maplestory classic quest exp', 'maplestory
  * classic leveling different'. Returning-player intent query.
  *
- * All CoT 2 mob values below come directly from mobs.json
- * (stats.exp). v83 baseline values are from Hidden Street / OldSchool
- * wikis - we cite the range of values seen across community sources
- * rather than pretending there's ONE canonical v83 number (there
- * often isn't - GMS retuned during patches and private servers
- * added their own multipliers).
+ * All Classic World FA mob values below come directly from mobs.json
+ * (stats.exp) - the authoritative source. Traditional-MapleStory
+ * baseline numbers are included only as a nostalgia comparison for
+ * returning players; they are not source-of-truth and we cite a
+ * range rather than a single number because pre-CW community sources
+ * disagreed (GMS retuned during patches and private servers added
+ * their own multipliers).
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-	title="Then vs Now: EXP & Progression Changes (v83 to CoT 2) - Liven's Classic Maple Guide"
-	description="The v83 wiki mob-EXP tables are mostly still accurate for MapleStory Classic World, but there are shifts worth knowing about. Datamine-verified CoT 2 numbers for iconic mobs, quest EXP examples, and an honest note on party EXP formula uncertainty."
+	title="Then vs Now: EXP & Progression Changes (traditional MapleStory to CoT 2) - Liven's Classic Maple Guide"
+	description="The traditional MapleStory wiki mob-EXP tables are mostly still accurate for MapleStory Classic World, but there are shifts worth knowing about. Datamine-verified CoT 2 numbers for iconic mobs, quest EXP examples, and an honest note on party EXP formula uncertainty."
 	currentPath="/guides"
 	theme="ellinia"
 	decorations={false}
 >
 	<section class="section-heading">
 		<div>
-			<span class="eyebrow eyebrow--guide">CoT 2 vs v83 Reality Check</span>
+			<span class="eyebrow eyebrow--guide">CoT 2 vs traditional MapleStory Reality Check</span>
 			<h1>Then vs Now: EXP & Progression</h1>
 			<p class="lede">
-				Old v83 mob-EXP tables are the returning player's default mental
+				Old traditional MapleStory mob-EXP tables are the returning player's default mental
 				model. Are they still accurate for Classic World? Mostly - but
 				there are shifts, some of them significant, and we don't have
 				live-server confirmation on the party EXP formula at all yet.
@@ -43,19 +44,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 	<article class="prose">
 		<div class="callout callout--framing">
-			<strong>Data sources:</strong> all "CoT 2 datamine" numbers below
+			<strong>Data sources:</strong> all "FA datamine" numbers below
 			are pulled directly from <code>mobs.json</code> and
-			<code>quests.json</code>, extracted from the Closed Online Test 2
-			client. "v83 baseline" references community wikis (Hidden Street,
-			OldSchool) - which themselves disagree on some values because GMS
-			retuned during its own patch history. When we cite a v83 number,
-			assume &plusmn;20% variance across sources unless we explicitly
-			say otherwise.
+			<code>quests.json</code>, extracted from the Classic World
+			Founder's Access client. The "traditional MapleStory baseline"
+			reference points are included only as a comparison for players
+			with prior MapleStory experience - they are not source-of-truth
+			for Classic World claims. When we cite a traditional MapleStory
+			number, assume &plusmn;20% variance across pre-CW sources and
+			treat the FA number as authoritative.
 		</div>
 
 		<h2 id="mob-exp-comparison">Mob EXP: mostly the same, with exceptions</h2>
 		<p>
-			The datamine surprises here. Most iconic v83 mob EXP values
+			The datamine surprises here. Most iconic traditional MapleStory mob EXP values
 			carried over into CoT 2 unchanged. Selective shifts DO exist -
 			the low-level Slime notably almost doubled - but the "everything
 			has been retuned!" narrative you might have heard is largely
@@ -69,7 +71,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 					<th>Mob</th>
 					<th>Lv</th>
 					<th>CoT 2 EXP</th>
-					<th>Common v83 wiki EXP</th>
+					<th>Common traditional MapleStory wiki EXP</th>
 					<th>Delta</th>
 				</tr>
 			</thead>
@@ -106,14 +108,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<p>
 			<strong>The pattern:</strong> from Lv 15 onward, mob EXP appears
-			identical to v83 within margin-of-error. The only significant
+			identical to traditional MapleStory within margin-of-error. The only significant
 			outlier we've spotted is <strong>Slime</strong> jumping from 6 to
 			10 EXP - a 67% increase that meaningfully speeds up the Lv 6-10
 			bracket. Green Mushroom drops 1 EXP but that's within wiki
 			variance.
 		</p>
 		<p>
-			<strong>Practical takeaway:</strong> if you have v83 grinding-spot
+			<strong>Practical takeaway:</strong> if you have traditional MapleStory grinding-spot
 			habits, they're probably still valid EXP-per-hour. The
 			<a href="/mobs">mobs catalog</a> shows the live CoT 2 datamine
 			value for every mob - if you want to verify a specific number,
@@ -122,7 +124,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h2 id="quest-exp">Quest EXP: harder to compare</h2>
 		<p>
-			Quest EXP is much harder to A/B compare against v83 because
+			Quest EXP is much harder to A/B compare against traditional MapleStory because
 			community wikis rarely captured exact quest reward numbers - they
 			focused on mob EXP and left "quest rewards vary" as a wave-of-the-
 			hand. Datamine gives us concrete numbers. Examples pulled from
@@ -147,7 +149,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<p>
 			The comparison table is intentionally small - we're avoiding
-			citing v83 quest EXP numbers we can't confidently source. The
+			citing traditional MapleStory quest EXP numbers we can't confidently source. The
 			<a href="/quests">quests catalog</a> lists every CoT 2 quest with
 			its EXP + item rewards; if a value looks different from your
 			memory, treat the datamine number as authoritative for CoT 2.
@@ -155,13 +157,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h2 id="party-formula">Party EXP formula: the big unknown</h2>
 		<p>
-			The v83 canonical party EXP formula is:
+			The traditional MapleStory canon party EXP formula is:
 		</p>
 		<pre class="callout formula"><code>partyExp(member) = mobBaseExp * (0.6 / partySize + 0.4 * (memberLv / totalPartyLv))</code></pre>
 		<p>
 			Our <a href="/guides/party-exp">Party EXP guide</a> uses this
 			formula as its working assumption because it's the most-cited
-			v83 formula and Nexon has not publicly announced retuning the
+			traditional MapleStory formula and Nexon has not publicly announced retuning the
 			party split. But <strong>we do not have datamine-level
 			confirmation that CoT 2 preserves this exact formula.</strong>
 			Reasons to be cautious:
@@ -175,7 +177,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			<li>
 				<strong>Nexon has retuned party bonuses in other MapleStory
 				builds.</strong> Modern KMS and BB-era GMS both use
-				materially different party formulas from classic v83.
+				materially different party formulas from traditional MapleStory.
 			</li>
 			<li>
 				<strong>New systems interact with party EXP.</strong>
@@ -185,7 +187,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			</li>
 		</ul>
 		<p>
-			<strong>What to do about it:</strong> assume the v83 formula is
+			<strong>What to do about it:</strong> assume the traditional MapleStory formula is
 			directionally correct (partying benefits both members, 3-player
 			parties benefit modestly more) but don't build a spreadsheet
 			around exact percentages. Once Founder's Access opens October 6
@@ -247,7 +249,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 				<strong>Specific mob EXP:</strong> search the mob on
 				<a href="/mobs">the mobs catalog</a>, open its detail page,
 				read <code>stats.exp</code>. That's the CoT 2 datamine value
-				- authoritative for CoT 2, ignore whatever the v83 wiki says.
+				- authoritative for CoT 2, ignore whatever the traditional MapleStory wiki says.
 			</li>
 			<li>
 				<strong>Specific quest EXP:</strong> search the quest on
@@ -268,7 +270,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<h2 id="bottom-line">Bottom line for returners</h2>
 		<p>
-			Your v83 grinding-spot instincts are mostly still valid. Mob EXP
+			Your traditional MapleStory grinding-spot instincts are mostly still valid. Mob EXP
 			for iconic mobs (Wild Boar, Cold Eye, Wraith, Drake, Death Teddy)
 			matches the wiki you remember. Where things get uncertain is:
 		</p>
@@ -283,7 +285,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 			</li>
 			<li>
 				<strong>Level curve</strong> - unclear. If leveling feels
-				faster/slower than v83 memory, it's probably the curve rather
+				faster/slower than in traditional MapleStory memory, it's probably the curve rather
 				than mob EXP.
 			</li>
 			<li>
@@ -294,10 +296,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 		<p class="closing">
 			Related: <a href="/guides/whats-new-in-cot2">What's New in CoT 2</a>
-			for the broader v83-vs-CoT2 changelog,
+			for the broader traditional MapleStory-vs-CoT2 changelog,
 			<a href="/guides/skill-changes">Skill Changes Per Class</a> for
 			the class-kit-level diffs, and <a href="/guides/party-exp">Party
-			EXP &amp; Grinding</a> for the (v83-assumed) party formula math.
+			EXP &amp; Grinding</a> for the (traditional MapleStory-assumed) party formula math.
 		</p>
 	</article>
 </BaseLayout>

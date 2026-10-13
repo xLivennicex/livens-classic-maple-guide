@@ -15,10 +15,8 @@ decorations: true
 
 # ==================== Verification ====================
 verificationStatus: "closed-test-info"
-verificationNote: "First-job skill lists (all six match the v83 baseline), skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, INT requirement, Magic Guard's damage-to-MP ratio, advancement level) still reflect v83-era baseline pending live Classic World verification once Founder's Access begins on October 6."
+verificationNote: "First-job skill lists (all six match the traditional MapleStory baseline), skill IDs, and skill icons are CoT 2-verified against the client datamine at osmsdataexplorer.com. Numeric stat values (max levels, INT requirement, Magic Guard's damage-to-MP ratio, advancement level) still reflect earlier-era MapleStory baseline pending live Classic World verification once Founder's Access begins on October 6."
 sourceSlugs:
-  - "ayumilove-v83-magician"
-  - "hiddenstreet-v83-database"
   - "osmsdataexplorer"
 
 # ==================== TOC ====================
@@ -64,7 +62,7 @@ advancement:
   steps:
     - "From Lith Harbor (arrival point after Maple Island), take the taxi or travel east to <strong>Ellinia</strong>, the treetop city."
     - "Enter the <em>Magic Library</em> at the top of the tree and speak with <strong>Grendel the Really Old</strong>, the Magician job instructor."
-    - "Accept the job change. In v83 this was a direct conversation with no combat trial. Classic World may reintroduce an advancement quest - see FAQ."
+    - "Accept the job change. Traditionally this was a direct conversation with no combat trial. Classic World may reintroduce an advancement quest - see FAQ."
   followup: "After advancement you gain 1 SP and unlock the first job skill set (listed below)."
   callout: |
     <strong>Timing note:</strong> Because Magicians can
@@ -76,7 +74,7 @@ advancement:
 
 # ==================== AP allocation ====================
 apAllocation:
-  summary: "<strong>The short version (v83 baseline):</strong> pour points into INT every level. LUK only exists to keep your magic hit rate acceptable."
+  summary: "<strong>The short version (traditional MapleStory baseline):</strong> pour points into INT every level. LUK only exists to keep your magic hit rate acceptable."
   builds:
     - name: "Pure INT (\"INT-only\")"
       description: "Every AP into INT. Maximum magical damage; you will miss more often on same-level or higher mobs, and hit rate on bosses may suffer."
@@ -84,7 +82,7 @@ apAllocation:
       description: "Keep LUK three below your level for reliable hit rate. Slightly lower damage; noticeably more consistent, especially against higher-level content."
     - name: "Milestone check at L30"
       description: "For the LUK-3 build: ~140 INT, ~27 LUK. For pure INT: ~165 INT, 4 LUK (starting). Note that Magicians start with 4 INT + 4 LUK (not 4 STR + 4 DEX like other classes), so allocation math starts from a different baseline."
-  notes: "The LUK-level rule is the more forgiving choice for a first character and the recommendation most v83 guides made. Whether the magic hit-rate formula behaves this way in Classic World is one of the values we will verify at launch."
+  notes: "The LUK-level rule is the more forgiving choice for a first character and the recommendation most traditional MapleStory guides made. Whether the magic hit-rate formula behaves this way in Classic World is one of the values we will verify at launch."
   callout: |
     <strong>Common AP mistakes to avoid:</strong>
     <ul>
@@ -101,7 +99,7 @@ apAllocation:
         Every point above that is a point of INT you didn't
         get, and INT is your entire damage stat.</li>
       <li><strong>Reset scrolls exist.</strong> If you
-        overshot LUK or wasted AP early, v83 sold AP Reset
+        overshot LUK or wasted AP early, traditional MapleStory sold AP Reset
         scrolls in the cash shop. Classic World's plan for
         these is TBD - if you're unsure, err toward the
         LUK-3 build which is safe.</li>
@@ -109,44 +107,44 @@ apAllocation:
 
 # ==================== Skills ====================
 skills:
-  order: "First job gives you six skills. The recommended v83 order is: <strong>1 point in Improved MP Recovery,</strong> then MAX <strong>Magic Guard</strong> as fast as possible (survival before damage), then max Improved Max MP Increase, then max Magic Claw. Skip Energy Bolt (Magic Claw dominates it) and leave Magic Armor at 1 point or skip entirely."
+  order: "First job gives you six skills. The recommended traditional MapleStory order is: <strong>1 point in Improved MP Recovery,</strong> then MAX <strong>Magic Guard</strong> as fast as possible (survival before damage), then max Improved Max MP Increase, then max Magic Claw. Skip Energy Bolt (Magic Claw dominates it) and leave Magic Armor at 1 point or skip entirely."
   entries:
     - name: "Improved MP Recovery"
       skillId: "2000000"
       type: "Passive"
-      maxLevel: "16 (v83)"
+      maxLevel: "16 (traditional MapleStory)"
       summary: "Faster natural MP regeneration over time."
       suggested: "1 point (prerequisite for other passives)"
     - name: "Improved Max MP Increase"
       skillId: "2000001"
       type: "Passive"
-      maxLevel: "10 (v83)"
+      maxLevel: "10 (traditional MapleStory)"
       summary: "Bonus MP gained per level-up. Compounds every level - the earlier you invest, the larger your endgame MP pool."
-      suggested: "Max after Magic Guard (v83 baseline)"
+      suggested: "Max after Magic Guard (traditional MapleStory baseline)"
     - name: "Magic Guard"
       skillId: "2001000"
       type: "Buff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Converts a percentage of damage taken into MP loss instead of HP. THE defining Magician survival skill - a maxed Magic Guard makes glass-cannon builds viable."
-      suggested: "MAX FIRST (v83 baseline). Survival before damage."
+      suggested: "MAX FIRST (traditional MapleStory baseline). Survival before damage."
     - name: "Magic Armor"
       skillId: "2001001"
       type: "Buff"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Temporary boost to Weapon Defense. Situational; Magic Guard does the heavy lifting for damage mitigation."
       suggested: "Skip early or 1-point utility"
     - name: "Energy Bolt"
       skillId: "2001002"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Single-hit ranged magic attack. Simple but Magic Claw does more damage per MP spent."
       suggested: "1 point (or skip) - Magic Claw is better DPS"
     - name: "Magic Claw"
       skillId: "2001003"
       type: "Attack"
-      maxLevel: "20 (v83)"
+      maxLevel: "20 (traditional MapleStory)"
       summary: "Two-hit ranged magic attack. Higher damage-per-cast than Energy Bolt and the workhorse skill for first-job Magicians."
-      suggested: "Max after Improved Max MP Increase (v83 baseline)"
+      suggested: "Max after Improved Max MP Increase (traditional MapleStory baseline)"
   infoCard:
     eyebrow: "Why Magic Guard first?"
     heading: "The Magician survival flip"
@@ -157,13 +155,13 @@ skills:
       instead. Since you already carry Mana potions to cast
       spells, you effectively use MP potions as HP potions.</p>
       <p>This is why max Magic Guard <em>immediately</em> is the
-      universal v83 recommendation. Everything else - MP pool,
+      universal traditional MapleStory recommendation. Everything else - MP pool,
       damage - is optimization on top of the survival
       foundation Magic Guard provides.</p>
 
 # ==================== Training routes ====================
 training:
-  intro: "v83 baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access."
+  intro: "traditional MapleStory baseline routes. Classic World map spawns and monster levels may have shifted; verify at Founder's Access."
   routes:
     - levels: "Levels 1 - 8 (Beginner)"
       where: "Maple Island"
@@ -191,7 +189,7 @@ equipment:
       description: "Lower base Magic ATT but faster attack speed. Good for consistent damage output."
     - name: "Staff"
       description: "Higher base Magic ATT, slower attack speed. Slightly better for burst damage and single-cast skills."
-  weaponsNote: "Both are viable in v83. Staff is the more common pick because Magic ATT compounds with your INT-heavy build, but wands remain competitive."
+  weaponsNote: "Both are viable traditionally. Staff is the more common pick because Magic ATT compounds with your INT-heavy build, but wands remain competitive."
   armorProgression:
     - name: "Level 1 - 10 (starter):"
       description: "Whatever the beginner shops sell. Prioritize any INT or MP bonuses. A basic <a href=\"/items/wooden-wand\">Wooden Wand</a> from vendor is fine to start."
@@ -223,7 +221,7 @@ secondJobs:
     - name: "F/P Wizard (Fire/Poison)"
       subtitleLabel: "Element"
       subtitleValue: "Fire and Poison"
-      summary: "Damage-over-time specialist. Poison Brace applies a DoT that ticks for 1 HP per second on bosses in v83 - a signature technique. Higher single-target output than I/L against fire-weak or poison-vulnerable enemies."
+      summary: "Damage-over-time specialist. Poison Brace applies a DoT that ticks for 1 HP per second on bosses traditionally - a signature technique. Higher single-target output than I/L against fire-weak or poison-vulnerable enemies."
       bestFor: "Players who like DoT gameplay, want strong single-target burst, and enjoy elemental matchup planning"
       previewSkills:
         - name: "Fire Arrow"
@@ -259,7 +257,7 @@ secondJobs:
     - name: "Cleric"
       subtitleLabel: "Element"
       subtitleValue: "Holy (with Heal utility)"
-      summary: "Support and undead specialist. Heal doubles as an attack against undead mobs (Zombie Mushrooms, Wraiths, etc.) - some of the best undead-map EXP in v83 came from Cleric AoE-healing. Progresses to Priest (buffs) and Bishop (full party support)."
+      summary: "Support and undead specialist. Heal doubles as an attack against undead mobs (Zombie Mushrooms, Wraiths, etc.) - some of the best undead-map EXP traditionally came from Cleric AoE-healing. Progresses to Priest (buffs) and Bishop (full party support)."
       bestFor: "Players who want to party constantly, don't mind slower solo damage, and appreciate that everyone loves the healer"
       previewSkills:
         - name: "Heal"
@@ -293,20 +291,20 @@ secondJobs:
 # ==================== FAQ ====================
 faq:
   - question: "Do I need to do a job advancement quest, or just talk?"
-    answer: "<em>Awaiting confirmation.</em> v83 was talk-only with an INT requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory was talk-only with an INT requirement; some later versions added a \"prove yourself\" trial. Whether Classic World reintroduces the quest will be visible at Founder's Access."
     badge: "awaiting-confirmation"
   - question: "Is a pure-INT build viable at launch?"
-    answer: "<em>Awaiting confirmation.</em> In v83, pure INT was the meta once players had scrolled equipment with LUK bonuses to cover hit rate. Whether Classic World preserves the same hit-rate formula and LUK requirements determines whether it stays viable."
+    answer: "<em>Awaiting confirmation.</em> Traditionally, pure INT was the meta once players had scrolled equipment with LUK bonuses to cover hit rate. Whether Classic World preserves the same hit-rate formula and LUK requirements determines whether it stays viable."
     badge: "awaiting-confirmation"
   - question: "Why does everyone say max Magic Guard first?"
     answer: "Because it converts damage taken into MP loss instead of HP loss. Since Magicians already carry MP potions, Magic Guard effectively lets you use those MP potions as HP potions - trivially cheaper than the White Potions Warriors chew through. Without Magic Guard, first job Magicians die a lot."
     badge: "historical-archive"
   - question: "Which second job branch does the most damage?"
-    answer: "In v83 F/P Wizards had the highest single-target sustained damage against fire-weak or poison-vulnerable mobs. I/L Wizards had better AoE and crowd control. Cleric was intentionally lower DPS but essential to parties. Classic World may shift these balance points."
+    answer: "Traditionally F/P Wizards had the highest single-target sustained damage against fire-weak or poison-vulnerable mobs. I/L Wizards had better AoE and crowd control. Cleric was intentionally lower DPS but essential to parties. Classic World may shift these balance points."
     badge: "historical-archive"
   - question: "Should I go Cleric if I only plan to solo?"
     answer: "Cleric can absolutely solo, especially against undead mobs where Heal doubles as attack. But if you never plan to party at all, F/P or I/L will feel more powerful per fight. Cleric's real payoff is being the person everyone wants in their party - worth thinking about socially, not just mechanically."
   - question: "Can I re-spec if I regret my second-job choice?"
-    answer: "<em>Awaiting confirmation.</em> v83 had no free re-spec; SP resets required specific event items or cash-shop purchases. Whether Classic World allows a launch-window re-spec (as some private servers did) is unknown."
+    answer: "<em>Awaiting confirmation.</em> traditional MapleStory had no free re-spec; SP resets required specific event items or cash-shop purchases. Whether Classic World allows a launch-window re-spec (as some private servers did) is unknown."
     badge: "awaiting-confirmation"
 ---

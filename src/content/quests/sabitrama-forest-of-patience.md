@@ -10,7 +10,7 @@ classReq: "Any"
 npcName: "Sabitrama"
 npcLocation: "Sleepywood (in front of the Sleepywood Hotel)"
 # Sabitrama is a Classic World-exclusive NPC (Chrishrama's
-# brother, matching the Arcforging system). No v83 sprite.
+# brother, matching the Arcforging system). No traditional MapleStory sprite.
 # Marked in docs/npc-id-lookup.md 'Classic World-exclusive' section.
 
 chainName: "Sabitrama's Forest of Patience"
@@ -110,7 +110,7 @@ relatedGuides:
   - "/quests/sleepywood-sauna-robe-chain"
 
 verificationStatus: "closed-test-info"
-verificationNote: "Both quest IDs (10509, 10510), NPC (Sabitrama - CoT-exclusive, no v83 WZ), level (25), rewards (2,587 EXP + 731 mesos per step, random Overall Armor DEF Scroll 2040501/2040502 on step 1, guaranteed Star Rock 4020109 on step 2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
+verificationNote: "Both quest IDs (10509, 10510), NPC (Sabitrama - CoT-exclusive, no traditional MapleStory WZ), level (25), rewards (2,587 EXP + 731 mesos per step, random Overall Armor DEF Scroll 2040501/2040502 on step 1, guaranteed Star Rock 4020109 on step 2) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
 sourceSlugs:
   - "osmsdataexplorer"
 

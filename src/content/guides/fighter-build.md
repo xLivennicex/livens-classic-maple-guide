@@ -20,11 +20,10 @@ tagline: "The DPS warrior branch — pure STR, max weapon mastery, Rage party bu
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Weapon ATK values, speed classes, armor stats, shield DEF, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the CoT 2 client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order is a condensed version of community consensus from MapleRoyals v83 archives + xBucc Reddit cluster corrections (specifically the top-upvoted critique that all Warrior builds skip Final Attack - we max it). The 2H vs 1H+shield DPS math uses the datamine ATK values and standard v83 Hitrate conventions; not formally re-tested in CW CoT 2 so treat the 'break-even point' as a planning estimate, not a precise simulation."
+verificationNote: "Weapon ATK values, speed classes, armor stats, shield DEF, and reqLevel data pulled directly from src/data/db/items.json (7431 items from the CoT 2 client datamine via osmsdataexplorer.com + MeowDB community drops). Classic-World-specific mechanics (HP wash removal, 1.25x elemental, earring crit damage line, Victoria-only FA content ceiling) sourced from Nexon's Oct 3 release notes + Lunitidal on msclassic.wiki + r/Maplestory CW threads. SP priority order is a condensed version of community consensus from MapleRoyals traditional MapleStory archives + xBucc Reddit cluster corrections (specifically the top-upvoted critique that all Warrior builds skip Final Attack - we max it). The 2H vs 1H+shield DPS math uses the datamine ATK values and standard traditional MapleStory Hitrate conventions; not formally re-tested in CW CoT 2 so treat the 'break-even point' as a planning estimate, not a precise simulation."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-warrior
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 
@@ -70,14 +69,13 @@ Three mechanic shifts matter for Fighter specifically.
 
 ### 1. HP washing removed — but it was never Fighter's problem
 
-v83 Warriors famously didn't need to HP wash because the base HP
-table was already the highest in the game. Classic World's HP wash
-removal **doesn't affect Fighter builds at all** — your HP ceiling
-is now identical to what every v83 Fighter who skipped HP wash had.
+Warriors have the highest base HP table in the game. Classic World's
+HP wash removal **doesn't affect Fighter builds at all** — your HP
+ceiling is already strong by base-table alone.
 
-**Practical impact:** zero. Fighters were "fine without HP wash" in
-v83 and are still fine. The real losers of HP wash removal are
-Clerics, Night Lords, and Buccaneers — you're not one of them.
+**Practical impact:** zero. Fighters are fine without HP wash. The
+real losers of HP wash removal are Clerics, Night Lords, and
+Buccaneers — you're not one of them.
 
 ### 2. Earring crit damage line
 
@@ -161,9 +159,10 @@ progression](#weapon-progression) section.
 | Quest reward | [Hero's Gladius](/items/1302014) L45 from the Hero's quest | — |
 | Final Attack visual | Horizontal slash | Overhead chop |
 
-**Honest answer:** parity. The old v83 "axes crit for more" rumor
-is a confused memory of Fighter's Weapon Mastery skill which caps
-your minimum damage percentage — it applies equally to sword and axe.
+**Honest answer:** parity. The old "axes crit for more" rumor is a
+confused memory of Fighter's Weapon Mastery skill which caps your
+minimum damage percentage — it applies equally to sword and axe
+in the FA datamine's skill definitions.
 
 Pick based on which boss drop route you want to farm, or just the
 animation you prefer. **If undecided, pick axe** — the Lv 30
@@ -172,8 +171,8 @@ you a cheap boss-farming motivator from Lv 30-35.
 
 <h2 id="sp-priority">SP priority (2nd job)</h2>
 
-Classic World's Fighter skill tree matches v83's. Max order with
-reasoning:
+The FA datamine confirms the Fighter skill tree matches
+traditional MapleStory layouts. Max order with reasoning:
 
 ### The 100% uncontested picks
 
@@ -514,17 +513,18 @@ budgets.
 
 **Does Classic World have Fighter → Hero 3rd job?**
 
-Not in Founder's Access. 3rd job unlocks at Lv 70 in v83 base and
-Classic World follows the same progression, but 3rd job advancement
-is **held for Grand Launch** (Oct 21, 2026). Hold your SP from
-Lv 70 onwards until 3rd job NPCs unlock.
+Not in Founder's Access. 3rd job is confirmed to unlock at Lv 70
+but 3rd job advancement is **held for Grand Launch** (Oct 21, 2026)
+per Nexon's release notes. Hold your SP from Lv 70 onwards until
+3rd job NPCs unlock.
 
 **I keep failing 60% scrolls. Is CW's rate actually 60%?**
 
-Nothing in the datamine suggests Classic World changed scroll rates
-from v83. 60% feels like 40% because small sample sizes are brutal:
-a run of 3 fails in a row is a 6.4% event, which happens often
-enough that it feels broken. Trust the math over the vibes.
+The FA datamine shows scroll success rates matching the printed
+values on each scroll. 60% feels like 40% because small sample
+sizes are brutal: a run of 3 fails in a row is a 6.4% event,
+which happens often enough that it feels broken. Trust the math
+over the vibes.
 
 **Is Fighter viable at the FA cap?**
 

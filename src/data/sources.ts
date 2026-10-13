@@ -9,7 +9,7 @@ export type SourceType =
 	| "launch-verified"
 	| "community-reported"
 	| "awaiting-confirmation"
-	| "historical-archive"; /* v83-era wikis, fan sites, forum archives */
+	| "historical-archive"; /* archived wikis / fan sites from older MapleStory versions - NOT used as source-of-truth for CW claims */
 
 export type SourceStatus = "current" | "superseded";
 
@@ -456,114 +456,29 @@ export const sources: ArchivedSource[] = [
 		],
 	},
 
-	// v83-era historical archives. Used as the baseline research layer
-	// for job guides, quests, and item data - EVERY claim traced back
-	// here must be cross-checked at launch and labeled accordingly.
-	{
-		slug: "ayumilove-v83-warrior",
-		title: "Ayumilove MapleStory Warrior Guide (v83 era)",
-		publisher: "Ayumilove",
-		publishedOn: "v83 era (approximate)",
-		sourceType: "historical-archive",
-		topics: ["Warrior", "Builds", "Skills", "AP allocation"],
-		originalUrl: "https://ayumilove.net/maplestory/",
-		checkedOn: "2026-08-22",
-		status: "current",
-		summary:
-			"Long-running fan reference from the v83 era. Used as the baseline for Warrior playstyle and skill-order recommendations pending Classic World verification.",
-		confirmedFacts: [
-			"Warriors use STR as their primary damage stat (v83 baseline)",
-			"First job advancement requires level 10 and 35 STR (v83 baseline)",
-			"First job trainer is Dances with Balrog in Perion (v83 baseline)",
-			"Second job branches are Fighter, Page, and Spearman (v83 baseline)",
-		],
-	},
-
-	{
-		slug: "ayumilove-v83-magician",
-		title: "Ayumilove MapleStory Magician Guide (v83 era)",
-		publisher: "Ayumilove",
-		publishedOn: "v83 era (approximate)",
-		sourceType: "historical-archive",
-		topics: ["Magician", "Builds", "Skills", "AP allocation", "Magic Guard"],
-		originalUrl: "https://ayumilove.net/maplestory/",
-		checkedOn: "2026-08-22",
-		status: "current",
-		summary:
-			"Long-running fan reference from the v83 era. Used as the baseline for Magician playstyle, Magic Guard priority, and second-job branch guidance pending Classic World verification.",
-		confirmedFacts: [
-			"Magicians use INT as their primary damage stat (v83 baseline)",
-			"First job advancement requires level 8 and 20 INT (v83 baseline)",
-			"First job trainer is Grendel the Really Old in Ellinia (v83 baseline)",
-			"Second job branches are F/P Wizard, I/L Wizard, and Cleric (v83 baseline)",
-			"Magic Guard converts a portion of damage taken into MP loss (v83 baseline)",
-		],
-	},
-
-	{
-		slug: "ayumilove-v83-bowman",
-		title: "Ayumilove MapleStory Bowman Guide (v83 era)",
-		publisher: "Ayumilove",
-		publishedOn: "v83 era (approximate)",
-		sourceType: "historical-archive",
-		topics: ["Bowman", "Builds", "Skills", "AP allocation", "Bow", "Crossbow"],
-		originalUrl: "https://ayumilove.net/maplestory/",
-		checkedOn: "2026-08-22",
-		status: "current",
-		summary:
-			"Long-running fan reference from the v83 era. Used as the baseline for Bowman playstyle, DEX allocation, and the Hunter/Crossbowman weapon-choice question at second job pending Classic World verification.",
-		confirmedFacts: [
-			"Bowmen use DEX as their primary damage stat (v83 baseline)",
-			"First job advancement requires level 10 and 25 DEX (v83 baseline)",
-			"First job trainer is Athena Pierce in Henesys (v83 baseline)",
-			"Second job branches are Hunter (bow) and Crossbowman (crossbow) - only two branches, not three (v83 baseline)",
-			"Weapon choice at 2nd job is permanent - a Bow-user cannot switch to Crossbow later (v83 baseline)",
-		],
-	},
-
-	{
-		slug: "ayumilove-v83-thief",
-		title: "Ayumilove MapleStory Thief Guide (v83 era)",
-		publisher: "Ayumilove",
-		publishedOn: "v83 era (approximate)",
-		sourceType: "historical-archive",
-		topics: ["Thief", "Builds", "Skills", "AP allocation", "Assassin", "Bandit", "Lucky Seven"],
-		originalUrl: "https://ayumilove.net/maplestory/",
-		checkedOn: "2026-08-22",
-		status: "current",
-		summary:
-			"Long-running fan reference from the v83 era. Used as the baseline for Thief playstyle, the DEX-for-advancement-but-LUK-for-damage stat quirk, and the Assassin/Bandit branch split at second job pending Classic World verification.",
-		confirmedFacts: [
-			"Thieves use LUK as their primary damage stat (v83 baseline)",
-			"First job advancement requires level 10 and 25 DEX - DEX gates advancement even though LUK does damage (v83 baseline)",
-			"First job trainer is The Dark Lord in Kerning City (v83 baseline)",
-			"Second job branches are Assassin (throwing stars/claws) and Bandit (daggers) - only two branches, not three (v83 baseline)",
-			"Lucky Seven damage scales purely off LUK, not weapon Attack - unique in the game (v83 baseline)",
-			"Bandits gain Steal at 2nd job which forces additional drops from mobs (v83 baseline)",
-		],
-	},
-
-	{
-		slug: "hiddenstreet-v83-database",
-		title: "HiddenStreet.net Database (v83 era)",
-		publisher: "HiddenStreet",
-		publishedOn: "v83 era (approximate)",
-		sourceType: "historical-archive",
-		topics: ["Items", "Monsters", "Maps", "Quests", "Drops"],
-		originalUrl: "https://www.hidden-street.net/",
-		checkedOn: "2026-08-22",
-		status: "current",
-		summary:
-			"Comprehensive v83-era item, monster, and map database. Used as the baseline for reference data pending Classic World verification.",
-		confirmedFacts: [],
-	},
-
 	// ohmi69's Classic World CoT 2 datamine dashboard. Publishes raw
-	// JSON + PNG assets extracted directly from the CoT 2 client - so
-	// this is closed-test data (subject to launch-day changes) but
-	// it's ground-truth ripped from the client rather than curated
-	// through Nexon's release-note filter. Perfect for reconciling
-	// v83 historical assumptions against what CoT 2 actually shipped.
+	// JSON + PNG assets extracted directly from the CoT 2 client -
+	// this is Founder's-Access-era client data (CoT 2 build; the FA
+	// Oct 6 live build is a direct descendant). Primary source of truth
+	// for all item IDs, mob stats, map layouts, quest definitions.
+	//
+	// NOTE 2026-10-12: five historical-archive source blocks were
+	// REMOVED as part of the FA-source-of-truth cleanup:
+	//   - ayumilove-{warrior,magician,bowman,thief} (older-version guides)
+	//   - hiddenstreet-database (older-version item DB)
+	// Classic World diverges from pre-FA MapleStory versions in enough
+	// places (unified 1st-job Lv 10, no HP wash, 1.25x elemental
+	// multiplier, reworked KPQ mechanics) that treating those versions
+	// as a baseline produces drift. All class-guide content now sources
+	// from the datamine + post-Oct-6-2026 CW community sources
+	// (MapleClassic Wiki, MeowDB, MMOJUGG, MapleStory Quest,
+	// Henesys.gg) + Nexon's own release notes.
+	//
+	// If someone needs historical context from an older MapleStory
+	// version for a one-off piece, pull it from Wayback snapshots at
+	// the time of writing with explicit '(historical, not Classic World)'
+	// labels. Do NOT re-add historical-archive sources to this registry
+	// as if they were authoritative for CW claims.
 	{
 		slug: "osmsdataexplorer",
 		title: "OSMS Data Explorer - Classic World CoT 2 datamine",
@@ -610,10 +525,10 @@ export const sources: ArchivedSource[] = [
 		summary:
 			"22-minute video walking through every training map Eleveny considers strongest across Victoria Island, Sleepywood, and Forgotten Hollow from L10 to L70. Covers map layout, mob composition, party-size fit, and per-map key drops. Also documents Classic-World-specific rebalances Eleveny observed in play (reduced KPQ EXP, more forgiving accuracy checks at low levels, exp-to-HP falloff past L60).",
 		confirmedFacts: [
-			"KPQ EXP rewards were substantially reduced in Classic World vs v83",
-			"Accuracy requirements at low levels are more forgiving in Classic World than v83",
+			"KPQ EXP rewards in Classic World are substantially lower than traditional MapleStory values",
+			"Accuracy requirements at low levels in Classic World are more forgiving than traditional MapleStory",
 			"Monster EXP-to-HP ratios fall off sharply once players cross L60",
-			"Level 10 weapons NPC-sell for MORE mesos in Classic World than they did in v83",
+			"Level 10 weapons NPC-sell for MORE mesos in Classic World than their original client values",
 		],
 	},
 	{
@@ -653,9 +568,9 @@ export const sources: ArchivedSource[] = [
 		checkedOn: "2026-10-11",
 		status: "current",
 		summary:
-			"Playtest-math-verified confirmation from msclassic.wiki moderator Lunitidal that Classic World rebalanced the elemental damage multiplier from v83's 1.5x down to 1.25x during Closed Online Test 2. Observed via direct damage testing against fire-weak Ligators and ice-weak content. The reduction is the single most impactful mage-balance change in CoT 2: elemental weapon choice still matters but with ~17% less weight than v83 convention assumed.",
+			"Playtest-math-verified confirmation from msclassic.wiki moderator Lunitidal that Classic World rebalanced the elemental damage multiplier down to 1.25x (from the traditional MapleStory 1.5x) during Closed Online Test 2. Observed via direct damage testing against fire-weak Ligators and ice-weak content. The reduction is the single most impactful mage-balance change in CoT 2: elemental weapon choice still matters but with ~17% less weight than the traditional multiplier would suggest.",
 		confirmedFacts: [
-			"Elemental damage multiplier in Classic World is 1.25x, not v83's 1.5x",
+			"Elemental damage multiplier in Classic World is 1.25x (traditional MapleStory used 1.5x)",
 			"Change confirmed via direct playtest math against fire-weak Ligators",
 			"Mage weapon picks shift toward 'high raw MATK' over 'match element at any cost'",
 			"Change was present in Closed Online Test 2 (Jan 2026) and carried into Founder's Access",
@@ -673,13 +588,13 @@ export const sources: ArchivedSource[] = [
 		checkedOn: "2026-10-11",
 		status: "current",
 		summary:
-			"Multi-user thread on msclassic.wiki laying out training routes for Classic World's Founder's Access when only Victoria Island + Forgotten Hollow are accessible. Confirmed observations: Forgotten Hollow fills the L30-50 content gap that v83 Victoria-only runs famously struggle with (Curse Eye territory starts ~Lv 35, deeper golem maps ~Lv 50); Classic World's party XP buff ranges from +35% to +170% depending on composition. Thread participants include WIKI mod Lunitidal and tester Tsukino.",
+			"Multi-user thread on msclassic.wiki laying out training routes for Classic World's Founder's Access when only Victoria Island + Forgotten Hollow are accessible. Confirmed observations: Forgotten Hollow fills the L30-50 content gap that traditional MapleStory Victoria-only runs famously struggle with (Curse Eye territory starts ~Lv 35, deeper golem maps ~Lv 50); Classic World's party XP buff ranges from +35% to +170% depending on composition. Thread participants include WIKI mod Lunitidal and tester Tsukino.",
 		confirmedFacts: [
 			"Forgotten Hollow starts around Lv 35 (Curse Eye maps) and extends to Lv 50 (deeper golem maps) in CoT 2",
 			"Party XP buff in Classic World is +35% to +170% depending on composition",
 			"Lv 1-50 took approximately 82.5 hours over 9 days in closed beta on I/L mage (chaomoonx, r/Maplestory)",
 			"Henesys Hunting Ground 1-2 is traditional Lv 10-15 but becomes a 'war zone' at launch due to competition; interior Victoria maps are quieter alternatives",
-			"Victoria-Island-only training works through Lv 50 thanks to Forgotten Hollow addition; v83's problematic 30-50 gap is addressed",
+			"Victoria-Island-only training works through Lv 50 thanks to Forgotten Hollow addition; the traditional MapleStory 30-50 gap is addressed",
 		],
 	},
 	{
@@ -694,10 +609,10 @@ export const sources: ArchivedSource[] = [
 		checkedOn: "2026-10-11",
 		status: "current",
 		summary:
-			"r/Maplestory community compilation of changes between CoT 1 and CoT 2 for Classic World. The two mechanical changes with biggest gear-progression implications: HP washing was removed entirely (Bishops/Night Lords/Buccaneers can no longer trade MP into HP), and earrings gained a new crit-damage stat line (not present in v83). Earring farming becomes a damage upgrade path rather than just a stat stick.",
+			"r/Maplestory community compilation of changes between CoT 1 and CoT 2 for Classic World. The two mechanical changes with biggest gear-progression implications: HP washing was removed entirely (Bishops/Night Lords/Buccaneers can no longer trade MP into HP), and earrings gained a new crit-damage stat line (new to Classic World). Earring farming becomes a damage upgrade path rather than just a stat stick.",
 		confirmedFacts: [
 			"HP washing mechanic is removed from Classic World (confirmed in 2nd playtest)",
-			"Earring items can now roll a crit-damage stat line (new in CoT 2, not present in v83 GMS)",
+			"Earring items can now roll a crit-damage stat line (new in Classic World)",
 			"Players should invest mesos into gear scrolling, not into AP wash potions",
 			"Earring scrolling priority shifted upward due to new damage line",
 		],

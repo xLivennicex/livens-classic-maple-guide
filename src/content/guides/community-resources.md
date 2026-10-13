@@ -61,7 +61,7 @@ Every entry on this page meets three bars:
    videos, GitHub repos all qualify. Private Discord screenshots do not.
 2. **Attributable** - the author is named and the resource is datestamped. We
    want you to be able to tell if a build is from a 2026 Classic World tester
-   versus a 2010 v83 fan-wiki.
+   versus an archived fan-wiki from a different MapleStory version.
 3. **Honestly contextualized** - we read the top-upvoted comments, the author's
    edits, and any corrections. If the community pushed back on something, our
    framing captures that.

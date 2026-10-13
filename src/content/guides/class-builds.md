@@ -20,14 +20,10 @@ tagline: "Skill priorities, stat allocation, and the honest playstyle verdict fo
 
 # ---------- Verification ----------
 verificationStatus: "community-reported"
-verificationNote: "Skill names, SP point counts, and max levels pulled from the CoT 2 datamine via osmsdataexplorer.com (same source as our item + mob data). SP build priorities and max-order recommendations draw on v83 community canon (MapleRoyals community archives, Hidden Street forum traditions, Ayumilove's v83 skill guides) combined with Classic-World-specific adjustments noted in Nexon's CoT 2 release notes and community playtest observations (msclassic.wiki moderator Lunitidal). The dedicated Assassin build guide covers that one branch at deeper equipment-focused depth; this hub covers all 10 branches at planning-depth. Where a build decision is actively contested in the community (e.g. Magician Magic Claw max order, Page HP recovery vs Precise Strikes), the FAQ flags it with both camps. Not datamine-authoritative on SP ordering - treat as a planning starting point and verify your in-game skill book before dumping SP."
+verificationNote: "Skill names, SP point counts, and max levels pulled from the Classic World FA client datamine via osmsdataexplorer.com (same source as our item + mob data). SP build priorities and max-order recommendations draw on post-Oct-6 Classic World community playtest observations (msclassic.wiki moderator Lunitidal + r/Maplestory CW threads + xBucc Reddit community-build cluster) combined with Classic-World-specific adjustments noted in Nexon's release notes. The dedicated Assassin build guide covers that one branch at deeper equipment-focused depth; this hub covers all 10 branches at planning-depth. Where a build decision is actively contested in the community (e.g. Magician Magic Claw max order, Page HP recovery vs Precise Strikes), the FAQ flags it with both camps. Not datamine-authoritative on SP ordering - treat as a planning starting point and verify your in-game skill book before dumping SP."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-warrior
-  - ayumilove-v83-magician
-  - ayumilove-v83-bowman
-  - ayumilove-v83-thief
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 
@@ -92,10 +88,10 @@ Every build on this page assumes four Classic-World-specific facts:
 
 ### 1. HP washing is removed
 
-In v83 GMS, Night Lords, Bishops, and Buccaneers washed MP into HP
-to survive high-HP bosses. **Classic World removed this entirely**
-during the 2nd playtest. Your HP is fixed at whatever your base HP
-table gives at each level — you can't wash around it.
+Night Lords, Bishops, and Buccaneers traditionally washed MP into
+HP to survive high-HP bosses. **Classic World removed this entirely**
+during the 2nd closed test. Your HP is fixed at whatever your base
+HP table gives at each level — you can't wash around it.
 
 **Build impact:** Mages (especially Cleric → Priest) can no longer
 plan around "I'll wash later for Shao/Zakum". Spearmen with Hyper
@@ -107,21 +103,22 @@ HP multiplier left in the game.
 CoT 2 added a `crit damage` stat line to earring items. Earrings are
 now a damage upgrade in addition to being a stat stick.
 
-**Build impact:** every build should farm earrings aggressively. In
-v83 earrings were an afterthought for warriors; in CW they're worth
-scrolling with 60% stat scrolls across every class.
+**Build impact:** every build should farm earrings aggressively.
+Traditionally earrings were an afterthought for warriors; in CW
+they're worth scrolling with 60% stat scrolls across every class.
 
 ### 3. Elemental damage multiplier is 1.25×, not 1.5×
 
 Playtest-verified by msclassic.wiki moderator Lunitidal: Classic
-World's elemental weakness multiplier is 1.25× instead of v83's 1.5×.
+World's elemental weakness multiplier is 1.25× (down from the
+traditional 1.5×).
 
 **Build impact:** F/P and I/L builds that previously planned around
 "always match element to mob weakness" shift toward raw MATK. Both
-elementalist branches remain viable but their "farm element X area"
-specialization is less rewarded than in v83.
+elementalist branches remain viable but element-specialization is
+less rewarded than it would be with a 1.5× multiplier.
 
-### 4. Most v83 BiS gear is NOT in FA
+### 4. Most traditional late-game BiS gear is NOT in FA
 
 Zakum, Orbis, Leafre, Omega Sector, Phantom Forest, NLC, Mu Lung,
 and El Nath Lion King's Castle are **not accessible in Founder's
@@ -312,8 +309,8 @@ Zombie Mushmom).</p>
 
 Fire does **1.25× against ice-weak mobs**, not 1.5× — so your
 Fire Arrow damage curve against ice-weak content is less steep than
-v83 numbers suggest. Still worth maxing; just don't plan a build
-around "I'll always farm fire-weak zones."
+traditional MapleStory numbers suggest. Still worth maxing; just
+don't plan a build around "I'll always farm fire-weak zones."
 
 ### Playstyle + weapon preference
 
@@ -396,12 +393,12 @@ builds. This is the identity of the branch.
 
 ### Classic World impact: HP wash removal hurts, but not fatally
 
-Future-Priest Cleric players in v83 famously washed MP into HP to
+Future-Priest Cleric players traditionally washed MP into HP to
 survive Horntail. CW's HP wash removal caps your late-game
 survivability. Practical impact: Classic World Clerics will be
-party-dependent for high-HP content more than v83 Clerics were. In
-Founder's Access this isn't an issue (no Horntail yet) but worth
-knowing for Grand Launch.
+more party-dependent for high-HP content than traditional-MapleStory
+Clerics were. In Founder's Access this isn't an issue (no Horntail
+yet) but worth knowing for Grand Launch.
 
 ### Playstyle + weapon preference
 
@@ -553,7 +550,7 @@ guide →</a></strong>
 | Topic | TL;DR |
 | --- | --- |
 | **SP priority** | Claw Mastery → Claw Booster → Lucky Seven (max) → Dark Sight (max) → Final Attack |
-| **Stat allocation** | Pure LUK OR DEX = character level (CW's reduced claw DEX reqs make pure LUK more viable than in v83) |
+| **Stat allocation** | Pure LUK OR DEX = character level (CW's claw DEX reqs match character level exactly - no DEX buffer required) |
 | **Primary weapon** | Claw + throwing stars. Ilbi/Hwabi stars are the endgame grind targets |
 | **Primary armor** | Sauna Robe L30 → Dark Avenger overall L35-59 (Thief overall gap continues to L60+) |
 | **Boss identity** | Avenger with Shadow Partner clears Mushmom + Jr. Balrog reliably |
@@ -564,10 +561,10 @@ Dark Sight is your survivability skill — max it.
 
 ### Classic World specific caveat
 
-CW's claw DEX requirement is `character level` (NOT `character level
-+ 10` like v83 originally). This means **pure LUK is more viable in
-CW than in v83** — you can equip your level-appropriate claw without
-needing to pump DEX. The dedicated guide covers this at length.
+CW's claw DEX requirement is `character level` exactly (no buffer
+above char level needed). This means **pure LUK is fully viable in
+CW** — you can equip your level-appropriate claw without needing
+to pump DEX. The dedicated guide covers this at length.
 
 <h2 id="faq">FAQ</h2>
 
@@ -588,11 +585,11 @@ cash shop cost for 20+ wasted APs.
 
 **Should I max my 2nd job skill before 3rd job unlocks?**
 
-Yes if you're planning for Grand Launch. 3rd job unlocks at Lv 70
-in v83 base. 2nd job SP is capped so you'll naturally be able to
-max your core skills before 3rd job without wasting SP. The question
-is only about the ORDER within 2nd job, which each branch section
-covers.
+Yes if you're planning for Grand Launch. 3rd job is confirmed to
+unlock at Lv 70. 2nd job SP is capped so you'll naturally be able
+to max your core skills before 3rd job without wasting SP. The
+question is only about the ORDER within 2nd job, which each branch
+section covers.
 
 **The xBucc Reddit builds look wrong to me. What's the authoritative
 answer?**
@@ -616,12 +613,11 @@ isn't a factor at all — Clerics are perfectly viable.
 
 **I want to 3rd job as [specific class] — what should I know?**
 
-3rd job unlocks at Lv 70 in base v83 and should carry forward in
-Classic World, but **3rd job content is held for Grand Launch** per
-Nexon's Oct 3 release notes. In FA, you cap your 2nd job skills and
-hold the SP that'll go into 3rd job skills until Grand Launch.
-Specific 3rd job build priorities are post-launch content; we'll
-update this guide when 3rd job unlocks.
+3rd job is confirmed to unlock at Lv 70 but **3rd job content is
+held for Grand Launch** per Nexon's Oct 3 release notes. In FA, you
+cap your 2nd job skills and hold the SP that'll go into 3rd job
+skills until Grand Launch. Specific 3rd job build priorities are
+post-launch content; we'll update this guide when 3rd job unlocks.
 
 **Where do I find my job's SP skill book in-game?**
 

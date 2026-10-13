@@ -124,7 +124,7 @@ relatedGuides:
   - "/citizenship"
 
 verificationStatus: "closed-test-info"
-verificationNote: "All 3 quest IDs (506138, 506139, 506141), NPC (Mong from Kong - Kerning City, WZ ID pending), level (17), per-quest EXP (1,104) + mesos (497) + item rewards (10x Blue Potion 2000003 guaranteed step 1, RANDOM Pet Equipment Speed/Jump Scroll 2048001/2048002/2048005/2048006 step 3) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Pet Equipment Scroll mechanics inferred from MapleStory v83 tradition - pet equipment (collar/harness/ornament) is the target slot."
+verificationNote: "All 3 quest IDs (506138, 506139, 506141), NPC (Mong from Kong - Kerning City, WZ ID pending), level (17), per-quest EXP (1,104) + mesos (497) + item rewards (10x Blue Potion 2000003 guaranteed step 1, RANDOM Pet Equipment Speed/Jump Scroll 2048001/2048002/2048005/2048006 step 3) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Pet Equipment Scroll mechanics inferred from MapleStory traditional MapleStory tradition - pet equipment (collar/harness/ornament) is the target slot."
 sourceSlugs:
   - "osmsdataexplorer"
 

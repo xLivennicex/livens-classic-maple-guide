@@ -50,7 +50,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (2040801), name, stat (Weapon Attack), tier (Intermediate), success rate (60%), stat gain (+2), and 'awarded by Cursed Doll chain tier 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains v83 mechanics pending CoT 2 confirmation."
+verificationNote: "Item ID (2040801), name, stat (Weapon Attack), tier (Intermediate), success rate (60%), stat gain (+2), and 'awarded by Cursed Doll chain tier 4' linkage all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Boom rate (10% on failure) retains traditional MapleStory mechanics pending CoT 2 confirmation."
 sourceSlugs:
   - "osmsdataexplorer"
 

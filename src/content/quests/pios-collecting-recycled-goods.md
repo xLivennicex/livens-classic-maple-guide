@@ -84,7 +84,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Quest ID (1012), NPC (Pio 10000), level (5), 100 EXP + 150 mesos + 1x The Green Relaxer (3010000 guaranteed) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Chair-mechanic recovery-rate boost retains v83 baseline pending CoT 2 numerical verification."
+verificationNote: "Quest ID (1012), NPC (Pio 10000), level (5), 100 EXP + 150 mesos + 1x The Green Relaxer (3010000 guaranteed) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. Chair-mechanic recovery-rate boost retains traditional MapleStory baseline pending CoT 2 numerical verification."
 sourceSlugs:
   - "osmsdataexplorer"
 

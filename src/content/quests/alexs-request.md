@@ -53,7 +53,7 @@ editorial: |
   <p><strong>Where to find Alex:</strong> the rooftop of the
   building on the far east side of the main Kerning City map.
   There's a ladder up. Kids will remember this - it's a landmark
-  for anyone who did the chain in v83.</p>
+  for anyone who did the chain traditionally.</p>
 
   <p><strong>Why level 18?</strong> The chain unlocks around the
   time most players are wrapping up their first job's early

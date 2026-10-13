@@ -1,9 +1,9 @@
 ---
 /**
- * /calculators/damage - v83-canonical damage calculator.
+ * /calculators/damage - traditional MapleStory-canonical damage calculator.
  *
  * Same accuracy posture as /calculators/exp: formulas are the
- * best community consensus for v83; CoT 2 Founder's Access will
+ * best community consensus for traditional MapleStory; CoT 2 Founder's Access will
  * let us verify and tighten anything that's off. UI carries an
  * honest disclaimer noting the +/- 5-10% variance expected until
  * the Oct 6 verification pass.
@@ -50,7 +50,7 @@ const weaponsJson = JSON.stringify(weaponEntries);
 
 <BaseLayout
 	title="Damage calculator - Liven's Classic Maple Guide"
-	description="v83-canonical damage calculator. Estimate min/max/avg damage for any weapon + stat combo, factoring in mastery, skill %, and target defense."
+	description="traditional MapleStory-canonical damage calculator. Estimate min/max/avg damage for any weapon + stat combo, factoring in mastery, skill %, and target defense."
 	theme="perion"
 	currentPath="/calculators/damage"
 >
@@ -66,7 +66,7 @@ const weaponsJson = JSON.stringify(weaponEntries);
 		<p class="eyebrow">Calculator</p>
 		<h1>Damage estimator</h1>
 		<p class="lede">
-			v83 damage math with weapon-type multipliers, mastery
+			traditional MapleStory damage math with weapon-type multipliers, mastery
 			scaling, and defense reduction. Pick a target mob to
 			auto-populate its defenses.
 		</p>
@@ -188,7 +188,7 @@ const weaponsJson = JSON.stringify(weaponEntries);
 			</div>
 
 			<p class="calc-accuracy calc-accuracy--warn">
-				<strong>Note:</strong> v83 damage formulas are community-
+				<strong>Note:</strong> traditional MapleStory damage formulas are community-
 				reverse-engineered; expect +/- 5-10% variance vs in-game
 				numbers until the CoT 2 verification pass (Oct 6+).
 				Great for build planning, not min-maxing to the point.

@@ -2,7 +2,7 @@
 /**
  * /calculators/mesos - meso-income estimator.
  *
- * v83 meso drop mechanics (community consensus):
+ * traditional MapleStory meso drop mechanics (community consensus):
  *  - Non-boss mobs drop mesos on ~60-70% of kills.
  *  - Average per-kill drop (when it drops) scales roughly with
  *    mob level: level * 1.5 is a reasonable default coefficient.
@@ -91,7 +91,7 @@ const mobsJson = JSON.stringify(grindMobs);
 				<span class="calc-field__label">Meso per kill (avg when it drops)</span>
 				<input type="number" id="input-meso-per-kill" min="0" max="9999" value="15" />
 				<span class="calc-field__hint">
-					Rough v83 formula: mob level * 1.5. Override if
+					Rough traditional MapleStory formula: mob level * 1.5. Override if
 					your in-game observations differ.
 				</span>
 			</label>
@@ -101,7 +101,7 @@ const mobsJson = JSON.stringify(grindMobs);
 				<input type="range" id="input-drop-rate" min="10" max="100" value="65" step="5" />
 				<output id="output-drop-rate">65</output><span>%</span>
 				<span class="calc-field__hint">
-					v83 default ~65% for regular mobs. Higher on events
+					traditional MapleStory default ~65% for regular mobs. Higher on events
 					or with Meso Up buffs.
 				</span>
 			</label>
@@ -172,7 +172,7 @@ const mobsJson = JSON.stringify(grindMobs);
 			</div>
 
 			<p class="calc-accuracy calc-accuracy--warn">
-				<strong>Note:</strong> v83 meso mechanics are community
+				<strong>Note:</strong> traditional MapleStory meso mechanics are community
 				consensus; drop rate and level->meso coefficient are
 				approximate. CoT 2 launch will let us tighten these
 				once observed rates settle. Good for goal-planning,
@@ -249,7 +249,7 @@ document.addEventListener("astro:page-load", () => {
 		const opt = $mobSel.selectedOptions[0];
 		if (!opt) return;
 		const lvl = Number(opt.dataset.level) || 1;
-		// v83 formula: level * 1.5. Round to nearest int for
+		// traditional MapleStory formula: level * 1.5. Round to nearest int for
 		// readability - meso drops are always integer stacks in-game.
 		$mesoPerKill.value = String(Math.round(lvl * 1.5));
 		recompute();

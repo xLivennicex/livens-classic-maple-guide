@@ -20,7 +20,7 @@ tagline: "Mob rotations, NPC-sell gems, and the honest economy answer. Who to ki
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Mob levels, drop tables, and spawn-map data pulled from src/data/db/mobs.json (CoT 2 client datamine via osmsdataexplorer.com + MeowDB community drops). NPC-sell prices from src/data/db/items.json. Meso-per-kill estimates use the v83 community-consensus coefficient (level * 1.5 base, ~65% drop rate) which has not been formally re-verified for Classic World - treat per-kill numbers as planning estimates, not guaranteed yields. Launch economy observations (meso inflation Day 5-6, invest-into-gear advice) sourced from Day-5 FA streamers (Samool, MSC Guides). Links to meso.watch for live Free Market pricing per their ToS section 1 (quote small list with credit, no automated scraping)."
+verificationNote: "Mob levels, drop tables, and spawn-map data pulled from src/data/db/mobs.json (Classic World FA client datamine via osmsdataexplorer.com + MeowDB community drops). NPC-sell prices from src/data/db/items.json. Meso-per-kill estimates use the traditional MapleStory community-consensus coefficient (level * 1.5 base, ~65% drop rate) which has not been formally re-verified for Classic World - treat per-kill numbers as planning estimates, not guaranteed yields. Launch economy observations (meso inflation Day 5-6, invest-into-gear advice) sourced from Day-5 FA streamers (Samool, MSC Guides). Links to meso.watch for live Free Market pricing per their ToS section 1 (quote small list with credit, no automated scraping)."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
@@ -399,10 +399,11 @@ not just the solo-player's "sell to NPC" value.
 
 ### 4. No HP wash means no AP-wash potion economy
 
-Classic World removed HP washing. That eliminates an entire v83
-income stream (farming/selling Lv 10 Boogie Potion for MP wash)
-that doesn't apply here. **Practical implication:** don't buy or
-hoard AP wash potions. They're worth NPC-sell value only.
+Classic World removed HP washing. That eliminates an entire
+traditional MapleStory income stream (farming/selling Lv 10 Boogie
+Potion for MP wash) that doesn't apply here. **Practical
+implication:** don't buy or hoard AP wash potions. They're worth
+NPC-sell value only.
 
 <h2 id="faq">FAQ</h2>
 

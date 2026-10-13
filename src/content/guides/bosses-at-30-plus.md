@@ -20,7 +20,7 @@ tagline: "You advanced 2nd job. Now what do you actually fight? Here's every FA-
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Boss stats (HP, level, EXP, defense, special flags) come from the CoT 2 datamine via osmsdataexplorer.com and are cross-verified against MeowDB's live-scraped mob pages. FA availability per Nexon's Oct 3 Release Notes which explicitly enumerated the five bosses in-scope at Founder's Access: Mano, Mushmom, Shade, Zombie Mushmom, Jr. Balrog (plus King Slime via Kerning PQ). Access routes and strategy observations draw on CoT 2 tester community reports (Eleveny's training tour) plus v83-era boss meta where mechanics have carried over unchanged. Drop tables are MeowDB community-sourced and refreshed on every build - but note that several FA bosses still show empty drop tables because their post-launch rewards haven't been scraped yet."
+verificationNote: "Boss stats (HP, level, EXP, defense, special flags) come from the Classic World FA client datamine via osmsdataexplorer.com and are cross-verified against MeowDB's live-scraped mob pages. FA availability per Nexon's Oct 3 Release Notes which explicitly enumerated the five bosses in-scope at Founder's Access: Mano, Mushmom, Shade, Zombie Mushmom, Jr. Balrog (plus King Slime via Kerning PQ). Access routes and strategy observations draw on FA tester community reports (Eleveny's training tour, msclassic.wiki Oct 8-9 writeups, MapleClassic Wiki) plus datamined mob mechanics. Drop tables are MeowDB community-sourced and refreshed on every build - but note that several FA bosses still show empty drop tables because their post-launch rewards haven't been scraped yet."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
@@ -122,12 +122,11 @@ Mushmom later.
 hits like a wet noodle. The challenge is purely "can you tag him before
 someone else does" if there's competition on channel. Channel-hop freely.
 
-**Known drops** (as of Oct 11 build): Mano has no drops in our database
-yet - MeowDB's community scrape hasn't populated his table. This is a
-known gap. In v83-era Maple, Mano dropped **Golden River** (one-handed sword)
-and **Mano Doll** chair. Treat those as expected-but-unverified for Classic
-World. See the [Mano dossier](/bosses/mano) for the live table (which will
-auto-update when drops land).
+**Known drops** (as of Oct 11 build): Mano has no drops in our
+database yet - MeowDB's community scrape hasn't populated his table.
+This is a known gap - Mano's Classic World drop table has not been
+published by the community yet. See the [Mano dossier](/bosses/mano)
+for the live table (which will auto-update when drops land).
 
 <h2 id="level-21-30-king-slime-kpq">Level 21-30: King Slime (KPQ)</h2>
 
@@ -243,18 +242,19 @@ F/P and I/L parties should pick a different grind target.
 - **Two-Handed Weapon Crafting Catalyst** - crafting currency
 - **Hwabi Throwing Stars** - thief consumable
 
-In v83-era Maple, Jr. Balrog also dropped **Silver Deputy Star** (a
-Thief-set weapon that was *the* reason to grind him). Not confirmed on
-MeowDB yet for Classic World. See the
-[Jr. Balrog dossier](/bosses/jr-balrog) for the live table.
+Jr. Balrog's Classic World drop table in MeowDB is incomplete as of
+Oct 11; the Thief-set Silver Deputy Star has not been confirmed as a
+CW drop. See the [Jr. Balrog dossier](/bosses/jr-balrog) for the live
+table.
 
 <h2 id="level-60-mushmom">Level 60: Mushmom</h2>
 
 **Where:** Roam any of the mushroom hidden streets north of Henesys:
 "The Tree That Grew I/II/III" or the Green Mushroom hidden street.
 Mushmom replaces one of the giant mushroom mobs on a once-per-hour
-timer. **First-hit-wins** culture in most v83-style servers; check
-channel chat for whether someone has an active claim.
+timer. **First-hit-wins** culture carried into Classic World per
+community reports; check channel chat for whether someone has an
+active claim.
 
 **Datamine stats:**
 
@@ -277,10 +277,9 @@ first-tagger has claim. Baby Mushrooms spawn alongside her (6-8 of them);
 ignore them and focus the big one.
 
 **Known drops:** Empty in our database as of Oct 11 build - this is a
-MeowDB scrape gap, not a Nexon disclosure gap. In v83 she was a classic
-source of **Amazon Skirt Pants**, **Ilbi Throwing Stars**, and (jackpot)
-**Zakum Helmet INT scroll**. Expect similar for Classic World once scrapes
-land. [Mushmom dossier](/bosses/mushmom).
+MeowDB scrape gap, not a Nexon disclosure gap. Classic World's
+Mushmom drop table has not been fully scraped yet by the community.
+[Mushmom dossier](/bosses/mushmom).
 
 <h2 id="level-65-zombie-mushmom">Level 65: Zombie Mushmom</h2>
 

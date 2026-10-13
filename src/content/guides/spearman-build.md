@@ -18,7 +18,6 @@ verificationNote: "Weapon ATK + speed data from src/data/db/items.json datamine.
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
-  - ayumilove-v83-warrior
   - reddit-xbucc-complete-builds
   - reddit-everything-changed-cot2
 toc:
@@ -44,8 +43,9 @@ toc:
   (20) → **Hyper Body (20)** → Iron Will (20) → Final Attack (20).
   Hyper Body is your identity skill; don't delay it.
 - **CW makes Hyper Body MORE valuable, not less.** HP wash removal
-  means every class has lower effective HP ceilings than in v83;
-  Spearman's +60% HP buff fills a gap that no other class covers.
+  means every class's HP ceiling in Classic World is driven by
+  base-table + AP alone; Spearman's +60% HP buff fills a gap that
+  no other class covers.
 
 <h2 id="hyper-body-is-the-identity">Hyper Body is the identity</h2>
 
@@ -58,9 +58,11 @@ toc:
 
 ### Why it's so good in Classic World
 
-HP wash removal nerfed every class's late-game HP ceiling by 2-3x.
-In v83, a well-washed Night Lord had 10,000+ HP; in Classic World,
-that same NL has 4,000-5,000.
+HP wash removal eliminates the traditional path to multi-thousand
+HP ceilings. In Classic World, a Night Lord's HP pool is driven by
+base-table alone (projecting to ~4,000-5,000 at Lv 120 per the FA
+datamine); Hyper Body's +60% buff is often the only way to push
+past those projections for group endgame content.
 
 **A party with Hyper Body active has 60% more HP buffer**. That's
 the difference between surviving Jr. Balrog's charge attack and

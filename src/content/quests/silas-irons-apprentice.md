@@ -2,7 +2,7 @@
 questId: "80008"
 name: "Silas Irons in Need of an Apprentice"
 category: "story"
-tagline: "The master blacksmith of Perion tests you for smithing apprenticeship. Entry point to the Classic World Crafting system - a CoT-exclusive feature not in v83."
+tagline: "The master blacksmith of Perion tests you for smithing apprenticeship. Entry point to the Classic World Crafting system - a CoT-exclusive feature not traditionally."
 
 levelMin: 10
 classReq: "Any"
@@ -10,7 +10,7 @@ classReq: "Any"
 npcName: "Silas Irons"
 npcLocation: "Perion (Blacksmith)"
 # NPC WZ ID intentionally omitted: Silas Irons is a Classic World
-# crafting system NPC not present in v83 maplestory.io assets.
+# crafting system NPC not present traditionally maplestory.io assets.
 # Will render without sprite until MeowDB npc endpoint is
 # investigated or CoT-native CDN is added.
 
@@ -55,7 +55,7 @@ editorial: |
   <p><strong>Silas's test:</strong> the datamine text is
   cut short in the description ("He said that a true
   blacksmith should first understand the materials themselves")
-  but the pattern in v83-derived apprenticeship systems
+  but the pattern traditionally-derived apprenticeship systems
   suggests you'll be sent to hunt specific ETC materials as
   a proving task.</p>
 
@@ -66,10 +66,10 @@ editorial: |
   showing recipe unlocks per apprentice tier.</p>
 
 callout: |
-  <strong>CoT-exclusive content warning:</strong> v83
+  <strong>CoT-exclusive content warning:</strong> traditional MapleStory
   MapleStory did NOT have an apprenticeship-based crafting
   system - crafting was skill-based via profession NPCs.
-  Classic World's version is genuinely new content. Old v83
+  Classic World's version is genuinely new content. Old traditional MapleStory
   guides won't help here; verify against the CoT client
   at launch.
 
@@ -78,7 +78,7 @@ relatedGuides:
   - "/crafting"
 
 verificationStatus: "closed-test-info"
-verificationNote: "Quest ID (80008), NPC (Silas Irons - no WZ ID assigned; CoT-exclusive), level (10), 171 EXP reward all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. NPC sprite not available on maplestory.io (v83 asset pool) - Silas Irons is a Classic World crafting system NPC. Full crafting apprenticeship progression pending investigation."
+verificationNote: "Quest ID (80008), NPC (Silas Irons - no WZ ID assigned; CoT-exclusive), level (10), 171 EXP reward all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. NPC sprite not available on maplestory.io (traditional MapleStory asset pool) - Silas Irons is a Classic World crafting system NPC. Full crafting apprenticeship progression pending investigation."
 sourceSlugs:
   - "osmsdataexplorer"
 

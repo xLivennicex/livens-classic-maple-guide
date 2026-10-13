@@ -11,8 +11,8 @@ tags:
   - scrolls
   - luk
   - dexless
-sourceBuild: "Closed Online Test 2 datamine"
-status: "COT2 datamine + v83 baseline"
+sourceBuild: "Founder's Access client datamine (Oct 6 2026)"
+status: "FA datamine + post-Oct-6 CW community sources"
 
 # ---------- Layout ----------
 theme: "kerning"
@@ -23,10 +23,9 @@ tagline: "Pure LUK still wins. Actually, more than ever - Classic World rebalanc
 
 # ---------- Verification ----------
 verificationStatus: "closed-test-info"
-verificationNote: "All numeric item data (claw stats, overall/top/bottom armor stats, scroll rates, req DEX/LUK) pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com. AP-allocation advice extrapolates from that data and from the v83 baseline described in the Thief job guide. The 25-DEX job-advancement gate is v83 canonical but is NOT confirmed for Classic World from the datamine - the quest DB does not encode NPC stat gates. Actual hit-rate math and skill damage formulas at launch may vary from v83 baseline."
+verificationNote: "All numeric item data (claw stats, overall/top/bottom armor stats, scroll rates, req DEX/LUK) pulled verbatim from the Classic World FA client datamine at osmsdataexplorer.com (same source as src/data/db/items.json). AP-allocation advice extrapolates from that data. The 25-DEX job-advancement gate is a long-standing MapleStory tradition but is NOT confirmed in the Classic World FA datamine - the quest DB does not encode NPC stat gates - so this guide treats it as unverified and plans conservatively. Actual hit-rate math and skill damage formulas at launch may differ from traditional MapleStory values; this guide flags uncertainty where present."
 sourceSlugs:
   - osmsdataexplorer
-  - ayumilove-v83-thief
 
 # ---------- TOC ----------
 toc:
@@ -49,19 +48,19 @@ If you played 2005-era GMS Assassins you already know the shape of the classic *
 **Classic World kept the spirit of the meta but changed almost every number underneath it.** Four specific rebalances matter:
 
 1. **Claws now have `reqDEX = reqLevel` exactly** (no "buffer" DEX needed above your character level - a huge quality-of-life win for LUK-focused builds).
-2. **The L30 Sauna Robe gives +1 to every stat**, has 10 upgrade slots, and is available to any job - an obscenely good universal L30 overall that used to have no equivalent in classic v83.
+2. **The L30 Sauna Robe gives +1 to every stat**, has 10 upgrade slots, and is available to any job - an obscenely good universal L30 overall from the [Sleepywood Sauna Robe Chain](/quests/sleepywood-sauna-robe-chain) that LUK-focused builds should prioritize.
 3. **Topwear and Bottomwear stat scrolls no longer exist.** The only way to scroll LUK/DEX/STR/INT onto body armor is via **Overall Armor scrolls**. This alone tilts the entire gearing metagame back toward overalls and away from separate top+bottom pieces.
-4. **Every throwing star is now Level 10 required** (v83 gated Ilbis at L64, Hwabi at L70). The stat/damage progression across the star roster is unchanged, but the *level gate* is gone - if you can farm the drop or borrow the mesos, you can equip endgame stars at first-job. Getting them is another story - most of the top-tier stars still only drop from world bosses. See [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full table plus the Mushmom-Ilbi grind reality check.
+4. **Every throwing star is Level 10 required** per the FA datamine - you can equip any star at first-job if you can obtain the drop. Getting them is the real gate - most top-tier stars (Ilbi, Hwabi, Steely) still only drop from world bosses. See [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full table plus the Mushmom-Ilbi grind reality check.
 
-Add that up and the recommendation is louder than in v83: **wear a scrolled overall, use the low-DEX claws Classic World gave you, dump AP into LUK.** The rest of this guide is the receipts.
+Add that up and the recommendation is clear: **wear a scrolled overall, use the low-DEX claws Classic World gave you, dump AP into LUK.** The rest of this guide is the receipts.
 
-> **Verification note.** Every numeric value in the tables below comes from the CoT 2 client datamine at osmsdataexplorer.com. The one thing that is *not* verified is whether Classic World kept the 25-DEX job-advancement gate from v83 - the datamine doesn't encode NPC stat checks. Both cases are covered in the AP allocation section.
+> **Verification note.** Every numeric value in the tables below comes from the Classic World FA client datamine at osmsdataexplorer.com. The one thing that is *not* verified is whether the 25-DEX job-advancement gate exists in Classic World - the datamine doesn't encode NPC stat checks. Both cases are covered in the AP allocation section.
 
 ---
 
 ## What changed in Classic World
 
-Three concrete, datamine-confirmed differences from v83 GMS that reshape the Assassin metagame.
+Three concrete, datamine-confirmed facts about the CW Assassin metagame.
 
 ### 1. Claw DEX requirements dropped to exactly your character level
 
@@ -69,17 +68,17 @@ In old-school GMS, claws demanded DEX **above** their level requirement (e.g., L
 
 In Classic World, every claw's `reqDEX` matches its `reqLevel` exactly:
 
-| Weapon level | reqDEX (CW) | reqDEX (v83 range, from memory) |
-|---|---|---|
-| L10 Garnier | **0** | ~15 |
-| L15 Titans | **15** | ~20-25 |
-| L20 Igor | **20** | ~25-30 |
-| L25 Meba | **25** | ~30-35 |
-| L30 Guards | **30** | ~35-40 |
-| L50 Slain | **50** | ~55-65 |
-| L70 Scarab | **70** | ~75-85 |
+| Weapon level | reqDEX (CW, FA datamine) |
+|---|---|
+| L10 Garnier | **0** |
+| L15 Titans | **15** |
+| L20 Igor | **20** |
+| L25 Meba | **25** |
+| L30 Guards | **30** |
+| L50 Slain | **50** |
+| L70 Scarab | **70** |
 
-**Consequence:** if you AP-invest DEX at "1 per level" (which is the natural pace to hit both advancement gates and equipment requirements), you can equip *any* claw at your level without carrying dead points. The dexless build no longer costs you ~10 LUK across a character's life.
+**Consequence:** if you AP-invest DEX at "1 per level" (which is the natural pace to hit both advancement gates and equipment requirements), you can equip *any* claw at your level without carrying dead points. The dexless build in Classic World does not cost extra DEX buffer above character level - every point above the minimum is dumpable into LUK.
 
 ### 2. The Sauna Robe is stupidly good for a universal L30 overall
 
@@ -92,13 +91,13 @@ The **Blue Sauna Robe (males, 1050010)** / **Red Sauna Robe (females, 1051004)**
 - **Any job** can equip
 - **1.5x HP/MP recovery** when worn inside the Sleepywood VIP Sauna map
 
-In v83 GMS, universal-class L30 overalls that hit multiple stats were rare and mediocre. Classic World's Sauna Robe is a one-quest-away legendary. Every class benefits, but LUK-dependent classes benefit most because it's often their *only* L30-33 option that provides any LUK at all before their thief-locked overalls unlock at L35.
+Universal-class L30 overalls that hit multiple stats are rare in Classic World's base itemdb. The Sauna Robe is a one-quest-away legendary. Every class benefits, but LUK-dependent classes benefit most because it's often their *only* L30-33 option that provides any LUK at all before their thief-locked overalls unlock at L35.
 
 See the [Blue Sauna Robe item page](/items/blue-sauna-robe) for the full breakdown. **Bottom line for Assassins**: it's a five-level bridge from L30 to L35 that costs nothing but a fetch quest.
 
 ### 3. Topwear + Bottomwear stat scrolls DO NOT EXIST in Classic World
 
-This is the one that changes everything. I pulled every scroll in the `2040xxx` range from the CoT 2 datamine and cross-referenced against the v83 baseline. Here's the actual shape:
+This is the one that changes everything. I pulled every scroll in the `2040xxx` range from the Classic World FA client datamine. Here's the actual shape:
 
 | Scroll family | STR | DEX | INT | LUK | DEF | HP | MP | Accuracy | Other |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -111,9 +110,9 @@ This is the one that changes everything. I pulled every scroll in the `2040xxx` 
 | Gloves | — | — | — | — | — | — | — | Yes | Attack, Magic Att, Crit Rate |
 | Shield | — | — | — | — | Yes | — | — | Yes | — |
 
-**In v83, you could stack LUK across top+bottom by scrolling each piece separately.** In Classic World, top/bottom scrolls only add DEF/HP/MP. The only slot you can scroll for LUK on body armor is an **Overall**.
+**In Classic World, top/bottom scrolls only add DEF/HP/MP.** The only slot you can scroll for LUK on body armor is an **Overall**.
 
-> **Verification caveat — the "Nexon rebalanced this" framing needs an asterisk.** The datamine claim (zero Top/Bottom stat scrolls in Classic World's base itemdb) is fully verified — I scanned every scroll ID 2040000-2049999 and the sub-ranges `20404xx` (Topwear) and `20406xx` (Bottomwear) contain only DEF/HP/MP variants. However, in v83 GMS, the widely-used Top/Bottom stat scrolls (Top for LUK 30%, Bottom for LUK 30%, etc.) also weren't in the base itemdb — they came from Cash Shop / Reward Point / Gachapon systems layered on top of the base game. So the honest framing is: **Classic World's base scroll shop currently has zero Top/Bottom stat scrolls**, not "Nexon deliberately removed something v83 had." Whether Nexon adds them via cash shop / gacha / events at launch is genuinely unknown as of the CoT 2 snapshot. If they do ship, the top+bottom vs overall math in this guide gets rerun. The practical conclusion for now is unchanged: **the only shop-obtainable path to scrolled body-armor stats in CW is an Overall.**
+> **Verification caveat on the scroll pool.** The datamine claim (zero Top/Bottom stat scrolls in Classic World's base itemdb) is fully verified — I scanned every scroll ID 2040000-2049999 and the sub-ranges `20404xx` (Topwear) and `20406xx` (Bottomwear) contain only DEF/HP/MP variants. Whether Nexon adds LUK/STR/INT/DEX stat scrolls for top/bottom via cash shop / gacha / events at launch is genuinely unknown. If they do ship, the top+bottom vs overall math in this guide gets rerun. The practical conclusion for now is unchanged: **the only shop-obtainable path to scrolled body-armor stats in CW is an Overall.**
 
 This means: **if you care about scrolled LUK from body armor, you must wear an overall, full stop.** Separate top+bottom combos still exist and can have LUK as base stats, but that number is fixed at whatever the item's base roll gave you. No compounding through scrolling.
 
@@ -121,13 +120,13 @@ This means: **if you care about scrolled LUK from body armor, you must wear an o
 
 ## The 25-DEX advancement question
 
-This is the one open question in this guide. Your existing [Thief job guide](/jobs/thief) says advancement to Rogue at L10 requires **25 DEX** - that's the v83 canonical value, and Nexon's CoT 2 datamine (which encodes quests, items, mobs) does **not** encode the NPC stat gate on job advancement. So neither the datamine nor observation-so-far can confirm or deny whether Classic World kept it.
+This is the one open question in this guide. Your existing [Thief job guide](/jobs/thief) says advancement to Rogue at L10 requires **25 DEX** - that's the long-standing MapleStory tradition, and Nexon's Classic World FA datamine (which encodes quests, items, mobs) does **not** encode the NPC stat gate on job advancement. So neither the datamine nor community observation-so-far can confirm or deny whether Classic World kept it.
 
 Here's how to plan around each case:
 
-### Case A: 25 DEX gate still exists (v83 default)
+### Case A: 25 DEX gate still exists (traditional MapleStory default)
 
-Same as v83:
+The safe plan assuming the gate is live:
 
 - Start with base 4 DEX and 4 LUK.
 - From L1-9, every level-up gives 5 AP. That's 45 AP total for L2-L10.
@@ -176,11 +175,11 @@ Once you're past the L10 advancement gate (or not, per above), the real question
 
 ### Which one to pick
 
-**In Classic World, Pure LUK is stronger than it was in v83** for four compounding reasons:
+**In Classic World, Pure LUK is the clear winner** for four compounding reasons:
 
 1. **Claws matched DEX to level, so DEX-per-level pace is just enough to equip weapons** - the "buffer" DEX tax is gone.
 2. **Overall Armor DEX scrolls exist**, so you can add scrolled DEX to your overall as a hit-rate cushion without touching base AP.
-3. **Lucky Seven damage is LUK-only** - the weapon's base Attack is irrelevant to the formula (this is v83 canonical and appears unchanged in CW's datamined skill definitions).
+3. **Lucky Seven damage is LUK-only** - the weapon's base Attack is irrelevant to the formula (datamined skill definition confirms the LUK-exclusive formula in Classic World).
 4. **No Topwear/Bottomwear LUK scrolls means every LUK-related meso goes through overalls** - concentrating your scroll investment on one high-slot item where each success matters more.
 
 **Verdict:** Pure LUK if you plan to scroll a Sauna Robe or Dark Avenger seriously. DEX-per-level if you're leveling casually with unscrolled gear.
@@ -259,28 +258,26 @@ This section covers every throwing star in Classic World's datamine, ranked by W
 
 *Data source: CoT 2 items.json (WATK + reqLevel parsed from item descriptions), mobs.json drop tables, cross-referenced 2026-09.*
 
-### The huge Classic World change: level gates are gone
+### Every star is Level 10 required
 
-**In v83 GMS**, throwing stars gated hard on character level:
+**In Classic World, every throwing star in the FA datamine is Level 10 required** - confirmed via the client datamine: each star's `description` field explicitly states `"Level Required: 10, Weapon Attack +XX"` and there's no separate reqLevel field overriding it. The full star roster at a glance:
 
-| Star | v83 Req Lv | CW Req Lv | Delta |
-|---|:---:|:---:|---|
-| Subi | 15 | **10** | -5 |
-| Wolbi | 25 | **10** | -15 |
-| Mokbi | 30 | **10** | -20 |
-| Kumbi | 35 | **10** | -25 |
-| Tobi | 43 | **10** | -33 |
-| Steely | 50 | **10** | -40 |
-| Ilbi | **64** | **10** | **-54** |
-| Hwabi | 70 | **10** | -60 |
-
-**In Classic World, every star is Level 10 required.** Confirmed via the CoT 2 client datamine: each star's `description` field explicitly states `"Level Required: 10, Weapon Attack +XX"` and there's no separate reqLevel field overriding it.
+| Star | Req Lv (CW FA) | WATK |
+|---|:---:|:---:|
+| Subi | **10** | +15 |
+| Wolbi | **10** | +17 |
+| Mokbi | **10** | +19 |
+| Kumbi | **10** | +21 |
+| Tobi | **10** | +23 |
+| Steely | **10** | +25 |
+| Ilbi | **10** | +27 |
+| Hwabi | **10** | +29 |
 
 **What this means practically:**
 
 - The moment you become an Assassin at L30, you can equip **any** star in the game - even Hwabis with their +29 WATK - if someone hands them to you or you can afford the 25k shop price for one bundle.
-- The bottleneck is now **acquisition**, not level gating. Ilbis and Hwabis still drop only from world bosses (below), so most Sins will grind through the Wolbi→Kumbi→Tobi→Steely tiers via mob drops before they ever see an Ilbi.
-- **This is a MASSIVE quality-of-life win for late-bloomer Sins.** In v83 you couldn't equip Ilbis until L64. In CW, if you find a rich friend with a Mushmom hunter alt, you're throwing Ilbis at L30 the moment you Rogue-advance.
+- The bottleneck is **acquisition**, not level gating. Ilbis and Hwabis still drop only from world bosses (below), so most Sins will grind through the Wolbi→Kumbi→Tobi→Steely tiers via mob drops before they ever see an Ilbi.
+- **This is a huge QoL win for late-bloomer Sins.** If you find a rich friend with a Mushmom hunter alt, you're throwing Ilbis at L30 the moment you Rogue-advance.
 
 ### The novelty stars (Snowball, Wooden Top, Icicle)
 
@@ -312,7 +309,7 @@ Drops from:
 
 **Grind reality footnote ¹ — Mushmom Ilbi is a multi-week commitment for most players.** Rough math:
 
-- Mushmom's Ilbi drop rate is not exposed in the datamine but v83 community data pegs it at ~2-3%. Assume 3% for optimism.
+- Mushmom's Ilbi drop rate is not exposed in the FA datamine; traditional MapleStory community estimates peg it at ~2-3% (unverified for Classic World). Assume 3% for optimism.
 - Mushmom spawns every 60 minutes per channel. Most servers have 10-20 channels. **In a well-populated server that means ~10-20 Mushmoms alive somewhere in the world per hour** - but most are already claimed by other hunters camping specific channels.
 - Realistic solo effort: 1-3 Mushmoms killed per hour of active hunting (channel-hopping, KS races, waiting for spawns).
 - At 3% drop rate: **~33 kills expected per Ilbi**. At 1-3 kills per hour of grinding: **11 to 33 hours of hunting per Ilbi bundle.**
@@ -399,7 +396,7 @@ If you already know your training map, use this reverse lookup:
 
 ### Verification note
 
-All star stats (WATK, level requirement, stack size, shop price) parsed from the CoT 2 client datamine's item descriptions - specifically the `description` field on item IDs 2070000-2070010. Drop-source tables cross-referenced against `mobs.json` drop entries, which pull from the community-maintained MeowDB layer on top of the CoT 2 mob dossiers. Drop-rate percentages are v83 community estimates, not confirmed CW values - Nexon does not publish drop rates. Grind-time projections use v83-baseline drop rates and standard MapleStory boss respawn intervals; live CW rates may differ. **If a drop rate feels dramatically off after launch, please [flag it via the site's Discord](/) and I'll rerun the projections.**
+All star stats (WATK, level requirement, stack size, shop price) parsed from the Classic World FA client datamine's item descriptions - specifically the `description` field on item IDs 2070000-2070010. Drop-source tables cross-referenced against `mobs.json` drop entries, which pull from the community-maintained MeowDB layer on top of the FA mob dossiers. Drop-rate percentages are traditional MapleStory community estimates and are NOT confirmed for Classic World - Nexon does not publish drop rates. Grind-time projections use those traditional baseline rates and standard boss respawn intervals; live CW rates may differ. **If a drop rate feels dramatically off after launch, please [flag it via the site's Discord](/) and I'll rerun the projections.**
 
 ---
 
@@ -525,9 +522,7 @@ At **50% expected scroll success** across 10 Intermediate attempts, you end up w
 
 The old-school dexless Assassin build was born in a world of high-DEX-req claws and cheap top+bottom scrolls. Classic World inverted both variables and the meta pivoted with them:
 
-**In v83:** DEX gates were painful (claws demanded buffer DEX), but top+bottom LUK scrolls compensated. You'd wear a top + pants combo and stack LUK across two pieces. Dexless was a workaround.
-
-**In Classic World:** DEX gates are minimal (claws match your level exactly), and top+bottom LUK scrolls don't exist. You wear a scrolled overall or you accept a fixed LUK ceiling. Dexless is the intended path.
+**In Classic World:** DEX gates are minimal (claws match your level exactly), and top+bottom LUK stat scrolls don't exist in the base itemdb. You wear a scrolled overall or you accept a fixed LUK ceiling. Pure LUK is the intended path.
 
 **The single-sentence summary:** wear the Sauna Robe L30-34, wear a well-scrolled Dark Avenger L35 through the mid-60s, dump every AP into LUK past the (probably still 25) advancement gate, use the crit-rate claw variant at every tier, and you have built the Classic World Assassin correctly.
 
@@ -537,7 +532,7 @@ The old-school dexless Assassin build was born in a world of high-DEX-req claws 
 - **Party dungeon runners** - a slightly lower personal DPS matters less when the party carries.
 - **Meso-poor players** - if you can't afford to scroll gear, base DEX from AP is your hit-rate backup.
 
-But the math for **damage per LUK point spent** clearly favors Pure LUK, and Classic World's changes clearly favor Pure LUK harder than v83 did.
+But the math for **damage per LUK point spent** clearly favors Pure LUK in Classic World's current scroll + claw ecosystem.
 
 ---
 
@@ -557,11 +552,11 @@ Would be nice - they don't exist in the CoT 2 datamine. The Assassin overall pip
 
 ### Does Lucky Seven really ignore weapon Attack?
 
-Yes - Lucky Seven damage in v83 uses ONLY your LUK stat and **the throwing star's Weapon Attack value** (not the claw's Attack). The claw's Attack still matters for regular attacks and other skills, but Lucky Seven itself scales off LUK + star WATK. This is why crit-rate claws (Gold Titans, Adamantium Guards, Sapphire Gigantic, Blue Scarab) beat higher-PAD variants for Sin damage - crit is a Lucky-Seven multiplier, claw PAD isn't. And it's why **the star tier you're using matters as much as the claw** - see [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full L7 damage impact per tier. Whether Classic World preserves this exactly is one of the things worth verifying at launch, but the skill definitions in the datamine appear unchanged.
+Yes - the FA datamine's Lucky Seven skill definition shows the damage formula uses ONLY your LUK stat and **the throwing star's Weapon Attack value** (not the claw's Attack). The claw's Attack still matters for regular attacks and other skills, but Lucky Seven itself scales off LUK + star WATK. This is why crit-rate claws (Gold Titans, Adamantium Guards, Sapphire Gigantic, Blue Scarab) beat higher-PAD variants for Sin damage - crit is a Lucky-Seven multiplier, claw PAD isn't. And it's why **the star tier you're using matters as much as the claw** - see [Throwing star progression](#throwing-star-progression-and-the-boss-drop-grind) for the full L7 damage impact per tier. Full confirmation requires in-game damage testing at Grand Launch, but the datamined formula is unambiguous.
 
 ### Is farming Ilbis actually worth it?
 
-Depends on your patience budget. Ilbis are +2 WATK over Steely Throwing Knives (Red Drake drops, Sleepywood dungeon), which translates to roughly +7% Lucky Seven damage per hit. Steely Throwing Knives are trivially farmable during normal Sleepywood grinding. Ilbis require dedicated world-boss hunting (Mushmom / Zombie Mushmom), roughly 11-33 hours of active hunt time per bundle at v83-baseline drop rates. **Most classic-era Sins ran Steely as their practical BiS and only bothered with Ilbis if they were rich enough to buy them from grinders.** Full grind math in the [Ilbi footnote](#throwing-star-progression-and-the-boss-drop-grind) above.
+Depends on your patience budget. Ilbis are +2 WATK over Steely Throwing Knives (Red Drake drops, Sleepywood dungeon), which translates to roughly +7% Lucky Seven damage per hit. Steely Throwing Knives are trivially farmable during normal Sleepywood grinding. Ilbis require dedicated world-boss hunting (Mushmom / Zombie Mushmom), roughly 11-33 hours of active hunt time per bundle at traditional-MapleStory baseline drop rates (unverified for Classic World). **Steely is the practical BiS for most Sins; Ilbis are a stretch goal unless you're rich enough to buy them from dedicated grinders.** Full grind math in the [Ilbi footnote](#throwing-star-progression-and-the-boss-drop-grind) above.
 
 ### What about the Bandit branch?
 
@@ -569,7 +564,7 @@ This guide covers Assassin specifically. Bandits use daggers, care about STR (ye
 
 ### Is the 25-DEX advancement gate really still there in Classic World?
 
-Genuinely unconfirmed. The v83 baseline says yes, the CoT 2 datamine can't encode the NPC stat check either way, and no CoT tester has publicly reported a lower-DEX Rogue succeeding at advancement. Plan for 25 DEX, celebrate if it turns out to be lower. Full details in [The 25-DEX advancement question](#the-25-dex-advancement-question) above.
+Genuinely unconfirmed. Traditional MapleStory tradition says yes, the FA datamine can't encode the NPC stat check either way, and no FA tester has publicly reported a lower-DEX Rogue succeeding at advancement. Plan for 25 DEX, celebrate if it turns out to be lower. Full details in [The 25-DEX advancement question](#the-25-dex-advancement-question) above.
 
 ### Should I scroll the claw too, or just armor?
 

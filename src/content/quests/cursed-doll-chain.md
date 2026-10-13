@@ -139,7 +139,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "All 5 quest IDs (10201-10205), NPC (Rowen the Fairy), level requirement (36+), per-tier EXP + meso rewards (4387/1053 each), and complete tier-by-tier reward tables pulled verbatim from the CoT 2 client datamine. Drop rate estimate (40-60% per Zombie Lupin) is v83 community estimate pending live CoT 2 measurement."
+verificationNote: "All 5 quest IDs (10201-10205), NPC (Rowen the Fairy), level requirement (36+), per-tier EXP + meso rewards (4387/1053 each), and complete tier-by-tier reward tables pulled verbatim from the CoT 2 client datamine. Drop rate estimate (40-60% per Zombie Lupin) is traditional MapleStory community estimate pending live CoT 2 measurement."
 sourceSlugs:
   - "osmsdataexplorer"
 

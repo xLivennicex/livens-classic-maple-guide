@@ -56,7 +56,7 @@ editorial: |
   need to know to not fumble your first hour on Victoria Island.</p>
 
   <p><strong>Note for CoT 2 players:</strong> the Classic World
-  quiz content differs from v83. Answers below are pulled from
+  quiz content differs from traditional MapleStory. Answers below are pulled from
   the CoT 2 datamine (each quest's post-completion narrative
   reveals the correct answer). If a Classic World patch
   changes a question, this page will need updating.</p>

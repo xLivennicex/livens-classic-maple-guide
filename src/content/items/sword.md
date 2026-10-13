@@ -42,11 +42,8 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "historical-archive"
-verificationNote: "Base stats reflect v83 baseline; Classic World may have adjusted attack values for beginner weapons."
-sourceSlugs:
-  - "hiddenstreet-v83-database"
-  - "ayumilove-v83-warrior"
-
+verificationNote: "Base stats reflect traditional MapleStory baseline; Classic World may have adjusted attack values for beginner weapons."
+sourceSlugs: []
 # ==== Layout ====
 theme: "perion"
 lastUpdated: "2026-08-23"

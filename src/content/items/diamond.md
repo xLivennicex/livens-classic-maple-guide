@@ -34,7 +34,7 @@ editorial: |
   <p><strong>How to acquire:</strong> Diamond drops from
   various mid-level mobs (Zombie Lupins near Ellinia, Cold
   Drakes in Ice Valley, various Sleepywood mobs). Drop rate
-  is low - historical v83 estimates put it around 0.5-2%
+  is low - historical traditional MapleStory estimates put it around 0.5-2%
   depending on mob.</p>
 
   <p><strong>Diamond vs Diamond Ore:</strong> two different
@@ -47,7 +47,7 @@ editorial: |
   has Diamond Ore, you can't substitute - they're distinct.</p>
 
   <p><strong>Free Market strategy:</strong> Diamonds trade for
-  mid-hundreds-of-thousands of mesos in v83 economies during
+  mid-hundreds-of-thousands of mesos traditionally economies during
   active quest completion phases. If you need one for a
   chain and don't want to grind, buying is often faster than
   farming.</p>
@@ -67,7 +67,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Item ID (4020107), name, category (ETC), and in-game description all pulled from the CoT 2 client datamine at osmsdataexplorer.com. Drop rates and chain-usage listings are cross-referenced against verified quest datamines. Free Market price estimate is v83 historical baseline."
+verificationNote: "Item ID (4020107), name, category (ETC), and in-game description all pulled from the CoT 2 client datamine at osmsdataexplorer.com. Drop rates and chain-usage listings are cross-referenced against verified quest datamines. Free Market price estimate is traditional MapleStory historical baseline."
 sourceSlugs:
   - "osmsdataexplorer"
 

@@ -1,7 +1,7 @@
 ---
 # ---------- Core metadata ----------
 title: "Gearing at 30+: Weapons, Armor, and the FA Content Ceiling"
-description: "Post-2nd-job gear progression for MapleStory Classic World Founder's Access. Per-class weapon ladders from L30 to the Lv 100 FA cap, universal armor progression, scrolling philosophy, and the honest answer about which v83-era BiS gear is NOT yet accessible in FA. Every item cross-linked to its /items dossier."
+description: "Post-2nd-job gear progression for MapleStory Classic World Founder's Access. Per-class weapon ladders from L30 to the Lv 100 FA cap, universal armor progression, scrolling philosophy, and the honest answer about which traditional late-game BiS gear is NOT yet accessible in FA. Every item cross-linked to its /items dossier."
 lastUpdated: "2026-10-11"
 tags:
   - gear
@@ -17,11 +17,11 @@ theme: "perion"
 decorations: false
 eyebrow: "Post-30 Progression"
 heading: "Gearing at 30+"
-tagline: "Every weapon and armor pick from Lv 30 to the Lv 100 FA cap, pulled from the live CoT 2 datamine. With honest callouts about Classic World mechanic changes and which v83 BiS staples are NOT in FA yet."
+tagline: "Every weapon and armor pick from Lv 30 to the Lv 100 FA cap, pulled from the live Classic World FA client datamine. With honest callouts about Classic World mechanic changes and which traditional BiS staples are NOT in FA yet."
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
-verificationNote: "Weapon + armor stats, levels, slot counts, drop sources, and quest rewards come directly from src/data/db/items.json (7431 items parsed from the CoT 2 client datamine via osmsdataexplorer.com, cross-verified with MeowDB community drops). Classic-World-specific mechanic changes (1.25x elemental multiplier, HP wash removal, earring crit damage line, Forgotten Hollow placement) sourced from the msclassic.wiki moderator community (Lunitidal) and r/Maplestory CW-tagged threads. v83 reference points (scrolling philosophy, boss drop lore) sourced from MapleRoyals community archives where mechanics overlap. Where a v83 BiS item is NOT in our CoT 2 datamine (e.g. Pilfered Vest, Blue Craven, BWG), the guide names the Classic World equivalent from our DB instead - do not expect v83 item names to transfer wholesale."
+verificationNote: "Weapon + armor stats, levels, slot counts, drop sources, and quest rewards come directly from src/data/db/items.json (7431 items parsed from the Classic World FA client datamine via osmsdataexplorer.com, cross-verified with MeowDB community drops). Classic-World-specific mechanic changes (1.25x elemental multiplier, HP wash removal, earring crit damage line, Forgotten Hollow placement) sourced from the msclassic.wiki moderator community (Lunitidal) and r/Maplestory CW-tagged threads. Where a traditional-MapleStory BiS item is NOT in our Classic World datamine (e.g. Pilfered Vest, Blue Craven, Brown Work Gloves), the guide names the Classic World equivalent from our DB instead - do not expect traditional item names to transfer wholesale."
 sourceSlugs:
   - nexon-founders-access-release-notes
   - osmsdataexplorer
@@ -65,16 +65,16 @@ Training-map choices are covered in a separate guide:
 
 <h2 id="classic-world-ground-rules">Classic World ground rules</h2>
 
-Classic World is NOT a 1:1 of v83-era GMS, so some conventional gearing
-advice doesn't apply. Four changes dominate every gear decision below.
+Classic World is NOT a 1:1 of traditional MapleStory, so some
+conventional gearing advice doesn't apply. Four changes dominate
+every gear decision below.
 
 ### 1. Elemental damage multiplier is 1.25×, not 1.5×
 
-In v83 GMS, hitting an elementally-weak target with the matching element
-multiplied your damage by 1.5×. In Classic World the multiplier is
-**1.25×** — Nexon rebalanced it during Closed Online Test 2 and
-msclassic.wiki moderator Lunitidal has confirmed it via playtest math
-against fire-weak Ligators.
+Traditional MapleStory used a 1.5× multiplier for element-weakness.
+In Classic World the multiplier is **1.25×** — Nexon rebalanced it
+during Closed Online Test 2 and msclassic.wiki moderator Lunitidal
+has confirmed it via playtest math against fire-weak Ligators.
 
 **Practical impact:** elemental weapon picks (Fire wand vs. Ice wand
 vs. generic high-MATK staff) matter *less* than they used to. A plain
@@ -84,14 +84,16 @@ nudge away from "always farm the right-element weapon."
 
 ### 2. HP washing is removed
 
-v83 Bishops, Night Lords, and Buccaneers famously washed MP into HP to
-survive high-level bosses. **Classic World removed this mechanic entirely**
-during the second playtest. You can't trade MP for HP, which means your
-survivability is fixed at whatever your base HP table gives.
+Bishops, Night Lords, and Buccaneers traditionally washed MP into HP
+to survive high-level bosses. **Classic World removed this mechanic
+entirely** during the second closed test. You can't trade MP for HP,
+which means your survivability is fixed at whatever your base HP
+table gives.
 
-**Practical impact:** stop reading v83 HP wash guides. Invest mesos into
-gear, not into AP wash potions. Your gear's +HP lines and your scrolled
-Overall are the only levers you have.
+**Practical impact:** HP wash guides from traditional MapleStory
+don't apply here. Invest mesos into gear, not into AP wash potions.
+Your gear's +HP lines and your scrolled Overall are the only levers
+you have.
 
 ### 3. Earrings now have a crit damage line
 
@@ -102,10 +104,10 @@ Earrings are now a damage upgrade, not just a stat stick.
 yet settled on which earring brackets are "the one" to scroll — treat
 this as an actively-evolving meta, not a solved problem.
 
-### 4. Most v83 "BiS" zones are NOT in Founder's Access
+### 4. Most traditional late-game BiS zones are NOT in Founder's Access
 
 Nexon held several continents back for Grand Launch (Oct 21, 2026) and
-later patches. The following v83 content is **inaccessible during FA**:
+later patches. The following content is **inaccessible during FA**:
 
 - **Zakum** boss fight (helmet exists in datamine but the altar is gated)
 - **Orbis** (no Icarus Cape walk-in path — only the Green Icarus Cape
@@ -120,9 +122,10 @@ later patches. The following v83 content is **inaccessible during FA**:
 
 **Practical impact:** the realistic FA-cap endgame kit is **scrolled
 Lv 50-70 Classic World gear from NPC shops, mob drops, and quest
-rewards**. If you've read v83 guides naming Pilfered Vest, Blue Craven,
-Brown Work Gloves, Maple Soul Rohen — those item names are *not* in CoT 2.
-Classic World has its own equivalent items; this guide names those.
+rewards**. If you've read traditional-MapleStory guides naming Pilfered
+Vest, Blue Craven, Brown Work Gloves, Maple Soul Rohen — those item
+names are *not* in the Classic World FA datamine. Classic World has
+its own equivalent items; this guide names those.
 
 <h2 id="how-to-use-this-guide">How to use this guide</h2>
 
@@ -290,9 +293,10 @@ bad spot but Crossbowmen have the clearer upgrade.
 | Cape | [Green Icarus Cape](/items/1102001) L46 (quest) | [Blue Icarus Cape](/items/1102003) L46 (quest) | [Green Icarus Cape](/items/1102001) L46 (quest) | [Green Icarus Cape](/items/1102001) L46 (quest) |
 
 <div class="callout">
-<strong>Icarus Cape in FA:</strong> the full v83 Icarus Cape path (buying
-colored variants from Yoona in Orbis) is NOT accessible in Classic World
-Founder's Access. Orbis isn't live. What <em>does</em> work: the quest
+<strong>Icarus Cape in FA:</strong> the traditional Icarus Cape path
+(buying colored variants from Yoona in Orbis) is NOT accessible in
+Classic World Founder's Access. Orbis isn't live. What <em>does</em>
+work: the quest
 <a href="/quests/10321">Delivering the Flying Medicine</a> at Lv 46
 gives Green Icarus Cape, and the Mage variant Blue Icarus Cape also
 drops in-FA. Grab the quest cape and don't worry about the
@@ -504,11 +508,11 @@ scrolled Lv 70 kit through the FA cap climb.
 | Cape | *(no L70+ cape in datamine)* | *(no L70+ cape)* | *(no L70+ cape)* | *(no L70+ cape)* |
 
 <div class="callout callout--warning">
-<strong>Capes above Lv 65 don't exist in our CoT 2 datamine.</strong>
+<strong>Capes above Lv 65 don't exist in our FA client datamine.</strong>
 Highest cape is the Gaia tier at Lv 65. We've triple-checked and this
-isn't a scrape bug — it's a hard content ceiling. Expect Nexon to ship
-L70+ capes with Grand Launch (likely as Orbis/Ludibrium content opens
-up, which was always the v83 pattern). Until then, hard-scroll your
+isn't a scrape bug — it's a hard content ceiling. Expect Nexon to
+ship L70+ capes with Grand Launch (traditionally this happens when
+Orbis/Ludibrium content opens). Until then, hard-scroll your
 Gaia-tier cape and carry it to FA cap.
 </div>
 
@@ -551,17 +555,18 @@ books and from mid-tier mob drops.
 
 ### Chaos Scroll + White Scroll in CW
 
-**Both exist in the datamine but their accessibility in Founder's Access
-is unconfirmed.** In v83, Chaos Scroll of Goodness and White Scroll are
-the end-game scrolling tools — CS randomizes stats within a range and
-WS prevents destruction on failure. In CW:
+**Both exist in the FA datamine but their accessibility in Founder's
+Access is unconfirmed.** Traditionally Chaos Scroll of Goodness and
+White Scroll are the end-game scrolling tools — CS randomizes stats
+within a range and WS prevents destruction on failure. In CW:
 
 - **Chaos Scroll**: datamined but no community-confirmed drop source
   during FA. Treat as "exists but may be very rare" until Day 14+
   intel surfaces.
-- **White Scroll**: v83 craft is via John Barricade in New Leaf City.
-  **NLC is NOT in Founder's Access**, so the primary craft path is gated.
-  Alternative sources (if any) have not been found by the community.
+- **White Scroll**: traditional craft is via John Barricade in New
+  Leaf City. **NLC is NOT in Founder's Access**, so the primary craft
+  path is gated. Alternative sources (if any) have not been found by
+  the community.
 
 **Practical advice:** scroll conservatively with 60% / 30% / 10% named
 stat scrolls. Don't plan a strategy that assumes White Scroll safety
@@ -583,8 +588,9 @@ White Scrolls. Fewer if lucky, more if cursed.
 
 <h2 id="what-isnt-in-fa-yet">What's not in FA yet</h2>
 
-Reference checklist. Any v83 guide you read will mention these items and
-you'll search our DB for them in vain. Not a bug — they're held content:
+Reference checklist. Traditional MapleStory guides will mention these
+items and you'll search our DB for them in vain. Not a bug — they're
+held content:
 
 | Zone / System | Status in FA | What this blocks |
 | --- | --- | --- |
@@ -598,20 +604,21 @@ you'll search our DB for them in vain. Not a bug — they're held content:
 | Mu Lung / Herb Town |  later patch | Pirate Den training |
 | Aqua Road / Temple of Time |  later patch | L80+ training variety |
 
-**What this means for your gear ceiling:** your realistic FA endgame kit
-is scrolled Lv 50-70 CoT 2 gear (hat/overall/weapon/gloves) + the Gaia
-cape + whatever earrings you've farmed. Grand Launch opens the next tier.
+**What this means for your gear ceiling:** your realistic FA endgame
+kit is scrolled Lv 50-70 FA-datamine gear (hat/overall/weapon/gloves)
++ the Gaia cape + whatever earrings you've farmed. Grand Launch opens
+the next tier.
 
 <h2 id="faq">FAQ</h2>
 
-**I read a v83 guide saying I need Pilfered Vest / Brown Work Gloves /
-Maple Soul Rohen. Where are they?**
+**I read a traditional MapleStory guide saying I need Pilfered Vest /
+Brown Work Gloves / Maple Soul Rohen. Where are they?**
 
-They're not in Classic World — CoT 2 shipped a different item list.
-Classic World's L30-70 equivalents are the ones named in the tables
-above (e.g. Dark Avenger overall for Thieves instead of Blue Craven,
-Zard 2H sword for Fighters instead of Devil's Sunrise). Don't fight the
-item list; use ours.
+They're not in Classic World — the FA client shipped a different
+item list. Classic World's L30-70 equivalents are the ones named in
+the tables above (e.g. Dark Avenger overall for Thieves instead of
+Blue Craven, Zard 2H sword for Fighters instead of Devil's Sunrise).
+Don't fight the item list; use ours.
 
 **Should I craft or buy my weapons?**
 
@@ -623,10 +630,11 @@ if a craft recipe gets published that beats our picks, we'll update.
 
 **What's the earring crit damage line everyone's talking about?**
 
-CoT 2 added a `crit damage` stat line to earring items — not present in
-v83. Scrolled earrings now contribute damage, not just raw stat. This
-makes earrings a higher-priority scroll target than they historically
-were. Community meta on which earrings are "the one" is still forming.
+Classic World added a `crit damage` stat line to earring items —
+not present in traditional MapleStory. Scrolled earrings now contribute
+damage, not just raw stat. This makes earrings a higher-priority
+scroll target than they historically were. Community meta on which
+earrings are "the one" is still forming.
 
 **Can I actually get Zakum Helmet in FA?**
 
