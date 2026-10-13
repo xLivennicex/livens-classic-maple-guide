@@ -182,7 +182,7 @@ training:
       what: "Denser mobs, better EXP rates. Wraiths are undead - decent EXP if you can survive them."
       note: "Your main attack (Lucky Seven or Double Stab) should be maxed by 20. Damage-per-hour jumps sharply once it is."
     - levels: "Levels 25 - 30"
-      where: "Kerning Party Quest (KPQ) - Thieves are one of the most-requested KPQ classes in v83"
+      where: "Kerning Party Quest (KPQ) - Thieves are a flex pick for CW KPQ: good single-target on Curse Eye self-healers in the boss room, Beginner-friendly reach for the ground-level cats-on-logs platforms in Stage 3"
       what: "Fast group EXP, cash equipment rewards, way more efficient than solo grinding at this range."
       note: "Second job advancement quest becomes available at level 30. If you have not fully committed to Assassin or Bandit yet, decide now - the second-job weapon investment starts here."
 

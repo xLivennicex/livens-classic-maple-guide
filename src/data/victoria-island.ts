@@ -525,7 +525,7 @@ export const victoriaTowns: VictoriaTown[] = [
 		featuredContent: {
 			label: "Party quest walkthrough",
 			title: "Kerning Party Quest (KPQ)",
-			blurb: "The iconic Lv 21-30 party quest. Six characters, one waiting room, one King Slime boss. Full stage-by-stage walkthrough with LFG shouts and progress tracker.",
+			blurb: "The iconic Lv 21-30 party quest, reworked for Classic World. 3-6 characters, four puzzle stages (Cloto's trivia + ropes + cats-on-logs + barrels), one King Slime boss, and a Companion's Magic Box each. Full stage-by-stage walkthrough with corrected J>/S> LFG shouts and the Stage 1 question pool.",
 			href: "/party-quests/kerning-pq",
 			cta: "Read the KPQ walkthrough",
 		},
@@ -727,7 +727,7 @@ export const victoriaIslandHighlights = [
 	},
 	{
 		title: "Kerning Party Quest",
-		blurb: "The iconic 21-30 party quest. Six characters, one waiting room, one boss room, and a lot of pushing coins into slots. Formative Classic Maple experience.",
+		blurb: "The iconic 21-30 party quest. 3-6 characters, four puzzle stages (trivia + ropes + cats-on-logs + barrels), one boss room with King Slime. No waiting room in CW - straight from Lakelis to Stage 1. Formative Classic Maple experience.",
 	},
 	{
 		title: "Free Market Entrance (Henesys)",

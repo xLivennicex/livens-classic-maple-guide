@@ -2,11 +2,11 @@
 questId: "10311"
 name: "First Time Together (Kerning City PQ)"
 category: "party-quest"
-tagline: "Four adventurers level 21+ delve into the Ant Tunnel, defeat King Slime, and split a bag of Intermediate earring scrolls. The classic Kerning Party Quest, renamed for Classic World."
+tagline: "Three to six adventurers level 21-30 run a 5-stage puzzle gauntlet in Kerning City, defeat King Slime, and open a Companion's Magic Box each. The classic Kerning Party Quest, reworked for Classic World."
 
 # ==== Requirements ====
 levelMin: 21
-classReq: "Any (party of 4)"
+classReq: "Any (party of 3-6)"
 
 # ==== NPC / location ====
 npcName: "Lakelis"
@@ -243,9 +243,10 @@ callout: |
   entry quest <strong>Proof of Companionship</strong> and the
   PQ itself <strong>First Time Together</strong>. Older players
   will know it as <strong>Kerning Party Quest</strong> or
-  <strong>KPQ</strong> - it is the same content, renamed for
-  Classic World. All three names refer to the same 4-player
-  Ant Tunnel + King Slime encounter.
+  <strong>KPQ</strong> - it is the same content, reworked for
+  Classic World. All three names refer to the same 3-6-player
+  Kerning City instance (NOT Ant Tunnel - that's a Sleepywood
+  region map) ending at King Slime.
 
 # ==== Cross-links ====
 relatedGuides:

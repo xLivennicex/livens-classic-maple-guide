@@ -21,9 +21,9 @@
       "recommendedLevelMax": 30,
       "faRoster": true,
       "narrative": {
-        "tldr": "The literal end of Kerning Party Quest. 8,000 HP wrapped in a bouncing blue slime crown. Beating him unlocks a bonus stage full of etc. drops and (if you're lucky) a Blue Mushroom Cap chair or Golden River. Everyone in the party gets EXP so this is where a lot of Maplers first hit level 30.",
-        "access": "Complete KPQ stages 1-5 with a party of 3-6 (levels 21-30). King Slime spawns automatically in the final stage after you place the crown on the pedestal. No solo access - PQ-only fight.",
-        "strategy": "Split roles: mages and clerics stay back and pump Magic Claw / Heal. Warriors and Chief Bandits (yes, Meso Explosion Bandits carry this fight in classic v83) go melee. Watch for the mini-slimes he spawns when hit - kill them fast so they don't overwhelm your healer. Cleric party bonus makes this trivial.",
+        "tldr": "The final stage of Kerning Party Quest. Lv 32, ~16,820 HP per MapleClassic Wiki (datamine shows Lv 40 / 8,000 HP but community sources reflect live FA tuning). Summons regular Slimes at 50% HP and splits into 11 Slimes on death. Beating him unlocks a bonus Mushroom Room with 24 Horny + 12 Green mushroom reactors. Every member gets a Companion's Magic Box per clear plus a chance drop of Squishy Shoes.",
+        "access": "Complete KPQ stages 1-4 (trivia / ropes / cats-on-logs / barrels) with a party of 3-6 (levels 21-30). King Slime spawns in the Last Stage along with 6 Jr. Necki + 3 Curse Eye. Each mob drops 1 Pass; leader hands all 10 Passes to Cloto to clear. No solo access - PQ-only fight.",
+        "strategy": "Split roles: Mages and Clerics stay back, pump Magic Claw and Heal. Warriors and Bowmen go front. Watch for the at-50% HP Slime summon wave - focus-AOE them or your healer gets overwhelmed. Curse Eye self-heal: burst them in 1-2 hits before the tick lands. Chief Bandits with Meso Explosion are the carry pick post-launch, but 3rd job is gated until Grand Launch (Oct 21).",
         "threat": "low"
       }
     },
