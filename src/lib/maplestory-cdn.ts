@@ -434,21 +434,33 @@ export function npcSpriteSrcs(
 }
 
 /**
- * Item icon chain. maplestory.io primary (CDN-backed, serves both
- * current-datamine items AND legacy GMS event items like Frozen
- * Tuna / Maple Flag / Pumpkin Hat - verified 100% for the Hall of
- * Fame roster). MeowDB kept as a fallback for the rare case where
- * maplestory.io has a wzId that its snapshot doesn't cover.
+ * Item icon chain. MeowDB primary (Classic-World-aware snapshot:
+ * contains BOTH CW-new cosmetics like Angel Halo / Starlight Heart
+ * Scepter AND legacy Hall-of-Fame items like Frozen Tuna / Maple
+ * Flag / Pumpkin Hat - re-verified 2026-10-13 that MeowDB has 200
+ * OK on all 4 legacy Hall-of-Fame items + all 12 MesoWatchHotItems).
  *
- * Ordering was flipped 2026-09-06 after discovering the Hall of
- * Fame page was 100% falling back to placeholders because MeowDB
- * doesn't have legacy event-item icons and the old fallback URL
- * used `/render/icon` (which 404s) instead of the correct `/icon`.
+ * maplestory.io/GMS/83 kept as a fallback for the two item ranges
+ * MeowDB doesn't carry: hair IDs (30xxx-31xxx) and face IDs (20xxx,
+ * 21xxx) used by the Character preview page.
+ *
+ * HISTORY:
+ *   2026-09-06: order was flipped to maplestory.io-first because
+ *     the Hall of Fame page was 100% falling back to placeholders.
+ *     That diagnosis turned out to be correct for the Sep snapshot
+ *     but has aged: MeowDB has been updated and now carries the
+ *     legacy items too.
+ *   2026-10-13: flipped BACK to MeowDB-first after user reported
+ *     wrong sprites on the MesoWatchHotItems card. Probed 12/12
+ *     items on both CDNs - maplestory.io returns 200 for ALL of
+ *     them but shows WRONG sprites for 5 (Zakum Helmet 1002180
+ *     shows 'Dark Burgler', etc) because the wzIds collide with
+ *     unrelated GMS/83 items. MeowDB-first eliminates the collision.
  */
 export function itemIconSrcs(wzId: number): string[] {
 	return [
-		`${CDN_ROOT}/${DEFAULT_VERSION}/item/${wzId}/icon`,
 		itemIconUrl(wzId),
+		`${CDN_ROOT}/${DEFAULT_VERSION}/item/${wzId}/icon`,
 	];
 }
 
