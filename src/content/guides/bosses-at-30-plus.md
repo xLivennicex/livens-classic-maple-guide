@@ -352,7 +352,7 @@ So what fills Lv 65 to 100?
    for L60+ map picks.
 3. **GM-run events** - Monster Invasion, Up and Up, Physical Fitness
    Challenge during FA give burst EXP, but they're on fixed schedules
-   (see our [Launch page](/launch) for the full GM event calendar).
+   (see the [FA Events Calendar](/fa-events-calendar) for the full schedule).
 4. **Prepping for Grand Launch** - meso-farming so you can scroll your
    gear, finishing Citizenship quests, maxing your 2nd job skill tree.
 
