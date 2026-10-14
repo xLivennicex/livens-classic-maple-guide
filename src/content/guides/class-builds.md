@@ -30,6 +30,7 @@ sourceSlugs:
 # ---------- TOC ----------
 toc:
   - { href: "#how-to-pick-a-class", label: "How to pick" }
+  - { href: "#side-by-side-comparison-matrix", label: "Comparison matrix" }
   - { href: "#classic-world-build-rules", label: "CW build rules" }
   - { href: "#warrior-fighter", label: "Fighter" }
   - { href: "#warrior-page", label: "Page" }
@@ -81,6 +82,61 @@ Four axes to evaluate against before you commit:
   Assassin (Lucky Seven + Shadow Partner)
 - **"I'm a meso-maker"** → Chief Bandit (Meso Explosion is the single
   highest meso-conversion skill in the game)
+
+<h2 id="side-by-side-comparison-matrix">Side-by-side comparison matrix</h2>
+
+Ten classes rated across the axes that actually affect your
+day-to-day play. **S** = best in slot, **A** = strong, **B** =
+serviceable, **C** = weakness. Ratings are editorial calls grounded
+in the per-branch build guides linked below.
+
+| Class | Early game (1-30) | Mid game (30-70) | Solo | Party | Meso efficiency | Learning curve |
+| --- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Fighter** | A | A | A | A | B | A (easy) |
+| **Page** | B | A | B | S | B | B (medium) |
+| **Spearman** | B | S | B | S | C | A (easy) |
+| **F/P Mage** | C | A | A | A | B | B (medium) |
+| **I/L Mage** | C | A | A | A | B | B (medium) |
+| **Cleric** | C | B | C | S | B | S (hardest) |
+| **Hunter** | A | S | S | A | A | A (easy) |
+| **Crossbowman** | A | A | A | A | A | A (easy) |
+| **Assassin** | S | S | S | B | A | B (medium) |
+| **Bandit** | A | A | B | S | S | B (medium) |
+
+**How to read a row:**
+
+- **Fighter**: solid from the first swing (A/A/A/A), scales fine
+  into party roles, moderate meso efficiency, easy to pilot.
+- **Spearman**: slow start (B early), peaks mid-game with Hyper Body
+  making it the single most-invited party warrior (S/S).
+- **Cleric**: hardest first 30 levels in the entire game (C early),
+  worst solo play of any class (C), but S-tier party value from the
+  moment Heal unlocks. Pay the price up front, cash the check for
+  the rest of your career.
+- **Hunter**: the "just plays well" option. Strong at every stage,
+  easy to learn, mid-high meso efficiency from drops. If you can't
+  pick, this is a defensible default.
+- **Assassin**: S-tier solo DPS and the fastest Lv 1-70 pace in the
+  game. B-tier in party because stars-only play has no utility to
+  share. Highest practical skill cap - the deep-dive
+  [Assassin build guide](/assassin-build) covers the economic side.
+- **Bandit**: S-tier party fit (every PQ wants a Bandit's Steal) and
+  S-tier meso efficiency (Pickpocket + eventual Meso Explosion).
+  Harder than it looks to pilot because positioning for Steal
+  consistency takes practice.
+
+### Axes we deliberately did NOT include
+
+- **"DPS at Lv 70"** - too dependent on gear quality. A fully
+  scrolled Hunter will out-DPS an unscrolled Assassin. Comparing
+  classes at equal gear is a theoretical exercise, not a real one.
+- **"Boss damage"** - we have per-boss recommendations in
+  [Bosses at 30+](/bosses-at-30-plus) instead. Boss damage depends
+  on the specific boss (defense value, elemental weakness, phases).
+- **"3rd job strength"** - speculative until Oct 21. We cover 3rd
+  job previews with explicit confirmed-vs-held flags in the
+  [Level 70-100 Capstone](/level-70-100-capstone#third-job-at-a-glance),
+  not here.
 
 <h2 id="classic-world-build-rules">Classic World build rules</h2>
 
