@@ -1,13 +1,13 @@
 ---
 title: "Grand Launch Prep: What to Do in the Last Days of Founder's Access"
-description: "9 days until MapleStory Classic World Grand Launch (Oct 21, 2026). What opens that day per Nexon release notes, what to do in the remaining Founder's Access window to be ready, and what NOT to spend mesos on. Grounded in Nexon's confirmed Oct 3 release notes + Inkwell blog on Classic World's future. Class-by-class checklist for 1st, 2nd, and (preview) 3rd job tiers."
-lastUpdated: "2026-10-12"
+description: "8 days until MapleStory Classic World Grand Launch (Oct 21, 2026). What opens that day per Nexon release notes, what to do in the remaining Founder's Access window to be ready, and what NOT to spend mesos on. Grounded in Nexon's confirmed Oct 3 release notes + Inkwell blog on Classic World's future. Class-by-class checklist for 1st, 2nd, and (preview) 3rd job tiers."
+lastUpdated: "2026-10-13"
 tags:
   - founders-access
   - grand-launch
   - preparation
   - roadmap
-status: "9 days to Grand Launch - updated Oct 12, 2026"
+status: "8 days to Grand Launch - updated Oct 13, 2026"
 theme: "henesys"
 decorations: false
 eyebrow: "Roadmap"
@@ -31,7 +31,7 @@ toc:
 
 <h2 id="tldr">TL;DR</h2>
 
-- **9 days of Founder's Access left** as of Oct 12, 2026 (14-day
+- **8 days of Founder's Access left** as of Oct 13, 2026 (14-day
   FA window started Oct 6, Grand Launch is Oct 21).
 - **What opens Oct 21:** 3rd job advancement for every class, Zakum
   boss fight, all Ossyria regions (Orbis / El Nath / NLC / Omega
@@ -250,7 +250,7 @@ Lv 30 or under).
 
 <h2 id="class-prep-matrix">Class prep matrix</h2>
 
-What each class should prioritize in the next 9 days:
+What each class should prioritize in the next 8 days:
 
 | Class | FA goal | Oct 21 priority |
 | --- | --- | --- |
@@ -370,4 +370,4 @@ single biggest DPS jump in the game).
 
 See each [class deep-dive](/class-builds) for pre-launch previews.
 
-Last reviewed 2026-10-12. 9 days until Grand Launch.
+Last reviewed 2026-10-13. 8 days until Grand Launch.
