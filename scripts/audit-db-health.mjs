@@ -66,10 +66,19 @@ if (orphanMapMobRefs.length > 10) console.log(`  ... and ${orphanMapMobRefs.leng
 console.log();
 
 // 4. Orphan item references in mob.drops
+// NOTE: drop entries use { itemId, itemName } keys, NOT { id, name }.
+// Earlier version of this script read drop.id and drop.name, which was
+// always undefined - producing a false-positive count of 0 orphans.
 const orphanDrops = [];
 for (const mob of mobs) {
 	for (const drop of mob.drops || []) {
-		if (!itemIds.has(drop.id)) orphanDrops.push({ mobId: mob.id, itemId: drop.id, name: drop.name });
+		if (!itemIds.has(drop.itemId)) {
+			orphanDrops.push({
+				mobId: mob.id,
+				itemId: drop.itemId,
+				name: drop.itemName,
+			});
+		}
 	}
 }
 console.log(`## 4. mob.drops referencing missing itemIds: ${orphanDrops.length}`);
