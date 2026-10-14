@@ -1297,6 +1297,65 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 	}
 }
 
+/* ----- Mobile table polish (2026-10-13) -----
+ *
+ * Three improvements over the baseline horizontal-scroll pattern:
+ *
+ * 1. Sticky first column at <=720px. When horizontally scrolling a
+ *    wide table (e.g. gear ladder with 7 columns), the row label
+ *    scrolls out of view and you lose context. position: sticky on
+ *    the first <th>/<td> pins it. Backgrounds + a right border keep
+ *    the pinned column visually separated from the scrolling cells.
+ *
+ * 2. Tighter cell padding at <=480px (narrow phones). Default 0.7rem
+ *    padding eats a disproportionate share of a 390px viewport;
+ *    drop to 0.45rem horizontal / 0.55rem vertical for density.
+ *
+ * 3. Smaller base font-size at <=480px (0.86rem vs the 0.92rem
+ *    default). Keeps 4-5 columns readable without zoom.
+ *
+ * Scoped to .markdown-content tables so hand-coded component tables
+ * (which have their own responsive strategies) are not affected.
+ */
+@media (max-width: 720px) {
+	.markdown-content table th:first-child,
+	.markdown-content table td:first-child {
+		position: sticky;
+		left: 0;
+		z-index: 1;
+	}
+
+	/* Pinned column needs a solid background so the scrolling cells
+	 * don't bleed through. Match the surrounding theme surfaces. */
+	.markdown-content tbody tr:nth-child(odd) td:first-child {
+		background: var(--bg-cloud, #fff);
+	}
+	.markdown-content tbody tr:nth-child(even) td:first-child {
+		background: var(--surface-card, #fafafa);
+	}
+	.markdown-content thead th:first-child {
+		background: var(--surface-nav);
+	}
+
+	/* Subtle right-edge divider on the pinned column so the user
+	 * reads it as a fixed label strip. */
+	.markdown-content table th:first-child,
+	.markdown-content table td:first-child {
+		border-right: 1px solid var(--border-card, rgba(0, 0, 0, 0.1));
+	}
+}
+
+@media (max-width: 480px) {
+	.markdown-content table {
+		font-size: 0.86rem;
+	}
+
+	.markdown-content table th,
+	.markdown-content table td {
+		padding: 0.55rem 0.45rem;
+	}
+}
+
 .skill-list-wrap {
 	overflow-x: auto;
 	border-radius: 0.55rem;
