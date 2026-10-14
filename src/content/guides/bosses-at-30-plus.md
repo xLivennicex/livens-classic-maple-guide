@@ -322,7 +322,16 @@ table.
 
 <h2 id="the-l70-100-content-ceiling">The L70-100 content ceiling</h2>
 
-Here's the honest part: **the CoT 2 datamine has zero quests past Lv 70**.
+<div class="callout callout--framing">
+<strong>Need the full L70-100 playbook?</strong> This section is the
+quick summary; the dedicated
+<a href="/level-70-100-capstone">Level 70-100 Capstone guide</a>
+walks through SP holdback rules, gear finishing targets, meso banking,
+and per-class 3rd-job previews for all 10 Classic World 3rd-job
+branches.
+</div>
+
+Here's the honest part: **the FA datamine has zero quests past Lv 70**.
 We've audited our own quest database (316 entries) and the highest
 `levelMin` field in any quest is in the 60s. That's not a bug in our
 scrape - it's a hard content ceiling in the current build.

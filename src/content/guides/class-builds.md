@@ -616,8 +616,9 @@ isn't a factor at all — Clerics are perfectly viable.
 3rd job is confirmed to unlock at Lv 70 but **3rd job content is
 held for Grand Launch** per Nexon's Oct 3 release notes. In FA, you
 cap your 2nd job skills and hold the SP that'll go into 3rd job
-skills until Grand Launch. Specific 3rd job build priorities are
-post-launch content; we'll update this guide when 3rd job unlocks.
+skills until Grand Launch. For per-class 3rd-job previews, SP
+holdback rules, and Day-1 skill priorities, see the
+[Level 70-100 Capstone](/level-70-100-capstone).
 
 **Where do I find my job's SP skill book in-game?**
 

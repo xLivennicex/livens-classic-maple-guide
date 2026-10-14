@@ -175,6 +175,10 @@ Ossyria gear.
 
 - Keep leveling through Victoria endgame maps + hidden maps. See
   the [gearing 30+ guide](/gearing-30-plus) for L50+ gear targets.
+- Pushed past Lv 70? The
+  [Level 70-100 Capstone](/level-70-100-capstone) has the SP
+  holdback rules + per-class 3rd-job previews for Day-1 of Grand
+  Launch.
 - **Before Takeoff <To Orbis>** (map [10002091](/maps/10002091))
   is the Orbis boarding/transit map. The map's already in the
   datamine but the actual boat ride to Orbis is gated. Being near
