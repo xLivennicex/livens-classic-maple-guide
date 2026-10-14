@@ -1027,7 +1027,11 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 }
 
 .markdown-content tbody tr:nth-child(even) {
-	background: rgba(0, 0, 0, 0.03);
+	/* Alt-row stripe. Was 0.03 but that's effectively invisible on
+	 * light-theme pages. Bumped to 0.07 so the visual rhythm reads
+	 * continuously across the non-sticky cells once a reader scrolls
+	 * past the sticky-first-column strip. QA pass 2026-10-13. */
+	background: rgba(0, 0, 0, 0.07);
 }
 
 .markdown-content code {
