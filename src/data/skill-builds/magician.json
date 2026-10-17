@@ -1,5 +1,5 @@
 {
-  "_readme": "Magician 1st job SP allocations. v83 SP economy = 21 SP total. Magician has the tightest 1st-job budget in the game because Magic Guard alone WANTS all 20 SP - it converts phys damage taken into MP loss, which is functionally the reason mages survive at all. Two builds cover the pure-safety and the aggressive-damage extremes.",
+  "_readme": "Magician 1st job SP allocations. Classic Maple SP economy = 21 SP total. Magician has the tightest 1st-job budget in the game because Magic Guard alone WANTS all 20 SP - it converts phys damage taken into MP loss, which is functionally the reason mages survive at all. Two builds cover the pure-safety and the aggressive-damage extremes.",
   "class": {
     "slug": "magician",
     "name": "Magician",
@@ -64,7 +64,7 @@
         {
           "slug": "magic-guard-priority",
           "name": "Magic Guard Priority (Standard)",
-          "tagline": "MAX Magic Guard first, splash Magic Claw with the last 2 SP. The universally-recommended v83 build.",
+          "tagline": "MAX Magic Guard first, splash Magic Claw with the last 2 SP. The universally-recommended classic-Maple build.",
           "recommended": true,
           "reasoning": "Magic Guard at max converts 85% of incoming damage to MP loss. At Magic Guard 1, that number is only 39% - you take 61% of hits to your HP pool of maybe 200. You WILL die at MG 1-9 without careful positioning. Rush Magic Guard to 20 as fast as possible; take 1 Energy Bolt at advancement to have an attack, then splash 2 leftover SP into Magic Claw for its double-hit. Total: 1 EB + 20 MG + 2 MC = 23 SP.",
           "endState": {
@@ -463,7 +463,7 @@
           "name": "Freeze Lock (Boss CC Specialist)",
           "tagline": "Skip Thunderbolt entirely. Max Cold Beam + Slow for permanent CC on any boss that can be frozen.",
           "recommended": false,
-          "reasoning": "Niche boss-focused meta from v83 mid-life. Cold Beam freezes mobs; Slow debuffs their movement. Between the two, you can literally lock a boss in place through the entire fight. Trade-off: you lose Thunderbolt's AoE (30 SP), which cripples your training speed on grouped mobs. Compensate with the 1st-job Magic Claw carryover (13 SP) for chip damage between freezes. Great for CC-loving parties and boss-focus players; terrible for solo grinders.",
+          "reasoning": "Niche boss-focused meta from classic Maple's mid-life. Cold Beam freezes mobs; Slow debuffs their movement. Between the two, you can literally lock a boss in place through the entire fight. Trade-off: you lose Thunderbolt's AoE (30 SP), which cripples your training speed on grouped mobs. Compensate with the 1st-job Magic Claw carryover (13 SP) for chip damage between freezes. Great for CC-loving parties and boss-focus players; terrible for solo grinders.",
           "endState": {
             "2211003": 30,
             "2211002": 20,

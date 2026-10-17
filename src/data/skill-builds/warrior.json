@@ -1,5 +1,5 @@
 {
-  "_readme": "Warrior 1st job SP allocations. v83 SP economy = 21 SP total (1 at advancement + 1 per level 11-30). Warriors' key 1st-job tension: 10 pts of Improve MaxHP gives +200 permanent HP (huge for KPQ tanking + all future levels) but costs half the SP budget. Two builds cover the split between damage-focused (skip HP) and survival-focused (max HP).",
+  "_readme": "Warrior 1st job SP allocations. Classic Maple SP economy = 21 SP total (1 at advancement + 1 per level 11-30). Warriors' key 1st-job tension: 10 pts of Improve MaxHP gives +200 permanent HP (huge for KPQ tanking + all future levels) but costs half the SP budget. Two builds cover the split between damage-focused (skip HP) and survival-focused (max HP).",
   "class": {
     "slug": "warrior",
     "name": "Warrior",
@@ -137,7 +137,7 @@
       "shortName": "Fighter 2nd",
       "levelRange": { "min": 30, "max": 70 },
       "spTotalAvailable": 121,
-      "spNote": "121 SP over Lv 30-70. Fighters commit to ONE weapon type at 2nd job - this build assumes Axe (higher raw damage, canonical v83 path). Sword Fighter uses identical structure with Sword Mastery/Booster/FA instead. Every SP maxes something meaningful: Axe Mastery, Axe Booster, Rage (party buff!), Power Guard (30 pts of damage reflection), Final Attack Axe. 1 leftover into Iron Body.",
+      "spNote": "121 SP over Lv 30-70. Fighters commit to ONE weapon type at 2nd job - this build assumes Axe (higher raw damage, canonical classic Maple path). Sword Fighter uses identical structure with Sword Mastery/Booster/FA instead. Every SP maxes something meaningful: Axe Mastery, Axe Booster, Rage (party buff!), Power Guard (30 pts of damage reflection), Final Attack Axe. 1 leftover into Iron Body.",
       "advancementCity": "Perion",
       "instructor": "Dances with Balrog",
       "skills": [
@@ -154,7 +154,7 @@
           "name": "Axe Fighter (Canonical)",
           "tagline": "Axe Mastery -> Booster -> Rage -> Power Guard -> Final Attack. Every skill maxed. 1 SP leftover.",
           "recommended": true,
-          "reasoning": "Standard v83 Axe Fighter path. Mastery FIRST to kill 1-damage misses that make 30-40 miserable. Booster SECOND for attack-speed DPS. Rage THIRD because +12 party WATK invites you to every party and buffs YOUR damage too. Power Guard FOURTH because 40% damage reflection is transformative for boss fights. Final Attack LAST because the passive proc is nice but the other 4 skills change how fights play. 1 leftover into Iron Body (filler).",
+          "reasoning": "Standard classic-Maple Axe Fighter path. Mastery FIRST to kill 1-damage misses that make 30-40 miserable. Booster SECOND for attack-speed DPS. Rage THIRD because +12 party WATK invites you to every party and buffs YOUR damage too. Power Guard FOURTH because 40% damage reflection is transformative for boss fights. Final Attack LAST because the passive proc is nice but the other 4 skills change how fights play. 1 leftover into Iron Body (filler).",
           "endState": { "1100001": 20, "1101005": 20, "1101006": 20, "1101007": 30, "1100003": 30, "1001003": 1 },
           "rows": [
             { "level": 30, "actions": [{ "skillId": "1100001", "delta": 1, "note": "Advancement - start Axe Mastery" }] },
@@ -205,7 +205,7 @@
           "name": "Rage Rusher (Early Party Value)",
           "tagline": "Same endstate as canonical, but Rage MAXED by Lv 37. Immediate party invitations, sacrifice personal DPS during Lv 30-43.",
           "recommended": false,
-          "reasoning": "The v83 party-scene meta variant. Rage is +12 WATK for the WHOLE party at max - if you're the Fighter in a KPQ+ group, maxing Rage first means every party member you buff gets carried DPS from Lv 30 onward. Trade-off: your personal Mastery/Booster come online later, so YOU do less damage during Lv 30-43. Worth it if you're always in parties; questionable if you solo. Same 121 SP total, same endstate as Axe Fighter Canonical - only the order changes.",
+          "reasoning": "The party-scene meta variant. Rage is +12 WATK for the WHOLE party at max - if you're the Fighter in a KPQ+ group, maxing Rage first means every party member you buff gets carried DPS from Lv 30 onward. Trade-off: your personal Mastery/Booster come online later, so YOU do less damage during Lv 30-43. Worth it if you're always in parties; questionable if you solo. Same 121 SP total, same endstate as Axe Fighter Canonical - only the order changes.",
           "endState": { "1100001": 20, "1101005": 20, "1101006": 20, "1101007": 30, "1100003": 30, "1001003": 1 },
           "rows": [
             { "level": 30, "actions": [{ "skillId": "1101006", "delta": 1, "note": "Advancement - start RAGE immediately for party value" }] },
@@ -451,7 +451,7 @@
           "name": "Pure Support Spearman",
           "tagline": "Skip Final Attack entirely. Max Iron Body + HP Recovery + Endure. All buffs, all tank, zero offensive scaling.",
           "recommended": false,
-          "reasoning": "The party-only Spearman meta from v83 late-game. If your entire training identity is 'the buff person other classes wait for', you don't need Final Attack's DPS - your job is to keep Hyper Body / Iron Will refreshed and eat hits while the party clears. Same core (Polearm Mastery + Booster + Hyper Body + Iron Will) as canonical, but drops 30 SP of Final Attack + reallocates to defensive/recovery skills. Max Iron Body (20), max Improve HP Recovery from 1st (16), and 5 SP Endure. You WILL do less damage - but your party will love you.",
+          "reasoning": "The party-only Spearman meta from classic Maple's late-game. If your entire training identity is 'the buff person other classes wait for', you don't need Final Attack's DPS - your job is to keep Hyper Body / Iron Will refreshed and eat hits while the party clears. Same core (Polearm Mastery + Booster + Hyper Body + Iron Will) as canonical, but drops 30 SP of Final Attack + reallocates to defensive/recovery skills. Max Iron Body (20), max Improve HP Recovery from 1st (16), and 5 SP Endure. You WILL do less damage - but your party will love you.",
           "endState": {
             "1300001": 20,
             "1301005": 20,

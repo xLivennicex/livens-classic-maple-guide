@@ -63,8 +63,8 @@
       "recommendedLevelMax": 75,
       "narrative": {
         "tldr": "The most iconic hidden-street boss in classic Maple. 20,000 HP wrapped in a big pink cap, spawns in a random Henesys hidden street once per real-world hour per channel. Drops the Amazon Skirt Pants set, Ilbi Throwing Stars, and (jackpot) Zakum Helm scroll for INT. Kill-stealing culture at its finest.",
-        "access": "Roam any of the mushroom hidden streets around Henesys: 'The Tree That Grew I/II/III', or the Green Mushroom hidden street north of Henesys. Check every channel. When Mushmom is up she replaces one of the giant mushroom mobs. First-hit-wins in most vanilla v83 servers; check your server's specific rules.",
-        "strategy": "If you find her alive, KS mode: unload everything. Ranger's Strafe, Chief Bandit's Assaulter combo, or a Hermit's Shadow Partner-boosted Avenger all reliably out-DPS a lonely warrior. If a party's already fighting her, back off - Maple etiquette in v83 says whoever tagged first has claim. Wave 6-8 baby mushrooms spawn while she's alive; ignore them and focus fire.",
+        "access": "Roam any of the mushroom hidden streets around Henesys: 'The Tree That Grew I/II/III', or the Green Mushroom hidden street north of Henesys. Check every channel. When Mushmom is up she replaces one of the giant mushroom mobs. First-hit-wins by convention; check whether Classic World's live rules enforce this at the engine level once Grand Launch opens the data up.",
+        "strategy": "If you find her alive, KS mode: unload everything. Ranger's Strafe, Chief Bandit's Assaulter combo, or a Hermit's Shadow Partner-boosted Avenger all reliably out-DPS a lonely warrior - but all three are 3rd-job skills gated until Grand Launch. During FA your DPS ceiling is 2nd-job (Strafe is Hunter 2nd, Lucky Seven for Assassin), so expect longer fights. Classic Maple etiquette says whoever tagged first has claim; if a party's already fighting her, back off. Wave 6-8 baby mushrooms spawn while she's alive; ignore them and focus fire.",
         "threat": "moderate"
       }
     },

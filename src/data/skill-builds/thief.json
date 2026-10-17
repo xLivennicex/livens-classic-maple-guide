@@ -1,5 +1,5 @@
 {
-  "_readme": "Thief 1st job SP allocations. v83 SP economy = 21 SP total. Thief 1st-job build is really a 2nd-job pre-commitment: your weapon choice at 1st job (dagger vs throwing star) foreshadows Bandit or Assassin. Two builds cover both paths - the skill selection is the fork.",
+  "_readme": "Thief 1st job SP allocations. Classic Maple SP economy = 21 SP total. Thief 1st-job build is really a 2nd-job pre-commitment: your weapon choice at 1st job (dagger vs throwing star) foreshadows Bandit or Assassin. Two builds cover both paths - the skill selection is the fork.",
   "class": {
     "slug": "thief",
     "name": "Thief",
@@ -203,9 +203,9 @@
         {
           "slug": "haste-merchant-assassin",
           "name": "Haste Merchant (FM Rusher)",
-          "tagline": "Same endstate, but Haste maxed by Lv 50 instead of Lv 60. For the classic v83 Free Market Haste-seller playstyle.",
+          "tagline": "Same endstate, but Haste maxed by Lv 50 instead of Lv 60. For the classic Free Market Haste-seller playstyle.",
           "recommended": false,
-          "reasoning": "Same 6 skills at the same maxes as Canonical Assassin - reshuffled curve. In v83 subculture, an Assassin at Lv 50+ with maxed Haste could stand in Free Market and sell 5-minute Haste buffs to Warriors/Mages for 5-10k meso a pop. Meaningful side income. This build rushes Haste to max by Lv 50 (canonical hits it at Lv 60) so you can start FM'ing 10 levels earlier. Trade-off: Critical Throw comes online later, so pure DPS during Lv 44-53 is worse. Worth it if the meso outweighs the training speed.",
+          "reasoning": "Same 6 skills at the same maxes as Canonical Assassin - reshuffled curve. In classic-Maple subculture, an Assassin at Lv 50+ with maxed Haste could stand in Free Market and sell 5-minute Haste buffs to Warriors/Mages for 5-10k meso a pop. Meaningful side income. This build rushes Haste to max by Lv 50 (canonical hits it at Lv 60) so you can start FM'ing 10 levels earlier. Trade-off: Critical Throw comes online later, so pure DPS during Lv 44-53 is worse. Worth it if the meso outweighs the training speed.",
           "endState": { "4100000": 20, "4101003": 20, "4100001": 30, "4101004": 20, "4101005": 30, "4001001": 1 },
           "rows": [
             { "level": 30, "actions": [{ "skillId": "4100000", "delta": 1, "note": "Advancement - start Claw Mastery" }] },
@@ -327,7 +327,7 @@
           "name": "Steal Farmer (Item Hunter)",
           "tagline": "Same endstate, but Steal maxed by Lv 50 instead of Lv 67. For farming rare mob drops that only come via Steal proc.",
           "recommended": false,
-          "reasoning": "Same 6 skills at the same maxes as Canonical Bandit - reshuffled curve. In v83 some mobs had rare items ONLY obtainable via Steal proc (Zombie Lupins for special etc drops, Bubbling for chairs, etc.). Rushing Steal to max by Lv 50 (vs Lv 67 canonical) lets you start farming those drops much earlier. Trade-off: Savage Blow comes online later so your training DPS through Lv 50-66 is lower. Balance: farm-income offsets slower training. Works well if you have a specific item target in mind.",
+          "reasoning": "Same 6 skills at the same maxes as Canonical Bandit - reshuffled curve. In classic Maple some mobs had rare items ONLY obtainable via Steal proc (Zombie Lupins for special etc drops, Bubbling for chairs, etc.). Rushing Steal to max by Lv 50 (vs Lv 67 canonical) lets you start farming those drops much earlier. Trade-off: Savage Blow comes online later so your training DPS through Lv 50-66 is lower. Balance: farm-income offsets slower training. Works well if you have a specific item target in mind.",
           "endState": { "4200000": 20, "4201002": 20, "4201005": 30, "4201003": 20, "4201004": 20, "4001001": 11 },
           "rows": [
             { "level": 30, "actions": [{ "skillId": "4200000", "delta": 1, "note": "Advancement - start Dagger Mastery" }] },

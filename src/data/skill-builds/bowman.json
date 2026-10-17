@@ -64,7 +64,7 @@
         {
           "slug": "double-shot-rush",
           "name": "Double Shot Rush",
-          "tagline": "Max Double Shot ASAP. Nothing else. The v83 canonical.",
+          "tagline": "Max Double Shot ASAP. Nothing else. The classic-Maple canonical.",
           "recommended": true,
           "reasoning": "Double Shot fires two arrows per cast at Arrow-Blow-comparable damage each - roughly 2x damage per MP once maxed. You get 21 SP in 1st job, so you can spend 1 on Arrow Blow (need an attack at Lv 10) and 20 on Double Shot (max it). Zero SP for utility because the math doesn't allow it. Critical Shot waits for 2nd job. Focus and Eye of Amazon get 1-point splashes in 2nd job if at all.",
           "endState": {
@@ -198,7 +198,7 @@
         {
           "slug": "arrow-bomb-grinder",
           "name": "Arrow Bomb Grinder (Canonical)",
-          "tagline": "Bow Mastery → Bow Booster → Arrow Bomb → Critical Shot → Soul Arrow. The v83 standard. Every SP defensible.",
+          "tagline": "Bow Mastery → Bow Booster → Arrow Bomb → Critical Shot → Soul Arrow. The classic-Maple standard. Every SP defensible.",
           "recommended": true,
           "reasoning": "MASTERY FIRST because it eliminates the 1-damage roll problem that makes 30-40 feel miserable. BOOSTER SECOND because attack speed multiplies every other stat. ARROW BOMB THIRD because it's your training bread-and-butter - one cast tags a whole group. CRITICAL SHOT FOURTH because 30 crit chance for +50% damage doubles your DPS on average. SOUL ARROW LAST because it's a QoL max (no more arrow costs) once your damage output is set. 1 leftover SP goes to Focus for high-avoid bosses. Every point spent, nothing wasted.",
           "endState": {
@@ -258,7 +258,7 @@
           "name": "Final Attack Purist (Boss Sniper)",
           "tagline": "Skip Arrow Bomb entirely. Max Final Attack + Critical Shot + Bow Mastery for pure single-target bossing.",
           "recommended": false,
-          "reasoning": "The v83 meta minority build. Arrow Bomb is a grinder skill - if you plan to boss (Crimson Balrog runs, Jr. Balrog camp, hidden-street Mushmoms) more than you train, Final Attack's 60% follow-up chance on every Double Shot is worth more than Arrow Bomb's AoE. Same 121 SP total, different priorities: Mastery + Booster + Soul Arrow + Critical Shot (all as canonical), then max Final Attack instead of Arrow Bomb, 1 SP Focus filler. You WILL train slower on grouped mobs - so bring party buffs or accept the trade.",
+          "reasoning": "The meta minority build. Arrow Bomb is a grinder skill - if you plan to boss (Crimson Balrog runs, Jr. Balrog camp, hidden-street Mushmoms) more than you train, Final Attack's 60% follow-up chance on every Double Shot is worth more than Arrow Bomb's AoE. Same 121 SP total, different priorities: Mastery + Booster + Soul Arrow + Critical Shot (all as canonical), then max Final Attack instead of Arrow Bomb, 1 SP Focus filler. You WILL train slower on grouped mobs - so bring party buffs or accept the trade.",
           "endState": {
             "3100000": 20,
             "3101004": 20,
