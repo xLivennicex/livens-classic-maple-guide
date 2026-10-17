@@ -2,14 +2,14 @@
 # ---------- Core metadata ----------
 title: "Founder's Access Event Calendar: Every GM-Run Event Before Grand Launch"
 description: "Full schedule of the four GM-run events running during Founder's Access (Oct 6-20, 2026): Physical Fitness Challenge, Coconut Harvest, Up and Up, and Monster Invasion. What each one is, what it rewards, when it fires, and which ones are must-attend for cap XP and the Founder's crate rares."
-lastUpdated: "2026-10-13"
+lastUpdated: "2026-10-17"
 tags:
   - founders-access
   - events
   - calendar
   - gm-events
   - preparation
-status: "Live - 7 days of FA remaining"
+status: "Live - 3 days of FA remaining"
 
 # ---------- Layout ----------
 theme: "henesys"
@@ -43,9 +43,9 @@ fixed schedule. Some repeat (Monster Invasion three times), some are
 one-shots (Coconut Harvest). All of them give rewards that persist
 into Grand Launch on your character.
 
-Today is **October 13**. Here's what's left and what to prioritize.
+Today is **October 17**. Here's what's left and what to prioritize.
 
-<h2 id="remaining-schedule">Remaining schedule (Oct 14-20)</h2>
+<h2 id="remaining-schedule">Remaining schedule (Oct 19-20)</h2>
 
 <div class="callout callout--framing">
 <strong>Reading this table:</strong> dates are in-game Pacific time
@@ -60,14 +60,15 @@ ticker and the official Discord for the exact go-live window.
 | ~~Oct 9~~ | ~~Up and Up~~ | ~~Platform race~~ | past |
 | ~~Oct 11~~ | ~~Monster Invasion~~ | ~~Mob rush~~ | past |
 | ~~Oct 12~~ | ~~Coconut Harvest~~ | ~~Team gathering~~ | past |
-| **Oct 14** | **Physical Fitness Challenge** | Jump quest | **upcoming** |
-| **Oct 16** | **Monster Invasion** | Mob rush | **upcoming** |
-| **Oct 19** | **Up and Up** | Platform race | **upcoming** |
+| ~~Oct 14~~ | ~~Physical Fitness Challenge~~ | ~~Jump quest~~ | past |
+| ~~Oct 16~~ | ~~Monster Invasion~~ | ~~Mob rush~~ | past |
+| **Oct 19** | **Up and Up** | Platform race | **upcoming - in 2 days** |
 | **Oct 20** | **Monster Invasion (final)** | Mob rush | **upcoming - last day of FA** |
 
-**TL;DR:** four events remain. If you can only attend one, make it
-**Monster Invasion on Oct 20** - last-day events traditionally get
-the biggest EXP multipliers and GM-dropped rares.
+**TL;DR:** two events remain. **Monster Invasion on Oct 20** is the
+highest-value remaining event by community consensus. **Up and Up on
+Oct 19** is the second and only other remaining event. Clear your
+calendar for these if you want the GM-event lottery on your account.
 
 <h2 id="the-four-events">The four events</h2>
 
@@ -89,7 +90,7 @@ The common structure:
 
 <h2 id="physical-fitness-challenge">Physical Fitness Challenge</h2>
 
-**Dates:** Oct 7 (past), **Oct 14 (upcoming)**
+**Dates:** Oct 7 (past), Oct 14 (past). **No further runs scheduled.**
 **Type:** Jump-quest obstacle course
 **Format:** solo instance, timed completion
 
@@ -156,7 +157,7 @@ character-defining reward.
 
 <h2 id="up-and-up">Up and Up</h2>
 
-**Dates:** Oct 9 (past), **Oct 19 (upcoming)**
+**Dates:** Oct 9 (past), **Oct 19 (upcoming - final run)**
 **Type:** Platform-climbing race
 **Format:** multi-player instance, elimination format
 
@@ -194,7 +195,7 @@ Oct 9 run mention:
 
 <h2 id="monster-invasion">Monster Invasion</h2>
 
-**Dates:** Oct 11 (past), **Oct 16 (upcoming)**, **Oct 20 (final)**
+**Dates:** Oct 11 (past), Oct 16 (past), **Oct 20 (upcoming - final day of FA)**
 **Type:** Mass mob spawn in a town
 **Format:** open-world, all players in the invaded town participate
 
@@ -240,19 +241,18 @@ the crate-drop lottery is a free pull per attendance.
 
 <h2 id="priority-order">If I can only hit one...</h2>
 
-Priority ranking for the Oct 14-20 window:
+Priority ranking for the Oct 17-20 window:
 
 1. **Oct 20 Monster Invasion (last day of FA)** - highest expected
    value by community consensus. Big EXP burst + crate-drop lottery.
    Whether Nexon adds a last-day bonus is historically common in
    GMS events but unconfirmed for this run.
-2. **Oct 16 Monster Invasion** - same event mechanic, same EXP
-   potential. Attend if you can.
-3. **Oct 19 Up and Up** - consumable rewards + possible Scroll of
-   Secrets per community reports. Social event, lower pressure.
-4. **Oct 14 Physical Fitness Challenge** - rewards likely thin
-   relative to grinding time for Lv 70+. Attend if you have Lv 1-50
-   alts or want the specific consumables the Event Hall NPC offers.
+2. **Oct 19 Up and Up** - consumable rewards + possible Scroll of
+   Secrets per community reports. Social event, lower pressure. The
+   final Up and Up of FA.
+
+Two events left. If you can only attend one, make it the Oct 20
+Monster Invasion. If you can attend both, do.
 
 ### If you can only attend ZERO events
 

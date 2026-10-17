@@ -2,7 +2,7 @@
 # ---------- Core metadata ----------
 title: "Level 70-100 Capstone: The FA Endgame + 3rd Job Preview"
 description: "You hit Lv 70 and the content got thin. Here's what to actually do with the last 30 FA levels, what SP to hold back, which gear to scroll, and what we know (and don't) about 3rd-job unlocks at Grand Launch for all 10 Classic World 3rd-job branches."
-lastUpdated: "2026-10-13"
+lastUpdated: "2026-10-17"
 tags:
   - post-70
   - capstone
@@ -433,12 +433,16 @@ advancement is live during FA. 3rd job opens at Grand Launch (Oct 21);
 4th job timing is undisclosed by Nexon but historically landed 1-2
 patches after a server launched.
 
-**I'm Lv 65 with 10 days left in FA. Can I hit 100?**
+**I'm Lv 65 with 3 days left in FA. Can I hit 100?**
 
-Probably not without extreme grinding. Lv 65 → 100 at 20-30 hours per
-10 levels past Lv 70 ≈ 70-100 hours of play. Over 10 days that's 7-10
-hours/day. If you can commit, yes; if not, aim for Lv 85-90 which still
-banks substantial 3rd-job SP (~45-60 SP = enough to max 2 core skills).
+No. Lv 65 → 100 is 70-100 hours of play past Lv 70; even at 10
+hours/day that's a full week, and we have 3 days. Realistic aim
+for the final sprint: push to Lv 75-80 to bank ~15-30 SP for
+3rd job Day 1 skill priority, and spend the rest of your time
+on the [done-with-FA checklist](/grand-launch-prep#done-with-fa-checklist)
+(weapon scrolls, meso bank, earring crits). The Lv 65 → 70 push
+matters more than Lv 70 → 100 - you unlock 3rd-job advancement at
+Lv 70 which was the real gate anyway.
 
 **Will my FA gear be obsolete at Grand Launch?**
 

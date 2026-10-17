@@ -1,13 +1,13 @@
 ---
 title: "Grand Launch Prep: What to Do in the Last Days of Founder's Access"
-description: "8 days until MapleStory Classic World Grand Launch (Oct 21, 2026). What opens that day per Nexon release notes, what to do in the remaining Founder's Access window to be ready, and what NOT to spend mesos on. Grounded in Nexon's confirmed Oct 3 release notes + Inkwell blog on Classic World's future. Class-by-class checklist for 1st, 2nd, and (preview) 3rd job tiers."
-lastUpdated: "2026-10-13"
+description: "4 days until MapleStory Classic World Grand Launch (Oct 21, 2026). What opens that day per Nexon release notes, what to do in the remaining Founder's Access window to be ready, and what NOT to spend mesos on. Grounded in Nexon's confirmed Oct 3 release notes + Inkwell blog on Classic World's future. Class-by-class checklist for 1st, 2nd, and (preview) 3rd job tiers."
+lastUpdated: "2026-10-17"
 tags:
   - founders-access
   - grand-launch
   - preparation
   - roadmap
-status: "8 days to Grand Launch - updated Oct 13, 2026"
+status: "4 days to Grand Launch - updated Oct 17, 2026"
 theme: "henesys"
 decorations: false
 eyebrow: "Roadmap"
@@ -25,13 +25,14 @@ toc:
   - { href: "#by-level-checklist", label: "By-level checklist" }
   - { href: "#what-not-to-do", label: "What NOT to do" }
   - { href: "#class-prep-matrix", label: "Class prep matrix" }
+  - { href: "#done-with-fa-checklist", label: "Done-with-FA checklist" }
   - { href: "#unknowns", label: "What we don't know yet" }
   - { href: "#faq", label: "FAQ" }
 ---
 
 <h2 id="tldr">TL;DR</h2>
 
-- **8 days of Founder's Access left** as of Oct 13, 2026 (14-day
+- **4 days of Founder's Access left** as of Oct 17, 2026 (14-day
   FA window started Oct 6, Grand Launch is Oct 21).
 - **What opens Oct 21:** 3rd job advancement for every class, Zakum
   boss fight, all Ossyria regions (Orbis / El Nath / NLC / Omega
@@ -250,7 +251,7 @@ Lv 30 or under).
 
 <h2 id="class-prep-matrix">Class prep matrix</h2>
 
-What each class should prioritize in the next 8 days:
+What each class should prioritize in the next 4 days:
 
 | Class | FA goal | Oct 21 priority |
 | --- | --- | --- |
@@ -271,6 +272,94 @@ drop mesos, you pick them up with a drop-pick macro, then detonate
 for AOE damage. Entire training routes change on Oct 21 for
 Bandits specifically. See the [Bandit guide](/bandit-build) for
 pre-launch preview.
+
+<h2 id="done-with-fa-checklist">"Am I done with FA?" checklist</h2>
+
+For players who want a scannable list of "did I actually use this
+window" questions. Each item has a self-reported status - check
+them off mentally as you read. No scoring; this is a vibe check,
+not a grade.
+
+### Progression (the character work)
+
+- [ ] Hit Lv 30 and advanced 2nd job on at least one character
+- [ ] Pushed that character to Lv 50+ (unlocks the
+      [bosses-at-30-plus](/bosses-at-30-plus) tier content)
+- [ ] Finished the 2nd-job SP tree on your main (holding SP for 3rd
+      job only matters AFTER your 2nd-job core is maxed - see the
+      [Level 70-100 Capstone](/level-70-100-capstone#sp-holdback-rules))
+- [ ] Grinded past Lv 70 if time allowed (every level past 70 banks
+      3 SP for Day 1 of Grand Launch)
+
+### Gear (the stuff that carries into Grand Launch)
+
+- [ ] Weapon scrolled with 60% ATT scrolls (your FA weapon survives
+      10-20 levels into 3rd job - this is high-ROI)
+- [ ] Gloves scrolled with 60% ATT
+- [ ] Earrings scrolled with 60% stat (CW's new crit-damage line
+      makes earrings a damage upgrade, not just a stat stick)
+- [ ] Shoes have at least one Speed scroll applied
+- [ ] Cape acquired (Gaia L65 is the FA ceiling - do not scroll
+      above-Gaia capes, they don't exist in FA)
+- [ ] You know which slot you'll replace FIRST at Grand Launch
+      (hint: your overall at Zakum Helmet if Zakum opens Day 1)
+
+### Economy (the meso bank)
+
+- [ ] Bank balance target hit for your playstyle:
+      casual = 2M, regular = 5-10M, grinder = 15M+ (per the
+      [Capstone's meso targets](/level-70-100-capstone#meso-targets))
+- [ ] NPC-sold any trash ETC you've been hoarding
+- [ ] Checked [meso.watch](https://meso.watch) prices before
+      selling cosmetic drops - some crate items trade well above
+      their NPC price
+
+### Social (the stuff you can't buy later)
+
+- [ ] Joined a guild or made a crew
+- [ ] Attended at least one GM-run event (see the
+      [FA Events Calendar](/fa-events-calendar) for what's left)
+- [ ] Finished at least one party-quest run of [KPQ](/party-quests/kerning-pq)
+- [ ] Got on at least one party with a Cleric (Heal grinding is
+      the single biggest EXP multiplier in FA)
+
+### Content (the stuff that only exists in FA)
+
+- [ ] Ran [Forgotten Hollow](/hollow) - FA has the only exposed
+      portals right now, timing is Grand-Launch-unknown
+- [ ] Explored the full [Victoria Island map](/world) at least once
+      to orient yourself before Ossyria opens
+- [ ] Checked out the [Classic World features](/guides/whats-new-in-cot2)
+      Nexon added on top of traditional MapleStory (Citizenship,
+      Crafting, Physical Fitness Test)
+
+### Optional bragging-rights goals
+
+- [ ] Hit Lv 100 before Oct 20 (requires 70+ hours of grinding
+      past Lv 70 - serious time investment)
+- [ ] Dropped a [Mushmom](/bosses/mushmom) or
+      [Zombie Mushmom](/bosses/zombie-mushmom) solo kill at level
+- [ ] Pulled a Founder's or Aurora crate rare
+- [ ] Scrolled a weapon with ALL slots filled (clean 7-of-7
+      successful scrolls)
+
+### If you check 10+ boxes
+
+You used Founder's Access well. Your Grand Launch character is
+ready to hit the ground running on Oct 21.
+
+### If you check 5-9 boxes
+
+You're in good shape. The remaining items are the "nice to have"
+tier; your character fundamentals are solid.
+
+### If you check 0-4 boxes
+
+No stress - FA is a 2-week window, not a mandatory curriculum. If
+you're a casual player, 0-4 boxes is fine. If you WANT to be more
+ready for Grand Launch, the single highest-ROI item on the list is
+**scroll your weapon with 60% ATT** - that one carries 10-20 levels
+into 3rd job and compounds into every DPS calculation afterward.
 
 <h2 id="unknowns">What we don't know yet</h2>
 
@@ -370,4 +459,4 @@ single biggest DPS jump in the game).
 
 See each [class deep-dive](/class-builds) for pre-launch previews.
 
-Last reviewed 2026-10-13. 8 days until Grand Launch.
+Last reviewed 2026-10-17. 4 days until Grand Launch.
