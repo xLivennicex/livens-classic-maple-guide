@@ -151,21 +151,30 @@ function isGroupActive(group: NavGroup): boolean {
 	    it participates in the nav's stacking context. */}
 	<div class="primary-nav__backdrop" data-nav-backdrop aria-hidden="true"></div>
 
-	{/* Global search form - submits to /search?q=... which pre-populates
-	    the Pagefind UI there. Pure form-submit means it works WITHOUT JS,
-	    is instant to render, and ships zero client bytes. A JS
-	    enhancement (instant-suggest dropdown) can mount here later
-	    without changing the markup.
+	{/* Global search form - progressive enhancement.
+
+	    BASELINE (no JS): submits to /search?q=... which pre-populates
+	    the Pagefind UI on the /search page. Works everywhere, ships
+	    zero client bytes until focus.
+
+	    ENHANCED (JS available): on first focus the input lazy-loads
+	    /pagefind/pagefind.js, debounces input, calls pagefind.search()
+	    and renders a dropdown of top matches below the field. Clicking
+	    a result navigates straight to it (skipping /search entirely).
+	    Pressing Enter without picking a result still submits the form
+	    - the form-submit path is the fallback for both JS failures and
+	    users who prefer the full /search page.
 
 	    Positioning: lives inside the <nav> as a sibling of the <ul>.
-	    On desktop it sits at the right end of the nav bar (margin-left:
-	    auto on the form). On mobile it moves to the TOP of the drawer
-	    so a reader who opens the drawer sees search before any links. */}
+	    On desktop it sits at the right end of the nav bar. On mobile
+	    it moves to the TOP of the drawer so a reader who opens the
+	    burger sees search before any links. */}
 	<form
 		class="primary-nav__search"
 		role="search"
 		action="/search"
 		method="get"
+		data-nav-search
 	>
 		<label class="primary-nav__search-label" for="primary-nav-search-input">
 			Search
@@ -182,7 +191,21 @@ function isGroupActive(group: NavGroup): boolean {
 				placeholder="Search guides, items, mobs..."
 				autocomplete="off"
 				enterkeyhint="search"
+				aria-autocomplete="list"
+				aria-controls="primary-nav-search-results"
+				aria-expanded="false"
+				data-nav-search-input
 			/>
+			{/* Instant-suggest results panel. Hidden until JS mounts and
+			    the user types >= 2 chars. aria-hidden toggled by script. */}
+			<div
+				id="primary-nav-search-results"
+				class="primary-nav__search-results"
+				role="listbox"
+				aria-label="Search suggestions"
+				aria-hidden="true"
+				data-nav-search-results
+			></div>
 		</div>
 	</form>
 
@@ -359,6 +382,201 @@ function isGroupActive(group: NavGroup): boolean {
 		mql.addEventListener("change", (e) => {
 			if (e.matches && isDrawerOpen()) closeDrawer();
 		});
+
+		// ---------- Instant-suggest search dropdown ----------
+		//
+		// Progressive enhancement over the baseline <form action="/search">.
+		// Baseline keeps working regardless of what happens below: if
+		// pagefind.js fails to load (dev mode before a build, CDN
+		// hiccup, etc.) the form just submits normally on Enter.
+		//
+		// Lazy-load pagefind.js on FIRST FOCUS, not on page load. The
+		// bundle is ~15kb gzipped; no sense paying that cost on every
+		// page view when most readers never use header search.
+
+		const searchForm = nav.querySelector<HTMLFormElement>("[data-nav-search]");
+		const searchInput = nav.querySelector<HTMLInputElement>("[data-nav-search-input]");
+		const searchResults = nav.querySelector<HTMLElement>("[data-nav-search-results]");
+
+		if (searchForm && searchInput && searchResults) {
+			let pagefind: any = null;
+			let pagefindLoading = false;
+			let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+			let activeIndex = -1; // -1 = input focused, 0..N = result focused
+			let currentResults: Array<{
+				url: string;
+				meta: { title?: string };
+				excerpt?: string;
+			}> = [];
+
+			async function loadPagefind(): Promise<any> {
+				if (pagefind) return pagefind;
+				if (pagefindLoading) return null;
+				pagefindLoading = true;
+				try {
+					const mod = await import(
+						/* @vite-ignore */ "/pagefind/pagefind.js"
+					);
+					await mod.init?.();
+					pagefind = mod;
+					return pagefind;
+				} catch (err) {
+					// Pagefind not available (dev mode or build failure).
+					// The form-submit baseline still works, so just bail
+					// silently. No noisy console error - this is expected
+					// during `astro dev`.
+					return null;
+				} finally {
+					pagefindLoading = false;
+				}
+			}
+
+			function renderResults(items: typeof currentResults, query: string): void {
+				if (items.length === 0) {
+					searchResults.innerHTML = `
+						<div class="primary-nav__search-empty">
+							No matches for &ldquo;${escapeHtml(query)}&rdquo;.
+							Press Enter to search the full index.
+						</div>`;
+					return;
+				}
+				searchResults.innerHTML = items
+					.map(
+						(r, i) => `
+						<a class="primary-nav__search-result"
+							href="${escapeAttr(r.url)}"
+							role="option"
+							id="primary-nav-search-opt-${i}"
+							aria-selected="false">
+							<span class="primary-nav__search-result-title">${escapeHtml(
+								r.meta?.title ?? r.url,
+							)}</span>
+							${
+								r.excerpt
+									? `<span class="primary-nav__search-result-excerpt">${r.excerpt}</span>`
+									: ""
+							}
+						</a>`,
+					)
+					.join("");
+				searchResults.innerHTML += `
+					<a class="primary-nav__search-more" href="/search?q=${encodeURIComponent(
+						query,
+					)}">
+						See all results for &ldquo;${escapeHtml(query)}&rdquo; &rarr;
+					</a>`;
+			}
+
+			function escapeHtml(s: string): string {
+				const div = document.createElement("div");
+				div.textContent = s;
+				return div.innerHTML;
+			}
+
+			function escapeAttr(s: string): string {
+				return s.replace(/["&<>]/g, (c) =>
+					({
+						'"': "&quot;",
+						"&": "&amp;",
+						"<": "&lt;",
+						">": "&gt;",
+					}[c] ?? c),
+				);
+			}
+
+			function showResults(): void {
+				searchResults.setAttribute("aria-hidden", "false");
+				searchResults.classList.add("primary-nav__search-results--open");
+				searchInput.setAttribute("aria-expanded", "true");
+			}
+
+			function hideResults(): void {
+				searchResults.setAttribute("aria-hidden", "true");
+				searchResults.classList.remove("primary-nav__search-results--open");
+				searchInput.setAttribute("aria-expanded", "false");
+				activeIndex = -1;
+				updateActiveHighlight();
+			}
+
+			function updateActiveHighlight(): void {
+				const options = searchResults.querySelectorAll<HTMLElement>(
+					".primary-nav__search-result",
+				);
+				options.forEach((el, i) => {
+					const isActive = i === activeIndex;
+					el.setAttribute("aria-selected", String(isActive));
+					el.classList.toggle("primary-nav__search-result--active", isActive);
+				});
+				searchInput.setAttribute(
+					"aria-activedescendant",
+					activeIndex >= 0 ? `primary-nav-search-opt-${activeIndex}` : "",
+				);
+			}
+
+			async function runSearch(query: string): Promise<void> {
+				const pf = await loadPagefind();
+				if (!pf) return; // Fall through to form-submit on Enter.
+				const search = await pf.search(query);
+				// Pagefind returns the full ranked list; cap to 6 so the
+				// dropdown stays short. Users can hit "See all results" to
+				// jump to /search for the complete list.
+				const top = await Promise.all(
+					search.results.slice(0, 6).map((r: any) => r.data()),
+				);
+				currentResults = top;
+				activeIndex = -1;
+				renderResults(top, query);
+				showResults();
+			}
+
+			searchInput.addEventListener("input", () => {
+				const q = searchInput.value.trim();
+				if (debounceTimer) clearTimeout(debounceTimer);
+				if (q.length < 2) {
+					hideResults();
+					currentResults = [];
+					return;
+				}
+				debounceTimer = setTimeout(() => runSearch(q), 120);
+			});
+
+			// Pre-warm pagefind.js on first focus so the first keystroke
+			// doesn't have to wait for the module import roundtrip.
+			searchInput.addEventListener("focus", () => {
+				loadPagefind();
+				if (currentResults.length > 0) showResults();
+			});
+
+			searchInput.addEventListener("keydown", (e: KeyboardEvent) => {
+				const options = searchResults.querySelectorAll<HTMLElement>(
+					".primary-nav__search-result",
+				);
+				if (e.key === "ArrowDown") {
+					if (options.length === 0) return;
+					e.preventDefault();
+					activeIndex = Math.min(activeIndex + 1, options.length - 1);
+					updateActiveHighlight();
+				} else if (e.key === "ArrowUp") {
+					if (options.length === 0) return;
+					e.preventDefault();
+					activeIndex = Math.max(activeIndex - 1, -1);
+					updateActiveHighlight();
+				} else if (e.key === "Enter" && activeIndex >= 0) {
+					// User picked a result with keyboard; navigate directly
+					// and prevent the form from submitting to /search.
+					e.preventDefault();
+					const opt = options[activeIndex] as HTMLAnchorElement;
+					if (opt?.href) window.location.href = opt.href;
+				} else if (e.key === "Escape") {
+					hideResults();
+				}
+			});
+
+			// Click outside closes the dropdown (desktop + mobile).
+			document.addEventListener("click", (e) => {
+				if (!searchForm.contains(e.target as Node)) hideResults();
+			});
+		}
 	})();
 </script>
 
@@ -457,6 +675,102 @@ function isGroupActive(group: NavGroup): boolean {
 	.primary-nav__search-input::-webkit-search-cancel-button {
 		appearance: none;
 		-webkit-appearance: none;
+	}
+
+	/* ---------- Instant-suggest dropdown ----------
+	   Hidden by default; populated + shown by the JS enhancement.
+	   Absolute-positioned below the input so it floats over page
+	   content; z-index above nav dropdowns since this appears
+	   latest in interaction order. */
+	.primary-nav__search-results {
+		position: absolute;
+		top: calc(100% + 6px);
+		left: 0;
+		right: 0;
+		min-width: 18rem;
+		max-height: min(70vh, 32rem);
+		overflow-y: auto;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.6rem;
+		box-shadow:
+			0 8px 28px color-mix(in srgb, black 24%, transparent),
+			0 2px 6px color-mix(in srgb, black 12%, transparent);
+		z-index: 80;
+		display: none;
+		padding: 0.35rem;
+	}
+
+	.primary-nav__search-results--open {
+		display: block;
+	}
+
+	.primary-nav__search-result {
+		display: block;
+		padding: 0.55rem 0.75rem;
+		border-radius: 0.4rem;
+		text-decoration: none;
+		color: var(--text-heading, var(--text-body));
+	}
+
+	.primary-nav__search-result:hover,
+	.primary-nav__search-result--active {
+		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+		color: var(--accent-primary);
+	}
+
+	.primary-nav__search-result-title {
+		display: block;
+		font-weight: 700;
+		font-size: 0.95rem;
+		line-height: 1.3;
+	}
+
+	.primary-nav__search-result-excerpt {
+		display: block;
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		margin-top: 0.15rem;
+		line-height: 1.4;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	/* Pagefind wraps matched terms in <mark>; style them subtly so
+	   the excerpt stays readable while still showing why the result
+	   matched. */
+	.primary-nav__search-result-excerpt :global(mark) {
+		background: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+		color: inherit;
+		font-weight: 600;
+		border-radius: 0.2rem;
+		padding: 0 0.1em;
+	}
+
+	.primary-nav__search-empty {
+		padding: 0.75rem 0.9rem;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		line-height: 1.45;
+	}
+
+	.primary-nav__search-more {
+		display: block;
+		margin-top: 0.25rem;
+		padding: 0.5rem 0.75rem;
+		border-top: 1px solid var(--border-card);
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--accent-primary);
+		text-decoration: none;
+		text-align: center;
+	}
+
+	.primary-nav__search-more:hover,
+	.primary-nav__search-more:focus-visible {
+		background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
 	}
 
 	.primary-nav__item {
