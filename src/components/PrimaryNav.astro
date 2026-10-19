@@ -151,64 +151,6 @@ function isGroupActive(group: NavGroup): boolean {
 	    it participates in the nav's stacking context. */}
 	<div class="primary-nav__backdrop" data-nav-backdrop aria-hidden="true"></div>
 
-	{/* Global search form - progressive enhancement.
-
-	    BASELINE (no JS): submits to /search?q=... which pre-populates
-	    the Pagefind UI on the /search page. Works everywhere, ships
-	    zero client bytes until focus.
-
-	    ENHANCED (JS available): on first focus the input lazy-loads
-	    /pagefind/pagefind.js, debounces input, calls pagefind.search()
-	    and renders a dropdown of top matches below the field. Clicking
-	    a result navigates straight to it (skipping /search entirely).
-	    Pressing Enter without picking a result still submits the form
-	    - the form-submit path is the fallback for both JS failures and
-	    users who prefer the full /search page.
-
-	    Positioning: lives inside the <nav> as a sibling of the <ul>.
-	    On desktop it sits at the right end of the nav bar. On mobile
-	    it moves to the TOP of the drawer so a reader who opens the
-	    burger sees search before any links. */}
-	<form
-		class="primary-nav__search"
-		role="search"
-		action="/search"
-		method="get"
-		data-nav-search
-	>
-		<label class="primary-nav__search-label" for="primary-nav-search-input">
-			Search
-		</label>
-		<div class="primary-nav__search-wrap">
-			<span class="primary-nav__search-icon" aria-hidden="true">
-				&#x1F50E;
-			</span>
-			<input
-				id="primary-nav-search-input"
-				class="primary-nav__search-input"
-				type="search"
-				name="q"
-				placeholder="Search guides, items, mobs..."
-				autocomplete="off"
-				enterkeyhint="search"
-				aria-autocomplete="list"
-				aria-controls="primary-nav-search-results"
-				aria-expanded="false"
-				data-nav-search-input
-			/>
-			{/* Instant-suggest results panel. Hidden until JS mounts and
-			    the user types >= 2 chars. aria-hidden toggled by script. */}
-			<div
-				id="primary-nav-search-results"
-				class="primary-nav__search-results"
-				role="listbox"
-				aria-label="Search suggestions"
-				aria-hidden="true"
-				data-nav-search-results
-			></div>
-		</div>
-	</form>
-
 	<ul class="primary-nav__list" id="primary-nav-list">
 		{NAV_STRUCTURE.map((entry) =>
 			entry.type === "link" ? (
@@ -255,6 +197,66 @@ function isGroupActive(group: NavGroup): boolean {
 			),
 		)}
 	</ul>
+
+	{/* Global search form - progressive enhancement.
+
+	    BASELINE (no JS): submits to /search?q=... which pre-populates
+	    the Pagefind UI on the /search page. Works everywhere, ships
+	    zero client bytes until focus.
+
+	    ENHANCED (JS available): on first focus the input lazy-loads
+	    /pagefind/pagefind.js, debounces input, calls pagefind.search()
+	    and renders a dropdown of top matches below the field. Clicking
+	    a result navigates straight to it (skipping /search entirely).
+	    Pressing Enter without picking a result still submits the form
+	    - the form-submit path is the fallback for both JS failures and
+	    users who prefer the full /search page.
+
+	    Positioning: lives inside the <nav> AFTER the <ul>. On desktop
+	    DOM order gives it the right-end flex slot naturally (no magic
+	    `order` or `margin-left: auto` juggling needed). On mobile it
+	    detaches to `position: fixed` and docks at the TOP of the
+	    drawer so a reader who opens the burger sees search before any
+	    links - DOM order doesn't matter for fixed positioning. */}
+	<form
+		class="primary-nav__search"
+		role="search"
+		action="/search"
+		method="get"
+		data-nav-search
+	>
+		<label class="primary-nav__search-label" for="primary-nav-search-input">
+			Search
+		</label>
+		<div class="primary-nav__search-wrap">
+			<span class="primary-nav__search-icon" aria-hidden="true">
+				&#x1F50E;
+			</span>
+			<input
+				id="primary-nav-search-input"
+				class="primary-nav__search-input"
+				type="search"
+				name="q"
+				placeholder="Search guides, items, mobs..."
+				autocomplete="off"
+				enterkeyhint="search"
+				aria-autocomplete="list"
+				aria-controls="primary-nav-search-results"
+				aria-expanded="false"
+				data-nav-search-input
+			/>
+			{/* Instant-suggest results panel. Hidden until JS mounts and
+			    the user types >= 2 chars. aria-hidden toggled by script. */}
+			<div
+				id="primary-nav-search-results"
+				class="primary-nav__search-results"
+				role="listbox"
+				aria-label="Search suggestions"
+				aria-hidden="true"
+				data-nav-search-results
+			></div>
+		</div>
+	</form>
 </nav>
 
 <script>
@@ -614,6 +616,12 @@ function isGroupActive(group: NavGroup): boolean {
 		flex-direction: column;
 		flex: 0 0 auto;
 		margin: 0;
+		position: relative;
+		/* DOM-order anchoring: this form lives AFTER the <ul> in
+		   source, so flex layout naturally places it right of the
+		   list without needing `order` or auto-margin tricks. The
+		   nav's `justify-content: center` still centers the list in
+		   whatever space remains BEFORE the search field. */
 	}
 
 	.primary-nav__search-label {
@@ -949,10 +957,22 @@ function isGroupActive(group: NavGroup): boolean {
 			gap: 0;
 		}
 
+		/* Mobile burger: when the drawer is CLOSED, sits in flow at
+		   the top-left of the nav bar. When drawer is OPEN we jump it
+		   to fixed-position pinned to the viewport corner so it never
+		   drifts down over a nav row (regression qa-kitten flagged on
+		   the sprint checkpoint: at some scroll positions the burger
+		   was sitting over 'World' instead of the drawer header). */
 		.primary-nav__burger {
 			display: inline-flex;
 			z-index: 110;
 			position: relative;
+		}
+
+		.primary-nav--drawer-open .primary-nav__burger {
+			position: fixed;
+			top: 0.5rem;
+			left: 0.5rem;
 		}
 
 		/* Mobile: search field floats to the TOP of the slide-in drawer
