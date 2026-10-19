@@ -23,6 +23,7 @@
 
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import DatabaseStrip from "../../components/DatabaseStrip.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import questDossiers from "../../data/db/quests.json";
 
@@ -131,6 +132,8 @@ const editorialTotal = editorialCards.length;
 	currentPath="/quests"
 	theme="henesys"
 >
+	<DatabaseStrip currentPath={Astro.url.pathname} />
+
 	<section class="section-heading">
 		<div>
 			<span class="eyebrow eyebrow--index">Reference database</span>

@@ -18,6 +18,8 @@ import mobDossiers from "../../data/db/mobs.json";
 import itemDossiers from "../../data/db/items.json";
 import { mobSpriteUrl, mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PrevNextPager from "../../components/PrevNextPager.astro";
 import { themeForLocation } from "../../lib/region-theme";
 import { isCanonicalMobDossier } from "../../lib/mob-dedup";
 import { dropsForMob } from "../../lib/mob-drops";
@@ -31,13 +33,29 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	// Only render pages for canonical dossiers. Duplicate dossiers
 	// (same wzId, hollow drop tables) are redirected to their winner
 	// by `public/_redirects` - see scripts/generate-mob-redirects.mjs.
-	return mobDossiers.filter(isCanonicalMobDossier).map((d) => ({
-		params: { id: String(d.id) },
-		props: { d },
-	}));
+	const canonical = mobDossiers.filter(isCanonicalMobDossier);
+
+	// Match /mobs index default sort (by WZ ID ASC) so prev/next
+	// walks the catalog in the same order a browser would.
+	const sorted = [...canonical].sort((a: any, b: any) => a.id - b.id);
+
+	return sorted.map((d, i) => {
+		const prev = i > 0 ? sorted[i - 1] : null;
+		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
+		return {
+			params: { id: String(d.id) },
+			props: {
+				d,
+				pager: {
+					prev: prev ? { href: `/mobs/${prev.id}`, label: prev.name } : null,
+					next: next ? { href: `/mobs/${next.id}`, label: next.name } : null,
+				},
+			},
+		};
+	});
 };
 
-const { d } = Astro.props;
+const { d, pager } = Astro.props;
 
 // NOT `d.drops` - the datamine parks some quest drops on a shadow
 // dossier we don't publish (Zombie Mushroom's Bowman Dark Marble
@@ -90,11 +108,12 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 	    title text itself (Pagefind uses the nearest-ancestor
 	    weight, not multiplied). */}
 	<div data-pagefind-weight="8">
-	<nav class="crumbs">
-		<a href="/mobs">← Mobs</a>
-		<span class="crumbs__sep">·</span>
-		<span>{d.name}</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/mobs", label: "Mobs" },
+			{ label: d.name },
+		]}
+	/>
 
 	<header class="hero">
 		<div class="hero__icon">
@@ -285,6 +304,12 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 			</ul>
 		)}
 	</section>
+
+	<PrevNextPager
+		prev={pager.prev}
+		next={pager.next}
+		sectionLabel="mob"
+	/>
 	</div>
 </BaseLayout>
 
@@ -305,12 +330,9 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 		border-radius: 0.4rem;
 	}
 
-	.crumbs {
-		font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;
-	}
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs a:hover { text-decoration: underline; }
-	.crumbs__sep { margin: 0 0.4rem; }
+	/* Old .crumbs CSS removed. Breadcrumbs now ship via the
+	   <Breadcrumbs> component in src/components/Breadcrumbs.astro
+	   which carries its own scoped styles. */
 
 	.hero {
 		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;

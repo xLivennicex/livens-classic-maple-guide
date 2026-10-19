@@ -15,19 +15,36 @@
 import type { GetStaticPaths } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PrevNextPager from "../../components/PrevNextPager.astro";
 import { allBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
 import { mobHref } from "../../lib/mob-dedup";
 import { mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import { themeForLocation } from "../../lib/region-theme";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	return allBosses.map((b) => ({
-		params: { slug: b.slug },
-		props: { slug: b.slug },
-	}));
+	// Match /bosses index default sort (recommendedLevelMin ASC)
+	// so prev/next walks the roster from easiest to hardest.
+	const sorted = [...allBosses].sort(
+		(a, b) => (a.recommendedLevelMin ?? 0) - (b.recommendedLevelMin ?? 0),
+	);
+	return sorted.map((b, i) => {
+		const prev = i > 0 ? sorted[i - 1] : null;
+		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
+		return {
+			params: { slug: b.slug },
+			props: {
+				slug: b.slug,
+				pager: {
+					prev: prev ? { href: `/bosses/${prev.slug}`, label: prev.mob.name } : null,
+					next: next ? { href: `/bosses/${next.slug}`, label: next.mob.name } : null,
+				},
+			},
+		};
+	});
 };
 
-const { slug } = Astro.props;
+const { slug, pager } = Astro.props;
 const boss = getBossBySlug(slug);
 if (!boss) throw new Error(`Boss slug not found: ${slug}`);
 
@@ -52,11 +69,12 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 	description={`${mob.name} (Lv ${mob.stats?.level}, ${mob.stats?.maxHP?.toLocaleString()} HP) - ${role}. Access, strategy, drops, recommended level ${recommendedLevelMin}-${recommendedLevelMax}.`}
 	theme={pageTheme}
 >
-	<nav class="crumbs">
-		<a href="/bosses">← Bosses</a>
-		<span class="crumbs__sep">·</span>
-		<span>{mob.name}</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/bosses", label: "Bosses" },
+			{ label: mob.name },
+		]}
+	/>
 
 	<header class="hero">
 		<div class="hero__icon">
@@ -185,6 +203,12 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 			MeowDB drop-score table for grinding decisions.
 		</p>
 	</section>
+
+	<PrevNextPager
+		prev={pager.prev}
+		next={pager.next}
+		sectionLabel="boss"
+	/>
 </BaseLayout>
 
 <style>
@@ -194,19 +218,7 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 	   hardcode a hex color for text or background inside a themed page -
 	   that was the bug QA-kitten caught on the Crimson Balrog page. */
 
-	.crumbs {
-		display: inline-block;
-		font-size: 0.85rem;
-		margin-bottom: 1rem;
-		padding: 0.3rem 0.7rem;
-		background: var(--surface-card);
-		border: 1px solid var(--border-card);
-		border-radius: 999px;
-		color: var(--text-body);
-	}
-	.crumbs a { color: var(--accent-primary); text-decoration: none; font-weight: 600; }
-	.crumbs a:hover { text-decoration: underline; }
-	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
+	/* Breadcrumbs now ship via src/components/Breadcrumbs.astro. */
 
 	.hero {
 		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;

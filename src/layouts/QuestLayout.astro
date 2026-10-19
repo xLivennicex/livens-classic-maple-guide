@@ -20,6 +20,8 @@ import SourceBadge from "../components/SourceBadge.astro";
 import SourceCard from "../components/SourceCard.astro";
 import VerificationNotice from "../components/VerificationNotice.astro";
 import LastUpdated from "../components/LastUpdated.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import PrevNextPager, { type PagerLink } from "../components/PrevNextPager.astro";
 import { getSource, type SourceType } from "../data/sources";
 import { itemIconUrl, npcSpriteUrl } from "../lib/maplestory-cdn";
 import npcDossiers from "../data/db/npcs.json";
@@ -78,6 +80,12 @@ interface Props {
 	// ==== Layout ====
 	theme?: SiteTheme;
 	lastUpdated: string;
+
+	// ==== Nav polish sprint ====
+	// Pre-computed prev/next by /quests index level-tier order.
+	// Optional so pages that render QuestLayout outside the paged
+	// router (none today) can skip the footer pager cleanly.
+	pager?: { prev: PagerLink | null; next: PagerLink | null };
 }
 
 const {
@@ -105,6 +113,7 @@ const {
 	sourceSlugs,
 	theme = "henesys",
 	lastUpdated,
+	pager,
 } = Astro.props;
 
 // For each reward with an itemSlug, look up the matching item so we
@@ -191,6 +200,13 @@ const hasChainNav = prevTarget || nextTarget;
 	currentPath="/quests"
 	theme={theme}
 >
+	<Breadcrumbs
+		segments={[
+			{ href: "/quests", label: "Quests" },
+			{ label: name },
+		]}
+	/>
+
 	<header class="quest-hero">
 	{npcId && npcSpriteUrl(npcWzById.get(npcId), npcName) && (
 		<div class="quest-hero__npc">
@@ -369,6 +385,14 @@ const hasChainNav = prevTarget || nextTarget;
 	<footer class="quest-footer">
 		<LastUpdated date={lastUpdated} label="Entry last reviewed" />
 	</footer>
+
+	{pager && (
+		<PrevNextPager
+			prev={pager.prev}
+			next={pager.next}
+			sectionLabel="quest"
+		/>
+	)}
 </BaseLayout>
 
 <style>

@@ -9,6 +9,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import DatabaseStrip from "../../components/DatabaseStrip.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import indexData from "../../data/db/index.json";
 import generatedAt from "../../data/db/generated-at.json";
@@ -33,6 +34,8 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 	currentPath="/npcs"
 	theme="henesys"
 >
+	<DatabaseStrip currentPath={Astro.url.pathname} />
+
 	<section class="section-heading">
 		<div>
 			<span class="eyebrow eyebrow--index">Reference catalog</span>

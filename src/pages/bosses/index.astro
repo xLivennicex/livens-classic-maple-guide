@@ -17,6 +17,7 @@
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
+import DatabaseStrip from "../../components/DatabaseStrip.astro";
 import { allBosses, faRosterBosses, nonFaBosses, threatMeta } from "../../lib/bosses";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 ---
@@ -27,6 +28,8 @@ import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 	currentPath="/bosses"
 	theme="sleepywood"
 >
+	<DatabaseStrip currentPath={Astro.url.pathname} />
+
 	<section class="section-heading">
 		<div>
 			<span class="eyebrow eyebrow--guide">Field guide</span>

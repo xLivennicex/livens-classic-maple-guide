@@ -97,6 +97,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		editorialEntries.map((e) => [e.data.wzId, e]),
 	);
 
+	// Sort dossiers by WZ ID ASC - matches the default sort on /items.
+	// Walking prev/next through the catalog in index order is the only
+	// stable mental model: "the item before this one on the list".
+	const sorted = [...itemDossiers].sort((a: any, b: any) => a.id - b.id);
+
+	// Pre-compute prev/next by position so each path gets exactly its
+	// neighbours without re-scanning the array per-item.
+	const neighbours = new Map<number, { prev: any; next: any }>();
+	for (let i = 0; i < sorted.length; i++) {
+		neighbours.set(sorted[i].id, {
+			prev: i > 0 ? sorted[i - 1] : null,
+			next: i < sorted.length - 1 ? sorted[i + 1] : null,
+		});
+	}
+
 	// Every dossier gets a WZ-ID-keyed path. Editorial entries also
 	// get a slug-keyed path so legacy links keep working.
 	const paths: Array<{ params: { item: string }; props: any }> = [];
@@ -118,18 +133,27 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			: null;
 
 		const related = findRelatedItems(dossier);
+		const neighbour = neighbours.get(dossier.id) ?? { prev: null, next: null };
+		const pager = {
+			prev: neighbour.prev
+				? { href: `/items/${neighbour.prev.id}`, label: neighbour.prev.name }
+				: null,
+			next: neighbour.next
+				? { href: `/items/${neighbour.next.id}`, label: neighbour.next.name }
+				: null,
+		};
 
 		// Canonical WZ ID path
 		paths.push({
 			params: { item: String(dossier.id) },
-			props: { dossier, editorial: overlay, related },
+			props: { dossier, editorial: overlay, related, pager },
 		});
 
 		// Legacy slug path (only for editorial entries)
 		if (editorial) {
 			paths.push({
 				params: { item: editorial.id },
-				props: { dossier, editorial: overlay, related },
+				props: { dossier, editorial: overlay, related, pager },
 			});
 		}
 	}
@@ -137,7 +161,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	return paths;
 };
 
-const { dossier, editorial, related } = Astro.props;
+const { dossier, editorial, related, pager } = Astro.props;
 ---
 
-<ItemDetailLayout dossier={dossier} editorial={editorial} related={related} />
+<ItemDetailLayout
+	dossier={dossier}
+	editorial={editorial}
+	related={related}
+	pager={pager}
+/>

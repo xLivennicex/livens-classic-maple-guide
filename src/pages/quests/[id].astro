@@ -21,19 +21,49 @@ import questDossiers from "../../data/db/quests.json";
 import itemDossiers from "../../data/db/items.json";
 import { itemIconUrl, npcSpriteUrl } from "../../lib/maplestory-cdn";
 import { themeForLocation } from "../../lib/region-theme";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PrevNextPager from "../../components/PrevNextPager.astro";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const editorialEntries = await getCollection("quests");
 	const editorialByQuestId = new Map(
 		editorialEntries.map((e) => [e.data.questId, e]),
 	);
+
+	// Match /quests index default sort (levelMin ASC) so prev/next
+	// walks the catalog in the same tier order the reader sees.
+	// Tiebreaker on numeric id so the walk is deterministic for
+	// quests sharing a level.
+	const sortedDossiers = [...questDossiers].sort((a: any, b: any) => {
+		const lv = (a.levelMin ?? 0) - (b.levelMin ?? 0);
+		return lv !== 0 ? lv : Number(a.id) - Number(b.id);
+	});
+
+	// Pre-compute prev/next by position. Prev/next always point at
+	// the DOSSIER id URL; editorial links to a specific editorial
+	// slug would require a separate pass and the dossier URL is
+	// stable + guaranteed to resolve.
+	const pagerByDossierId = new Map<string, any>();
+	for (let i = 0; i < sortedDossiers.length; i++) {
+		const prev = i > 0 ? sortedDossiers[i - 1] : null;
+		const next = i < sortedDossiers.length - 1 ? sortedDossiers[i + 1] : null;
+		pagerByDossierId.set(sortedDossiers[i].id, {
+			prev: prev ? { href: `/quests/${prev.id}`, label: prev.name } : null,
+			next: next ? { href: `/quests/${next.id}`, label: next.name } : null,
+		});
+	}
+
 	const paths: any[] = [];
 
 	// Editorial-slug paths (rich QuestLayout).
 	for (const entry of editorialEntries) {
 		paths.push({
 			params: { id: entry.id },
-			props: { kind: "editorial", entry },
+			props: {
+				kind: "editorial",
+				entry,
+				pager: pagerByDossierId.get(entry.data.questId) ?? { prev: null, next: null },
+			},
 		});
 	}
 	// Numeric-ID paths (slim dossier) for every datamine quest.
@@ -44,6 +74,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 				kind: "dossier",
 				d,
 				editorialSlug: editorialByQuestId.get(d.id)?.id ?? null,
+				pager: pagerByDossierId.get(d.id) ?? { prev: null, next: null },
 			},
 		});
 	}
@@ -82,6 +113,7 @@ const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 		sourceSlugs={props.entry.data.sourceSlugs}
 		theme={props.entry.data.theme}
 		lastUpdated={props.entry.data.lastUpdated}
+		pager={props.pager}
 	/>
 ) : (
 	<BaseLayout
@@ -92,13 +124,13 @@ const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 			props.d.region,
 		)}
 	>
-		<nav class="crumbs">
-			<a href="/quests">&larr; Quests</a>
-			<span class="crumbs__sep">&middot;</span>
-			<span>{props.d.region ?? "Unknown region"}</span>
-			<span class="crumbs__sep">&middot;</span>
-			<span>{props.d.name}</span>
-		</nav>
+		<Breadcrumbs
+			segments={[
+				{ href: "/quests", label: "Quests" },
+				...(props.d.region ? [{ label: props.d.region }] : []),
+				{ label: props.d.name },
+			]}
+		/>
 
 		{props.editorialSlug && (
 			<div class="editorial-banner">
@@ -271,14 +303,17 @@ const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 				</a>
 			</section>
 		)}
+
+		<PrevNextPager
+			prev={props.pager.prev}
+			next={props.pager.next}
+			sectionLabel="quest"
+		/>
 	</BaseLayout>
 )}
 
 <style>
-	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs a:hover { text-decoration: underline; }
-	.crumbs__sep { margin: 0 0.4rem; }
+	/* Breadcrumbs now ship via the <Breadcrumbs> component. */
 
 	.editorial-banner {
 		margin: 1rem 0;

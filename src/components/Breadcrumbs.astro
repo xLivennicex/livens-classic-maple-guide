@@ -1,0 +1,143 @@
+---
+/**
+ * <Breadcrumbs> - accessible breadcrumb trail for detail pages.
+ *
+ * Usage:
+ *   <Breadcrumbs segments={[
+ *     { href: "/items", label: "Items" },
+ *     { href: "/items?category=Equipment", label: "Equipment" },
+ *     { label: "Red Potion" }  // last segment: no href = non-link current page
+ *   ]} />
+ *
+ * The LAST segment should NEVER have an href. It represents the current
+ * page in the trail. Passing an href on the last segment is still safe
+ * (it renders as a link) but semantically wrong per the WAI breadcrumb
+ * pattern.
+ *
+ * Why schema.org BreadcrumbList JSON-LD inline here? Google's rich
+ * results require the structured-data markup to be present on the page
+ * to show breadcrumbs under the search result. Zero cost to users;
+ * meaningful SEO win.
+ *
+ * Design: compact, text-only, no icons. The visual separator "/" is
+ * aria-hidden so screen readers don't say "slash" between every
+ * segment - the <nav aria-label="Breadcrumb"> is enough.
+ *
+ * This component REPLACES the ad-hoc "crumbs" inline nav previously
+ * in ItemDetailLayout. One source of truth, consistent across every
+ * detail page.
+ */
+
+export interface BreadcrumbSegment {
+	/** Link target. OMIT on the last segment to render it as the current page. */
+	href?: string;
+	/** Visible text for this segment. */
+	label: string;
+}
+
+interface Props {
+	segments: BreadcrumbSegment[];
+	/** Optional CSS class for the wrapping <nav>. */
+	class?: string;
+}
+
+const { segments, class: className } = Astro.props;
+
+// Build the schema.org BreadcrumbList items. The spec wants a 1-indexed
+// position and an item URL for every entry, including the current page.
+// For the current page we use the request's canonical URL via
+// Astro.url.pathname so Google can confirm the loop.
+const baseUrl = Astro.site?.href?.replace(/\/+$/, "") ?? "";
+const schemaItems = segments.map((seg, i) => ({
+	"@type": "ListItem",
+	position: i + 1,
+	name: seg.label,
+	item: seg.href
+		? `${baseUrl}${seg.href}`
+		: `${baseUrl}${Astro.url.pathname}`,
+}));
+
+const schema = {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: schemaItems,
+};
+---
+
+<nav class:list={["breadcrumbs", className]} aria-label="Breadcrumb">
+	<ol class="breadcrumbs__list">
+		{segments.map((seg, i) => {
+			const isLast = i === segments.length - 1;
+			return (
+				<li class="breadcrumbs__item">
+					{seg.href && !isLast ? (
+						<a class="breadcrumbs__link" href={seg.href}>
+							{seg.label}
+						</a>
+					) : (
+						<span
+							class="breadcrumbs__current"
+							aria-current={isLast ? "page" : undefined}
+						>
+							{seg.label}
+						</span>
+					)}
+					{!isLast && (
+						<span class="breadcrumbs__sep" aria-hidden="true">
+							/
+						</span>
+					)}
+				</li>
+			);
+		})}
+	</ol>
+
+	{/* Structured data - helps Google show breadcrumbs under
+	    search results for this page. Zero visual footprint. */}
+	<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</nav>
+
+<style>
+	.breadcrumbs {
+		margin: 0 0 1rem;
+		font-size: 0.88rem;
+	}
+
+	.breadcrumbs__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0;
+	}
+
+	.breadcrumbs__item {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.breadcrumbs__link {
+		color: var(--accent-primary);
+		text-decoration: none;
+		padding: 0.15rem 0;
+		border-radius: 0.25rem;
+	}
+
+	.breadcrumbs__link:hover,
+	.breadcrumbs__link:focus-visible {
+		text-decoration: underline;
+	}
+
+	.breadcrumbs__current {
+		color: var(--text-muted);
+		padding: 0.15rem 0;
+	}
+
+	.breadcrumbs__sep {
+		color: var(--text-muted);
+		margin: 0 0.4rem;
+		opacity: 0.6;
+	}
+</style>

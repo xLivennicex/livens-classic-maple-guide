@@ -17,6 +17,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import mapDossiers from "../../data/db/maps.json";
 import { mapMinimapUrl, mapRenderUrl, mobSpriteUrl, mobSpriteSrcs, npcSpriteUrl, mapThumbnailSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PrevNextPager from "../../components/PrevNextPager.astro";
 import mobDossiers from "../../data/db/mobs.json";
 import { mobHref } from "../../lib/mob-dedup";
 import npcDossiers from "../../data/db/npcs.json";
@@ -28,13 +30,26 @@ import { themeForLocation } from "../../lib/region-theme";
 const npcWzById = new Map(npcDossiers.map((n) => [n.id, n.wzId]));
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	return mapDossiers.map((d) => ({
-		params: { id: String(d.id) },
-		props: { d },
-	}));
+	// Match /maps default sort (WZ ID ASC) so prev/next walks the
+	// catalog in the same order a reader would see on the index.
+	const sorted = [...mapDossiers].sort((a: any, b: any) => a.id - b.id);
+	return sorted.map((d, i) => {
+		const prev = i > 0 ? sorted[i - 1] : null;
+		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
+		return {
+			params: { id: String(d.id) },
+			props: {
+				d,
+				pager: {
+					prev: prev ? { href: `/maps/${prev.id}`, label: prev.name } : null,
+					next: next ? { href: `/maps/${next.id}`, label: next.name } : null,
+				},
+			},
+		};
+	});
 };
 
-const { d } = Astro.props;
+const { d, pager } = Astro.props;
 
 const KIND_LABELS: Record<string, string> = {
 	training: "Training map",
@@ -109,19 +124,21 @@ const pageTheme = themeForLocation(
 	theme={pageTheme}
 	bgmMapId={d.id}
 >
-	<nav class="crumbs">
-		<a href="/maps">&larr; Maps</a>
-		<span class="crumbs__sep">&middot;</span>
-		<span>{d.region}</span>
-		<span class="crumbs__sep">&middot;</span>
-		<span>{d.name}</span>
-		{d.worldMapRefs && d.worldMapRefs.length > 0 && (
-			<>
-				<span class="crumbs__sep">&middot;</span>
-				<a href={`/world/${d.worldMapRefs[0].worldMapName}`}>View on world map &rarr;</a>
-			</>
-		)}
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/maps", label: "Maps" },
+			...(d.region ? [{ href: `/maps#${d.region.toLowerCase().replace(/\s+/g, "-")}`, label: d.region }] : []),
+			{ label: d.name },
+		]}
+	/>
+
+	{d.worldMapRefs && d.worldMapRefs.length > 0 && (
+		<p class="world-map-link">
+			<a href={`/world/${d.worldMapRefs[0].worldMapName}`}>
+				View on world map &rarr;
+			</a>
+		</p>
+	)}
 
 	<header class:list={["hero", !d.wzId && "hero--no-minimap"]}>
 		{d.wzId && (
@@ -298,13 +315,31 @@ const pageTheme = themeForLocation(
 			</div>
 		</section>
 	)}
+
+	<PrevNextPager
+		prev={pager.prev}
+		next={pager.next}
+		sectionLabel="map"
+	/>
 </BaseLayout>
 
 <style>
-	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs a:hover { text-decoration: underline; }
-	.crumbs__sep { margin: 0 0.4rem; }
+	/* Breadcrumbs now ship via the <Breadcrumbs> component. */
+
+	.world-map-link {
+		font-size: 0.88rem;
+		margin: -0.5rem 0 1rem;
+	}
+
+	.world-map-link a {
+		color: var(--accent-primary);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.world-map-link a:hover {
+		text-decoration: underline;
+	}
 
 	.hero {
 		display: grid; grid-template-columns: auto 1fr; gap: 1.2rem;

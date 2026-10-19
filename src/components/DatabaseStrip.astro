@@ -1,0 +1,162 @@
+---
+/**
+ * <DatabaseStrip> - horizontal "quick-switch" bar between the primary
+ * data-browser landing pages. Shown at the TOP of every DB page so a
+ * reader exploring the Mobs browser can jump straight to Items,
+ * Quests, Maps etc without opening the primary nav dropdown.
+ *
+ * Pattern lifted from MeowDB's `Items · Monsters · Maps · Quests ·
+ * Skills · Formulas · Classes` strip. We trim theirs to the 6
+ * destinations our site has deep DB coverage of; "Skills" and
+ * "Formulas" aren't broken out as top-level DB sections here (skills
+ * live inside class/job pages; formulas live inside calculators).
+ *
+ * The strip highlights the currently active section so a reader
+ * always knows where they are in the DB subtree. The active-match
+ * uses prefix matching so /items, /items/1702046, /items?q=... all
+ * light up the "Items" chip.
+ *
+ * Why a separate component instead of extending PrimaryNav? Primary
+ * nav is for navigating TO a section. This is for pivoting BETWEEN
+ * sibling sections once you're inside. Different mental model, so
+ * different widget.
+ */
+
+interface Props {
+	/** The current URL path. Pass Astro.url.pathname. */
+	currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+interface Entry {
+	href: string;
+	label: string;
+	/** Approximate count of records in this section. Hard-coded here
+	 *  rather than parsed at render time so we don't pay a 7000-row
+	 *  JSON load on every DB page. Values refreshed when the db build
+	 *  script re-generates src/data/db/*.json; adjust manually. */
+	count: number;
+}
+
+const ENTRIES: Entry[] = [
+	{ href: "/items", label: "Items", count: 7431 },
+	{ href: "/mobs", label: "Mobs", count: 101 },
+	{ href: "/npcs", label: "NPCs", count: 226 },
+	{ href: "/maps", label: "Maps", count: 305 },
+	{ href: "/quests", label: "Quests", count: 316 },
+	{ href: "/bosses", label: "Bosses", count: 6 },
+];
+
+function isActive(href: string): boolean {
+	return currentPath === href || currentPath.startsWith(href + "/");
+}
+
+// Format record counts: 7431 -> "7.4k", 305 -> "305", 6 -> "6".
+// Keep single-digit precision above 1000 so the strip doesn't jitter
+// when counts update by a few records.
+function fmtCount(n: number): string {
+	if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+	return String(n);
+}
+---
+
+<nav class="db-strip" aria-label="Database sections">
+	<ul class="db-strip__list">
+		{ENTRIES.map((entry) => (
+			<li class="db-strip__item">
+				<a
+					class:list={[
+						"db-strip__link",
+						{ "db-strip__link--active": isActive(entry.href) },
+					]}
+					href={entry.href}
+					aria-current={isActive(entry.href) ? "page" : undefined}
+				>
+					<span class="db-strip__label">{entry.label}</span>
+					<span class="db-strip__count" aria-hidden="true">
+						{fmtCount(entry.count)}
+					</span>
+				</a>
+			</li>
+		))}
+	</ul>
+</nav>
+
+<style>
+	.db-strip {
+		margin: 0 0 1.25rem;
+	}
+
+	.db-strip__list {
+		list-style: none;
+		margin: 0;
+		padding: 0.3rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.2rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.6rem;
+	}
+
+	.db-strip__item {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.db-strip__link {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: 0.4rem;
+		padding: 0.55rem 0.75rem;
+		border-radius: 0.4rem;
+		text-decoration: none;
+		color: var(--text-body);
+		font-weight: 600;
+		font-size: 0.95rem;
+		white-space: nowrap;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+
+	.db-strip__link:hover,
+	.db-strip__link:focus-visible {
+		background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+		color: var(--accent-primary);
+	}
+
+	.db-strip__link--active {
+		background: var(--accent-primary);
+		color: var(--surface-card);
+	}
+
+	.db-strip__link--active:hover,
+	.db-strip__link--active:focus-visible {
+		background: var(--accent-primary);
+		color: var(--surface-card);
+	}
+
+	.db-strip__count {
+		font-size: 0.78rem;
+		font-weight: 500;
+		opacity: 0.75;
+	}
+
+	/* On the smallest mobile viewports, let the strip scroll horizontally
+	   rather than wrap to two rows. One-row scroll is more scannable than
+	   a wrapped list that becomes a vertical stack. */
+	@media (max-width: 480px) {
+		.db-strip__list {
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			scrollbar-width: thin;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.db-strip__link {
+			font-size: 0.9rem;
+			padding: 0.5rem 0.65rem;
+		}
+	}
+</style>
