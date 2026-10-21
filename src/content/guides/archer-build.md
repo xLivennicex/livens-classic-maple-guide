@@ -82,9 +82,10 @@ with no elemental advantage/penalty.
 ### 3. Earring crit damage line stacks with your Lv 3rd job skill
 
 Classic World added a `crit damage` stat to earrings. For 3rd-job
-Rangers (held for Grand Launch), Mortal Blow is a crit-roll skill
-and earring crit damage will multiply those procs. **Scroll
-earrings now so you have them stock when 3rd job unlocks.**
+Rangers in traditional MapleStory, Mortal Blow is a crit-roll skill
+that earring crit damage would multiply. 3rd Job is not in Grand
+Launch and has no date, so **scroll earrings for the crit damage you
+get now** rather than for a future skill.
 
 ### 4. xBucc Reddit build errata
 
@@ -426,8 +427,8 @@ rules. Archers dominate this because:
 - Soul Arrow means no arrow restock gap
 - Final Attack procs stack with Strafe multi-hit
 
-**Practical takeaway:** at Lv 50+ with Strafe (3rd job preview — held
-for Grand Launch) and Soul Arrow max, Archer is the Mushmom KS king.
+**Practical takeaway:** if 3rd Job brings Strafe (a traditional 3rd-job
+skill; 3rd Job isn't in Grand Launch) on top of Soul Arrow, Archer becomes the Mushmom KS king.
 During FA at 2nd job, you're still competitive with Arrow Bomb's
 burst damage.
 
@@ -475,15 +476,18 @@ Arrow lets you skip ammo for ~95% of combat.
 **Why aren't there L70+ bows in the datamine?**
 
 There are — Red Hinkel / Blue Hinkel / Golden Hinkel at Lv 70. The
-tier above those is held for Grand Launch (3rd job content opens
-Dragon-tier weapons in Leafre, Raven's Claws in Phantom Forest, etc.).
+tier above those (Dragon-tier weapons in Leafre, Raven's Claws in
+Phantom Forest, etc.) needs regions that are not in Grand Launch and
+have no announced date.
 
 **Does Classic World have Hunter → Ranger 3rd job?**
 
-Not in Founder's Access. 3rd job (Ranger / Sniper) is confirmed to
-unlock at Lv 70 but **3rd job advancement is held for Grand Launch**
-(Oct 21, 2026) per Nexon's release notes. Hold your SP from Lv 70
-onwards.
+Not yet. **3rd Job (traditionally Ranger / Sniper) is not in Grand
+Launch** - Nexon's Grand Launch release notes list only the Lv. 10 and
+Lv. 30 advancements, and no date has been announced. (An earlier
+version of this answer said it was held for Grand Launch per the
+release notes; that was wrong.) Max the 2nd-job skills you use rather
+than banking SP indefinitely.
 
 **I'm F2P. How do I prioritize mesos?**
 
@@ -494,7 +498,6 @@ that fund scroll budgets.
 
 **Will this guide update when 3rd job opens?**
 
-Yes. When Grand Launch opens Ranger / Sniper advancement, this
-guide gets a 3rd job SP priority section covering Strafe (Hunter)
-and Piercing Arrow (Crossbowman) priorities. Last reviewed
-2026-10-11.
+Yes. When Nexon releases Ranger / Sniper advancement (not in Grand
+Launch), this guide gets a 3rd job SP priority section. Last reviewed
+2026-10-21.

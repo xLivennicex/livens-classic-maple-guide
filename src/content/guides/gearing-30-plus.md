@@ -383,12 +383,12 @@ Thorns yet.
 <strong>Zakum Helmet in FA:</strong> the item exists in our datamine at
 WZ ID 1002180 with its full +5/+5/+5/+5 all-stat line and 7 slots. But
 <strong>the Zakum boss fight itself is NOT in Founder's Access</strong>
-per Nexon's Oct 3 release notes — the altar in El Nath is gated for
-Grand Launch. That means the canonical Zakum Helmet acquisition path
+(it isn't on either release notes' boss roster), and it isn't in Grand
+Launch either. That means the canonical Zakum Helmet acquisition path
 (doing the pre-quest + killing Zakum for the helmet drop) is <em>not
 live yet</em>. The helmet row in the table above shows the datamine
 entry because it <em>exists</em>; use the class-specific L50-60 hats as
-your realistic FA pick. Zakum Helmet becomes attainable at Grand Launch.
+your realistic pick. Nexon hasn't said when Zakum will open.
 </div>
 
 ### Boss priority
@@ -510,10 +510,9 @@ scrolled Lv 70 kit through the FA cap climb.
 <div class="callout callout--warning">
 <strong>Capes above Lv 65 don't exist in our FA client datamine.</strong>
 Highest cape is the Gaia tier at Lv 65. We've triple-checked and this
-isn't a scrape bug — it's a hard content ceiling. Expect Nexon to
-ship L70+ capes with Grand Launch (traditionally this happens when
-Orbis/Ludibrium content opens). Until then, hard-scroll your
-Gaia-tier cape and carry it to FA cap.
+isn't a scrape bug — it's a hard content ceiling, and Grand Launch
+doesn't add Orbis or Ludibrium (where L70+ capes traditionally come
+from). Hard-scroll your Gaia-tier cape and carry it to the Lv. 100 cap.
 </div>
 
 ### Boss priority (Lv 70-100)
@@ -525,8 +524,8 @@ for the full "what to do at the FA cap" writeup. The TL;DR:
 
 - Grind training maps (see [Training routes](/training-routes))
 - Hunt bosses for crafting catalysts and scrolls, not EXP
-- Prep mesos for Grand Launch (Oct 21) when Zakum, Horntail, and
-  Forgotten Hollow's deeper content unlocks
+- Bank mesos for later content: Forgotten Hollow opens in November;
+  Zakum, Horntail, and Ossyria have no dates
 
 ### Scrolling priority (Lv 70-100)
 
@@ -594,7 +593,7 @@ held content:
 
 | Zone / System | Status in FA | What this blocks |
 | --- | --- | --- |
-| Zakum altar |  Grand Launch | Zakum Helmet drops, Chaos Scrolls |
+| Zakum altar |  later patch (not in Grand Launch) | Zakum Helmet drops, Chaos Scrolls |
 | Orbis / Ariant |  later patch | Icarus Cape color variants (buy path) |
 | Leafre |  later patch | Dragon-tier weapons (Mos crafts) |
 | Phantom Forest |  later patch | Raven's Claws (Fiona crafts) |
@@ -667,6 +666,6 @@ or later-patch addition.
 
 **Will this guide update post-launch?**
 
-Yes. When Grand Launch opens Zakum, Orbis, Leafre, etc., we'll pivot
-each bracket's picks and add new BiS tiers. Last reviewed 2026-10-11,
-Day 5 of Founder's Access.
+Yes. When Nexon opens Zakum, Orbis, Leafre, etc. (none are in Grand
+Launch), we'll pivot each bracket's picks and add new BiS tiers. Last
+reviewed 2026-10-21, Grand Launch day.

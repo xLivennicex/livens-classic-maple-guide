@@ -13,7 +13,7 @@ theme: "kerning"
 decorations: false
 eyebrow: "Class Build Deep Dive"
 heading: "Bandit Build"
-tagline: "Savage Blow burst, Steal double-drops, and the countdown to Chief Bandit's Meso Explosion (3rd job, held for Grand Launch). The Fast vs Faster dagger speed-class decision settled."
+tagline: "Savage Blow burst, Steal double-drops, and what Chief Bandit's Meso Explosion could mean once 3rd job arrives (not in Grand Launch; no date yet). The Fast vs Faster dagger speed-class decision settled."
 verificationStatus: "launch-verified"
 verificationNote: "Weapon ATK + speed data from src/data/db/items.json datamine. Dagger progression confirmed via node query showing two parallel paths (speed 3 Faster vs speed 4 Fast). Classic World mechanics sourced from Nexon Oct 3 release notes + msclassic.wiki. SP priority follows corrected community consensus (the xBucc build cluster had Bandit builds that the OP later amended)."
 sourceSlugs:
@@ -49,7 +49,8 @@ toc:
 - **The Chief Bandit tease:** 3rd-job Chief Bandit unlocks **Meso
   Explosion** which spawns mesos into AoE damage. This is the
   single most-anticipated post-launch skill in the Classic World
-  meta. We'll cover it in a 3rd-job update when Grand Launch opens.
+  meta. 3rd Job is not in Grand Launch and has no date; we'll cover it
+  when Nexon releases it.
 - **FA endgame kit:** scrolled Lv 50 [Sai](/items/1332016) Faster dagger
   or [Shinkita](/items/1332015) Fast dagger, Thief armor set
   (Steely → Mithril → Dark variants), high-LUK accessories.
@@ -272,10 +273,11 @@ extra mesos**.
 <h2 id="chief-bandit-preview">Chief Bandit preview (3rd job teaser)</h2>
 
 <div class="callout callout--framing">
-<strong>This is a preview of the 3rd-job content held for Grand
-Launch (Oct 21, 2026).</strong> 3rd-job advancement isn't live in
-FA, but understanding Chief Bandit's identity shapes your Bandit
-progression now.
+<strong>This is a preview of traditional MapleStory 3rd-job content.</strong>
+3rd-job advancement is not in Grand Launch (Nexon's release notes list
+only the Lv. 10 and Lv. 30 advancements) and has no announced date, so
+nothing below is confirmed for Classic World. An earlier version said
+it would open at Grand Launch; that was wrong.
 </div>
 
 ### Meso Explosion — the most-anticipated skill
@@ -359,8 +361,8 @@ means either:
 
 **When does Meso Explosion unlock?**
 
-Grand Launch (Oct 21, 2026) when 3rd-job Chief Bandit advancement
-opens.
+Unknown. It's a Chief Bandit (3rd job) skill in traditional MapleStory,
+and 3rd Job is not part of Grand Launch. Nexon hasn't announced a date.
 
 **Will this guide update when Chief Bandit unlocks?**
 

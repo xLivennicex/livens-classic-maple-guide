@@ -44,10 +44,10 @@ toc:
 You hit Level 30, picked your 2nd job branch, and now you're staring at the
 world map wondering what's actually worth fighting. Short answer: six bosses
 are live during the Founder's Access window (Oct 6 - Oct 20, 2026), spread
-from Lv 20 to Lv 65. Everything above Lv 65 is thin repeatable grinding,
-because Nexon's Oct 3 Release Notes explicitly held Forgotten Hollow and
-all endgame bosses (Zakum, Papulatus, Pianus) back for Grand Launch and
-later patches.
+from Lv 20 to Lv 65. Everything above Lv 65 is thin repeatable grinding:
+Nexon's release notes keep endgame bosses (Zakum, Papulatus, Pianus) out
+of both Founder's Access and Grand Launch, and Forgotten Hollow opens in
+November. Grand Launch adds one boss, Stumpy, to the Victoria Island roster.
 
 This guide walks the whole ladder in level order, with the datamine-verified
 HP/EXP numbers, access route, party composition that actually works for FA,
@@ -418,9 +418,8 @@ only.
 
 **Is there a Zakum fight at FA?**
 
-No. Zakum is explicitly held for post-launch content. We've catalogued
-him in [/bosses](/bosses) under "Grand Launch and beyond" but you won't
-be able to access the Zakum altar during Founder's Access.
+No - and not at Grand Launch either. Zakum isn't on either release
+notes' boss roster, and Nexon hasn't said when it will open.
 
 **Are hidden-street boss spawns per-channel or per-world?**
 
@@ -443,6 +442,6 @@ sustained training, not a replacement for it.
 
 **Will this guide update when Nexon ships more content?**
 
-Yes. We'll update the FA roster table + add Grand Launch bosses (Zakum,
-Papulatus, Pianus, Ergoth, Anego) to [/bosses](/bosses) as they go live
-and their drops get scraped. Last reviewed: 2026-10-11.
+Yes. Grand Launch's new boss, Stumpy, gets a page once its data is in
+our datamine; later bosses (Zakum, Papulatus, Pianus, and others) get
+added to [/bosses](/bosses) as they go live. Last reviewed: 2026-10-21.

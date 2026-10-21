@@ -1,18 +1,18 @@
 ---
 title: "Founder's Access Content Status: What's Open, What's Gated, What We Don't Know"
-description: "Honest reference catalog of what's accessible in MapleStory Classic World Founder's Access vs. held for Grand Launch. Victoria Island regions, bosses, maps, 3rd-job advancement, and the fuzzy middle of player-reported gated subzones. Links to the datamine source for everything."
+description: "Archived reference: what was accessible in MapleStory Classic World Founder's Access (Oct 6-20, 2026). Victoria Island regions, bosses, maps, and player-reported gated subzones. Corrected after the Grand Launch release notes."
 lastUpdated: "2026-10-11"
 tags:
   - founders-access
   - reference
   - access-status
   - gating
-status: "Live - Founder's Access window Oct 6 to Oct 20, 2026"
+status: "Archived - Founder's Access ended October 20, 2026"
 theme: "henesys"
 decorations: false
 eyebrow: "Reference"
 heading: "FA Content Access Status"
-tagline: "What's actually playable in Founder's Access vs. held for Grand Launch (Oct 21). We cite Nexon's release notes where they're definitive and tag player-reported gating where we're not."
+tagline: "Archived: what was playable during Founder's Access (Oct 6-20). For what's in Grand Launch, see What's Actually in Grand Launch."
 verificationStatus: "launch-verified"
 verificationNote: "Confirmed-accessible content sourced from Nexon's Oct 3 Founder's Access release notes (slug: nexon-founders-access-release-notes). Confirmed-gated content sourced from the same release notes plus Nexon's Inkwell blog on the future of Classic World (slug: nexon-inkwell-future-of-classic-world). Player-reported gated content is tagged as such — single data points from community reports, not definitive. Datamine-complete references validated against src/data/db/*.json (CoT 2 scrape via osmsdataexplorer.com)."
 sourceSlugs:
@@ -32,10 +32,23 @@ toc:
   - { href: "#faq", label: "FAQ" }
 ---
 
+<div class="callout callout--heads-up">
+<strong>Archived and corrected.</strong> Founder's Access ended on
+October 20, 2026. This page originally described 3rd Job, Zakum, and
+Ossyria regions (Orbis, El Nath, and more) as "held for Grand Launch"
+and said those claims came from Nexon's release notes. They didn't, and
+the Grand Launch release notes confirm none of it opens at launch: the
+cap stays Lv. 100, only the Lv. 10 and Lv. 30 advancements exist, and
+all six launch bosses are on Victoria Island. It also listed the
+Founder's Access cap as Lv. 70; it was Lv. 100. Those lines are fixed
+below. For current content, see
+<a href="/grand-launch-prep">What's Actually in Grand Launch</a>.
+</div>
+
 <h2 id="tldr">TL;DR</h2>
 
 - **Fully accessible:** Maple Island, Victoria Island (all 6 regions),
-  Lv 1-70 cap, 1st and 2nd job advancement, Mano / Mushmom /
+  Lv 1-100 cap, 1st and 2nd job advancement, Mano / Mushmom /
   Jr. Balrog / Zombie Mushmom bosses, PQ roster (Kerning / Ludi PQ
   held).
 - **Confirmed gated per Nexon release notes:** 3rd and 4th job
@@ -84,7 +97,7 @@ in the sources section at the bottom of this page).
 
 ### Level progression
 
-- **Lv 1-70 cap** confirmed
+- **Lv. 100 cap** confirmed (Oct 3 release notes)
 - **1st job advancement** (every class) at Lv 10
 - **2nd job advancement** (every branch) at Lv 30
 
@@ -110,26 +123,28 @@ in the sources section at the bottom of this page).
 - **1.25× elemental multiplier** (CoT 2 addition — see
   [Wizard guide](/wizard-build#the-125x-elemental-mechanic))
 
-<h2 id="confirmed-gated">Confirmed gated for Grand Launch (Oct 21)</h2>
+<h2 id="confirmed-gated">Not in Founder's Access - or Grand Launch</h2>
 
-Sourced from Nexon's release notes and the Inkwell blog on
-Classic World's future (both cited in the sources section at the
-bottom of this page).
+None of the content below was playable in Founder's Access. The
+Grand Launch release notes don't include any of it either. Inkwell
+has said 3rd Job and some regions will arrive sequentially after
+launch, with no dates. (The region and boss lists below come from
+the client datamine, not from Nexon's release notes.)
 
 ### 3rd and 4th job advancement
 
-- **3rd job** for every class (Hero / Paladin / Dark Knight / F-P
-  Mage / I-L Mage / Priest / Ranger / Sniper / Hermit / Chief
-  Bandit) — **held for Grand Launch**
-- **4th job** (Hero / Paladin / Dark Knight / F-P Arch Mage / I-L
-  Arch Mage / Bishop / Bowmaster / Marksman / Night Lord / Shadower)
-  — further held for post-launch content releases
+- **3rd job** (traditionally Crusader / White Knight / Dragon Knight /
+  F-P Mage / I-L Mage / Priest / Ranger / Sniper / Hermit / Chief
+  Bandit) — **not in Grand Launch; no date announced**
+- **4th job** (traditionally Hero / Paladin / Dark Knight / F-P Arch
+  Mage / I-L Arch Mage / Bishop / Bowmaster / Marksman / Night Lord /
+  Shadower) — no information
 
 ### Regions
 
 | Region | Lv range | Status |
 | --- | --- | --- |
-| **Orbis** | 50-70 | Gated — opens at Grand Launch |
+| **Orbis** | 50-70 | Gated — not in Grand Launch |
 | **El Nath** | 70-85 | Gated |
 | **Ludus Lake** | 50-70 | Partially gated (Ludibrium town open, dungeon maps gated) |
 | **Omega Sector** | 70-85 | Gated |
@@ -145,7 +160,7 @@ bottom of this page).
 
 | Boss | Lv | Status |
 | --- | --- | --- |
-| **Zakum** | 50+ | Datamine present, boss fight **held for Grand Launch** |
+| **Zakum** | 50+ | Datamine present, boss fight **not in Grand Launch** |
 | **Papulatus** | 70+ | Gated with Ludus Lake dungeon |
 | **Horntail** | 130+ | Gated with Leafre |
 | **Pink Bean** | 130+ | Gated with Temple of Time |
@@ -259,9 +274,9 @@ gates. See [why this page exists](#why-this-page-exists).
 **When will deep Victoria Island subzones open?**
 
 Unconfirmed. Nexon hasn't published a specific "Burnt Land V opens
-at..." schedule. **Our best guess:** Grand Launch (Oct 21) will
-open most or all deep Victoria subzones alongside 3rd job
-advancement.
+at..." schedule, and the Grand Launch release notes don't mention
+these subzones. (We previously guessed they would open at Grand Launch
+alongside 3rd Job; 3rd Job is not in Grand Launch.)
 
 **Can I 3rd-job early via some exploit?**
 
@@ -271,13 +286,13 @@ nothing to exploit.
 **I bought a Founder's package - do I get ANY gated content early?**
 
 No. Founder's packages give you cosmetics, pets, and some mesos.
-They don't unlock gated regions / bosses / jobs. Those open for
-all players on Grand Launch day.
+They don't unlock gated regions / bosses / jobs.
 
-**Can I farm Zakum helmet from Zakum before Grand Launch?**
+**Can I farm Zakum Helmet from Zakum?**
 
-No. The Zakum boss fight is gated. The Zakum Helmet item exists in
-the datamine (item 1002180) but can't drop until the fight opens.
+No - not in Founder's Access and not at Grand Launch. The Zakum Helmet
+item exists in the datamine (item 1002180) but can't drop until the
+fight opens, and Nexon hasn't said when that will be.
 
 **I keep seeing community posts about "cleric washing" strategies -
 can I still do them in CW?**
@@ -289,10 +304,7 @@ for the full implications.
 
 **Will this page update post-Grand-Launch?**
 
-Yes. When Grand Launch opens content, this page will:
-- Move 3rd job advancement to "confirmed accessible"
-- Move Zakum to "confirmed accessible"
-- Move Orbis / El Nath / NLC to "confirmed accessible" (phased)
-- Document any new gating patterns Nexon introduces
+No - it's archived as the Founder's Access record. Current content
+lives on [What's Actually in Grand Launch](/grand-launch-prep).
 
-Last reviewed 2026-10-11.
+Last reviewed 2026-10-21 (archived and corrected).

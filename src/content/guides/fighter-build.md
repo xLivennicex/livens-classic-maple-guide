@@ -513,10 +513,12 @@ budgets.
 
 **Does Classic World have Fighter → Hero 3rd job?**
 
-Not in Founder's Access. 3rd job is confirmed to unlock at Lv 70
-but 3rd job advancement is **held for Grand Launch** (Oct 21, 2026)
-per Nexon's release notes. Hold your SP from Lv 70 onwards until
-3rd job NPCs unlock.
+Not yet. **3rd Job is not in Grand Launch** - Nexon's Grand Launch
+release notes list only the Lv. 10 and Lv. 30 advancements, and no
+date has been announced. (The traditional Fighter 3rd job is Crusader;
+Hero is 4th job. An earlier version of this answer said 3rd Job was
+held for Grand Launch per the release notes; that was wrong.) Max the
+2nd-job skills you use rather than banking SP indefinitely.
 
 **I keep failing 60% scrolls. Is CW's rate actually 60%?**
 
@@ -536,6 +538,5 @@ Absolutely. Fighter is one of the strongest classes in FA because:
 
 **Will this guide update when 3rd job opens?**
 
-Yes. When Grand Launch opens Hero / White Knight / Dark Knight
-advancement, this guide gets a 3rd job SP priority section. Last
-reviewed 2026-10-11.
+Yes. When Nexon releases 3rd Job advancement (not in Grand Launch),
+this guide gets a 3rd job SP priority section. Last reviewed 2026-10-21.

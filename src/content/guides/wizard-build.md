@@ -127,17 +127,18 @@ map-hopping to maintain 1.25× uptime.
 
 ### The 2nd-job vs 3rd-job gap
 
-**Important:** at 2nd job (FA cap Lv 70), both branches play similarly.
-Magic Claw spam + Magic Guard. The identity divergence happens at
-**3rd job** (Grand Launch content):
+**Important:** at 2nd job (up to the Lv. 100 cap), both branches play
+similarly. Magic Claw spam + Magic Guard. In traditional MapleStory the
+identity divergence happens at **3rd job**, which is not in Grand
+Launch and has no announced date:
 - F/P gets **Poison Mist** = AoE DoT ground pool that kills everything
   that walks through for 10 seconds
 - I/L gets **Ice Strike** = AoE freeze on hit, plus **Thunder Spear**
   for party burst
 
-**Translation for FA planning:** at Lv 70 FA cap, F/P and I/L play
+**Translation for planning:** through Grand Launch, F/P and I/L play
 similarly. Your 2nd-job SP goes to Magic Claw + Fire Arrow / Cold Beam.
-Pick based on which 3rd-job identity you want **when Grand Launch opens**.
+Pick based on which 3rd-job identity you want **for whenever 3rd Job arrives**.
 
 ### Honest recommendation
 
@@ -388,7 +389,6 @@ mage, I/L is your branch.
 
 **Will this guide update when 3rd job opens?**
 
-Yes. 3rd job unlocks at Grand Launch (Oct 21). Guide gets separate
-F/P Mage and I/L Mage 3rd-job sections covering Poison Mist /
-Explosion / Meteor Shower (F/P) and Ice Strike / Thunder Spear /
-Element Composition (I/L). Last reviewed 2026-10-11.
+Yes, when Nexon releases it - 3rd Job is not in Grand Launch and has
+no announced date. The guide will get separate F/P Mage and I/L Mage
+3rd-job sections then. Last reviewed 2026-10-21.

@@ -1,462 +1,215 @@
 ---
-title: "Grand Launch Prep: What to Do in the Last Days of Founder's Access"
-description: "4 days until MapleStory Classic World Grand Launch (Oct 21, 2026). What opens that day per Nexon release notes, what to do in the remaining Founder's Access window to be ready, and what NOT to spend mesos on. Grounded in Nexon's confirmed Oct 3 release notes + Inkwell blog on Classic World's future. Class-by-class checklist for 1st, 2nd, and (preview) 3rd job tiers."
-lastUpdated: "2026-10-17"
+title: "What's Actually in Grand Launch (and What Isn't)"
+description: "MapleStory Classic World Grand Launch (Oct 21, 2026, 6:00 PM UTC) per Nexon's release notes: how to get in, the Lv. 100 cap and job advancements, six bosses including Stumpy, Perion's new Excavation Site, Housing, the Lie Detector Test, the Lv. 15 trade unlock, and what is NOT in launch (3rd Job, Ossyria, Zakum). Includes a correction of this page's earlier version."
+lastUpdated: "2026-10-21"
 tags:
-  - founders-access
   - grand-launch
-  - preparation
+  - launch-day
   - roadmap
-status: "4 days to Grand Launch - updated Oct 17, 2026"
+  - corrections
+status: "Grand Launch - October 21, 2026"
 theme: "henesys"
 decorations: false
-eyebrow: "Roadmap"
-heading: "Grand Launch prep for Founder's Access players"
-tagline: "Oct 21, 2026 opens 3rd job, Zakum, and every Ossyria region (10 regions total) in one drop. Here's what to do during the remaining FA window to be ready - and what NOT to spend mesos on."
-verificationStatus: "launch-verified"
-verificationNote: "Content gates sourced from Nexon's Oct 3 Founder's Access release notes + the Inkwell blog on Classic World's future (both already cited across the site). Level progression recommendations grounded against our class guides (Fighter, Page, Spearman, Archer, Cleric, Wizard, Bandit, Assassin build pages). FA access status for maps/bosses cross-references /fa-access-status/ which is the central gating catalog. Every mechanic described here is sourced from Nexon-confirmed CW release notes, the Inkwell blog, or the Classic World FA client datamine - no extrapolation from other MapleStory versions."
+eyebrow: "Grand Launch"
+heading: "What's actually in Grand Launch"
+tagline: "Victoria Island, a Lv. 100 cap, two job advancements, six bosses, a new Perion area, and Housing. No 3rd Job, no Ossyria, no Zakum. Everything here comes from Nexon's Grand Launch release notes."
+verificationStatus: "official-announcement"
+verificationNote: "Sourced from Nexon's Grand Launch release notes (published October 20, 2026), with Founder's Access carry-over from the Founder's Package announcement. Nothing on this page is extrapolated from other MapleStory versions. An earlier version of this page made claims that were not in any Nexon source - see the correction at the top."
 sourceSlugs:
+  - nexon-grand-launch-release-notes
   - nexon-founders-access-release-notes
+  - nexon-founders-packages-on-sale
   - nexon-inkwell-future-of-classic-world
-  - osmsdataexplorer
 toc:
+  - { href: "#correction", label: "Correction" }
   - { href: "#tldr", label: "TL;DR" }
-  - { href: "#the-oct-21-drop", label: "The Oct 21 drop" }
-  - { href: "#by-level-checklist", label: "By-level checklist" }
-  - { href: "#what-not-to-do", label: "What NOT to do" }
-  - { href: "#class-prep-matrix", label: "Class prep matrix" }
-  - { href: "#done-with-fa-checklist", label: "Done-with-FA checklist" }
-  - { href: "#unknowns", label: "What we don't know yet" }
+  - { href: "#getting-in", label: "Getting in" }
+  - { href: "#jobs-and-levels", label: "Jobs and levels" }
+  - { href: "#bosses", label: "Bosses" }
+  - { href: "#excavation-site", label: "New: Excavation Site" }
+  - { href: "#systems", label: "Systems" }
+  - { href: "#not-in-launch", label: "Not in Grand Launch" }
+  - { href: "#day-one", label: "Day-one checklist" }
   - { href: "#faq", label: "FAQ" }
 ---
 
+<h2 id="correction">Correction</h2>
+
+<div class="callout callout--heads-up">
+<strong>This page used to be wrong.</strong> Until October 21 it said
+Grand Launch would open <strong>3rd Job for every class, Zakum,
+Papulatus, and most of Ossyria</strong> (Orbis, El Nath, Ludibrium
+dungeons, Omega Sector, Aqua Road, Mu Lung, NLC), and it presented that
+as coming from Nexon's release notes. It didn't - no Nexon source said
+it. Nexon's Grand Launch release notes now confirm the opposite: the
+cap stays at Lv. 100, only the Lv. 10 and Lv. 30 advancements exist, and
+all six bosses are on Victoria Island. The page has been rewritten from
+those notes, and other guides that repeated the claim are being
+corrected too. Sorry - this is exactly the mistake the site exists to
+avoid.
+</div>
+
 <h2 id="tldr">TL;DR</h2>
 
-- **4 days of Founder's Access left** as of Oct 17, 2026 (14-day
-  FA window started Oct 6, Grand Launch is Oct 21).
-- **What opens Oct 21:** 3rd job advancement for every class, Zakum
-  boss fight, all Ossyria regions (Orbis / El Nath / NLC / Omega
-  Sector / Mu Lung Dojo / Aqua Road / Leafre / Phantom Forest /
-  Temple of Time), Ludibrium dungeons, Korean Folk Town.
-- **Priority prep by level tier** (details below):
-  - **Lv 1-20:** push to L30 + 2nd job. Everything downstream
-    assumes this.
-  - **Lv 21-30:** [KPQ](/party-quests/kerning-pq) grinding for
-    Squishy Shoes + 2nd job. The Squishy Shoes trade value may
-    drop at Grand Launch when more loot drops are available.
-  - **Lv 30-50:** Victoria Island endgame farming
-    ([Jr. Boogie / Zombie Mushroom / Fire Boar](/training-routes)
-    territory). Save mesos for Ossyria gear.
-  - **Lv 50-70:** Pre-position for Orbis near the [Before Takeoff
-    &lt;To Orbis&gt;](/maps/10002091) boarding map. Don't blow
-    mesos on gear that'll be outclassed.
-- **What NOT to do:** don't dump mesos into high-end Victoria
-  scrolling that Ossyria gear will outclass. Don't speedrun the
-  level cap - FA progress likely persists but the cap itself
-  (Lv 70) may still bite until Grand Launch opens 70+.
-
-<h2 id="the-oct-21-drop">The Oct 21 content drop</h2>
-
-### Sourced from Nexon's confirmed release notes
-
-The following is from Nexon's Oct 3 Founder's Access release notes
-and the Inkwell blog on Classic World's future (both cited in
-sources at the bottom of this page). Everything here is a Nexon
-confirmation, not community speculation.
-
-### Jobs
-
-| Job tier | Status in FA | Status Oct 21 |
-| --- | --- | --- |
-| 1st job (Warrior / Magician / Bowman / Thief) | Open at Lv 10 | Open |
-| 2nd job (Fighter / Page / Spearman / F-P Mage / I-L Mage / Cleric / Hunter / Crossbowman / Assassin / Bandit) | Open at Lv 30 | Open |
-| **3rd job** (Hero preview / Paladin / Dark Knight / F-P Mage / I-L Mage / Priest / Ranger / Sniper / Hermit / Chief Bandit) | **Gated** | **Opens Oct 21** |
-| 4th job (Hero / Paladin / Dark Knight / F-P Arch Mage / I-L Arch Mage / Bishop / Bowmaster / Marksman / Night Lord / Shadower) | Gated | Still gated post-launch (phased release) |
-
-**3rd job advancement at Lv 70:** every 2nd-job class has a Lv 70
-advancement path on Oct 21. The quest chain for each class is
-different (Warrior/Mage have specific NPC chains; Thief has Dark
-Lord in Kerning City). We'll add 3rd-job walkthrough pages after
-Grand Launch when the quest chains can be verified in-game.
-
-### Regions (per Nexon release notes)
-
-| Region | Lv range | Grand Launch day 1? |
-| --- | --- | --- |
-| Victoria Island | 1-70 | Already open |
-| **Orbis** | 50-70 | **Opens Oct 21** |
-| **El Nath** | 70-85 | **Opens Oct 21** |
-| **Ludibrium town** | - | Already open |
-| **Ludibrium dungeons** | 50-70 | **Opens Oct 21** |
-| **Omega Sector** | 70-85 | **Opens Oct 21** |
-| **Korean Folk Town** | 40-60 | **Opens Oct 21** |
-| **Aqua Road** | 70-85 | **Opens Oct 21** |
-| **Leafre** | 85-105 | Phased post-launch |
-| **Mu Lung Dojo** | 70+ | **Opens Oct 21** |
-| **Temple of Time** | 110+ | Phased post-launch |
-| **Phantom Forest** | 80-100 | Phased post-launch |
-| **NLC (New Leaf City)** | 50-70 | **Opens Oct 21** |
-
-### Bosses
-
-| Boss | Lv | Status Oct 21 |
-| --- | --- | --- |
-| **Zakum** | 50+ | **Opens Oct 21** (requires Zakum altar access via El Nath) |
-| **Papulatus** | 70+ | **Opens Oct 21** (requires Ludibrium dungeons) |
-| **Horntail** | 130+ | Phased post-launch (requires Leafre) |
-| **Pink Bean** | 130+ | Phased post-launch (requires Temple of Time) |
-
-### Other content additions (per Inkwell blog)
-
-- **Trading / Free Market** - already open in FA, assumed open at launch
-- **Guild Castle** - gated for FA, status at launch unclear
-- **Monster Carnival (MCPQ)** - gated for FA, status at launch unclear
-- **Cash shop content expansion** - new founder's packages and
-  cosmetic releases expected
-
-<h2 id="by-level-checklist">By-level prep checklist</h2>
-
-### If you're Lv 1-20
-
-**Priority:** Reach Lv 30 and complete 2nd job advancement before
-Oct 21.
-
-- Lv 1-10: finish the Maple Island tutorial, pick your class, do
-  1st job advancement.
-- Lv 10-20: grind outside your class town. Pigs for Warriors, Snails
-  for Magicians, Blue Mushrooms for Archers, Octopi for Thieves.
-- Lv 20-30: Ligators (Kerning), Zombie Mushrooms (Ant Tunnel),
-  Jr. Boogie (Perion), or [Kerning Party Quest](/party-quests/kerning-pq)
-  starting at Lv 21.
-- Finish 2nd job advancement at Lv 30. The 3rd-job chain requires
-  2nd job + Lv 70, so you need 2nd job locked in BEFORE Oct 21.
-
-**Why this matters:** 3rd job advancement at Lv 70 isn't an
-automatic "ding and advance" moment - it's a quest chain. If
-you're not 2nd job at launch, you lose a day of 3rd-job prep.
-
-### If you're Lv 21-30
-
-**Priority:** 2nd job advancement + [KPQ](/party-quests/kerning-pq)
-runs for Squishy Shoes.
-
-- Hit [KPQ](/party-quests/kerning-pq) at Lv 21 the moment you can.
-  Squishy Shoes (L28 all-stat, 5 slots, tradeable) is one of the
-  few universal-class gear pieces with high enough stat value to
-  survive into Ossyria.
-- Farm **Companion's Magic Boxes** - every clear gives one. Scrolls
-  and ores inside sell for consistent mesos.
-- Hit Lv 30 and advance to 2nd job. All 2nd job advancement NPCs
-  are in Victoria Island:
-  - Warrior: Dances with Balrog (Perion)
-  - Magician: Grendel the Really Old (Ellinia)
-  - Bowman: Athena Pierce (Henesys)
-  - Thief: Dark Lord (Kerning City)
-
-### If you're Lv 30-50
-
-**Priority:** Victoria Island endgame farming + save mesos for
-Ossyria gear.
-
-- Follow the [training routes guide](/training-routes) for the
-  30-50 bracket: Zombie Mushrooms, Jr. Boogie, Fire Boars, Jr. Yetis.
-- Hit your [class deep-dive guide](/class-builds) for build-specific
-  grinding recommendations and skill-order priorities.
-- **Save mesos** - do NOT spend 10M+ on scrolled Victoria gear that
-  Ossyria upgrades will outclass. Scroll your earrings and gloves
-  (small-slot efficient pieces) but hold off on big-ticket weapon
-  scrolling until after Oct 21.
-- Prep for Zakum helmet: Zakum fight opens at Lv 50 but the altar
-  access is through El Nath. If you can hit Lv 50 by Oct 21 you can
-  queue for Zakum on launch day.
-
-### If you're Lv 50-70
-
-**Priority:** Pre-position for Ossyria + Zakum helmet grind.
-
-- Keep leveling through Victoria endgame maps + hidden maps. See
-  the [gearing 30+ guide](/gearing-30-plus) for L50+ gear targets.
-- Pushed past Lv 70? The
-  [Level 70-100 Capstone](/level-70-100-capstone) has the SP
-  holdback rules + per-class 3rd-job previews for Day-1 of Grand
-  Launch.
-- **Before Takeoff <To Orbis>** (map [10002091](/maps/10002091))
-  is the Orbis boarding/transit map. The map's already in the
-  datamine but the actual boat ride to Orbis is gated. Being near
-  it at launch means you can be first-wave into Orbis grinding.
-- If you hit Lv 70 before Oct 21, you'll be at the FA cap. Don't
-  panic - that's just how the cap works. Your progress persists.
-- Zakum helmet (item 1002180) grinding opens Oct 21. The datamine
-  shows the helmet already exists; you just can't fight Zakum until
-  the gate drops.
-
-### If you've hit Lv 70 (the FA cap)
-
-**You've maxed out FA.** Enjoy the ride into Oct 21.
-
-- Keep farming mesos for Ossyria gear transitions.
-- Prep your mental 3rd-job plan - which skills do you want to
-  prioritize? Each class deep-dive guide covers 3rd-job preview
-  context.
-- Help under-leveled friends run [KPQ](/party-quests/kerning-pq)
-  - you cap at Lv 30 for KPQ entry so FA 70 can't carry, but Lv
-    30 chars can.
-
-<h2 id="what-not-to-do">What NOT to do</h2>
-
-### Don't dump mesos on gear Ossyria will outclass
-
-The classic Maple pattern is "L30-50 Victoria gear slot-scrolled
-with Greater scrolls, then abandoned for L50+ Orbis gear." Don't
-burn 30M+ mesos on 60% scrolls for a Lv 40 overall-armor piece
-that you'll replace in 2 weeks at Orbis.
-
-**What IS worth scrolling:**
-- Earrings - small slot count, high stat payoff. Earring STR/DEX/INT/LUK
-  Intermediate scrolls (60% +2 stat) from [KPQ](/party-quests/kerning-pq)
-  are durable past L70.
-- Shoes - Squishy Shoes (L28 all-stat) is one of the best universal
-  pieces. Scroll them for Speed (Shoes Speed Scroll Greater +3 speed).
-- Gloves - crit damage line + jump line are durable past L70.
-
-**What's NOT worth scrolling at FA:**
-- Lv 35-40 overall armors - get outclassed by Lv 50 Orbis chainmails.
-- Lv 40 helmets - the Zakum helmet (L50) blows them away.
-- Lv 30-40 weapons - the Orbis+ weapon tier starts at L50.
-
-### Don't speedrun past Lv 70
-
-You'll hit the FA cap. Celebrate, don't rage. The cap persists
-until Grand Launch.
-
-### Don't believe hearsay about what opens Oct 21
-
-Only trust:
-1. Nexon's official release notes
-2. In-game announcements from Nexon GMs
-3. Our [FA Access Status](/fa-access-status) page which cross-references
-   both sources
-
-Everything else - including Reddit posts, Discord rumors, YouTube
-"leaks" - is unverified. The Oct 21 content list in this guide is
-sourced from Nexon directly.
-
-### Don't abandon KPQ
-
-The Companion's Magic Box drop pool includes **crit damage scrolls
-for earrings** (Earring Crit. Damage Scroll: Intermediate). These
-are durable past L70 and useful on every class. Keep farming KPQ
-even at Lv 30+ (you can carry Lv 21-29 members as long as you're
-Lv 30 or under).
-
-<h2 id="class-prep-matrix">Class prep matrix</h2>
-
-What each class should prioritize in the next 4 days:
-
-| Class | FA goal | Oct 21 priority |
-| --- | --- | --- |
-| [Fighter](/fighter-build) | Hit L50+ in Victoria endgame; farm Jr. Boogies for Jr. Boogie Horn ETC + mesos | Advance Hero at Lv 70 (3rd job prep: pure STR, max Power Strike + Slash Blast) |
-| [Page](/page-build) | Hit L50+; farm Jr. Yetis in Perion for ETC + axe drops | Advance Paladin or Dark Knight branch at Lv 70 |
-| [Spearman](/spearman-build) | Hit L50+; Hyper Body prep for party invites | Advance Dark Knight at Lv 70 - Hyper Body unlocks |
-| [F-P Mage / I-L Mage](/wizard-build) | Hit L50+; Victoria elemental-weak map grinding (Fire Boar for F-P, Clang for I-L) | Advance 3rd job F-P or I-L Mage at Lv 70; Teleport Mastery unlocks for I-L |
-| [Cleric](/cleric-build) | Hit L50+ by healing on undead maps (Zombie Mushroom territory). Priest demand increases at Grand Launch | Advance Priest at Lv 70 - Mystic Door + Holy Symbol = party meta |
-| [Hunter / Crossbowman](/archer-build) | Hit L50+; farm Mushmom for Mushmom Scroll | Advance Ranger or Sniper at Lv 70; AOE skills unlock |
-| [Assassin](/assassin-build) | Hit L50+; Lucky Seven grind on single-target maps | Advance Hermit at Lv 70; Shadow Partner is the biggest DPS jump in the game |
-| [Bandit](/bandit-build) | Hit L50+; Steal Mastery grind | **Chief Bandit at Lv 70 - Meso Explosion unlocks the farming meta for CW** |
-
-### Why Chief Bandit specifically
-
-Chief Bandit's **Meso Explosion** (3rd job skill) uses dropped
-mesos as damage. This creates a unique farming loop: your mobs
-drop mesos, you pick them up with a drop-pick macro, then detonate
-for AOE damage. Entire training routes change on Oct 21 for
-Bandits specifically. See the [Bandit guide](/bandit-build) for
-pre-launch preview.
-
-<h2 id="done-with-fa-checklist">"Am I done with FA?" checklist</h2>
-
-For players who want a scannable list of "did I actually use this
-window" questions. Each item has a self-reported status - check
-them off mentally as you read. No scoring; this is a vibe check,
-not a grade.
-
-### Progression (the character work)
-
-- [ ] Hit Lv 30 and advanced 2nd job on at least one character
-- [ ] Pushed that character to Lv 50+ (unlocks the
-      [bosses-at-30-plus](/bosses-at-30-plus) tier content)
-- [ ] Finished the 2nd-job SP tree on your main (holding SP for 3rd
-      job only matters AFTER your 2nd-job core is maxed - see the
-      [Level 70-100 Capstone](/level-70-100-capstone#sp-holdback-rules))
-- [ ] Grinded past Lv 70 if time allowed (every level past 70 banks
-      3 SP for Day 1 of Grand Launch)
-
-### Gear (the stuff that carries into Grand Launch)
-
-- [ ] Weapon scrolled with 60% ATT scrolls (your FA weapon survives
-      10-20 levels into 3rd job - this is high-ROI)
-- [ ] Gloves scrolled with 60% ATT
-- [ ] Earrings scrolled with 60% stat (CW's new crit-damage line
-      makes earrings a damage upgrade, not just a stat stick)
-- [ ] Shoes have at least one Speed scroll applied
-- [ ] Cape acquired (Gaia L65 is the FA ceiling - do not scroll
-      above-Gaia capes, they don't exist in FA)
-- [ ] You know which slot you'll replace FIRST at Grand Launch
-      (hint: your overall at Zakum Helmet if Zakum opens Day 1)
-
-### Economy (the meso bank)
-
-- [ ] Bank balance target hit for your playstyle:
-      casual = 2M, regular = 5-10M, grinder = 15M+ (per the
-      [Capstone's meso targets](/level-70-100-capstone#meso-targets))
-- [ ] NPC-sold any trash ETC you've been hoarding
-- [ ] Checked [meso.watch](https://meso.watch) prices before
-      selling cosmetic drops - some crate items trade well above
-      their NPC price
-
-### Social (the stuff you can't buy later)
-
-- [ ] Joined a guild or made a crew
-- [ ] Attended at least one GM-run event (see the
-      [FA Events Calendar](/fa-events-calendar) for what's left)
-- [ ] Finished at least one party-quest run of [KPQ](/party-quests/kerning-pq)
-- [ ] Got on at least one party with a Cleric (Heal grinding is
-      the single biggest EXP multiplier in FA)
-
-### Content (the stuff that only exists in FA)
-
-- [ ] Ran [Forgotten Hollow](/hollow) - FA has the only exposed
-      portals right now, timing is Grand-Launch-unknown
-- [ ] Explored the full [Victoria Island map](/world) at least once
-      to orient yourself before Ossyria opens
-- [ ] Checked out the [Classic World features](/guides/whats-new-in-cot2)
-      Nexon added on top of traditional MapleStory (Citizenship,
-      Crafting, Physical Fitness Test)
-
-### Optional bragging-rights goals
-
-- [ ] Hit Lv 100 before Oct 20 (requires 70+ hours of grinding
-      past Lv 70 - serious time investment)
-- [ ] Dropped a [Mushmom](/bosses/mushmom) or
-      [Zombie Mushmom](/bosses/zombie-mushmom) solo kill at level
-- [ ] Pulled a Founder's or Aurora crate rare
-- [ ] Scrolled a weapon with ALL slots filled (clean 7-of-7
-      successful scrolls)
-
-### If you check 10+ boxes
-
-You used Founder's Access well. Your Grand Launch character is
-ready to hit the ground running on Oct 21.
-
-### If you check 5-9 boxes
-
-You're in good shape. The remaining items are the "nice to have"
-tier; your character fundamentals are solid.
-
-### If you check 0-4 boxes
-
-No stress - FA is a 2-week window, not a mandatory curriculum. If
-you're a casual player, 0-4 boxes is fine. If you WANT to be more
-ready for Grand Launch, the single highest-ROI item on the list is
-**scroll your weapon with 60% ATT** - that one carries 10-20 levels
-into 3rd job and compounds into every DPS calculation afterward.
-
-<h2 id="unknowns">What we don't know yet</h2>
-
-### FA progress persistence
-
-**Likely yes, not confirmed.** Nexon hasn't explicitly stated
-whether FA character progress carries to Grand Launch. Industry
-pattern says yes (open beta -> live is standard). Treat it as
-confirmed-safe but don't invest 100M mesos on a specific build
-until we see the Oct 21 patch notes.
-
-### Phased Ossyria rollout
-
-**Day 1 confirmed:** Orbis, El Nath, NLC, Omega Sector, Mu Lung
-Dojo, Aqua Road, Korean Folk Town. **Phased later:** Leafre
-(Horntail region), Temple of Time (Pink Bean region), Phantom
-Forest.
-
-The phased regions are unlikely to open in October. Expected
-timing: late 2026 to early 2027.
-
-### Exact 3rd-job skill tuning
-
-Our class guides reference traditional MapleStory skill values when
-previewing 3rd job content (because the Classic World FA client
-doesn't yet expose 3rd-job skill tuning). Nexon may re-tune 3rd-job
-skills at Grand Launch in the same way they re-tuned 1st-job
-(unified Lv 10 across all classes). Don't rely on specific skill
-damage numbers until the Oct 21 patch notes drop.
-
-### Trade / Free Market enforcement
-
-Free Market is already open in FA. Whether Nexon tightens trading
-rules at Grand Launch (e.g. trade cooldowns, scroll-trade limits)
-is unknown. Treat Free Market as functional-until-told-otherwise.
-
-### Fourth job timing
-
-4th job (Hero / Paladin / Dark Knight / Arch Mage / Bishop /
-Bowmaster / Marksman / Night Lord / Shadower) is gated post-launch
-with no announced date. Industry speculation: 3-6 months after
-Grand Launch.
+- **Servers open October 21, 2026 at 6:00 PM UTC** (11:00 AM Pacific,
+  2 PM Eastern, 8 PM CEST). Founder's Access characters carry over.
+- **Level cap: Lv. 100.** Job advancements at **Lv. 10** and **Lv. 30**.
+  No 3rd Job.
+- **Six bosses**, all on Victoria Island: Mano, **Stumpy** (new),
+  Mushmom, Shade, Zombie Mushmom, Jr. Balrog.
+- **New area:** Perion's **Excavation Site**.
+- **New systems:** **Housing** and the **Lie Detector Test**.
+- **Trading** unlocks 24 hours after a character on your account
+  reaches Lv. 15.
+- **Forgotten Hollow** opens in **November**.
+- Events run from day one - see the
+  [Grand Launch Event Calendar](/launch-events).
+
+<h2 id="getting-in">Getting in</h2>
+
+- **Nexon Launcher:** the Classic World client can only be downloaded
+  on launch day. Install the launcher and log in ahead of time; on
+  launch day open MapleStory in your library, switch on the
+  **MapleStory Classic World** toggle, and download the client.
+- **Steam:** the games are bundled. Install MapleStory and let its
+  updates finish beforehand - that makes the launch-day patch much
+  smaller.
+- **Platforms:** Windows and macOS.
+- **Languages:** English, plus **Spanish (Beta)** and **Korean (Beta)**.
+  Translations are machine-generated; the UI, class names, cash items,
+  and pets stay in English.
+- **Controls:** choose **Classic Style** or **Modern Style** key
+  bindings (Modern supports WASD movement). Xbox and PlayStation
+  controllers work, but **Enable Controller Support** is off by default
+  in Game Options.
+- **Characters:** up to **3 per account**. Deleted characters go
+  through a waiting period before removal.
+
+<h2 id="jobs-and-levels">Jobs and levels</h2>
+
+Every character starts as a Beginner on Maple Island, then moves to
+Victoria Island. Maximum level is **Lv. 100**.
+
+| Job | Town | Instructor | 1st Job | 2nd Job paths (Lv. 30) |
+| --- | --- | --- | --- | --- |
+| [Warrior](/jobs/warrior) | Perion | Dances with Balrog | Lv. 10 | Fighter, Page, Spearman |
+| [Magician](/jobs/magician) | Ellinia | Grendel the Really Old | Lv. 10 | Wizard (Fire/Poison), Wizard (Ice/Lightning), Cleric |
+| [Bowman](/jobs/bowman) | Henesys | Athena Pierce | Lv. 10 | Hunter, Crossbowman |
+| [Thief](/jobs/thief) | Kerning City | Dark Lord | Lv. 10 | Assassin, Bandit |
+
+There is no 3rd Job advancement at Grand Launch. Nexon has said 3rd Job
+and some regions will arrive sequentially after launch (Inkwell, Oct 2),
+with no date yet.
+
+<h2 id="bosses">Bosses</h2>
+
+Six bosses on Victoria Island:
+
+| Boss | Notes |
+| --- | --- |
+| [Mano](/bosses/mano) | Hidden-street mini-boss |
+| **Stumpy** | New versus Founder's Access. Not in our datamine yet - dossier coming after the next data refresh |
+| [Mushmom](/bosses/mushmom) | Hidden-street world boss |
+| [Shade](/bosses/shade) | Citizenship-quest ghost boss |
+| [Zombie Mushmom](/bosses/zombie-mushmom) | Sleepywood hidden street |
+| [Jr. Balrog](/bosses/jr-balrog) | Sleepywood dungeon |
+
+King Slime is fought at the end of the
+[Kerning City Party Quest](/party-quests/kerning-pq). Full roster:
+[Bosses](/bosses).
+
+<h2 id="excavation-site">New: Perion's Excavation Site</h2>
+
+The release notes add a new area in Perion, the **Excavation Site**,
+with eight listed monsters:
+
+Ghost Stump, Wooden Mask, Rocky Mask, Skeledog, Mummydog, Skeleton
+Soldier, Officer Skeleton, Commander Skeleton.
+
+None of the eight are in our datamine yet, so there are no stat pages
+for them. Levels, maps, and drops will follow once the data is
+refreshed or verified in-game.
+
+<h2 id="systems">Systems</h2>
+
+- **[Crafting](/crafting)** (Lv. 10+): Silas Irons (Smithing), Mr. Thunder
+  (Weaponcrafting), Francois (Tailoring), Vicious (Woodcrafting), JM From
+  tha Streetz (Leatherworking), Chrishrama (Arcforge).
+- **[Citizenship](/citizenship)** (Lv. 12+): Arthur at Henesys Town Hall,
+  Roxy at Kerning City Civic Center. Perks are specialty-shop access and
+  discounts on cabs, storage, and some general-store items. Community
+  Board requests earn Contribution toward your Citizenship grade.
+- **Housing** (new): one home at a time, in Henesys or Kerning City,
+  bought with mesos from the Housing Registrar - **Bianca** (Henesys)
+  or **Scarlett** (Kerning City). Needs Citizenship grade **Visitor** or
+  higher. Decorate, invite players, visit theirs; the home is shared
+  across every character on your account.
+- **Lie Detector Test** (new): sold at the Citizen General Store
+  (account-bound, 7 days). Use it on a character behaving abnormally to
+  start a minigame; a character that fails goes to the **Truth Booth**,
+  where they must stay logged in for a set time with movement, skills,
+  chat, items, and all content blocked.
+- **Beauty Album:** saves hairstyles, faces, and skin colors so you can
+  switch back later.
+- **[Kerning City Party Quest](/party-quests/kerning-pq)** ("First Time
+  Together"): Lv. 21+, start with Lakelis in Kerning City, **Channels
+  3 - 12 only**, ends against King Slime.
+
+<h2 id="not-in-launch">Not in Grand Launch</h2>
+
+- **3rd Job** - not documented; only Lv. 10 and Lv. 30 advancements.
+- **Anything past Lv. 100** - the cap is unchanged.
+- **Ossyria** (Orbis, El Nath and beyond), **Ludibrium**, **Zakum**,
+  **Papulatus** - none appear in the release notes. The content
+  described is Maple Island, Victoria Island, and the new Excavation
+  Site.
+- **Forgotten Hollow** - opens in November; no exact date yet.
+
+For what is still unknown (cap raise, 3rd Job timing, the roadmap), see
+[Not yet announced](/launch#open-questions) on the Launch Hub.
+
+<h2 id="day-one">Day-one checklist</h2>
+
+1. **Pre-install** the launcher (or the Steam base game) before
+   6:00 PM UTC.
+2. **Get one character to Lv. 15 early.** The trade restriction lifts
+   24 hours after a character on the account reaches Lv. 15, so the
+   sooner one gets there, the sooner the whole account can trade.
+3. **At Lv. 10, pick up '[Event] The Journey Begins'** from Maple
+   Administrator and start collecting Maple Leaves - it's a 14-check-in
+   ladder, one per day per account.
+4. **At Lv. 25, start the Mark of the Beta quest** with Jay in Henesys
+   (runs until November 18).
+5. **The first GM event** is the jump-quest challenge at
+   **12:00 AM UTC on October 22** - that's 5:00 PM Pacific on launch day.
+   Enter through Paul at Lith Harbor.
+6. **For KPQ at Lv. 21,** switch to a channel between 3 and 12.
 
 <h2 id="faq">FAQ</h2>
 
-**Does my FA character carry to Grand Launch?**
+**Does 3rd Job open at Grand Launch?**
 
-Likely yes. Nexon hasn't explicitly confirmed but industry pattern
-and Classic World's Inkwell blog imply continuity. See
-[Unknowns](#unknowns) above.
+No. The release notes list only the Lv. 10 and Lv. 30 advancements,
+and the cap stays at Lv. 100.
 
-**Can I run KPQ at Lv 31+?**
+**Is Zakum (or Orbis, or El Nath) available at launch?**
 
-No. KPQ enforces Lv 21-30. Lv 31+ characters cannot enter. See
-the [KPQ guide](/party-quests/kerning-pq) for the full gating.
+Not according to the release notes. The six launch bosses are all on
+Victoria Island, and the only new area is Perion's Excavation Site.
 
-**I'm Lv 70 and bored. What do I do?**
+**Does my Founder's Access character carry over?**
 
-Options:
-- Farm Mushmom (hourly spawn) for Mushmom Scrolls - these are
-  durable past L70.
-- Help friends run [KPQ](/party-quests/kerning-pq) if they're Lv
-  21-30.
-- Save mesos for Ossyria scroll meta.
-- Scroll a set of durable earrings + gloves with KPQ scrolls.
+Yes. Nexon confirmed when Founder's Packages went on sale that
+Founder's Access progress carries into Grand Launch.
 
-**Will there be a wipe at Grand Launch?**
+**When does Forgotten Hollow open?**
 
-Very unlikely. Nexon has not signaled a wipe. Treat your FA
-character as a persistent character.
+November. Nexon hasn't given an exact date.
 
-**What about 4th job?**
+**Is Stumpy a new boss?**
 
-Gated for a later update. Expected 3-6 months post-launch.
-Nothing to prep for right now.
+New to Classic World's roster - it wasn't one of the five Founder's
+Access bosses. We don't have its stats yet; it will get a boss page
+after our next data refresh.
 
-**Can I pre-pay for Grand Launch content?**
-
-No. Founder's packages are FA-era items (cosmetics + pets +
-mesos). They don't unlock Grand Launch content. Everyone has
-equal access to the Oct 21 drop.
-
-**I bought a Founder's package - do I get anything on Oct 21?**
-
-Just the cosmetics / pets / mesos you already received. No
-day-1 head-start on 3rd job or Ossyria.
-
-**What's the best class to roll if I'm starting fresh now?**
-
-Depends on preference. For PURE farming post-launch:
-- **Chief Bandit** (Meso Explosion is the farming meta)
-- **F-P Wizard** (fire-weak Ossyria mobs galore)
-- **Priest** (party invite demand)
-
-For solo play: **Assassin** (Shadow Partner at 3rd job is the
-single biggest DPS jump in the game).
-
-See each [class deep-dive](/class-builds) for pre-launch previews.
-
-Last reviewed 2026-10-17. 4 days until Grand Launch.
+Last reviewed 2026-10-21.

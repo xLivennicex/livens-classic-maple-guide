@@ -193,7 +193,7 @@ full tables and Zakum Helmet caveat.
 ### Tank-focused alternative scrolling
 
 Instead of maxing ATT on everything, some Page players scroll
-**MDEF overalls** for Zakum (gated for Grand Launch) and
+**MDEF overalls** for Zakum (not in Grand Launch; no date) and
 **earring/overall WDEF** scrolls for Zombie Mushmom tanking.
 This is a late-game-specialist pivot — not recommended for FA play.
 
@@ -221,15 +221,15 @@ wash removal means every class's HP ceiling is driven by base-table
 HP pool + Power Guard reflect" - in Classic World, Page's HP pool
 at Lv 120 projects to roughly 5,000-6,000 based on the base-table
 values in the FA datamine. <strong>Whether Page can still reliably
-tank Zakum at Grand Launch is a top community debate</strong>.
-Monitor the <a href="/community-resources">r/Maplestory Classic World
-threads</a> as we approach Oct 21.
+tank Zakum once it arrives is a top community debate</strong> (Zakum
+is not in Grand Launch). Monitor the
+<a href="/community-resources">r/Maplestory Classic World threads</a>.
 </div>
 
 ### The 2nd-job FA takeaway
 
-For FA play (Lv 70 cap), none of the Grand Launch endgame concerns
-apply. Page is a strong 2nd-job class with:
+Through Grand Launch (Lv. 100 cap, no 3rd Job, no Zakum), none of these
+endgame concerns apply yet. Page is a strong 2nd-job class with:
 - The best party-defensive buffs (Threaten + Power Guard)
 - Comparable solo grinding to Fighter
 - Mandatory-invite status for Jr. Balrog + Zombie Mushmom parties
@@ -268,7 +268,7 @@ Recast both at the ~150s mark during long boss fights.
 
 **Will this guide update when White Knight unlocks?**
 
-Yes. Page → White Knight (3rd job) → Paladin (4th job) opens at Grand
-Launch. Guide gets a 3rd-job section covering Charged Blow,
-Fire/Ice/Lightning Charge mechanics, and the BW pivot question.
-Last reviewed 2026-10-11.
+Yes. Page → White Knight (3rd job) → Paladin (4th job) is the
+traditional path; 3rd Job is not in Grand Launch and has no announced
+date. The guide gets a 3rd-job section when it arrives.
+Last reviewed 2026-10-21.

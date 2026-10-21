@@ -76,8 +76,8 @@ dying. **No other class provides this**.
   Bless + Heal)
 - Expect boss party invites at Lv 50+ purely because you have
   Hyper Body maxed
-- At Grand Launch when Zakum opens, Spearman is near-mandatory for
-  every Zakum run
+- Whenever Zakum arrives (it is not in Grand Launch), Spearman will be
+  near-mandatory for every Zakum run
 
 <h2 id="spear-vs-polearm">Spear vs polearm</h2>
 
@@ -247,7 +247,7 @@ Body. Max Hyper Body before Final Attack.
 **My party keeps asking me to recast Hyper Body - is it short?**
 
 200 seconds per cast = ~3.3 minutes. On long boss fights (Jr.
-Balrog, Zakum at Grand Launch) you'll need 2-3 recasts. Keep MP
+Balrog, Mushmom) you'll need 2-3 recasts. Keep MP
 pots stocked.
 
 **Does Hyper Body stack with Bless (Cleric)?**
@@ -258,6 +258,7 @@ is why those two are the premier party-support classes.
 
 **Will this guide update when Dark Knight unlocks?**
 
-Yes. Spearman → Dragon Knight (3rd job) → Dark Knight (4th job)
-unlocks at Grand Launch (Oct 21). Guide gets a 3rd-job SP section
-covering Dragon Blood, Dragon Roar, Beholder. Last reviewed 2026-10-11.
+Yes. Spearman → Dragon Knight (3rd job) → Dark Knight (4th job) is
+the traditional path; 3rd Job is not in Grand Launch and has no
+announced date. The guide gets a 3rd-job SP section when it arrives.
+Last reviewed 2026-10-21.

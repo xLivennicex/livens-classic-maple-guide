@@ -60,9 +60,10 @@ toc:
   2nd-job Cleric level, but **Priest/Bishop builds traditionally
   depended on HP wash for Zakum / Horntail survival**. CW removed
   the wash; the long-term endgame viability question is one of the
-  top Reddit debates in the server right now. For FA at Lv 70 cap,
-  this is non-impactful — but if you plan to Priest/Bishop at Grand
-  Launch, know that endgame content difficulty may shift.
+  top Reddit debates in the server right now. Up to the Lv. 100 cap at
+  Grand Launch this is non-impactful — but if you plan to go
+  Priest/Bishop once 3rd Job arrives, know that endgame content
+  difficulty may shift.
 - **FA endgame kit:** scrolled Lv 50 [Cromi](/items/1372007) wand,
   [Blue Calas](/items/1050029) overall, Zakum Helmet (if accessible,
   otherwise [Blue Seraphis](/items/1002187) L60), full Blue armor set.
@@ -91,16 +92,17 @@ you won't stack a 1.25× bonus on top of the 2× undead multiplier.
 
 Classic World added `crit damage` stat lines to earrings. Cleric
 doesn't have crit skills at 2nd job, but **Holy Arrow and Shining
-Ray (3rd job) can crit**. Scroll earrings now so you have them
-stock when 3rd job unlocks at Grand Launch.
+Ray (3rd job) can crit** in traditional MapleStory. 3rd Job is not in
+Grand Launch and has no date, so scroll earrings for your current kit
+first.
 
 <h2 id="the-hp-wash-removal-reality">The HP wash removal reality for Clerics</h2>
 
 <div class="callout callout--warning">
 <strong>This section is the main CW-specific angle for Cleric.</strong>
 If you're playing Cleric purely through FA (L30-70), skip this
-and come back post-launch. If you plan to 3rd-job Priest at Grand
-Launch, read carefully.
+and come back when 3rd Job is announced (it is not part of Grand
+Launch). If you plan to go Priest eventually, read carefully.
 </div>
 
 ### What HP washing did traditionally
@@ -127,8 +129,8 @@ is now **permanently locked to base HP table + AP**.
 - Priest/Bishop base HP at Lv 120 without wash is ~4,000-5,000
 - Zakum's magic attacks still hit for ~5,000-8,000 damage
 
-**The practical consequence:** at Grand Launch when Zakum opens,
-Priests may not be able to directly tank Zakum's attacks and will
+**The practical consequence:** whenever Zakum arrives (it is not in
+Grand Launch), Priests may not be able to directly tank Zakum's attacks and will
 have to rely on positioning + Invincible timing + Resurrection stall
 tactics. The community debate is still ongoing — some players argue
 "use Magic Guard + Invincible rotation to tank," others argue "CW
@@ -136,11 +138,11 @@ Priests are a party-support-only build at endgame."
 
 ### Our recommendation for Classic World Clerics
 
-**For FA (now through Oct 20):** this doesn't affect you. Play
-Cleric normally through Lv 70 cap. Our SP priority below is unaffected.
+**At Grand Launch:** this doesn't affect you. Play Cleric normally
+through the Lv. 100 cap. Our SP priority below is unaffected.
 
-**For Grand Launch (Oct 21 onwards):** 3rd-job Priest advancement
-opens. Monitor community discussion before committing to Bishop.
+**When 3rd Job arrives** (not in Grand Launch; no date yet): monitor
+community discussion before committing to Bishop.
 Current community lean: **Priest/Bishop is still viable**, but
 positioning and skill-rotation become harder.
 
@@ -168,7 +170,7 @@ problem. See the [Wizard build guide](/wizard-build) when it ships.
 ### The optional picks
 
 - **MP Eater** at level 1 only (duration/efficiency gain is minimal)
-- **Magic Guard** maxed if you have 50 extra SP (unlikely at Lv 70 cap)
+- **Magic Guard** maxed if you have 50 extra SP (realistic only late in the Lv. 70-100 stretch)
 
 ### The Heal grinding culture
 
@@ -422,8 +424,8 @@ after this one).
 
 **Does HP wash removal really hurt Cleric at endgame?**
 
-For 2nd-job FA play: no, zero impact. For 3rd-job Priest / 4th-job
-Bishop at Grand Launch: possibly — see
+For 2nd-job play (all of Grand Launch): no, zero impact. For an eventual
+3rd-job Priest / 4th-job Bishop: possibly — see
 [the HP wash reality section](#the-hp-wash-removal-reality) above.
 
 **Can I solo everything with Heal?**
@@ -457,6 +459,5 @@ Guard (self-defense via MP shield) but no healing or party-wide buffs.
 
 **Will this guide update when Priest unlocks?**
 
-Yes. Priest/Bishop opens at Grand Launch (Oct 21). This guide gets
-a 3rd-job SP section covering Shining Ray, Holy Symbol, Resurrection,
-Mystic Door, Doom. Last reviewed 2026-10-11.
+Yes, when Nexon releases 3rd Job (it is not in Grand Launch). This
+guide will get a 3rd-job SP section then. Last reviewed 2026-10-21.

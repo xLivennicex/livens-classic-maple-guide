@@ -283,8 +283,8 @@ in-game event ticker for the exact entry point - it announces
 
 Most events gate by level bracket (Lv 1-30, 30-50, 50-70). You can
 attend any bracket you qualify for, but higher brackets usually have
-better rewards and more competitive players. Lv 70 FA cap players
-should queue for the 50-70 bracket.
+better rewards and more competitive players. Lv 70+ players should
+queue for the highest bracket they qualify for (the FA cap was Lv. 100).
 
 **Will events repeat during Grand Launch?**
 

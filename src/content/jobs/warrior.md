@@ -257,6 +257,6 @@ faq:
   - question: "Can I change my mind at second job?"
     answer: "No. Second job is a one-time choice per character. If you want to try another branch, you make a new Warrior."
   - question: "Do I need to grind Mark of Beta on this character?"
-    answer: "Partial answer: the Oct 3 Founder's Access release notes confirmed Mark of Beta <strong>begins at Grand Launch on October 21</strong>, not during Founder's Access. If you're planning to level a main during Founder's Access, Mark of Beta is NOT a Founder's Access concern. Specific per-character vs per-account mechanics are still unpublished - see the <a href=\"/launch#mark-of-beta\">Launch Hub Mark of Beta section</a>."
+    answer: "Yes, if you want the Mark of the Beta on this character - and it needs Lv. 25. Per Nexon's Grand Launch release notes, characters Lv. 25+ accept <strong>'[Event] The Marks We Leave Behind'</strong> from Jay in Henesys and follow its clues around Victoria Island to the Mark of the Beta. It runs October 21 through <strong>November 18</strong>. Whether the Mark is per character or per account isn't stated. Full details: <a href='/launch-events#marks-we-leave-behind'>Grand Launch Event Calendar</a>."
     badge: "awaiting-confirmation"
 ---

@@ -322,7 +322,7 @@ Your second job hits at L30 and you're suddenly a real character. These maps let
 - **Map:** [Sanctuary Entrance IV](/maps/10005104) — deep Ant Tunnel past Cursed Sanctuary.
 - **Mobs:** [Tauromacis](/mobs/52) x2, [Taurospear](/mobs/53) x5, [Cold Eye](/mobs/23) x5.
 - **The reality check:** EXP-to-HP is *still* bad here, and **unavoidable Lightning Strike attacks** hurt your efficiency further. You are here for the loot lottery, not the grind.
-- **Why show up anyway:** These mobs *might* drop some of the best gear currently available at this tier. Depending on how quickly Ossyria arrives at launch, they may be worth farming for a limited window before the map metagame shifts entirely.
+- **Why show up anyway:** These mobs *might* drop some of the best gear currently available at this tier. Ossyria isn't in Grand Launch and has no date, so this tier's gear stays relevant for a while.
 
 ---
 

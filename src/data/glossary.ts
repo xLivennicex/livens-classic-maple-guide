@@ -142,7 +142,7 @@ export const TERMS: GlossaryTerm[] = [
 
 	// --- Bosses ---
 	{ term: "Boss", aliases: [], category: "boss", definition: "A high-HP unique enemy with named identity. In-game 'isBoss' flag distinguishes them from field mobs. Classic-era bosses include Mano, King Slime, Mushmoms, Balrogs.", linkTo: "/bosses" },
-	{ term: "Zakum", aliases: ["Zak"], category: "boss", definition: "The Lv 50+ El Nath boss. Multi-arm mechanic (arms respawn until body is exposed). Zakum Helmet drop is THE stat helm of Classic-era. Not in COT2 yet but expected at launch." },
+	{ term: "Zakum", aliases: ["Zak"], category: "boss", definition: "The Lv 50+ El Nath boss. Multi-arm mechanic (arms respawn until body is exposed). Zakum Helmet drop is THE stat helm of Classic-era. Not in Founder's Access or Grand Launch; Nexon hasn't announced when it opens." },
 	{ term: "HT", aliases: ["Horntail"], category: "boss", definition: "Horntail. The Leafre expedition boss. Multi-headed dragon with a phase-based fight. Endgame traditional MapleStory content; drops Horntail Necklace for +5-6 all-stat." },
 	{ term: "Mushmom", aliases: ["MM"], category: "boss", definition: "A field-spawn mini-boss that respawns every ~1 hour. Green (Lv 30, Mushroom Park), Zombie (Lv 60), and Blue variants. Camping Mushmom spawn points is a traditional MapleStory pastime." },
 

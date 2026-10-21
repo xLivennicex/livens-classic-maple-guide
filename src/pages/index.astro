@@ -114,6 +114,12 @@ const NEXON_ANNOUNCEMENT =
 const NEXON_ANNOUNCEMENT_ARCHIVE =
 	"https://web.archive.org/web/20260821205944/https://www.nexon.com/maplestory/news/general/44359/ossyria-exploration-report";
 
+// Grand Launch release notes (Oct 20, 2026) - source of the Grand Launch
+// and Mark of Beta ledger rows. Mirrors the sources.ts entry
+// `nexon-grand-launch-release-notes`.
+const GRAND_LAUNCH_NOTES =
+	"https://www.nexon.com/maplestory/news/general/46506/grand-launch-release-notes";
+
 const ledgerEntries: LedgerEntry[] = [
 	{
 		label: "Official announcement",
@@ -128,19 +134,27 @@ const ledgerEntries: LedgerEntry[] = [
 	},
 	{
 		label: "Founder's Access",
-		status: "needs-reverification",
-		note: "verify Oct. 6",
+		status: "founders-verified",
+		complete: true,
+		note: "Oct 6 - 20",
+	},
+	{
+		label: "Grand Launch",
+		status: "officially-confirmed",
+		sourceUrl: GRAND_LAUNCH_NOTES,
+		note: "Oct 21, 6:00 PM UTC",
 	},
 	{
 		label: "Mark of Beta Quest",
-		status: "needs-reverification",
-		note: "limited-time; ends late November",
+		status: "officially-confirmed",
+		sourceUrl: GRAND_LAUNCH_NOTES,
+		note: "Lv. 25+; Oct 21 - Nov 18",
 	},
 ];
 
 const prepChecklist = [
 	"Choosing your first character",
-	"Mark of Beta Quest (limited-time, ends late November)",
+	"Mark of Beta Quest (Lv. 25+, ends November 18)",
 	"Items worth keeping",
 	"Beginner Island walkthrough",
 	"Early mesos and equipment",
@@ -204,9 +218,9 @@ const prepChecklist = [
 						rel="noopener external"
 						target="_blank"
 					>official launch FAQ</a>
-					(Sep 29) for the practical details. Founder's Access opens
-					<strong>October 6</strong>; Grand Launch is
-					<strong>October 21</strong> - both at 11 AM Pacific.
+					(Sep 29) for the practical details. Founder's Access ran
+					<strong>October 6 - 20</strong>; Grand Launch is
+					<strong>October 21 at 11 AM Pacific</strong> (6 PM UTC).
 				</p>
 			</aside>
 

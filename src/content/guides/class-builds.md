@@ -133,9 +133,9 @@ in the per-branch build guides linked below.
 - **"Boss damage"** - we have per-boss recommendations in
   [Bosses at 30+](/bosses-at-30-plus) instead. Boss damage depends
   on the specific boss (defense value, elemental weakness, phases).
-- **"3rd job strength"** - speculative until Oct 21. We cover 3rd
-  job previews with explicit confirmed-vs-held flags in the
-  [Level 70-100 Capstone](/level-70-100-capstone#third-job-at-a-glance),
+- **"3rd job strength"** - speculative: 3rd Job is not in Grand Launch
+  and has no announced date. The
+  [Level 70-100 Capstone](/level-70-100-capstone#when-3rd-job-arrives) covers what is (and isn't) known,
   not here.
 
 <h2 id="classic-world-build-rules">Classic World build rules</h2>
@@ -182,7 +182,8 @@ Access**. See the [Gearing guide's "What's not in FA"
 section](/gearing-30-plus#what-isnt-in-fa-yet) for the full checklist.
 
 **Build impact:** Zakum Helmet, Stormcaster Gloves, Von Leon's scrolls,
-Dragon-tier weapons — all unavailable until Grand Launch. Every build
+Dragon-tier weapons — none of them are obtainable at Grand Launch either
+(no Zakum, no Ossyria), and Nexon hasn't said when they will be. Every build
 below assumes you're using scrolled L50-70 CoT 2 gear as the FA
 endgame kit.
 
@@ -548,8 +549,8 @@ Same as Hunter: pure DEX.
 <strong>Full deep dive:</strong> we have a <strong>dedicated Bandit
 build guide</strong> covering Savage Blow + Steal, Fast vs Faster
 dagger speed class decision math, pure LUK allocation, and a
-<strong>Chief Bandit Meso Explosion preview</strong> (3rd job, Grand
-Launch) that shapes your 2nd-job investment now.
+<strong>Chief Bandit Meso Explosion preview</strong> (3rd job - not in
+Grand Launch, no date yet) that shapes your 2nd-job investment.
 <strong><a href="/bandit-build">Read the full Bandit guide →</a></strong>
 </div>
 
@@ -641,9 +642,9 @@ cash shop cost for 20+ wasted APs.
 
 **Should I max my 2nd job skill before 3rd job unlocks?**
 
-Yes if you're planning for Grand Launch. 3rd job is confirmed to
-unlock at Lv 70. 2nd job SP is capped so you'll naturally be able
-to max your core skills before 3rd job without wasting SP. The
+Yes. 3rd Job is not in Grand Launch and has no announced date (the
+level it unlocks at in Classic World hasn't been published either), so
+your 2nd-job skills are your whole kit for the foreseeable future. The
 question is only about the ORDER within 2nd job, which each branch
 section covers.
 
@@ -669,11 +670,12 @@ isn't a factor at all — Clerics are perfectly viable.
 
 **I want to 3rd job as [specific class] — what should I know?**
 
-3rd job is confirmed to unlock at Lv 70 but **3rd job content is
-held for Grand Launch** per Nexon's Oct 3 release notes. In FA, you
-cap your 2nd job skills and hold the SP that'll go into 3rd job
-skills until Grand Launch. For per-class 3rd-job previews, SP
-holdback rules, and Day-1 skill priorities, see the
+**3rd Job is not in Grand Launch** - Nexon's Grand Launch release notes
+list only the Lv. 10 and Lv. 30 advancements, and no date has been
+announced. (An earlier version of this answer said it would open at
+Grand Launch; that was wrong.) For now, max the 2nd job skills you use
+and only hold SP you have no use for. For the SP trade-off and the
+traditional 3rd-job names, see the
 [Level 70-100 Capstone](/level-70-100-capstone).
 
 **Where do I find my job's SP skill book in-game?**
@@ -686,5 +688,5 @@ different from an SP reset).
 
 **Will this guide update with 3rd job content post-launch?**
 
-Yes. When Grand Launch opens 3rd job advancement, each branch section
-gets a 3rd-job SP priority addition. Last reviewed 2026-10-11.
+Yes. When Nexon releases 3rd Job advancement, each branch section
+gets a 3rd-job SP priority addition. Last reviewed 2026-10-21.
