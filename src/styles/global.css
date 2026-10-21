@@ -1716,7 +1716,8 @@ details[open] > .disclosure-summary .disclosure-summary__chevron {
 
 .inline-badge {
 	display: inline-block;
-	margin-left: 0.35rem;
+	/* No margin-left: the source whitespace before the badge already
+	   renders as a space (compressHTML is off - see astro.config). */
 	vertical-align: middle;
 }
 

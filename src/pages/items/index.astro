@@ -536,7 +536,7 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 		margin-left: auto; font-size: 0.85rem;
 		color: var(--text-muted); font-family: monospace;
 	}
-	.cat-header__total { opacity: 0.6; margin-left: 0.2rem; }
+	.cat-header__total { opacity: 0.6; } /* source whitespace provides the gap */
 
 	/* Sprint 66 mobile fix: right-edge gradient signals "more columns
 	   -> scroll right" on narrow viewports. Without it users just see

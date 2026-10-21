@@ -76,8 +76,8 @@ toc:
 <strong>This is the defining CW Wizard mechanic.</strong>
 Classic World adds a <strong>+25% damage multiplier when your spell
 element matches a mob's weakness</strong>. Source:
-<a href="https://msclassic.wiki" target="_blank" rel="noopener">
-Lunitidal on msclassic.wiki</a>, Day 1 player tests confirmed.
+<a href="https://msclassic.wiki" target="_blank" rel="noopener">Lunitidal on msclassic.wiki</a>,
+Day 1 player tests confirmed.
 </div>
 
 ### How it works

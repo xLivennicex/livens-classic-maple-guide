@@ -203,7 +203,9 @@ const tierCounts = Object.fromEntries(
 	.tier-section__count {
 		font-size: 0.85rem;
 		color: var(--text-muted, #7a6b4a);
-		margin-left: 0.75rem;
+		/* ~0.3rem of the 0.75rem gap now comes from the rendered source
+		   space before this span (compressHTML is off). */
+		margin-left: 0.45rem;
 	}
 
 	.tier-section__head p {

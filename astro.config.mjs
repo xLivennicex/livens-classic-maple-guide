@@ -21,4 +21,13 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
 	site: "https://livens-classic-maple.pages.dev",
 	integrations: [sitemap()],
+	// compressHTML OFF on purpose. With it on, Astro deleted the
+	// newline+indent whitespace between text and an inline element
+	// written on its own line, gluing words to links site-wide:
+	// "mirrored from<a>maplestory.io</a>(GMS" -> "mirrored frommaplestory.io(GMS".
+	// A scan of dist/ found 14,228 glued links on 7,079 of 8,653 pages
+	// (Pagefind also indexed the glued tokens). Off: 0. Cost: +3.4%
+	// HTML over the wire (brotli), since whitespace compresses to ~nothing.
+	// If you re-enable it, every multi-line inline element needs {" "}.
+	compressHTML: false,
 });
