@@ -63,7 +63,7 @@ callout: |
 
 relatedGuides:
   - "/items/warrior-potion"
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
   - "/jobs/magician"
 
 verificationStatus: "closed-test-info"

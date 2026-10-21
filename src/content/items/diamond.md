@@ -25,22 +25,26 @@ editorial: |
       Diamond for the Fresh Milk needed to complete the chain.
     </li>
     <li>
-      <a href="/quests/ronnies-house-building-chain">Ronnie's
+      <a href="/quests/ronnie-house-building-chain">Ronnie's
       House-Building chain</a> step 4 (final) - 1 Diamond is
       required alongside 30 Cold Eye Tails and 10 Dragon Skins.
     </li>
   </ul>
 
-  <p><strong>How to acquire:</strong> Diamond drops from
-  various mid-level mobs (Zombie Lupins near Ellinia, Cold
-  Drakes in Ice Valley, various Sleepywood mobs). Drop rate
-  is low - historical traditional MapleStory estimates put it around 0.5-2%
-  depending on mob.</p>
+  <p><strong>How to acquire:</strong> no monster drops a Diamond
+  in the current client datamine. You <strong>refine one</strong>
+  from 1 Diamond Ore through <a href="/crafting">Arcforge</a>
+  (crafting level 6, 1,200 mesos). Diamond Ore drops from
+  several mobs, some as low as Lv. 8, and the
+  <a href="/quests/luke-the-security-guy">Luke the Security Guy</a>
+  quest can also award a Diamond. (An earlier version of this
+  page said Diamonds drop from Zombie Lupins and Cold Drakes;
+  the datamine lists no mob drops.)</p>
 
   <p><strong>Diamond vs Diamond Ore:</strong> two different
   items! <em>Diamond Ore</em> (WZ ID 4020007) is a crafting
   ore that drops from the
-  <a href="/quests/cursed-doll-chain">Cursed Doll chain</a>
+  <a href="/quests/cursed-doll-collection-chain">Cursed Doll chain</a>
   tier 3 - it's a smithing input. <em>Diamond</em> (this page,
   WZ ID 4020107) is the finished gem used as a trade / quest
   input. If a quest asks for a Diamond and your inventory
@@ -62,8 +66,8 @@ callout: |
 # ==== Cross-links ====
 relatedGuides:
   - "/quests/sleepywood-sauna-robe-chain"
-  - "/quests/ronnies-house-building-chain"
-  - "/quests/cursed-doll-chain"
+  - "/quests/ronnie-house-building-chain"
+  - "/quests/cursed-doll-collection-chain"
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"

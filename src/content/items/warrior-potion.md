@@ -43,7 +43,7 @@ editorial: |
   <h3>Where it comes from</h3>
   <ul>
     <li><strong>Ronnie's House-Building chain:</strong> the
-      L41 <a href="/quests/ronnies-house-building-chain">Ronnie
+      L41 <a href="/quests/ronnie-house-building-chain">Ronnie
       canonical</a> awards Warrior/Magic/Dexterity Potions
       across chain steps.</li>
     <li><strong>NPC purchase:</strong> various weapon shops
@@ -62,7 +62,7 @@ callout: |
 
 relatedGuides:
   - "/items/magic-potion"
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
   - "/jobs/warrior"
   - "/jobs/bowman"
 

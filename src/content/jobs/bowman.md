@@ -194,7 +194,7 @@ equipment:
     - name: "Level 10 - 20 (early Henesys):"
       description: "Green Bowman starter set from Henesys equipment shops - the traditional archer look. Cheap and DEX-focused."
     - name: "Level 17+ (first real hat):"
-      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) from <a href=\"/quests/cursed-doll-chain\">Rowen's Cursed Doll Chain</a>. Bowmen are squishy - the MHP bonus keeps you alive when a mob closes the distance."
+      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) from <a href=\"/quests/cursed-doll-collection-chain\">Rowen's Cursed Doll Chain</a>. Bowmen are squishy - the MHP bonus keeps you alive when a mob closes the distance."
     - name: "Level 18 chain (Alex reconciliation):"
       description: "Run the <a href=\"/quests/alexs-request\">Alex chain</a> for guaranteed <a href=\"/items/weighted-earrings\">Weighted Earrings</a> (L20, +22 MDD, 5 slots). Perfect base for your DEX scroll investment."
     - name: "Level 21+ (KPQ scroll investment):"
@@ -204,7 +204,7 @@ equipment:
     - name: "Level 30 milestone Overall:"
       description: "<a href=\"/items/blue-sauna-robe\">Blue Sauna Robe</a> (Blue for males, Red for females). +1 DEX bumps every arrow's damage; 10 slots means room for many Overall DEX scrolls to compound."
     - name: "Level 36+ (Cursed Doll gloves):"
-      description: "Run <a href=\"/quests/cursed-doll-chain\">Cursed Doll Chain</a> tier 4 for <a href=\"/items/gloves-attack-scroll-intermediate\">Gloves Attack Scroll (Intermediate)</a> (+2 WATT at 60% success). Weapon Attack scales directly on ranged skills - one of the largest gloves-slot upgrades available before Zakum tier."
+      description: "Run <a href=\"/quests/cursed-doll-collection-chain\">Cursed Doll Chain</a> tier 4 for <a href=\"/items/gloves-attack-scroll-intermediate\">Gloves Attack Scroll (Intermediate)</a> (+2 WATT at 60% success). Weapon Attack scales directly on ranged skills - one of the largest gloves-slot upgrades available before Zakum tier."
     - name: "Approaching 30:"
       description: "Save mesos for a real second-job weapon in your chosen weapon type. Second-job weapon tiers are meaningful power jumps."
   callout: |

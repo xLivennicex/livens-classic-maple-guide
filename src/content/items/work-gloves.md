@@ -31,7 +31,7 @@ editorial: |
   <p><strong>Why 5 upgrade slots matters:</strong> Gloves is
   a scroll-friendly slot. The endgame gloves-scrolling
   pipeline (unlocked at L36 via
-  <a href="/quests/cursed-doll-chain">Cursed Doll chain</a>)
+  <a href="/quests/cursed-doll-collection-chain">Cursed Doll chain</a>)
   awards <a href="/items/gloves-attack-scroll-intermediate">Gloves
   Attack Scroll (Intermediate)</a> at +2 Weapon Attack per
   successful scroll. Work Gloves at 5 slots can hold 5
@@ -64,7 +64,7 @@ callout: |
 
 relatedGuides:
   - "/quests/andres-request"
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/items/gloves-attack-scroll-intermediate"
 
 verificationStatus: "closed-test-info"

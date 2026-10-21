@@ -109,7 +109,7 @@ editorial: |
     <li>
       <strong>10505 - Thirsty Ronnie</strong>: Ronnie's now
       thirsty from all that unagi. Off to Ellinia to see
-      <a href="/quests/cursed-doll-chain">Rowen the Fairy</a>.
+      <a href="/quests/cursed-doll-collection-chain">Rowen the Fairy</a>.
     </li>
     <li>
       <strong>10506 - Cold Milk</strong> (Rowen, Ellinia):
@@ -167,9 +167,9 @@ relatedGuides:
   - "/items/red-sauna-robe"
   - "/items/blue-potion"
   - "/items/diamond"
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/quests/mothers-gold-watch"
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"

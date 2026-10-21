@@ -33,7 +33,7 @@ editorial: |
   equip. Fame accumulates slowly (max 1 given/received per day
   from another player), which means most level 17 characters
   can't wear this even if they own it. The intended obtain
-  path - <a href="/quests/cursed-doll-chain">Rowen's Cursed
+  path - <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed
   Doll Chain</a> - is a level 36+ quest, so by the time you
   earn one, you've likely accumulated the Fame naturally.</p>
 
@@ -61,7 +61,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/items/steel-nordic-helm"  # L40 sibling from the same tier-5 pool
 
 # ==== Verification ====

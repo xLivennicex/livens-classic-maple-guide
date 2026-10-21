@@ -166,7 +166,7 @@ equipment:
     - name: "Level 10 - 20 (early Perion):"
       description: "A basic sword or axe from Perion's weapon shop. Look for drops from Stumps."
     - name: "Level 17+ (first real hat):"
-      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) - reward from <a href=\"/quests/cursed-doll-chain\">Rowen's Cursed Doll Chain</a>. The MHP bonus is exactly what a tank wants. Note: 10 Fame required to wear, so if you can't equip it immediately, bank it until you accumulate Fame."
+      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) - reward from <a href=\"/quests/cursed-doll-collection-chain\">Rowen's Cursed Doll Chain</a>. The MHP bonus is exactly what a tank wants. Note: 10 Fame required to wear, so if you can't equip it immediately, bank it until you accumulate Fame."
     - name: "Level 18 chain (Alex reconciliation):"
       description: "Run <a href=\"/quests/alexs-request\">Alex's Request</a> through <a href=\"/quests/mothers-gold-watch\">Mother's Gold Watch</a> for guaranteed <a href=\"/items/weighted-earrings\">Weighted Earrings</a> (L20, +22 MDD, 5 slots). This is your KPQ scroll target."
     - name: "Level 20 - 27 (mushroom hats):"

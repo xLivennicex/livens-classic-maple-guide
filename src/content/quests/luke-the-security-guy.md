@@ -96,7 +96,7 @@ callout: |
 relatedGuides:
   - "/items/diamond"
   - "/quests/sleepywood-sauna-robe-chain"
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
 
 verificationStatus: "closed-test-info"
 verificationNote: "Quest ID (10113), NPC (Luke 1040000 Henesys Dungeon Entrance), level (19), rewards (1,668 EXP, 555 mesos, 1 random gem from 8-gem pool: Diamond 4020107, Garnet 4020100, Amethyst 4020101, Aquamarine 4020102, Emerald 4020103, Opal 4020104, Sapphire 4020105, Topaz 4020106, all guaranteed=False flagging random roll) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."

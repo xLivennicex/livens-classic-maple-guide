@@ -46,7 +46,7 @@ editorial: |
       Sgt Fox's Bravo sub-chain (12105)</a> awards 3x
       Dexterity Potion guaranteed.</li>
     <li><strong>Ronnie's House-Building:</strong> the L41
-      <a href="/quests/ronnies-house-building-chain">Ronnie
+      <a href="/quests/ronnie-house-building-chain">Ronnie
       chain</a> also awards Dexterity Potions in its stat-
       potion reward mix.</li>
     <li><strong>NPC purchase:</strong> most weapon shops,

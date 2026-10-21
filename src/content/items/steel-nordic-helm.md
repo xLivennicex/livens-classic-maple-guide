@@ -12,7 +12,7 @@ jobReq: "Any"
 # ==== Editorial ====
 editorial: |
   <p>Steel Nordic Helm is one of the possible payoff hats from
-  <a href="/quests/cursed-doll-chain">Rowen's Cursed Doll
+  <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed Doll
   chain</a> tier 5 (200 dolls). It's a Level 40 hat with
   respectable defensive stats and 7 upgrade slots - solid
   mid-40s gear for any class, though its Nordic aesthetic
@@ -47,7 +47,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/items/old-wisconsin"
   - "/jobs/warrior"
 

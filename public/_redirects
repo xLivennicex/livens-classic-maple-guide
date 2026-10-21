@@ -1,3 +1,12 @@
+# Manual redirects. Keep ABOVE the managed mob-dedup block:
+# scripts/generate-mob-redirects.mjs preserves everything before its BEGIN line.
+#
+# Duplicate editorial quest pages merged 2026-10-21 (same questId, two write-ups).
+/quests/cursed-doll-chain              /quests/cursed-doll-collection-chain  301
+/quests/cursed-doll-chain/             /quests/cursed-doll-collection-chain  301
+/quests/ronnies-house-building-chain   /quests/ronnie-house-building-chain   301
+/quests/ronnies-house-building-chain/  /quests/ronnie-house-building-chain   301
+
 # BEGIN mob-dossier-dedup (managed by scripts/generate-mob-redirects.mjs)
 # Auto-generated 2026-09-23. 18 redirects.
 # Each line: <duplicate_dossier_path>  <canonical_dossier_path>  301

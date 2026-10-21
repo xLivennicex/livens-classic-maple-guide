@@ -10,7 +10,7 @@ jobReq: "Warrior"
 
 editorial: |
   <p>Gold Nordic Helm is one of the possible payoff hats from
-  <a href="/quests/cursed-doll-chain">Rowen's Cursed Doll chain</a>
+  <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed Doll chain</a>
   tier 5 (200 dolls). It belongs to
   the Nordic Helm family (Steel / Mithril / Gold) - Warrior-oriented, defense-focused. Steel is the flagship documented in detail; Mithril and Gold are cosmetic upgrade tiers with the same core L40 stat profile.</p>
 
@@ -29,7 +29,7 @@ callout: |
 
 relatedGuides:
   - "/items/steel-nordic-helm"
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
 
 verificationStatus: "closed-test-info"
 verificationNote: "Item ID (1002141), name, level requirement (40), category (Hat), and stat profile all pulled from the CoT 2 client datamine at osmsdataexplorer.com. Family classification (Nordic) and Cursed Doll chain tier-5 linkage cross-referenced against Steel Nordic Helm (1002139) flagship editorial."

@@ -32,7 +32,7 @@ editorial: |
   offer better expected value. Greater is a min-max tool.</p>
 
   <p><strong>How to acquire:</strong> guaranteed drop from
-  <a href="/quests/ronnies-house-building-chain">Ronnie's
+  <a href="/quests/ronnie-house-building-chain">Ronnie's
   House-Building chain</a> final step (one per chain
   completion). Also drops rarely from higher-level mobs and
   sells on the Free Market at premium.</p>
@@ -46,7 +46,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
   - "/items/shoes-speed-scroll-intermediate"
 
 # ==== Verification ====

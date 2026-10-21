@@ -196,7 +196,7 @@ equipment:
     - name: "Level 10 - 20 (early Ellinia):"
       description: "Basic robes and hats from Ellinia shops. Green robes and pointed hats are the traditional Magician starter look."
     - name: "Level 17+ (first real hat):"
-      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) from <a href=\"/quests/cursed-doll-chain\">Rowen's Cursed Doll Chain</a>. Even for Magicians the PDD is useful before Magic Guard is maxed - and Magicians love any hat with 7+ slots since MDD/INT scrolls exist."
+      description: "<a href=\"/items/old-wisconsin\">Old Wisconsin</a> (+19 PDD, +17 MHP, 7 slots) from <a href=\"/quests/cursed-doll-collection-chain\">Rowen's Cursed Doll Chain</a>. Even for Magicians the PDD is useful before Magic Guard is maxed - and Magicians love any hat with 7+ slots since MDD/INT scrolls exist."
     - name: "Level 18 chain (Alex reconciliation):"
       description: "Run the <a href=\"/quests/alexs-request\">Alex chain</a> for guaranteed <a href=\"/items/weighted-earrings\">Weighted Earrings</a> (L20, +22 MDD, 5 slots). Also nets 10x <a href=\"/items/blue-potion\">Blue Potion</a> - meaningful MP kit for Magicians."
     - name: "Level 21+ (KPQ scroll investment):"
@@ -204,7 +204,7 @@ equipment:
     - name: "Level 30 milestone Overall:"
       description: "<a href=\"/items/blue-sauna-robe\">Blue Sauna Robe</a> (Blue for males, Red for females). +1 INT is a small direct damage boost; the +75 PDD is a huge survival cushion for pre-Magic-Guard cast intervals or when Magic Guard is on cooldown."
     - name: "Level 36+ (Cursed Doll chain gloves):"
-      description: "Run the <a href=\"/quests/cursed-doll-chain\">Cursed Doll Chain</a> tier 4 for a chance at <a href=\"/items/gloves-magic-attack-scroll-intermediate\">Gloves Magic Attack Scroll (Intermediate)</a> - +4 MATT per successful application. Magicians benefit doubly compared to physical classes (WATT variant is only +2)."
+      description: "Run the <a href=\"/quests/cursed-doll-collection-chain\">Cursed Doll Chain</a> tier 4 for a chance at <a href=\"/items/gloves-magic-attack-scroll-intermediate\">Gloves Magic Attack Scroll (Intermediate)</a> - +4 MATT per successful application. Magicians benefit doubly compared to physical classes (WATT variant is only +2)."
     - name: "Approaching 30 (second-job weapon):"
       description: "Save mesos for the second-job weapon (a matching wand or staff with better base Magic ATT)."
   callout: |

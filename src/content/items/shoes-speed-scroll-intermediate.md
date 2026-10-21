@@ -23,7 +23,7 @@ editorial: |
   minutes.</p>
 
   <p><strong>How to acquire:</strong> the primary source is
-  <a href="/quests/ronnies-house-building-chain">Ronnie's
+  <a href="/quests/ronnie-house-building-chain">Ronnie's
   House-Building chain</a> final step (guaranteed - one
   scroll per full chain completion). Also drops occasionally
   from mid-tier mobs and is sold on the Free Market.</p>
@@ -43,7 +43,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/ronnies-house-building-chain"
+  - "/quests/ronnie-house-building-chain"
   - "/items/shoes-speed-scroll-greater"
 
 # ==== Verification ====

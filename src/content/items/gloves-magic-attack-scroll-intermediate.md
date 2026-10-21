@@ -24,7 +24,7 @@ editorial: |
   damage formula.</p>
 
   <p><strong>How to acquire:</strong> the primary source is
-  <a href="/quests/cursed-doll-chain">Rowen's Cursed Doll Chain</a>
+  <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed Doll Chain</a>
   tier 4 (150 Cursed Dolls) - drops one of these OR the Weapon
   Attack variant, randomly. Also sold in the Free Market when
   Warriors and Bowmen who wanted the WATT version dump the
@@ -47,7 +47,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/jobs/magician"
 
 # ==== Verification ====

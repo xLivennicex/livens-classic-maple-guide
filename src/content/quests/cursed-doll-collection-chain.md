@@ -2,20 +2,19 @@
 questId: "10205"
 name: "Rowen the Fairy's Cursed Doll Chain (5 quests)"
 category: "story"
-tagline: "The legendary Cursed Doll grind. Rowen the Fairy asks for 50/70/100/150/200 Cursed Dolls from Zombie Lupins across 5 escalating quests. Rewards ALL 6 base ores, ALL 7 gem ores, Gold/Diamond Ore, Gloves Attack Scrolls, and a random hat pool."
+tagline: "Rowen the Fairy asks for 50, 70, 100, 150, then 200 Cursed Dolls from Zombie Lupins. Each step pays 7,020 EXP plus one random reward - a stack of ore, a gloves scroll, and finally a Lv. 40 hat for your job."
 
 levelMin: 36
 classReq: "Any"
 
 npcName: "Rowen the Fairy"
 npcLocation: "Ellinia forest"
-npcId: 1032101
+npcId: 305  # internal datamine NPC id (npcs.json); QuestLayout resolves the WZ sprite from it
 
-# Documented as ONE canonical article covering 5 discrete quest
-# IDs (10201-10205). This is Classic MapleStory's iconic L36
-# grind chain - escalating collection quest (50, 70, 100, 150,
-# 200 dolls per step). Splitting into 5 files would fragment
-# the tier-reward structure.
+# ONE canonical article for 5 discrete quest IDs (10201-10205): each
+# step is the same loop (kill Zombie Lupins, hand in dolls) with a
+# different reward table. Merged 2026-10-21 from two duplicate write-ups
+# (this file and cursed-doll-chain, which now redirects here).
 chainName: "Cursed Doll Collection"
 chainStep: 5
 chainLength: 5
@@ -32,120 +31,108 @@ description: |
 
 rewards:
   - type: "exp"
-    label: "21,935 EXP total across all 5 steps"
-    details: "4,387 EXP per quest. Consistent per-step EXP but the grind time escalates dramatically (50 dolls vs 200 dolls). At L36 this is roughly 2-3 full levels of EXP."
+    label: "7,020 EXP per step (35,100 total)"
+    details: "Same EXP for every step, while the doll count climbs from 50 to 200. Current client datamine; the Closed Online Test 2 build paid 4,387 per step."
   - type: "mesos"
-    label: "5,265 mesos total (1,053 per step)"
+    label: "1,140 mesos per step (5,700 total)"
   - type: "item"
-    label: "50 dolls: RANDOM 7 of each BASE ORE (6 types)"
+    label: "50 dolls: 7x one random base ore"
     itemId: 4010000
     itemSlug: "bronze-ore"
-    details: "Step 1 rewards RANDOM 7 of each: Bronze Ore, Iron Ore, Mithril Ore, Adamantium Ore, Silver Ore, Orihalcon Ore. 42 total ores in the reward pool - full Blacksmithing/Weaponcrafting tier spread."
+    details: "One of Bronze, Iron, Mithril, Adamantium, Silver, or Orihalcon Ore, quantity 7. You get one type, not all six."
   - type: "item"
-    label: "70 dolls: RANDOM 10 of each GEM ORE (7 types)"
+    label: "70 dolls: 10x one random gem ore"
     itemId: 4020000
-    details: "Step 2 rewards RANDOM 10 of each: Garnet Ore, Amethyst Ore, Aquamarine Ore, Emerald Ore, Opal Ore, Sapphire Ore, Topaz Ore. 70 total gem ores - Arcforging (scroll crafting) material windfall."
+    details: "One of Garnet, Amethyst, Aquamarine, Emerald, Opal, Sapphire, or Topaz Ore, quantity 10."
   - type: "item"
-    label: "100 dolls: RANDOM Gold Ore x5 + Diamond Ore x5"
+    label: "100 dolls: 5x Gold Ore or 5x Diamond Ore"
     itemId: 4010006
-    details: "Step 3: Gold Ore x5 (4010006) + Diamond Ore x5 (4020007) random pool. High-tier precious ores; Diamond Ore is the input for the Diamond gem crafting recipe."
+    details: "One of the two, at random."
   - type: "item"
-    label: "150 dolls: RANDOM Gloves Attack Scroll (Intermediate) OR Gloves Magic Attack Scroll (Intermediate)"
+    label: "150 dolls: Gloves Attack Scroll or Gloves Magic Attack Scroll (Intermediate)"
     itemId: 2040801
-    details: "Step 4 rewards a random Gloves Scroll - Attack (2040801, +1 PAD) for physical classes or Magic Attack (2040805, +1 MAD) for Magicians. Both are Intermediate tier (60% success)."
+    itemSlug: "gloves-attack-scroll-intermediate"
+    details: "One of the two at random. Attack: +2 Weapon Attack. Magic Attack: +4 Magic Attack. Both 60% success."
   - type: "item"
-    label: "200 dolls: RANDOM 1-of-5 hat pool (Old Wisconsin / Steel Nordic Helm / Dark Guiltian / Dark Distinction / Dark Pilfer)"
-    itemId: 1002053
-    itemSlug: "old-wisconsin"
-    details: "Final tier: RANDOM 1-of-5 hat drop. Old Wisconsin (1002053), Steel Nordic Helm (1002139), Dark Guiltian (1002144), Dark Distinction (1002151), Dark Pilfer (1002156). Hat variety spans multiple stat profiles - Warrior/Magician/Bowman/Thief-favored hats all in the pool."
+    label: "200 dolls: the Lv. 40 hat for your job"
+    itemId: 1002139
+    itemSlug: "steel-nordic-helm"
+    details: "Each hat in the reward table is job-restricted, so you receive the one for your job: Steel Nordic Helm (Warrior), Dark Guiltian (Magician), Dark Distinction (Bowman), Dark Pilfer (Thief), or Old Wisconsin (Beginner, Lv. 17)."
 
 editorial: |
-  <p>The Cursed Doll chain is <strong>Classic MapleStory's
-  iconic L36 grind quest</strong>. Rowen the Fairy asks for
-  Cursed Dolls, which drop from Zombie Lupins deep in
-  Ellinia's forest area. The escalating requirement (50 -&gt;
-  70 -&gt; 100 -&gt; 150 -&gt; 200) matches escalating rewards.</p>
+  <p>The Cursed Doll chain is a solo grind framed as five
+  collection quests from Rowen the Fairy in Ellinia. The mob is
+  the same every step: <strong>Zombie Lupin</strong> (Lv. 40),
+  found in the
+  <a href="/maps/10002022">Monkey Forest</a>,
+  <a href="/maps/10003097">Monkey Swamp</a>, and
+  <a href="/maps/10002025">Forest of Evil</a> maps on Victoria
+  Island. Every step is a separate quest, so you can stop after
+  any of them and come back later.</p>
 
-  <h3>The escalating tier rewards</h3>
+  <h3>The five steps</h3>
   <table>
     <thead>
-      <tr><th>Step</th><th>Dolls</th><th>Reward Category</th><th>What You Get</th></tr>
+      <tr><th>Step</th><th>Dolls</th><th>Reward (one, at random)</th></tr>
     </thead>
     <tbody>
-      <tr><td>10201</td><td>50</td><td>Base Ores</td><td>7 of each: Bronze, Iron, Mithril, Adamantium, Silver, Orihalcon</td></tr>
-      <tr><td>10202</td><td>70</td><td>Gem Ores</td><td>10 of each: Garnet, Amethyst, Aquamarine, Emerald, Opal, Sapphire, Topaz</td></tr>
-      <tr><td>10203</td><td>100</td><td>Precious Ores</td><td>Gold Ore x5 + Diamond Ore x5</td></tr>
-      <tr><td>10204</td><td>150</td><td>Gloves Scroll</td><td>Random Gloves Attack OR Magic Attack Scroll (Intermediate)</td></tr>
-      <tr><td>10205</td><td>200</td><td>Random Hat</td><td>1-of-5 hat pool (multi-class stat profiles)</td></tr>
+      <tr><td>10201</td><td>50</td><td>7x Bronze / Iron / Mithril / Adamantium / Silver / Orihalcon Ore</td></tr>
+      <tr><td>10202</td><td>70</td><td>10x Garnet / Amethyst / Aquamarine / Emerald / Opal / Sapphire / Topaz Ore</td></tr>
+      <tr><td>10203</td><td>100</td><td>5x Gold Ore or 5x Diamond Ore</td></tr>
+      <tr><td>10204</td><td>150</td><td>Gloves Attack Scroll or Gloves Magic Attack Scroll (Intermediate)</td></tr>
+      <tr><td>10205</td><td>200</td><td>The Lv. 40 hat for your job (see below)</td></tr>
     </tbody>
   </table>
+  <p>Every step also pays <strong>7,020 EXP and 1,140 mesos</strong>.
+  The whole chain is <strong>570 Cursed Dolls</strong> for
+  35,100 EXP, 5,700 mesos, 22 ores, a gloves scroll, and a hat.</p>
 
-  <h3>The crafting economy implications</h3>
-  <p>This chain <strong>single-handedly funds Blacksmithing
-  and Arcforging beginners</strong>. Steps 1-3 award 112
-  total ores across every tier - enough to feed all L15+
-  crafting recipes. Step 4's Gloves Attack Scroll is a
-  direct
-  <a href="/items/arcforging-kit">Arcforging</a> product,
-  which means Rowen is likely quest-referencing scroll
-  crafting mechanics.</p>
-
-  <p><strong>Sell strategy if not crafting:</strong> ores
-  have Free Market value at 40-100 mesos each. 112 ores
-  from steps 1-3 = ~7,000-11,000 mesos in FM resale.
-  Combined with the Gloves Scroll (5,000-15,000 mesos FM)
-  and the random hat (varies by roll), the entire chain
-  is worth 20,000-40,000 mesos.</p>
-
-  <h3>The grind time reality</h3>
-  <p>200 Cursed Dolls at ~15-30% drop rate from Zombie
-  Lupins = 700-1,300 kills. At 5-8 kills per minute solo,
-  that's 90-260 minutes JUST for step 5. Total chain grind
-  time: 3-5 hours. This is a real commitment quest.</p>
-
-  <p><strong>Alternative:</strong> Cursed Dolls are FM-
-  tradeable. If you have mesos and want to skip the grind,
-  buy Cursed Dolls in bulk from farmers. Expect 30-80
-  mesos per doll = 6,000-16,000 mesos for step 5 alone.
-  The final rewards make it worthwhile.</p>
-
-  <h3>The hat pool analysis</h3>
-  <p>Step 5's random hat pool covers 5 different hats
-  targeting different class stat profiles:</p>
+  <h3>The hat at the end</h3>
+  <p>Each hat in step 5's reward table is restricted to one job,
+  so the hat you get matches your job:</p>
   <ul>
-    <li><strong>Old Wisconsin (1002053):</strong> L17 hat -
-      lower tier, casual reward. See
-      <a href="/items/old-wisconsin">Old Wisconsin page</a>.</li>
-    <li><strong>Steel Nordic Helm (1002139):</strong> Warrior-
-      themed, +DEF-focused.</li>
-    <li><strong>Dark Guiltian (1002144):</strong> Thief-themed,
-      +LUK/DEX profile.</li>
-    <li><strong>Dark Distinction (1002151):</strong> Magician-
-      themed, +INT profile.</li>
-    <li><strong>Dark Pilfer (1002156):</strong> variant of
-      Dark line, likely all-class or hybrid.</li>
+    <li><strong><a href="/items/1002139">Steel Nordic Helm</a></strong> (Warrior, Lv. 40): +4 DEX, +4 Accuracy, 46 DEF.</li>
+    <li><strong><a href="/items/1002144">Dark Guiltian</a></strong> (Magician, Lv. 40): +20 HP, +20 MP, 20 DEF, 22 Magic DEF.</li>
+    <li><strong><a href="/items/1002151">Dark Distinction</a></strong> (Bowman, Lv. 40): +2 STR, +2 DEX, 33 DEF.</li>
+    <li><strong><a href="/items/1002156">Dark Pilfer</a></strong> (Thief, Lv. 40): +4 LUK, 33 DEF.</li>
+    <li><strong><a href="/items/1002053">Old Wisconsin</a></strong> (Beginner, Lv. 17, needs 10 Fame): +17 HP, 19 DEF.</li>
   </ul>
+  <p>All five have 7 upgrade slots.</p>
+
+  <h3>Why grind this instead of leveling normally?</h3>
+  <p>Hunting the same Lv. 40 mobs without the quest is probably
+  similar EXP per hour - the chain's value is what it adds on
+  top: crafting ore, a gloves scroll, and a job-specific hat
+  without buying anything. If you craft, steps 1-3 are a free
+  ore restock. If you don't, the gloves scroll and the hat are
+  the reasons to finish.</p>
+
+  <h3>How long it takes</h3>
+  <p>Nexon doesn't publish drop rates, and we haven't measured
+  Cursed Doll's in Classic World, so we won't quote a kill
+  count. 570 dolls is a long session either way - spread it
+  across several play sessions; nothing resets if you pause.
+  Cursed Dolls sell to NPCs for 40 mesos each if you overshoot.</p>
 
 callout: |
-  <strong>Best return on investment in the L30-40 range.</strong>
-  Between the 112 ores, gem ores, precious ores, Gloves
-  Attack Scroll, and random hat - this chain delivers more
-  economic value than any single quest chain in Victoria
-  Island L30-40. Don't skip.
+  <strong>Each step is its own quest.</strong> Finish step 1
+  for the ore, come back weeks later for the hat - nothing
+  expires between steps.
 
 relatedGuides:
   - "/items/bronze-ore"
   - "/items/iron-ore"
   - "/items/diamond"
   - "/items/arcforging-kit"
+  - "/items/old-wisconsin"
   - "/quests/sleepywood-sauna-robe-chain"
   - "/quests/crafting-masters-graduation"
 
 verificationStatus: "closed-test-info"
-verificationNote: "All 5 quest IDs (10201-10205), NPC (Rowen the Fairy 1032101 Ellinia), level (36), per-quest EXP (4,387) + mesos (1,053) + item rewards (6 base ores 4010000-4010005 x7 each, 7 gem ores 4020000-4020006 x10 each, Gold Ore 4010006 + Diamond Ore 4020007 x5, Gloves Attack Scroll Intermediate 2040801 OR Gloves Magic Attack Scroll Intermediate 2040805, random hat pool 1002053/1002139/1002144/1002151/1002156) all pulled verbatim from the CoT 2 client datamine at osmsdataexplorer.com."
+verificationNote: "Quest IDs (10201-10205), NPC (Rowen the Fairy), level (36), per-step EXP (7,020) and mesos (1,140), and every reward table come from the current client datamine (quests.json). Hat stats and job restrictions come from items.json. Zombie Lupin's level and maps come from mobs.json. Drop rates are not in the datamine and are deliberately not estimated. Merged on 2026-10-21 from two duplicate write-ups, which had used Closed Online Test 2 values (4,387 EXP / 1,053 mesos) and disagreed with each other and with the datamine on several rewards."
 sourceSlugs:
   - "osmsdataexplorer"
 
 theme: "ellinia"
-lastUpdated: "2026-08-25"
+lastUpdated: "2026-10-21"
 ---

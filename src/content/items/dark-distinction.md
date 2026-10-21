@@ -10,7 +10,7 @@ jobReq: "Bowman"
 
 editorial: |
   <p>Dark Distinction is one of the possible payoff hats from
-  <a href="/quests/cursed-doll-chain">Rowen's Cursed Doll chain</a>
+  <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed Doll chain</a>
   tier 5 (200 dolls). It belongs to
   the Distinction family - Bowman-oriented, adds DEX. Five colors (Green / Brown / Red / Blue / Dark) all sharing the same L40 stat profile. Pick the color you like; mechanically they're identical.</p>
 
@@ -29,7 +29,7 @@ callout: |
 
 relatedGuides:
   - "/items/steel-nordic-helm"
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
 
 verificationStatus: "closed-test-info"
 verificationNote: "Item ID (1002151), name, level requirement (40), category (Hat), and stat profile all pulled from the CoT 2 client datamine at osmsdataexplorer.com. Family classification (Distinction) and Cursed Doll chain tier-5 linkage cross-referenced against Steel Nordic Helm (1002139) flagship editorial."

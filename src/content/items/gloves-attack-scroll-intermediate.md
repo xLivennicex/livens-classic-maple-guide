@@ -22,7 +22,7 @@ editorial: |
   more damage than +2 STR.</p>
 
   <p><strong>How to acquire:</strong> the primary source is
-  <a href="/quests/cursed-doll-chain">Rowen's Cursed Doll Chain</a>
+  <a href="/quests/cursed-doll-collection-chain">Rowen's Cursed Doll Chain</a>
   tier 4 (150 Cursed Dolls) - drops one of these OR the Magic
   Attack variant, randomly. Also occasionally sold in the Free
   Market by other players who rolled the wrong stat.</p>
@@ -43,7 +43,7 @@ callout: |
 
 # ==== Cross-links ====
 relatedGuides:
-  - "/quests/cursed-doll-chain"
+  - "/quests/cursed-doll-collection-chain"
   - "/jobs/warrior"
   - "/jobs/bowman"
   - "/jobs/thief"
