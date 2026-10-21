@@ -67,6 +67,9 @@
 				spellcheck="false"
 				placeholder="Search maps, mobs, items, quests, guides..."
 				aria-label="Search query"
+				role="combobox"
+				aria-autocomplete="list"
+				aria-expanded="false"
 				aria-controls="command-palette-results"
 			/>
 			<kbd class="command-palette__kbd" aria-hidden="true">Esc</kbd>
@@ -80,6 +83,11 @@
 			aria-label="Search results"
 		></ul>
 
+		{/* Path to the full /search page (sub-results, no 8-row cap).
+		    Lives in the template, not the JS-built listbox, so it gets
+		    normal scoped styles and isn't mis-announced as an option. */}
+		<a class="command-palette__all" href="/search" hidden data-cp-all></a>
+
 		<div class="command-palette__hint">
 			<span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
 			<span><kbd>↵</kbd> open</span>
@@ -90,6 +98,8 @@
 </dialog>
 
 <script>
+	import { navigate } from "astro:transitions/client";
+
 	// ---------- Types ----------
 	interface PagefindSubResult {
 		title: string;
@@ -175,7 +185,23 @@
 	}
 
 	// ---------- Render ----------
-	function renderEmpty(list: HTMLUListElement, hasQuery: boolean) {
+	// Keep the combobox state + "see all" link in sync with the list.
+	function syncChrome(list: HTMLUListElement, query: string) {
+		const input = document.getElementById("command-palette-input");
+		input?.setAttribute("aria-expanded", String(cachedResults.length > 0));
+		const all = document.querySelector<HTMLAnchorElement>("[data-cp-all]");
+		if (!all) return;
+		const q = query.trim();
+		all.hidden = !q;
+		if (q) {
+			all.href = searchPageUrl(q);
+			all.textContent = `See all results for \u201c${q}\u201d \u2192`;
+		}
+	}
+
+	const searchPageUrl = (q: string) => `/search?q=${encodeURIComponent(q.trim())}`;
+
+	function renderEmpty(list: HTMLUListElement, hasQuery: boolean, query = "") {
 		list.innerHTML = "";
 		const li = document.createElement("li");
 		li.className = "command-palette__empty";
@@ -185,17 +211,21 @@
 		list.appendChild(li);
 		highlightedIndex = -1;
 		cachedResults = [];
+		updateHighlight(list);
+		syncChrome(list, query);
 	}
 
 	function renderResults(
 		list: HTMLUListElement,
 		results: Array<{ url: string; data: PagefindResultData }>,
+		query: string,
 	) {
 		list.innerHTML = "";
 		cachedResults = results;
 		results.forEach((r, i) => {
 			const li = document.createElement("li");
 			li.className = "command-palette__result";
+			li.id = `command-palette-opt-${i}`;
 			li.setAttribute("role", "option");
 			li.dataset.url = r.data.url;
 			li.dataset.index = String(i);
@@ -222,6 +252,7 @@
 		});
 		highlightedIndex = results.length > 0 ? 0 : -1;
 		updateHighlight(list);
+		syncChrome(list, query);
 	}
 
 	function updateHighlight(list: HTMLUListElement) {
@@ -232,6 +263,14 @@
 			if (active) el.setAttribute("aria-selected", "true");
 			else el.removeAttribute("aria-selected");
 		});
+		// Focus never leaves the input, so this is how screen readers
+		// learn which option the arrow keys moved to.
+		const input = document.getElementById("command-palette-input");
+		if (highlightedIndex >= 0 && items[highlightedIndex]) {
+			input?.setAttribute("aria-activedescendant", items[highlightedIndex].id);
+		} else {
+			input?.removeAttribute("aria-activedescendant");
+		}
 		// Keep the highlighted item in view when navigating past
 		// the visible window. block:nearest avoids jarring jumps
 		// when the item is already visible.
@@ -260,13 +299,13 @@
 			);
 			if (myId !== currentQueryId) return;
 			if (resolved.length === 0) {
-				renderEmpty(list, true);
+				renderEmpty(list, true, q);
 			} else {
-				renderResults(list, resolved);
+				renderResults(list, resolved, q);
 			}
 		} catch (err) {
 			console.warn("[CommandPalette] search failed:", err);
-			renderEmpty(list, true);
+			renderEmpty(list, true, q);
 		}
 	}
 
@@ -311,10 +350,11 @@
 	// ---------- Navigate to result ----------
 	function navigateTo(url: string) {
 		closePalette();
-		// Use standard location change so Astro's ClientRouter
-		// picks it up as a same-origin nav and runs view
-		// transitions like any other link.
-		window.location.href = url;
+		// navigate() runs a ClientRouter soft navigation (view
+		// transition, no full reload). Assigning location.href - what
+		// this used to do, with a comment claiming the router would
+		// pick it up - is always a full page load.
+		navigate(url);
 	}
 
 	// ---------- Per-page-load wiring ----------
@@ -343,7 +383,15 @@
 
 		// Keyboard nav within the dialog
 		input.addEventListener("keydown", (e) => {
-			if (cachedResults.length === 0) return;
+			if (cachedResults.length === 0) {
+				// No quick results: Enter falls through to the full
+				// search page instead of doing nothing.
+				if (e.key === "Enter" && input.value.trim()) {
+					e.preventDefault();
+					navigateTo(searchPageUrl(input.value));
+				}
+				return;
+			}
 			if (e.key === "ArrowDown") {
 				e.preventDefault();
 				highlightedIndex = (highlightedIndex + 1) % cachedResults.length;
@@ -359,6 +407,13 @@
 				const target = cachedResults[highlightedIndex];
 				if (target) navigateTo(target.data.url);
 			}
+		});
+
+		// "See all results" goes through navigateTo too, so the dialog
+		// closes first and the jump is a soft navigation.
+		dialog.querySelector<HTMLAnchorElement>("[data-cp-all]")?.addEventListener("click", (e) => {
+			e.preventDefault();
+			navigateTo(searchPageUrl(input.value));
 		});
 
 		// Click a result → nav to it
@@ -566,7 +621,14 @@
 		max-height: 60vh;
 	}
 
-	.command-palette__empty {
+	/* Everything inside the results list is built in JS
+	   (createElement), so it never gets Astro's data-astro-cid-*
+	   scoping attribute. Plain scoped selectors compiled to
+	   `.x[data-astro-cid-...]` and matched nothing: since Sprint 81
+	   rows rendered unstyled and the arrow-key highlight was
+	   invisible. :global() on the JS-built part, anchored under the
+	   (scoped) list, keeps these rules component-local. */
+	.command-palette__results :global(.command-palette__empty) {
 		padding: 1.2rem 1rem;
 		text-align: center;
 		color: var(--text-body);
@@ -574,7 +636,7 @@
 		font-size: 0.92rem;
 	}
 
-	.command-palette__result {
+	.command-palette__results :global(.command-palette__result) {
 		padding: 0.55rem 1rem 0.65rem;
 		cursor: pointer;
 		display: grid;
@@ -587,12 +649,12 @@
 			background-color 100ms ease,
 			border-color 100ms ease;
 	}
-	.command-palette__result:hover,
-	.command-palette__result--active {
+	.command-palette__results :global(.command-palette__result:hover),
+	.command-palette__results :global(.command-palette__result--active) {
 		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
 		border-left-color: var(--accent-primary);
 	}
-	.command-palette__chip {
+	.command-palette__results :global(.command-palette__chip) {
 		grid-column: 1;
 		grid-row: 1;
 		align-self: center;
@@ -606,7 +668,7 @@
 		color: var(--accent-primary-strong, var(--accent-primary));
 		white-space: nowrap;
 	}
-	.command-palette__title {
+	.command-palette__results :global(.command-palette__title) {
 		grid-column: 2;
 		grid-row: 1;
 		margin: 0;
@@ -614,7 +676,7 @@
 		font-weight: 600;
 		color: var(--text-heading);
 	}
-	.command-palette__excerpt {
+	.command-palette__results :global(.command-palette__excerpt) {
 		grid-column: 1 / span 2;
 		grid-row: 2;
 		margin: 0.1rem 0 0;
@@ -629,11 +691,26 @@
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
-	.command-palette__excerpt :global(mark) {
+	.command-palette__results :global(.command-palette__excerpt mark) {
 		background: color-mix(in srgb, var(--accent-primary) 30%, transparent);
 		color: var(--text-heading);
 		padding: 0 0.15em;
 		border-radius: 0.2em;
+	}
+
+	.command-palette__all {
+		display: block;
+		padding: 0.55rem 1rem;
+		border-top: 1px solid var(--border-card);
+		font-size: 0.88rem;
+		font-weight: 600;
+		text-align: center;
+		text-decoration: none;
+		color: var(--accent-primary);
+	}
+	.command-palette__all:hover,
+	.command-palette__all:focus-visible {
+		background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
 	}
 
 	.command-palette__hint {
