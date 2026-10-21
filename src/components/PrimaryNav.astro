@@ -1,4 +1,6 @@
 ---
+import HeaderSearch from "./HeaderSearch.astro";
+
 /**
  * <PrimaryNav> - the site's primary top navigation.
  *
@@ -198,65 +200,7 @@ function isGroupActive(group: NavGroup): boolean {
 		)}
 	</ul>
 
-	{/* Global search form - progressive enhancement.
-
-	    BASELINE (no JS): submits to /search?q=... which pre-populates
-	    the Pagefind UI on the /search page. Works everywhere, ships
-	    zero client bytes until focus.
-
-	    ENHANCED (JS available): on first focus the input lazy-loads
-	    /pagefind/pagefind.js, debounces input, calls pagefind.search()
-	    and renders a dropdown of top matches below the field. Clicking
-	    a result navigates straight to it (skipping /search entirely).
-	    Pressing Enter without picking a result still submits the form
-	    - the form-submit path is the fallback for both JS failures and
-	    users who prefer the full /search page.
-
-	    Positioning: lives inside the <nav> AFTER the <ul>. On desktop
-	    DOM order gives it the right-end flex slot naturally (no magic
-	    `order` or `margin-left: auto` juggling needed). On mobile it
-	    detaches to `position: fixed` and docks at the TOP of the
-	    drawer so a reader who opens the burger sees search before any
-	    links - DOM order doesn't matter for fixed positioning. */}
-	<form
-		class="primary-nav__search"
-		role="search"
-		action="/search"
-		method="get"
-		data-nav-search
-	>
-		<label class="primary-nav__search-label" for="primary-nav-search-input">
-			Search
-		</label>
-		<div class="primary-nav__search-wrap">
-			<span class="primary-nav__search-icon" aria-hidden="true">
-				&#x1F50E;
-			</span>
-			<input
-				id="primary-nav-search-input"
-				class="primary-nav__search-input"
-				type="search"
-				name="q"
-				placeholder="Search guides, items, mobs..."
-				autocomplete="off"
-				enterkeyhint="search"
-				aria-autocomplete="list"
-				aria-controls="primary-nav-search-results"
-				aria-expanded="false"
-				data-nav-search-input
-			/>
-			{/* Instant-suggest results panel. Hidden until JS mounts and
-			    the user types >= 2 chars. aria-hidden toggled by script. */}
-			<div
-				id="primary-nav-search-results"
-				class="primary-nav__search-results"
-				role="listbox"
-				aria-label="Search suggestions"
-				aria-hidden="true"
-				data-nav-search-results
-			></div>
-		</div>
-	</form>
+	<HeaderSearch />
 </nav>
 
 <script>
@@ -384,201 +328,6 @@ function isGroupActive(group: NavGroup): boolean {
 		mql.addEventListener("change", (e) => {
 			if (e.matches && isDrawerOpen()) closeDrawer();
 		});
-
-		// ---------- Instant-suggest search dropdown ----------
-		//
-		// Progressive enhancement over the baseline <form action="/search">.
-		// Baseline keeps working regardless of what happens below: if
-		// pagefind.js fails to load (dev mode before a build, CDN
-		// hiccup, etc.) the form just submits normally on Enter.
-		//
-		// Lazy-load pagefind.js on FIRST FOCUS, not on page load. The
-		// bundle is ~15kb gzipped; no sense paying that cost on every
-		// page view when most readers never use header search.
-
-		const searchForm = nav.querySelector<HTMLFormElement>("[data-nav-search]");
-		const searchInput = nav.querySelector<HTMLInputElement>("[data-nav-search-input]");
-		const searchResults = nav.querySelector<HTMLElement>("[data-nav-search-results]");
-
-		if (searchForm && searchInput && searchResults) {
-			let pagefind: any = null;
-			let pagefindLoading = false;
-			let debounceTimer: ReturnType<typeof setTimeout> | null = null;
-			let activeIndex = -1; // -1 = input focused, 0..N = result focused
-			let currentResults: Array<{
-				url: string;
-				meta: { title?: string };
-				excerpt?: string;
-			}> = [];
-
-			async function loadPagefind(): Promise<any> {
-				if (pagefind) return pagefind;
-				if (pagefindLoading) return null;
-				pagefindLoading = true;
-				try {
-					const mod = await import(
-						/* @vite-ignore */ "/pagefind/pagefind.js"
-					);
-					await mod.init?.();
-					pagefind = mod;
-					return pagefind;
-				} catch (err) {
-					// Pagefind not available (dev mode or build failure).
-					// The form-submit baseline still works, so just bail
-					// silently. No noisy console error - this is expected
-					// during `astro dev`.
-					return null;
-				} finally {
-					pagefindLoading = false;
-				}
-			}
-
-			function renderResults(items: typeof currentResults, query: string): void {
-				if (items.length === 0) {
-					searchResults.innerHTML = `
-						<div class="primary-nav__search-empty">
-							No matches for &ldquo;${escapeHtml(query)}&rdquo;.
-							Press Enter to search the full index.
-						</div>`;
-					return;
-				}
-				searchResults.innerHTML = items
-					.map(
-						(r, i) => `
-						<a class="primary-nav__search-result"
-							href="${escapeAttr(r.url)}"
-							role="option"
-							id="primary-nav-search-opt-${i}"
-							aria-selected="false">
-							<span class="primary-nav__search-result-title">${escapeHtml(
-								r.meta?.title ?? r.url,
-							)}</span>
-							${
-								r.excerpt
-									? `<span class="primary-nav__search-result-excerpt">${r.excerpt}</span>`
-									: ""
-							}
-						</a>`,
-					)
-					.join("");
-				searchResults.innerHTML += `
-					<a class="primary-nav__search-more" href="/search?q=${encodeURIComponent(
-						query,
-					)}">
-						See all results for &ldquo;${escapeHtml(query)}&rdquo; &rarr;
-					</a>`;
-			}
-
-			function escapeHtml(s: string): string {
-				const div = document.createElement("div");
-				div.textContent = s;
-				return div.innerHTML;
-			}
-
-			function escapeAttr(s: string): string {
-				return s.replace(/["&<>]/g, (c) =>
-					({
-						'"': "&quot;",
-						"&": "&amp;",
-						"<": "&lt;",
-						">": "&gt;",
-					}[c] ?? c),
-				);
-			}
-
-			function showResults(): void {
-				searchResults.setAttribute("aria-hidden", "false");
-				searchResults.classList.add("primary-nav__search-results--open");
-				searchInput.setAttribute("aria-expanded", "true");
-			}
-
-			function hideResults(): void {
-				searchResults.setAttribute("aria-hidden", "true");
-				searchResults.classList.remove("primary-nav__search-results--open");
-				searchInput.setAttribute("aria-expanded", "false");
-				activeIndex = -1;
-				updateActiveHighlight();
-			}
-
-			function updateActiveHighlight(): void {
-				const options = searchResults.querySelectorAll<HTMLElement>(
-					".primary-nav__search-result",
-				);
-				options.forEach((el, i) => {
-					const isActive = i === activeIndex;
-					el.setAttribute("aria-selected", String(isActive));
-					el.classList.toggle("primary-nav__search-result--active", isActive);
-				});
-				searchInput.setAttribute(
-					"aria-activedescendant",
-					activeIndex >= 0 ? `primary-nav-search-opt-${activeIndex}` : "",
-				);
-			}
-
-			async function runSearch(query: string): Promise<void> {
-				const pf = await loadPagefind();
-				if (!pf) return; // Fall through to form-submit on Enter.
-				const search = await pf.search(query);
-				// Pagefind returns the full ranked list; cap to 6 so the
-				// dropdown stays short. Users can hit "See all results" to
-				// jump to /search for the complete list.
-				const top = await Promise.all(
-					search.results.slice(0, 6).map((r: any) => r.data()),
-				);
-				currentResults = top;
-				activeIndex = -1;
-				renderResults(top, query);
-				showResults();
-			}
-
-			searchInput.addEventListener("input", () => {
-				const q = searchInput.value.trim();
-				if (debounceTimer) clearTimeout(debounceTimer);
-				if (q.length < 2) {
-					hideResults();
-					currentResults = [];
-					return;
-				}
-				debounceTimer = setTimeout(() => runSearch(q), 120);
-			});
-
-			// Pre-warm pagefind.js on first focus so the first keystroke
-			// doesn't have to wait for the module import roundtrip.
-			searchInput.addEventListener("focus", () => {
-				loadPagefind();
-				if (currentResults.length > 0) showResults();
-			});
-
-			searchInput.addEventListener("keydown", (e: KeyboardEvent) => {
-				const options = searchResults.querySelectorAll<HTMLElement>(
-					".primary-nav__search-result",
-				);
-				if (e.key === "ArrowDown") {
-					if (options.length === 0) return;
-					e.preventDefault();
-					activeIndex = Math.min(activeIndex + 1, options.length - 1);
-					updateActiveHighlight();
-				} else if (e.key === "ArrowUp") {
-					if (options.length === 0) return;
-					e.preventDefault();
-					activeIndex = Math.max(activeIndex - 1, -1);
-					updateActiveHighlight();
-				} else if (e.key === "Enter" && activeIndex >= 0) {
-					// User picked a result with keyboard; navigate directly
-					// and prevent the form from submitting to /search.
-					e.preventDefault();
-					const opt = options[activeIndex] as HTMLAnchorElement;
-					if (opt?.href) window.location.href = opt.href;
-				} else if (e.key === "Escape") {
-					hideResults();
-				}
-			});
-
-			// Click outside closes the dropdown (desktop + mobile).
-			document.addEventListener("click", (e) => {
-				if (!searchForm.contains(e.target as Node)) hideResults();
-			});
-		}
 	})();
 </script>
 
@@ -606,179 +355,6 @@ function isGroupActive(group: NavGroup): boolean {
 		gap: 0.3rem;
 		flex: 1 1 auto;
 		min-width: 0;
-	}
-
-	/* ---------- Global search ----------
-	   Desktop: compact pill at the right end of the nav row.
-	   Mobile: full-width field pinned at the top of the drawer. */
-	.primary-nav__search {
-		display: flex;
-		flex-direction: column;
-		flex: 0 0 auto;
-		margin: 0;
-		position: relative;
-		/* DOM-order anchoring: this form lives AFTER the <ul> in
-		   source, so flex layout naturally places it right of the
-		   list without needing `order` or auto-margin tricks. The
-		   nav's `justify-content: center` still centers the list in
-		   whatever space remains BEFORE the search field. */
-	}
-
-	.primary-nav__search-label {
-		/* Visible to screen readers only. Visually-hidden technique. */
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
-	.primary-nav__search-wrap {
-		position: relative;
-		display: flex;
-		align-items: center;
-	}
-
-	.primary-nav__search-icon {
-		position: absolute;
-		left: 0.6rem;
-		font-size: 0.9rem;
-		opacity: 0.65;
-		pointer-events: none;
-		color: var(--text-on-nav);
-	}
-
-	.primary-nav__search-input {
-		width: 15rem;
-		max-width: 100%;
-		padding: 0.5rem 0.75rem 0.5rem 2rem;
-		border-radius: 0.5rem;
-		border: 2px solid color-mix(in srgb, var(--border-nav) 55%, transparent);
-		background: color-mix(in srgb, var(--surface-card) 85%, transparent);
-		color: var(--text-body);
-		font: inherit;
-		font-size: 0.92rem;
-		transition: border-color 0.15s ease, background 0.15s ease, width 0.2s ease;
-	}
-
-	.primary-nav__search-input::placeholder {
-		color: var(--text-muted);
-		opacity: 0.75;
-	}
-
-	.primary-nav__search-input:focus-visible {
-		outline: none;
-		border-color: var(--accent-primary);
-		background: var(--surface-card);
-		width: 17rem;
-	}
-
-	/* Chrome / Safari render a tiny platform X button on type=search
-	   that clashes with the icon. Hide it; readers can select-all +
-	   delete just as easily. */
-	.primary-nav__search-input::-webkit-search-cancel-button {
-		appearance: none;
-		-webkit-appearance: none;
-	}
-
-	/* ---------- Instant-suggest dropdown ----------
-	   Hidden by default; populated + shown by the JS enhancement.
-	   Absolute-positioned below the input so it floats over page
-	   content; z-index above nav dropdowns since this appears
-	   latest in interaction order. */
-	.primary-nav__search-results {
-		position: absolute;
-		top: calc(100% + 6px);
-		left: 0;
-		right: 0;
-		min-width: 18rem;
-		max-height: min(70vh, 32rem);
-		overflow-y: auto;
-		background: var(--surface-card);
-		border: 2px solid var(--border-card);
-		border-radius: 0.6rem;
-		box-shadow:
-			0 8px 28px color-mix(in srgb, black 24%, transparent),
-			0 2px 6px color-mix(in srgb, black 12%, transparent);
-		z-index: 80;
-		display: none;
-		padding: 0.35rem;
-	}
-
-	.primary-nav__search-results--open {
-		display: block;
-	}
-
-	.primary-nav__search-result {
-		display: block;
-		padding: 0.55rem 0.75rem;
-		border-radius: 0.4rem;
-		text-decoration: none;
-		color: var(--text-heading, var(--text-body));
-	}
-
-	.primary-nav__search-result:hover,
-	.primary-nav__search-result--active {
-		background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
-		color: var(--accent-primary);
-	}
-
-	.primary-nav__search-result-title {
-		display: block;
-		font-weight: 700;
-		font-size: 0.95rem;
-		line-height: 1.3;
-	}
-
-	.primary-nav__search-result-excerpt {
-		display: block;
-		font-size: 0.82rem;
-		color: var(--text-muted);
-		margin-top: 0.15rem;
-		line-height: 1.4;
-		overflow: hidden;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-	}
-
-	/* Pagefind wraps matched terms in <mark>; style them subtly so
-	   the excerpt stays readable while still showing why the result
-	   matched. */
-	.primary-nav__search-result-excerpt :global(mark) {
-		background: color-mix(in srgb, var(--accent-primary) 22%, transparent);
-		color: inherit;
-		font-weight: 600;
-		border-radius: 0.2rem;
-		padding: 0 0.1em;
-	}
-
-	.primary-nav__search-empty {
-		padding: 0.75rem 0.9rem;
-		font-size: 0.88rem;
-		color: var(--text-muted);
-		line-height: 1.45;
-	}
-
-	.primary-nav__search-more {
-		display: block;
-		margin-top: 0.25rem;
-		padding: 0.5rem 0.75rem;
-		border-top: 1px solid var(--border-card);
-		font-size: 0.85rem;
-		font-weight: 600;
-		color: var(--accent-primary);
-		text-decoration: none;
-		text-align: center;
-	}
-
-	.primary-nav__search-more:hover,
-	.primary-nav__search-more:focus-visible {
-		background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
 	}
 
 	.primary-nav__item {
@@ -950,11 +526,22 @@ function isGroupActive(group: NavGroup): boolean {
 	   nav needs ~587px to fit uncramped; below that we drawer.
 	   ========================================================== */
 	@media (max-width: 819px) {
+		/* Open-drawer geometry: three stacked rows, defined ONCE.
+		     row 1  pinned close button   top: --drawer-pad
+		     row 2  <HeaderSearch>        top: --drawer-search-top
+		     row 3  link list             starts at --drawer-list-top
+		   Earlier versions hard-coded each offset separately and they
+		   drifted into overlaps. HeaderSearch reads these via inheritance. */
 		.primary-nav {
 			display: flex;
 			justify-content: flex-start;
 			padding: 0;
 			gap: 0;
+			--drawer-width: min(84vw, 320px);
+			--drawer-pad: 0.5rem;
+			--drawer-row: 2.75rem; /* burger + search input are both ~44px */
+			--drawer-search-top: calc(var(--drawer-pad) * 2 + var(--drawer-row));
+			--drawer-list-top: calc(var(--drawer-search-top) + var(--drawer-row) + 0.75rem);
 		}
 
 		/* Mobile burger: when the drawer is CLOSED, sits in flow at
@@ -971,43 +558,8 @@ function isGroupActive(group: NavGroup): boolean {
 
 		.primary-nav--drawer-open .primary-nav__burger {
 			position: fixed;
-			top: 0.5rem;
-			left: 0.5rem;
-		}
-
-		/* Mobile: search field floats to the TOP of the slide-in drawer
-		   (position: fixed inside the drawer's coordinate space). Hidden
-		   by default; appears when the drawer opens. This keeps the
-		   mobile header bar clean (just burger + logo) while giving
-		   search immediate prominence inside the drawer. */
-		.primary-nav__search {
-			position: fixed;
-			top: 0.75rem;
-			left: 0.6rem;
-			width: min(84vw, 320px);
-			max-width: calc(min(84vw, 320px) - 1.2rem);
-			padding: 0 0.5rem 0 3.5rem; /* leave room for the burger X */
-			z-index: 105;
-			opacity: 0;
-			pointer-events: none;
-			transform: translateX(-100%);
-			transition: transform 0.25s ease, opacity 0.2s ease 0.05s;
-		}
-
-		.primary-nav--drawer-open .primary-nav__search {
-			transform: translateX(0);
-			opacity: 1;
-			pointer-events: auto;
-		}
-
-		.primary-nav__search-input {
-			width: 100%;
-			font-size: 0.95rem;
-			padding: 0.65rem 0.75rem 0.65rem 2.1rem;
-		}
-
-		.primary-nav__search-input:focus-visible {
-			width: 100%;
+			top: var(--drawer-pad);
+			left: var(--drawer-pad);
 		}
 
 		.primary-nav__backdrop {
@@ -1021,19 +573,14 @@ function isGroupActive(group: NavGroup): boolean {
 		/* Drawer: slide in from the left as an off-canvas panel. Fixed
 		   positioning so it overlays whatever's below (page content),
 		   full-height, scrollable if the nav grows beyond viewport.
-
-		   Top padding is extra-generous (5.5rem) now that the search
-		   field also sits pinned at the top of the drawer, below the
-		   burger X. Search field is positioned at top:0.75rem, ~44px
-		   tall, so the list needs to start below both the X and the
-		   search field. */
+		   Links start below the close-button and search rows. */
 		.primary-nav__list {
 			position: fixed;
 			top: 0;
 			left: 0;
 			bottom: 0;
-			width: min(84vw, 320px);
-			padding: 5.5rem 0.6rem 2rem;
+			width: var(--drawer-width);
+			padding: var(--drawer-list-top) 0.6rem 2rem;
 			background: var(--surface-card);
 			border-right: 3px solid var(--border-nav);
 			box-shadow: 4px 0 24px color-mix(in srgb, black 22%, transparent);
