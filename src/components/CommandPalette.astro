@@ -405,18 +405,20 @@
 		}
 	});
 
-	// Repurpose the header search input as a palette trigger.
+	// Inputs that open the palette instead of accepting typing. OPT-IN
+	// via data attribute (currently only the site-header search in
+	// BaseLayout). This used to match every input[type="search"] on the
+	// page, which also swallowed the filter fields on /items, /mobs,
+	// /npcs, /maps, the glossary, and the calculators: clicking them
+	// opened the palette, so those filters could not be typed into.
+	const PALETTE_TRIGGER = "[data-opens-palette]";
+
 	// Delegated at document level so we don't need to re-query
 	// on every nav.
 	document.addEventListener("click", (e) => {
 		const el = e.target as HTMLElement | null;
 		if (!el) return;
-		// Only match the header's site-search input, not our own
-		// palette input (which lives inside #command-palette).
-		if (
-			el.matches('input[type="search"]') &&
-			!el.closest("#command-palette")
-		) {
+		if (el.matches(PALETTE_TRIGGER) && !el.closest("#command-palette")) {
 			e.preventDefault();
 			(el as HTMLInputElement).blur();
 			openPalette();
@@ -429,10 +431,7 @@
 		(e) => {
 			const el = e.target as HTMLElement | null;
 			if (!el) return;
-			if (
-				el.matches('input[type="search"]') &&
-				!el.closest("#command-palette")
-			) {
+			if (el.matches(PALETTE_TRIGGER) && !el.closest("#command-palette")) {
 				(el as HTMLInputElement).blur();
 				openPalette();
 			}

@@ -1,6 +1,4 @@
 ---
-import HeaderSearch from "./HeaderSearch.astro";
-
 /**
  * <PrimaryNav> - the site's primary top navigation.
  *
@@ -199,8 +197,6 @@ function isGroupActive(group: NavGroup): boolean {
 			),
 		)}
 	</ul>
-
-	<HeaderSearch />
 </nav>
 
 <script>
@@ -335,9 +331,9 @@ function isGroupActive(group: NavGroup): boolean {
 	.primary-nav {
 		background: var(--surface-nav);
 		border-block: 3px solid var(--border-nav);
-		/* Desktop: nav is a 2-column flex row [list | search]. The list
-		   centers itself in the available space; the search docks right.
-		   Mobile overrides below reshape this entirely. */
+		/* Desktop: a single centered flex row. Mobile overrides below
+		   reshape this into the burger + drawer. Site-wide search lives
+		   in BaseLayout's site header (opens <CommandPalette>), not here. */
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -526,12 +522,11 @@ function isGroupActive(group: NavGroup): boolean {
 	   nav needs ~587px to fit uncramped; below that we drawer.
 	   ========================================================== */
 	@media (max-width: 819px) {
-		/* Open-drawer geometry: three stacked rows, defined ONCE.
+		/* Open-drawer geometry, defined ONCE:
 		     row 1  pinned close button   top: --drawer-pad
-		     row 2  <HeaderSearch>        top: --drawer-search-top
-		     row 3  link list             starts at --drawer-list-top
-		   Earlier versions hard-coded each offset separately and they
-		   drifted into overlaps. HeaderSearch reads these via inheritance. */
+		     row 2  link list             starts at --drawer-list-top
+		   Earlier versions hard-coded these offsets separately and they
+		   drifted into overlaps. */
 		.primary-nav {
 			display: flex;
 			justify-content: flex-start;
@@ -539,9 +534,8 @@ function isGroupActive(group: NavGroup): boolean {
 			gap: 0;
 			--drawer-width: min(84vw, 320px);
 			--drawer-pad: 0.5rem;
-			--drawer-row: 2.75rem; /* burger + search input are both ~44px */
-			--drawer-search-top: calc(var(--drawer-pad) * 2 + var(--drawer-row));
-			--drawer-list-top: calc(var(--drawer-search-top) + var(--drawer-row) + 0.75rem);
+			--drawer-row: 2.75rem; /* close button is ~44px tall */
+			--drawer-list-top: calc(var(--drawer-pad) * 2 + var(--drawer-row));
 		}
 
 		/* Mobile burger: when the drawer is CLOSED, sits in flow at
@@ -573,7 +567,7 @@ function isGroupActive(group: NavGroup): boolean {
 		/* Drawer: slide in from the left as an off-canvas panel. Fixed
 		   positioning so it overlays whatever's below (page content),
 		   full-height, scrollable if the nav grows beyond viewport.
-		   Links start below the close-button and search rows. */
+		   Links start below the pinned close button. */
 		.primary-nav__list {
 			position: fixed;
 			top: 0;

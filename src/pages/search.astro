@@ -12,8 +12,9 @@
  * pre-built index - no server, no API calls, nothing sent anywhere.
  *
  * Reader flow:
- * 1. Header search input is a `<form action="/search">` that submits
- *    with `?q=<query>`.
+ * 1. Anything can link here with `?q=<query>` (search forms, the
+ *    command palette, "see all results" links) - often via a
+ *    ClientRouter soft navigation, hence the astro:page-load hook.
  * 2. This page reads `q` from the URL and pre-populates the widget.
  * 3. Widget updates results as the reader types (Pagefind handles the
  *    debounce internally).
@@ -45,7 +46,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 				index, so results are instant and nothing you type is sent
 				to a server.
 			</p>
-			<p class="dev-warning" data-hidden-in-prod>
+			<p class="dev-warning" hidden data-search-unavailable>
 				<strong>Dev note:</strong> if you're seeing 404s for
 				<code>/pagefind/*</code> below, that's because Pagefind
 				only indexes at build time. Run
@@ -58,24 +59,49 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	<!-- Pagefind mounts its UI inside this container. -->
 	<div id="search" class="search-container"></div>
 
-	<!-- Pagefind's default stylesheet + UI runtime. `is:inline`
-	     prevents Astro from trying to bundle/resolve these at build
-	     time; they're loaded fresh at runtime from the post-build
-	     `/pagefind/` output. -->
+	<!-- Pagefind's default stylesheet. Plain URL (not an import): the
+	     /pagefind/ output only exists after the post-build index step. -->
 	<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-	<script src="/pagefind/pagefind-ui.js" is:inline></script>
-	<script is:inline>
-		// Wait for DOMContentLoaded so the #search div and the pagefind
-		// UI script are both guaranteed available before we instantiate.
-		window.addEventListener("DOMContentLoaded", () => {
-			// Bail cleanly if pagefind failed to load (dev mode, or CDN
-			// hiccup). No thrown exception; the container just stays
-			// empty. The dev-warning paragraph above tells the reader why.
-			if (typeof PagefindUI === "undefined") {
+	<script>
+		// The site uses Astro's ClientRouter, so arriving here is often a
+		// SOFT navigation (form submit, "see all results" links). The old
+		// DOMContentLoaded hook never fires on a soft nav - the page came
+		// up empty. astro:page-load fires on the initial load AND after
+		// every soft nav, same as the site's other interactive components.
+		let uiScript: Promise<void> | null = null;
+
+		// Load Pagefind's UI runtime once per full page lifetime, shared
+		// across soft navs back to /search.
+		function loadPagefindUi(): Promise<void> {
+			if ((window as any).PagefindUI) return Promise.resolve();
+			uiScript ??= new Promise<void>((resolve, reject) => {
+				const tag = document.createElement("script");
+				tag.src = "/pagefind/pagefind-ui.js";
+				tag.onload = () => resolve();
+				tag.onerror = () => {
+					uiScript = null; // allow a retry on the next visit
+					reject(new Error("pagefind-ui.js failed to load"));
+				};
+				document.head.appendChild(tag);
+			});
+			return uiScript;
+		}
+
+		document.addEventListener("astro:page-load", async () => {
+			const mount = document.getElementById("search");
+			if (!mount || mount.dataset.ready) return; // not /search, or already mounted
+			mount.dataset.ready = "true";
+
+			try {
+				await loadPagefindUi();
+			} catch {
+				// Expected under `astro dev` (Pagefind indexes post-build).
+				// Only now is the explanatory note relevant, so only now show it.
+				document.querySelector("[data-search-unavailable]")?.removeAttribute("hidden");
 				return;
 			}
 
-			const ui = new PagefindUI({
+			const ui = new (window as any).PagefindUI({
 				element: "#search",
 				showSubResults: true,
 				showImages: false,
@@ -83,13 +109,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 				debounceTimeoutMs: 150,
 			});
 
-			// Pre-populate from ?q=... so someone arriving from the
-			// header search bar immediately sees results.
-			const params = new URLSearchParams(window.location.search);
-			const initialQuery = params.get("q");
-			if (initialQuery) {
-				ui.triggerSearch(initialQuery);
-			}
+			// Pre-populate from ?q=... so a reader arriving from a search
+			// form or "see all results" link immediately sees results.
+			const initialQuery = new URLSearchParams(location.search).get("q");
+			if (initialQuery) ui.triggerSearch(initialQuery);
 		});
 	</script>
 </BaseLayout>
@@ -110,11 +133,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 		font-weight: bold;
 	}
 
-	/* Dev warning: shows only when the /pagefind assets 404
-	 * (i.e. during `astro dev` before a fresh production build).
-	 * Since we can't know at render time whether pagefind loaded,
-	 * we always show it - the copy is honest, and readers using
-	 * production preview will read past it once and forget it. */
+	/* Dev warning: rendered `hidden`; the script un-hides it only if
+	 * /pagefind/pagefind-ui.js fails to load (i.e. `astro dev` before a
+	 * production build). It used to show unconditionally, including on
+	 * the live site. */
 	.dev-warning {
 		margin-top: 0.75rem;
 		padding: 0.55rem 0.75rem;
