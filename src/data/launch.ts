@@ -10,11 +10,16 @@ export const launchDates: LaunchMilestone[] = [
 	{ date: "September 2", event: "Founder's Packages on sale" },
 	{ date: "October 6", event: "Founder's Access launch" },
 	{ date: "October 14", event: "Founder's Package sale ends" },
-	{ date: "October 21", event: "Official launch" },
+	{ date: "October 21", event: "Grand Launch (6:00 PM UTC)" },
+	{ date: "November", event: "Forgotten Hollow opens" },
+	{ date: "November 18", event: "Launch events end" },
 ];
 
-// Used by the top announcement bar. Keep it short.
-export const nextMilestoneHeadline = "Nexon published the launch FAQ - Founder's Access opens October 6";
+// Used by the top announcement bar on every page. Keep it short, and
+// word it so it stays true before AND after the moment it describes:
+// the site is static, so the bar can't flip itself at launch time.
+export const nextMilestoneHeadline =
+	"Grand Launch is October 21 at 6:00 PM UTC - release notes, events, and corrections are up";
 
 // Precise countdown targets. Times confirmed by Nexon's Sep 29 2026
 // launch FAQ (URL in launchFaqUrl below). Both Founder's Access and

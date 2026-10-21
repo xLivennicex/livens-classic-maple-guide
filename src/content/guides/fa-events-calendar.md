@@ -9,14 +9,14 @@ tags:
   - calendar
   - gm-events
   - preparation
-status: "Live - 3 days of FA remaining"
+status: "Archived - Founder's Access ended October 20, 2026"
 
 # ---------- Layout ----------
 theme: "henesys"
 decorations: false
 eyebrow: "FA Event Schedule"
 heading: "Founder's Access Event Calendar"
-tagline: "Four GM-run events across the 14-day Founder's Access window. Rewards range from EXP bursts to Scrolls of Secrets to Founder's crate pulls. Here's what's left between now and Grand Launch, in time order."
+tagline: "Archived: the four GM-run events of the Founder's Access window (Oct 6-20, 2026). For current events see the Grand Launch Event Calendar."
 
 # ---------- Verification ----------
 verificationStatus: "launch-verified"
@@ -36,6 +36,14 @@ toc:
   - { href: "#priority-order", label: "If I can only hit one..." }
   - { href: "#faq", label: "FAQ" }
 ---
+
+<div class="callout callout--heads-up">
+<strong>Archived page.</strong> Founder's Access ended on October 20,
+2026, so every event below is over. Written on October 17; kept as a
+record. For what's running now - check-in rewards, the Mark of the
+Beta, Halloween events, and the next GM events - see the
+<a href="/launch-events">Grand Launch Event Calendar</a>.
+</div>
 
 The 14-day Founder's Access window runs **October 6 - October 20, 2026**.
 Across those 14 days, Nexon is running four GM-managed events on a

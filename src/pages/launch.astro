@@ -12,7 +12,7 @@ import { inkwellInterviewUrl } from "../data/launch";
 
 // Date the human editor last reviewed every claim on this page against
 // its cited sources. Change this whenever content is verified again.
-const LAST_CHECKED = "2026-10-03";
+const LAST_CHECKED = "2026-10-21";
 
 // Table of contents. Labels are phrased as visitor questions so the
 // navigation itself answers "what can I learn here?" at a glance.
@@ -21,6 +21,7 @@ const jumpNav = [
 	{ href: "#founders", label: "Founder's Access" },
 	{ href: "#grand-launch", label: "Grand Launch" },
 	{ href: "#mark-of-beta", label: "Mark of Beta" },
+	{ href: "#events", label: "Launch events" },
 	{ href: "#confirmed", label: "Confirmed features" },
 	{ href: "#developer-vision", label: "Developer vision" },
 	{ href: "#open-questions", label: "Not yet announced" },
@@ -35,34 +36,68 @@ const confirmedFeatures: {
 	detail: string;
 	sourceSlug: string;
 }[] = [
+	// Removed 2026-10-21: "Ossyria region content" - inferred from the
+	// Ossyria Exploration Report's TITLE, never stated in its text, and
+	// contradicted by the Grand Launch release notes (Victoria Island,
+	// Lv. 100 cap, no 3rd Job).
 	{
-		feature: "Ossyria region content",
-		detail: "The announcement is titled Ossyria Exploration Report, indicating Ossyria-focused content at launch.",
-		sourceSlug: "nexon-ossyria-exploration-report",
+		feature: "Grand Launch on October 21 at 6:00 PM UTC",
+		detail: "11:00 AM Pacific. The game opens to all players. The Classic World client can only be downloaded on launch day (Nexon Launcher toggle); Steam players can pre-install the base game to shrink the patch.",
+		sourceSlug: "nexon-grand-launch-release-notes",
 	},
 	{
-		feature: "Founder's Access early-play period",
-		detail: "Roughly two weeks of pre-launch play (October 6 through October 20) for Founder's Package holders.",
-		sourceSlug: "nexon-ossyria-exploration-report",
+		feature: "Founder's Access early-play period (ended)",
+		detail: "Two weeks of pre-launch play, October 6 through October 20, for Founder's Package holders. Progress carries into Grand Launch.",
+		sourceSlug: "nexon-founders-access-release-notes",
 	},
 	{
-		feature: "Official launch on October 21",
-		detail: "The game opens to all players, ending Founder's Access. Both the Founder's Access opening (October 6) and Grand Launch (October 21) begin at 11:00 AM Pacific.",
-		sourceSlug: "nexon-classic-world-faq",
+		feature: "Mark of the Beta quest",
+		detail: "'[Event] The Marks We Leave Behind' - Lv. 25+, start with Jay in Henesys, follow clues around Victoria Island to the Mark of the Beta. Runs October 21 through November 18.",
+		sourceSlug: "nexon-grand-launch-release-notes",
 	},
 	{
-		feature: "Mark of Beta limited-time quest",
-		detail: "A time-boxed launch-window quest rewarding an iconic in-game item; runs through late November.",
-		sourceSlug: "nexon-ossyria-exploration-report",
+		feature: "Lv. 100 cap and two job advancements at Grand Launch",
+		detail: "Maximum level stays Lv. 100. Only 1st Job (Lv. 10) and 2nd Job (Lv. 30) are documented - there is no 3rd Job at Grand Launch.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Six bosses at Grand Launch",
+		detail: "Mano, Stumpy, Mushmom, Shade, Zombie Mushmom, and Jr. Balrog, all on Victoria Island. Stumpy is new versus the Founder's Access five. King Slime is fought at the end of the Kerning City Party Quest.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "New area: Perion Excavation Site",
+		detail: "Eight listed monsters: Ghost Stump, Wooden Mask, Rocky Mask, Skeledog, Mummydog, Skeleton Soldier, Officer Skeleton, Commander Skeleton.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Housing",
+		detail: "One home at a time in Henesys or Kerning City, bought with mesos from Bianca (Henesys) or Scarlett (Kerning City). Needs Citizenship grade Visitor or higher; shared across the account.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Lie Detector Test",
+		detail: "Sold at the Citizen General Store (account-bound, 7 days). Use it on a character that seems to be behaving abnormally; a failed check sends them to the Truth Booth, where they must stay logged in for a set time with all normal play blocked.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Trading unlocks after Lv. 15",
+		detail: "New accounts start trade-restricted. Trading unlocks 24 hours after a character on the account reaches Lv. 15.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Windows, macOS, and three languages",
+		detail: "English, plus Spanish (Beta) and Korean (Beta) using machine translation; the UI, class names, cash items, and pets stay in English.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+	{
+		feature: "Forgotten Hollow opens in November",
+		detail: "Not open at Grand Launch. The release notes give the month only, no exact date.",
+		sourceSlug: "nexon-grand-launch-release-notes",
 	},
 	{
 		feature: "Cosmetics-only Cash Shop commitment",
 		detail: "Inkwell has stated Classic World's Cash Shop will focus on cosmetics and 'appropriate convenience items', explicitly avoiding items that directly affect character stats or growth.",
-		sourceSlug: "nexon-inkwell-future-of-classic-world",
-	},
-	{
-		feature: "New content at Grand Launch beyond COT2",
-		detail: "Inkwell confirmed Grand Launch will include 'another completely new piece of content' beyond Forgotten Hollow and the Citizenship system that debuted during Closed Online Test 2.",
 		sourceSlug: "nexon-inkwell-future-of-classic-world",
 	},
 	{
@@ -81,34 +116,14 @@ const confirmedFeatures: {
 		sourceSlug: "nexon-inkwell-future-of-classic-world",
 	},
 	{
-		feature: "Hard Lv. 100 cap at Founder's Access",
-		detail: "The Oct 3 release notes state the maximum character level is Lv. 100. No soft-cap or XP-curve throttling is documented. Whether this cap raises at Grand Launch has not been announced.",
-		sourceSlug: "nexon-founders-access-release-notes",
-	},
-	{
 		feature: "Three character slots per account",
 		detail: "Up to 3 characters can be created per account. Deleting a character triggers an unspecified waiting period before removal from the account.",
-		sourceSlug: "nexon-founders-access-release-notes",
-	},
-	{
-		feature: "Five bosses at Founder's Access",
-		detail: "Mano, Mushmom, Shade, Zombie Mushmom, and Jr. Balrog are the bosses available during the Founder's Access period.",
-		sourceSlug: "nexon-founders-access-release-notes",
+		sourceSlug: "nexon-grand-launch-release-notes",
 	},
 	{
 		feature: "Beauty Album system",
 		detail: "A new Classic World system that lets you save hairstyles, face styles, and skin colors so you can return to a saved look without re-earning the cosmetics.",
-		sourceSlug: "nexon-founders-access-release-notes",
-	},
-	{
-		feature: "Forgotten Hollow delayed past Founder's Access",
-		detail: "The Classic-World-exclusive zone from Closed Online Test 2 will NOT be available during Founder's Access. Nexon states the 'path leading there hasn't been discovered yet' and plans to add it at an unspecified later date.",
-		sourceSlug: "nexon-founders-access-release-notes",
-	},
-	{
-		feature: "Mark of Beta begins at Grand Launch",
-		detail: "The release notes clarify Mark of Beta is NOT a Founder's Access quest - it begins on October 21 at Grand Launch and runs through late November.",
-		sourceSlug: "nexon-founders-access-release-notes",
+		sourceSlug: "nexon-grand-launch-release-notes",
 	},
 ];
 
@@ -152,7 +167,7 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			sourceSlugs={["nexon-ossyria-exploration-report", "nexon-grand-launch-release-notes"]}
 		/>
 		<LaunchTimeline />
 	</section>
@@ -174,7 +189,7 @@ const questionsByCategory = openQuestions.reduce<
 
 		<div class="card prose">
 			<p>
-				<strong>Founder's Access</strong> begins <strong>October 6 at
+				<strong>Founder's Access</strong> began <strong>October 6 at
 				6:00 PM UTC</strong> (= 11 AM Pacific) for the Orange Mushroom
 				and Zakum tiers, giving those buyers roughly two weeks of early
 				play before <strong>Grand Launch on October 21</strong>. Nexon
@@ -186,94 +201,16 @@ const questionsByCategory = openQuestions.reduce<
 				One purchase per account per platform. Steam only sells the
 				Zakum tier - if you want Snail or Orange Mushroom, buy through
 				the Nexon webstore. Upgrade paths are available on the Nexon
-				webstore only, and both new purchases and upgrades stop at
+				webstore only, and both new purchases and upgrades stopped at
 				<strong>11:59 PM PDT on October 14</strong>.
 			</p>
 		</div>
 
-		{/* Sprint 102: dedicated "what's actually in Founder's Access"
-		   subsection. The Oct 3 release notes dropped the full content
-		   manifest for the FA period, including a hard Lv. 100 cap,
-		   the 5-boss roster, 3 character slots, and - importantly -
-		   several explicit WITHHOLDINGS (Forgotten Hollow delayed,
-		   Mark of Beta locked to Grand Launch, 3rd Job absent from
-		   the entire document). We call those out explicitly because
-		   several earlier editorial passes implied otherwise. */}
-		<h3 class="section-panel-subtitle" id="founders-content">
-			What's actually in Founder's Access
-		</h3>
-		<div class="card prose">
-			<p>
-				Nexon's Oct 3 release notes enumerate the Founder's Access
-				content in detail. The headline numbers:
-			</p>
-			<ul>
-				<li>
-					<strong>Maximum character level: Lv. 100</strong> at Founder's
-					Access. Nexon has not published whether this cap persists at
-					Grand Launch or raises for later content tiers.
-				</li>
-				<li>
-					<strong>Up to 3 characters per account.</strong> Character
-					deletion has an unspecified waiting period before removal.
-				</li>
-				<li>
-					<strong>Five bosses available:</strong> Mano, Mushmom, Shade,
-					Zombie Mushmom, Jr. Balrog.
-				</li>
-				<li>
-					<strong>Job advancements:</strong> 1st Job at Lv. 10 (via
-					Dances with Balrog, Grendel the Really Old, Athena Pierce,
-					or Dark Lord). 2nd Job at Lv. 30 (via the same NPC).
-				</li>
-				<li>
-					<strong>Crafting unlocks at Lv. 10</strong> across six
-					professions (Silas Irons / Smithing, Mr. Thunder /
-					Weaponcrafting, Francois / Tailoring, Vicious / Woodcrafting,
-					JM From tha Streetz / Leatherworking, Chrishrama / Arcforge).
-				</li>
-				<li>
-					<strong>Citizenship unlocks at Lv. 12</strong> via Arthur
-					(Henesys) or Roxy (Kerning City).
-				</li>
-				<li>
-					<strong>First Time Together KPQ requires Lv. 21.</strong>
-				</li>
-				<li>
-					<strong>Beauty Album</strong> (new feature) saves hairstyles,
-					faces, and skin colors so you can swap between saved looks.
-				</li>
-			</ul>
-
-			<div class="callout callout--heads-up">
-				<strong>What's NOT in Founder's Access:</strong>
-				<ul>
-					<li>
-						<strong>Forgotten Hollow</strong> - the Classic-World-
-						exclusive zone that debuted in Closed Online Test 2 will
-						not be available at Founder's Access. Nexon says the "path
-						leading there hasn't been discovered yet" and will "add
-						this at a later date." No specific date given.
-					</li>
-					<li>
-						<strong>Mark of Beta</strong> is locked to Grand Launch
-						(October 21). See the <a href="#mark-of-beta">Mark of Beta
-						section</a> below.
-					</li>
-					<li>
-						<strong>3rd Job</strong> is absent from the release notes
-						entirely, consistent with Inkwell's statement that it will
-						release sequentially after launch.
-					</li>
-					<li>
-						<strong>Victoria Island content past Lv. 100.</strong>
-						The hard cap means Ossyria-region content advertised in
-						the Ossyria Exploration Report may not fully arrive at
-						Founder's Access, pending Nexon's follow-up.
-					</li>
-				</ul>
-			</div>
-		</div>
+		<p class="fa-ended-note">
+			<strong>Founder's Access ended October 20.</strong> What it
+			included (and the full Oct 3 manifest) is archived on
+			<a href="/fa-access-status">FA Content Access Status</a>.
+		</p>
 	</section>
 
 	<!-- ============================================================ -->
@@ -282,29 +219,35 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={[
-				"nexon-ossyria-exploration-report",
-				"nexon-classic-world-faq",
-				"nexon-inkwell-future-of-classic-world",
-			]}
+			sourceSlugs={["nexon-grand-launch-release-notes", "nexon-classic-world-faq"]}
 		/>
 
 		<div class="card prose">
 			<p>
-				The <strong>official ("grand") launch</strong> is
-				<strong>October 21 at 11:00 AM Pacific</strong> (2 PM Eastern,
-				8 PM CEST, 4 AM AEST October 22). Founder's Access ends and
-				the game opens to all players.
+				Servers open <strong>October 21, 2026 at 6:00 PM UTC</strong>
+				(11:00 AM Pacific, 2 PM Eastern, 8 PM CEST, 4 AM AEST
+				October 22). Founder's Access characters carry over.
 			</p>
 			<p>
-				The launch announcement is titled <em>Ossyria Exploration
-				Report</em>, pointing to Ossyria-region content as a featured
-				element. Inkwell has since confirmed Grand Launch will also
-				include <em>another completely new piece of content</em>
-				beyond the Forgotten Hollow zone and Citizenship system that
-				appeared in Closed Online Test 2 - though the specifics have
-				not yet been detailed. See
-				<a href="#developer-vision">Developer vision</a> for more.
+				<strong>Getting in:</strong> the Classic World client can only
+				be downloaded on launch day - in the Nexon Launcher, open
+				MapleStory and switch on the <em>MapleStory Classic World</em>
+				toggle. On Steam the games are bundled, so installing and
+				updating the base MapleStory game ahead of time makes the
+				launch-day patch much smaller.
+			</p>
+			<ul>
+				<li><strong>Level cap stays Lv. 100.</strong> Job advancements at Lv. 10 and Lv. 30 only - no 3rd Job at Grand Launch.</li>
+				<li><strong>Six bosses</strong> on Victoria Island: Mano, <strong>Stumpy</strong> (new), Mushmom, Shade, Zombie Mushmom, Jr. Balrog. See <a href="/bosses">Bosses</a>.</li>
+				<li><strong>New area:</strong> the Excavation Site in Perion, with eight listed monsters.</li>
+				<li><strong>New systems:</strong> Housing and the Lie Detector Test, both tied to <a href="/citizenship">Citizenship</a>.</li>
+				<li><strong>Trading</strong> unlocks 24 hours after a character on the account reaches Lv. 15.</li>
+				<li><strong>Kerning City Party Quest</strong> runs on Channels 3 - 12 only.</li>
+				<li><strong>Not yet:</strong> Forgotten Hollow opens in November.</li>
+			</ul>
+			<p>
+				Full breakdown, plus corrections to earlier versions of this
+				site: <a href="/grand-launch-prep">What's in Grand Launch</a>.
 			</p>
 		</div>
 	</section>
@@ -315,37 +258,46 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={[
-				"nexon-ossyria-exploration-report",
-				"nexon-founders-access-release-notes",
-			]}
-			note="Start date and window are now confirmed via the Oct 3 release notes; specific quest tasks and reward mechanics are still unpublished."
+			sourceSlugs={["nexon-grand-launch-release-notes"]}
+			note="Requirements and window are confirmed by the Grand Launch release notes. Whether the Mark is per character or per account is not stated."
 		/>
 
 		<div class="card prose">
 			<p>
-				The <strong>Mark of Beta</strong> is a limited-time quest
-				rewarding an iconic in-game item for participating in the
-				opening period. The Oct 3 Founder's Access release notes
-				clarified a detail that earlier announcements left ambiguous:
-				<strong>Mark of Beta is NOT available during Founder's Access.
-				It begins at Grand Launch on October 21, 2026</strong> and
-				runs through late November.
+				The quest is <strong>'[Event] The Marks We Leave Behind'</strong>.
+				Characters <strong>Lv. 25 and above</strong> accept it from
+				<strong>Jay in Henesys</strong>, then follow its clues around
+				Victoria Island to a hidden treasure: the <strong>Mark of the
+				Beta</strong>.
 			</p>
 			<p>
-				Specific quest steps, prerequisites, and reward mechanics have
-				not been publicly detailed. When the details are confirmed, we
-				will move them out of the <a href="#open-questions">Not yet
-				announced</a> list and cite the source.
+				It runs <strong>October 21, 12:00 AM UTC through November 18,
+				11:59 PM UTC</strong> - about four weeks, ending earlier than
+				the "late November" we published from earlier announcements.
 			</p>
+		</div>
+	</section>
 
-			<div class="callout callout--heads-up">
-				<strong>Why this matters:</strong> the quest window is
-				approximately five to six weeks from Grand Launch. If you
-				play only during Founder's Access expecting to "warm up" with
-				Mark of Beta, you'll miss it entirely - the quest doesn't
-				exist in-game until Oct 21.
-			</div>
+	<!-- ============================================================ -->
+	<section id="events" class="launch-section">
+		<h2 class="section-panel-title">Launch events</h2>
+		<VerificationNotice
+			type="official-announcement"
+			checkedOn={LAST_CHECKED}
+			sourceSlugs={["nexon-grand-launch-release-notes"]}
+		/>
+
+		<div class="card prose">
+			<ul>
+				<li><strong>The Journey Begins</strong> (Oct 21 - Nov 18): Lv. 10+ daily check-in. Trade 30 Maple Leaves to Maple Administrator for a 14-day reward ladder, once per day per account.</li>
+				<li><strong>To Classic Beginners</strong>: Closed Online Test players who finished the event quests get Classic Beginnings rings by mail.</li>
+				<li><strong>Halloween Candies</strong> and <strong>Slime Attack</strong> (Oct 28 - Nov 18): candy collection for Malady, with the Pumpkin Basket sword from a hidden mission.</li>
+				<li><strong>GM events</strong>: jump-quest challenge Oct 22, Coconut Harvest Nov 6, Up And Up Dec 19 - each 12:00 to 2:00 AM UTC.</li>
+			</ul>
+			<p>
+				Dates, reward tables, and the Magic Box item list:
+				<a href="/launch-events">Grand Launch Event Calendar</a>.
+			</p>
 		</div>
 	</section>
 
@@ -355,7 +307,11 @@ const questionsByCategory = openQuestions.reduce<
 		<VerificationNotice
 			type="official-announcement"
 			checkedOn={LAST_CHECKED}
-			sourceSlugs={["nexon-ossyria-exploration-report"]}
+			sourceSlugs={[
+				"nexon-grand-launch-release-notes",
+				"nexon-founders-access-release-notes",
+				"nexon-inkwell-future-of-classic-world",
+			]}
 			note="Only features currently backed by an official announcement appear here. The list will grow as Nexon publishes more."
 		/>
 
@@ -612,6 +568,14 @@ const questionsByCategory = openQuestions.reduce<
 		color: var(--accent-primary-strong);
 		text-decoration: underline;
 		text-underline-offset: 2px;
+	}
+
+	.fa-ended-note {
+		margin: 1rem 0 0;
+		padding: 0.7rem 1rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.6rem;
 	}
 
 	.callout {

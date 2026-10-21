@@ -29,27 +29,33 @@ export const openQuestions: OpenQuestion[] = [
 	// RESOLVED 2026-09-29 - exact launch opening time revealed in the
 	// Nexon Classic World FAQ (both Founder's Access and Grand Launch
 	// open at 11:00 AM PDT; see nexon-classic-world-faq source).
+	// RESOLVED 2026-10-20 - Mark of Beta requirements: the Grand Launch
+	// release notes name the quest ('[Event] The Marks We Leave Behind'),
+	// giver (Jay, Henesys), level (25+), and window (Oct 21 - Nov 18).
+	// RESOLVED 2026-10-20 - Grand Launch keeps the Lv. 100 cap (same
+	// source). The raise schedule is still open - see below.
+	// Source for both: nexon-grand-launch-release-notes.
 	// Kept as comments for archaeology; delete when this file gets big.
 	{
-		question: "What are the exact Mark of Beta requirements and rewards?",
+		question: "When does the Lv. 100 cap raise, and when does 3rd Job arrive?",
+		category: "Systems",
+		detail:
+			"The Grand Launch release notes keep the maximum level at Lv. 100 and document only the Lv. 10 and Lv. 30 job advancements - 3rd Job is not part of Grand Launch. Inkwell's Oct 2 interview said 3rd Job and some regions will release sequentially after launch, not in original historical order. No date or cadence has been published.",
+		expectedFrom: "MapleStory Fest October roadmap reveal, or a future patch's release notes",
+	},
+	{
+		question: "What date in November does Forgotten Hollow open?",
+		category: "Timing",
+		detail:
+			"Partially answered. The Grand Launch release notes say Forgotten Hollow won't be open at Grand Launch and opens in November. No exact date has been given.",
+		expectedFrom: "November patch notes",
+	},
+	{
+		question: "Is the Mark of the Beta per character or per account?",
 		category: "Mark of Beta",
 		detail:
-			"Partially answered. The Oct 3 release notes confirmed Mark of Beta begins at Grand Launch (October 21), not during Founder's Access, and runs through late November. Specific quest tasks, reward chain, and per-character-vs-per-account eligibility rules are still unpublished.",
-		expectedFrom: "Nexon follow-up patch notes before Grand Launch",
-	},
-	{
-		question: "When does the Lv. 100 cap raise, and will Grand Launch keep the same cap?",
-		category: "Systems",
-		detail:
-			"The Oct 3 release notes confirmed a hard Lv. 100 cap during Founder's Access, with no documented soft-cap or XP-curve throttling. Nexon has NOT published whether this cap persists at Grand Launch (Oct 21), whether it raises for Ossyria-region content, or on what cadence. Inkwell's Oct 2 interview framed 3rd Job as 'sequential, not at launch.'",
-		expectedFrom: "Nexon patch notes closer to Grand Launch or MapleStory Fest October roadmap reveal",
-	},
-	{
-		question: "When will Forgotten Hollow become available?",
-		category: "Systems",
-		detail:
-			"The Oct 3 release notes explicitly withheld Forgotten Hollow from Founder's Access ('the path leading there hasn't been discovered yet! We plan to add this at a later date'). Inkwell on Oct 2 teased 'another completely new piece of content' at Grand Launch - whether Forgotten Hollow IS that content, or is scheduled separately, has not been clarified.",
-		expectedFrom: "Nexon patch notes between Founder's Access and Grand Launch",
+			"The Grand Launch release notes describe how to earn the Mark of the Beta (Lv. 25+, start with Jay in Henesys, Oct 21 - Nov 18) but not whether each character can earn one or whether it is account-bound or tradable.",
+		expectedFrom: "In-game verification after launch",
 	},
 	{
 		question: "What is the full post-launch content roadmap?",
