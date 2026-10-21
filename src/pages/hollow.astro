@@ -134,7 +134,9 @@ const exits = map?.exits ?? [];
 >
 	{restorePending && (
 		<aside class="hollow-pending" role="note">
-			<span class="hollow-pending__badge">⏳ Temporarily cut from this patch</span>
+			<span class="hollow-pending__badge">
+				⏳ {restorePending.expected ? `Opens ${restorePending.expected}` : "Temporarily cut from this patch"}
+			</span>
 			<p class="hollow-pending__reason">{restorePending.reason}</p>
 			<p class="hollow-pending__meta">
 				The hub below renders live data from the current datamine, which

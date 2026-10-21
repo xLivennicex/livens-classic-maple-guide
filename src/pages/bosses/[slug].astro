@@ -17,7 +17,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
-import { faRosterBosses, nonFaBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
+import { liveRosterBosses, offRosterBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
 import { buildPagerMap } from "../../lib/catalog-pager";
 import { mobHref } from "../../lib/mob-dedup";
 import { mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	// mob level inside lib/bosses. No re-sort here - re-sorting by a
 	// different key once dropped Crimson Balrog (non-FA) into the
 	// middle of the FA ladder.
-	const ordered = [...faRosterBosses, ...nonFaBosses];
+	const ordered = [...liveRosterBosses, ...offRosterBosses];
 	const pagers = buildPagerMap(
 		ordered,
 		(b) => b.slug,

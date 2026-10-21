@@ -2,7 +2,7 @@
 # ---------- Core metadata ----------
 title: "Citizenship Guide"
 description: "A complete guide to the new Classic World Citizenship system introduced in Closed Online Test 2. Covers Henesys and Kerning City progression, contribution, rewards, and progression traps."
-lastUpdated: "2026-08-23"
+lastUpdated: "2026-10-21"
 tags:
   - citizenship
   - systems
@@ -21,14 +21,16 @@ tagline: "A new Classic World system: pledge to Henesys or Kerning City at level
 
 # ---------- Verification ----------
 verificationStatus: "closed-test-info"
-verificationNote: "All numeric details were recorded from Closed Online Test 2 via Nexon's official release notes and community observations, with system data (grade thresholds, contribution mechanics) cross-verified against the CoT 2 client datamine at osmsdataexplorer.com. Values may change before or during launch. Housing rules, exact contribution reset behavior, and some town-transfer fees were not fully confirmed in COT2."
+verificationNote: "The Grand Launch section is from Nexon's Grand Launch release notes (Oct 20, 2026): NPCs, perks, Housing rules, and the Lie Detector Test. All other numeric details were recorded from Closed Online Test 2 via Nexon's official release notes and community observations, with system data (grade thresholds, contribution mechanics) cross-verified against the CoT 2 client datamine at osmsdataexplorer.com. Values may change before or during launch. Housing rules, exact contribution reset behavior, and some town-transfer fees were not fully confirmed in COT2."
 sourceSlugs:
+  - nexon-grand-launch-release-notes
   - nexon-cot2-release-notes
   - niameowdb-citizenship
   - osmsdataexplorer
 
 # ---------- TOC ----------
 toc:
+  - { href: "#grand-launch", label: "New at Grand Launch" }
   - { href: "#citizenship-at-a-glance", label: "At a glance" }
   - { href: "#how-to-unlock-citizenship", label: "Unlock" }
   - { href: "#choosing-henesys-or-kerning-city", label: "Choose your town" }
@@ -37,7 +39,7 @@ toc:
   - { href: "#citizenship-shop-progression", label: "Shops" }
   - { href: "#citizenship-story-quests", label: "Story quests" }
   - { href: "#switching-towns", label: "Switching towns" }
-  - { href: "#confirmed-town-benefits", label: "Confirmed rewards" }
+  - { href: "#reward-strip-citizenship-reward-items", label: "Confirmed rewards" }
   - { href: "#frequently-asked-questions", label: "FAQ" }
 
 # ---------- Confirmed rewards (rendered by BenefitGrid.astro) ----------
@@ -69,6 +71,33 @@ Citizenship is a new town-membership system created for MapleStory Classic World
 As your grade increases, you gain better town discounts, access to additional shop inventory, special story quests, resident furniture, VIP assignments, and an end-of-progression earring.
 
 > **COT2 information:** Citizenship was officially introduced as a level-12 system during Closed Online Test 2. The detailed values in this guide were recorded from that test build and may change before the system's live release. Housing rules, contribution limits, promotion behavior, and some town-transfer fees were not fully confirmed.
+
+<h2 id="grand-launch">Confirmed at Grand Launch</h2>
+
+Nexon's Grand Launch release notes (October 20, 2026) confirm the core system and add two new features.
+
+**The basics:** Citizenship unlocks at **Lv. 12**. Talk to **Arthur at Henesys Town Hall** or **Roxy at Kerning City Civic Center**. Residents get specialty-shop access plus discounts on cabs, Storage Keeper services, and some general-store items. Each town's **Community Board** posts resident requests; completing them earns **Contribution** toward your **Citizenship grade**, and higher grades unlock more requests.
+
+### Housing (new)
+
+| Rule | Detail |
+| --- | --- |
+| Where | Henesys or Kerning City - **one home at a time** |
+| Requirement | Citizenship grade **Visitor** or higher |
+| Cost | Mesos (Nexon hasn't published prices) |
+| Bought from | The Housing Registrar: **Bianca** (Henesys) or **Scarlett** (Kerning City) |
+| What you can do | Decorate with furniture, invite players, and visit other players' homes |
+| Scope | Shared across **all characters on your account** |
+
+Visitor is Grade 2 in the grade table below, so Housing opens early in your Citizenship progression.
+
+### Lie Detector Test (new)
+
+Sold at the **Citizen General Store**. It's **account-bound** and lasts **7 days**.
+
+- Use it on a character that seems to be behaving abnormally to start a minigame for them.
+- A character that fails is sent to the **Truth Booth**, where they must stay logged in for a set time before leaving.
+- While in the Truth Booth, normal play is blocked: no movement or skills, no chat, no items, and no participation in any content.
 
 ## Citizenship at a Glance
 
@@ -433,9 +462,9 @@ Only eligible town prices are discounted. Do not apply the displayed percentage 
 
 The second town has separate progression, and returning may cost mesos. Citizenship is designed as a town commitment, not a free dual-reward system.
 
-### Treating Housing as Finished Content
+### Assuming You Know What a House Costs
 
-Estate agents and furnishing-related NPCs appeared, but playable housing rules were not available in COT2. Do not publish house prices, ownership limits, or release timing as confirmed facts.
+Housing is live at Grand Launch and its core rules are confirmed (see [Confirmed at Grand Launch](#grand-launch)), but Nexon hasn't published prices. Budget mesos, and check the Registrar before planning around a number.
 
 ## Frequently Asked Questions
 
@@ -477,7 +506,7 @@ Kerning City's INT scroll is attractive, but the best choice may depend on how c
 
 ### Is Citizenship confirmed to be unchanged at launch?
 
-No. The existence of the system and its level-12 COT2 introduction are official, but the detailed figures in this guide are test-build observations. Recheck contribution requirements, quest rewards, shop inventories, town switching, and housing when the live version becomes available.
+Partly. The Grand Launch release notes confirm the Lv. 12 unlock, the two citizenship NPCs, the perk categories, Contribution and grades, Housing, and the Lie Detector Test. The detailed figures elsewhere in this guide (contribution amounts, shop inventories, prices, town-switch fees) are still test-build observations - recheck them in-game.
 
 ## Final Recommendation
 

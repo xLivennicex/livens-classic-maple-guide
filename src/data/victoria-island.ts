@@ -83,6 +83,7 @@ export interface VictoriaTown {
 	// block below.
 	restorePending?: {
 		reason: string;                   // short human explainer for the UI banner
+		expected?: string;                // officially announced return window, e.g. "November 2026"; omit if unannounced
 		quests?: string[];                // quest names that currently don't resolve
 		huntingMaps?: { name: string; note: string }[];  // same shape as `huntingMaps`
 	};
@@ -423,7 +424,7 @@ export const victoriaTowns: VictoriaTown[] = [
 		lore: [
 			"Perion is the desert town. Red-orange stone cliffs, wooden watchtowers, drums beating in the distance from the tribal encampment. It's Victoria Island's harshest environment by design - if Henesys is farmland and Ellinia is forest, Perion is where you learn to survive on grit. The residents dress in furs and hides and treat everyone else on the island as slightly soft.",
 			"Dances with Balrog is the Warrior instructor. His name is a reference to the ancient boss Balrog that terrorizes Sleepywood Dungeon - Dances is a retired veteran who fought (and survived, if not defeated) Balrog in his prime. He grants Warrior first-job advancement in his dojo, which is a fenced-off wooden ring at the town's center. Fights break out routinely.",
-			"Perion's proudest feature is the Excavation Site to the west, where Stone Golems roam the cliff faces. This is where Warriors from every server have historically trained through the 15-30 window - the Golem grind is a rite of passage. If you meet another player who describes their character as 'from Perion,' they're proud of it in the way people are proud of hometowns.",
+			"New at Grand Launch: Perion's Excavation Site. Nexon's release notes list eight monsters there - Ghost Stump, Wooden Mask, Rocky Mask, Skeledog, Mummydog, Skeleton Soldier, Officer Skeleton, and Commander Skeleton. None of them are in our datamine yet, so levels and drops are unconfirmed until the area is checked in-game.",
 		],
 		activities: [
 			{
@@ -432,13 +433,13 @@ export const victoriaTowns: VictoriaTown[] = [
 				category: "quest",
 			},
 			{
-				title: "Grind Stone Golems at the Excavation Site",
-				description: "The classic Warrior training ground. Stone Golems + Mixed Golems from Lv 25 through 2nd job. Bring HP potions - Golems hit hard.",
+				title: "Explore the new Excavation Site",
+				description: "New at Grand Launch: skeletons, masks, ghost stumps, and bone dogs (Skeledog, Mummydog). Levels unconfirmed - scout before you commit to grinding there.",
 				category: "combat",
 			},
 			{
-				title: "Watch the sunset from the Excavation Site cliffs",
-				description: "Perion's western cliffs are the highest elevation on Victoria Island's mainland. At sunset the whole desert lights up orange. Best geological screenshot in the game.",
+				title: "Screenshot Perion's red cliffs",
+				description: "Perion's red-orange stone cliffs and watchtowers make it the most dramatic backdrop on Victoria Island - worth a screenshot on your way through.",
 				category: "exploration",
 			},
 			{
@@ -645,7 +646,8 @@ export const victoriaTowns: VictoriaTown[] = [
 		huntingMaps: [],
 		// AUDIT:SKIP-START - temporarily cut in Founder's Access, pending restoration
 		restorePending: {
-			reason: "Cut from the Founder's Access client. Entire region (quests + 26 sub-maps) is expected to return in a later patch; names preserved here for easy re-enable.",
+			reason: "Not open at Grand Launch. Nexon's Grand Launch release notes say Forgotten Hollow opens in November (no exact date). The region's quests and 26 sub-maps are preserved here for when it does.",
+			expected: "November 2026",
 			quests: [
 				"Welcome to the Hollow",
 				"Zelya's Map",

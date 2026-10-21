@@ -18,7 +18,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import DatabaseStrip from "../../components/DatabaseStrip.astro";
-import { allBosses, faRosterBosses, nonFaBosses, threatMeta } from "../../lib/bosses";
+import { allBosses, liveRosterBosses, offRosterBosses, pendingDataBosses, threatMeta } from "../../lib/bosses";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 
 // Derived from the manifest so the meta description can't go stale.
@@ -46,11 +46,11 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 				editorial notes on access, strategy, and threat level.
 			</p>
 			<p class="build-meta">
-				<strong>{faRosterBosses.length} available at Founder's Access</strong>,
-				<strong>{allBosses.length} total catalogued</strong>.
-				Endgame set (Zakum, Papulatus, Pianus, Ergoth) is missing
-				from our current data feed - working on a supplementary
-				fetch. For a sequential walkthrough of the FA bosses in
+				<strong>{liveRosterBosses.length + pendingDataBosses.length} live at Grand Launch</strong>
+				({pendingDataBosses.length} awaiting data),
+				<strong>{allBosses.length} with dossiers</strong>.
+				Endgame bosses (Zakum, Papulatus, Pianus) are not part of Grand
+				Launch. For a sequential walkthrough of the live bosses in
 				level order, see the
 				<a href="/bosses-at-30-plus">Bosses at 30+ progression guide</a>.
 			</p>
@@ -59,14 +59,16 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 
 	<h2 class="roster-heading">
 		<span class="roster-heading__dot roster-heading__dot--live" aria-hidden="true"></span>
-		Live at Founder's Access
+		Live at Grand Launch
 		<span class="roster-heading__sub">
-			These bosses are confirmed available Oct 6 - Oct 20, 2026 per Nexon's release notes.
+			Nexon's Grand Launch release notes list Mano, Stumpy, Mushmom, Shade,
+			Zombie Mushmom, and Jr. Balrog; King Slime is the Kerning City Party
+			Quest finale.
 		</span>
 	</h2>
 
 	<div class="boss-grid">
-		{faRosterBosses.map((b) => {
+		{liveRosterBosses.map((b) => {
 			const t = threatMeta(b.narrative.threat);
 			return (
 				<a class="boss-card" href={`/bosses/${b.slug}/`}>
@@ -96,21 +98,33 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 				</a>
 			);
 		})}
+		{pendingDataBosses.map((p) => (
+			<div class="boss-card boss-card--pending-data">
+				<div class="boss-card__sprite boss-card__sprite--empty" aria-hidden="true">?</div>
+				<div class="boss-card__body">
+					<h3 class="boss-card__name">{p.name}</h3>
+					<div class="boss-card__meta">
+						<span class="badge badge--pending">Data pending</span>
+					</div>
+					<p class="boss-card__tldr">{p.note}</p>
+				</div>
+			</div>
+		))}
 	</div>
 
-	{nonFaBosses.length > 0 && (
+	{offRosterBosses.length > 0 && (
 		<>
 			<h2 class="roster-heading roster-heading--pending">
 				<span class="roster-heading__dot roster-heading__dot--pending" aria-hidden="true"></span>
-				Grand Launch and beyond
+				Not on the live roster
 				<span class="roster-heading__sub">
-					Catalogued but not yet live during Founder's Access. Expect these to
-					appear with Grand Launch on Oct 21, 2026 or in later content drops.
+					Catalogued from the datamine but on neither the Founder's Access
+					nor the Grand Launch roster. No release date announced.
 				</span>
 			</h2>
 
 			<div class="boss-grid">
-				{nonFaBosses.map((b) => {
+				{offRosterBosses.map((b) => {
 					const t = threatMeta(b.narrative.threat);
 					return (
 						<a class="boss-card boss-card--pending" href={`/bosses/${b.slug}/`}>
@@ -128,7 +142,7 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 									<span class="badge badge--lvl">Lv. {b.mob.stats?.level ?? "?"}</span>
 									<span class="badge">{b.mob.stats?.maxHP?.toLocaleString() ?? "?"} HP</span>
 									<span class={`badge ${t.cls}`}>{t.label}</span>
-									<span class="badge badge--pending">Post-launch</span>
+									<span class="badge badge--pending">Not live</span>
 								</div>
 								<p class="boss-card__role">{b.role}</p>
 								<p class="boss-card__tldr">
@@ -259,6 +273,21 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 		background: var(--bg-cloud);
 		border-radius: 8px;
 		image-rendering: pixelated;
+	}
+	/* Confirmed-but-no-data card: not a link, so no hover lift - a
+	   lifting card reads as clickable. Dashed border = placeholder. */
+	.boss-card--pending-data {
+		border-style: dashed;
+	}
+	.boss-card--pending-data:hover {
+		transform: none;
+		box-shadow: none;
+		border-color: var(--border-card);
+	}
+	.boss-card__sprite--empty {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--text-muted);
 	}
 	.boss-card__sprite :global(img) {
 		max-width: 64px;

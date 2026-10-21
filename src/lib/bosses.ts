@@ -43,11 +43,11 @@ interface BossManifestEntry {
 	recommendedLevelMin: number;
 	recommendedLevelMax: number;
 	theme?: SiteTheme; // optional override when spawn-based auto-detection is wrong or missing
-	// Nexon-confirmed as available during Founder's Access (Oct 6, 2026).
-	// true = yes, confirmed in release notes. false = explicitly NOT in FA
-	// (e.g. Crimson Balrog ferry event, held for Grand Launch). undefined =
-	// not yet classified (treat as uncertain, surface accordingly).
-	faRoster?: boolean;
+	// On Nexon's live boss roster: the Founder's Access five (Oct 3 notes)
+	// plus King Slime (Kerning PQ finale) - all kept at Grand Launch (Oct
+	// 20 notes). false = catalogued but on neither roster (e.g. Crimson
+	// Balrog). undefined = not yet classified (treat as uncertain).
+	liveRoster?: boolean;
 	narrative?: BossNarrative;
 }
 
@@ -57,7 +57,7 @@ export interface BossDossier {
 	recommendedLevelMin: number;
 	recommendedLevelMax: number;
 	themeOverride?: SiteTheme;
-	faRoster?: boolean;
+	liveRoster?: boolean;
 	narrative: BossNarrative;
 	mob: (typeof mobDossiers)[number]; // full mob dossier passthrough
 }
@@ -98,7 +98,7 @@ function buildBossList(): BossDossier[] {
 			recommendedLevelMin: entry.recommendedLevelMin,
 			recommendedLevelMax: entry.recommendedLevelMax,
 			themeOverride: entry.theme,
-			faRoster: entry.faRoster,
+			liveRoster: entry.liveRoster,
 			narrative: entry.narrative ?? {},
 			mob: best,
 		});
@@ -123,19 +123,37 @@ export function getBossBySlug(slug: string): BossDossier | undefined {
 }
 
 /**
- * Bosses confirmed live during Founder's Access (Oct 6 - Oct 20, 2026)
- * per Nexon's Oct 3 Release Notes. Sorted by mob level ascending so the
- * list reads as a progression ladder. Bosses with faRoster=false or
- * undefined are excluded.
+ * Bosses on Nexon's live roster (Founder's Access, kept at Grand Launch),
+ * sorted by mob level so the list reads as a progression ladder.
  */
-export const faRosterBosses: BossDossier[] = allBosses.filter(
-	(b) => b.faRoster === true,
+export const liveRosterBosses: BossDossier[] = allBosses.filter(
+	(b) => b.liveRoster === true,
 );
 
-/** Non-FA bosses (held for Grand Launch or editorially-unclear). */
-export const nonFaBosses: BossDossier[] = allBosses.filter(
-	(b) => b.faRoster !== true,
+/** Catalogued bosses on neither the Founder's Access nor the Grand Launch roster. */
+export const offRosterBosses: BossDossier[] = allBosses.filter(
+	(b) => b.liveRoster !== true,
 );
+
+/**
+ * Bosses Nexon has confirmed live that our datamine doesn't contain yet,
+ * so they can't have a stats-backed dossier page. Rendered as plain
+ * "confirmed, data pending" cards. Move an entry into boss-manifest.json
+ * (and delete it here) once its mob lands in mobs.json.
+ */
+export interface PendingDataBoss {
+	name: string;
+	note: string;
+	sourceSlug: string;
+}
+
+export const pendingDataBosses: PendingDataBoss[] = [
+	{
+		name: "Stumpy",
+		note: "New on the Grand Launch roster (it wasn't one of the Founder's Access five). Not in our datamine yet - stats, location, and drops will follow the next data refresh.",
+		sourceSlug: "nexon-grand-launch-release-notes",
+	},
+];
 
 /**
  * Human-readable threat label + a CSS class suffix for styling.

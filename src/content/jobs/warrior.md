@@ -153,7 +153,7 @@ training:
       what: "Whichever has fewer players competing for spawns."
       note: "This is where Slash Blast starts pulling ahead if you find grouped mobs."
     - levels: "Levels 25 - 30"
-      where: "Perion Excavation Site (Fire Boars) or Ant Tunnel entrance (Zombie Mushrooms)"
+      where: "The Burnt Land near Perion (Fire Boars) or Ant Tunnel entrance (Zombie Mushrooms)"
       what: "Denser mobs, higher EXP-per-kill."
       note: "Second job advancement quest becomes available at level 30. Save some mesos for the second-job weapon."
 
