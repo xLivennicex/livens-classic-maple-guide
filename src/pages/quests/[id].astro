@@ -23,6 +23,8 @@ import { itemIconUrl, npcSpriteUrl } from "../../lib/maplestory-cdn";
 import { themeForLocation } from "../../lib/region-theme";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
+import { getQuestCards } from "../../lib/quest-catalog";
+import { buildPagerMap } from "../../lib/catalog-pager";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const editorialEntries = await getCollection("quests");
@@ -30,28 +32,28 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		editorialEntries.map((e) => [e.data.questId, e]),
 	);
 
-	// Match /quests index default sort (levelMin ASC) so prev/next
-	// walks the catalog in the same tier order the reader sees.
-	// Tiebreaker on numeric id so the walk is deterministic for
-	// quests sharing a level.
-	const sortedDossiers = [...questDossiers].sort((a: any, b: any) => {
-		const lv = (a.levelMin ?? 0) - (b.levelMin ?? 0);
-		return lv !== 0 ? lv : Number(a.id) - Number(b.id);
-	});
-
-	// Pre-compute prev/next by position. Prev/next always point at
-	// the DOSSIER id URL; editorial links to a specific editorial
-	// slug would require a separate pass and the dossier URL is
-	// stable + guaranteed to resolve.
-	const pagerByDossierId = new Map<string, any>();
-	for (let i = 0; i < sortedDossiers.length; i++) {
-		const prev = i > 0 ? sortedDossiers[i - 1] : null;
-		const next = i < sortedDossiers.length - 1 ? sortedDossiers[i + 1] : null;
-		pagerByDossierId.set(sortedDossiers[i].id, {
-			prev: prev ? { href: `/quests/${prev.id}`, label: prev.name } : null,
-			next: next ? { href: `/quests/${next.id}`, label: next.name } : null,
-		});
+	// Prev/next walks the /quests card list exactly as rendered there
+	// (lib/quest-catalog), linking to the URL each card links to.
+	//
+	// Position lookup: by the page's own href first (exact card), else
+	// by questId -> that quest's FIRST card. Keying by href alone keeps
+	// two editorial entries that share a questId (they exist) from
+	// colliding; the questId fallback places the numeric-ID page of an
+	// editorial quest at its editorial card's position.
+	const cards = await getQuestCards();
+	const pagerByHref = buildPagerMap(
+		cards,
+		(c) => c.href,
+		(c) => ({ href: c.href, label: c.name }),
+	);
+	const firstHrefByQuestId = new Map<string, string>();
+	for (const c of cards) {
+		if (!firstHrefByQuestId.has(c.questId)) firstHrefByQuestId.set(c.questId, c.href);
 	}
+	const pagerFor = (href: string, questId: string) =>
+		pagerByHref.get(href) ??
+		pagerByHref.get(firstHrefByQuestId.get(questId) ?? "") ??
+		null;
 
 	const paths: any[] = [];
 
@@ -62,7 +64,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			props: {
 				kind: "editorial",
 				entry,
-				pager: pagerByDossierId.get(entry.data.questId) ?? { prev: null, next: null },
+				pager: pagerFor(`/quests/${entry.id}`, entry.data.questId),
 			},
 		});
 	}
@@ -74,7 +76,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 				kind: "dossier",
 				d,
 				editorialSlug: editorialByQuestId.get(d.id)?.id ?? null,
-				pager: pagerByDossierId.get(d.id) ?? { prev: null, next: null },
+				pager: pagerFor(`/quests/${d.id}`, d.id),
 			},
 		});
 	}
@@ -305,8 +307,8 @@ const itemsById = new Map(itemDossiers.map((i) => [i.id, i]));
 		)}
 
 		<PrevNextPager
-			prev={props.pager.prev}
-			next={props.pager.next}
+			prev={props.pager?.prev}
+			next={props.pager?.next}
 			sectionLabel="quest"
 		/>
 	</BaseLayout>

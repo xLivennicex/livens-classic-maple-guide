@@ -19,6 +19,9 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import ItemDetailLayout from "../../layouts/ItemDetailLayout.astro";
 import itemDossiers from "../../data/db/items.json";
+import indexData from "../../data/db/index.json";
+import { itemsInDisplayOrder } from "../../lib/item-catalog";
+import { buildPagerMap } from "../../lib/catalog-pager";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	/**
@@ -97,20 +100,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		editorialEntries.map((e) => [e.data.wzId, e]),
 	);
 
-	// Sort dossiers by WZ ID ASC - matches the default sort on /items.
-	// Walking prev/next through the catalog in index order is the only
-	// stable mental model: "the item before this one on the list".
-	const sorted = [...itemDossiers].sort((a: any, b: any) => a.id - b.id);
-
-	// Pre-compute prev/next by position so each path gets exactly its
-	// neighbours without re-scanning the array per-item.
-	const neighbours = new Map<number, { prev: any; next: any }>();
-	for (let i = 0; i < sorted.length; i++) {
-		neighbours.set(sorted[i].id, {
-			prev: i > 0 ? sorted[i - 1] : null,
-			next: i < sorted.length - 1 ? sorted[i + 1] : null,
-		});
-	}
+	// Prev/next walks the /items list in its DISPLAY order (category ->
+	// subcategory -> WZ ID), from the same helper the index renders
+	// with. So "Next" from a Hat is the next Hat on the list, not
+	// whatever WZ ID happens to follow it.
+	const pagers = buildPagerMap(
+		itemsInDisplayOrder(indexData.items),
+		(i) => i.id,
+		(i) => ({ href: `/items/${i.id}`, label: i.name }),
+	);
 
 	// Every dossier gets a WZ-ID-keyed path. Editorial entries also
 	// get a slug-keyed path so legacy links keep working.
@@ -133,15 +131,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			: null;
 
 		const related = findRelatedItems(dossier);
-		const neighbour = neighbours.get(dossier.id) ?? { prev: null, next: null };
-		const pager = {
-			prev: neighbour.prev
-				? { href: `/items/${neighbour.prev.id}`, label: neighbour.prev.name }
-				: null,
-			next: neighbour.next
-				? { href: `/items/${neighbour.next.id}`, label: neighbour.next.name }
-				: null,
-		};
+		const pager = pagers.get(dossier.id) ?? null;
 
 		// Canonical WZ ID path
 		paths.push({

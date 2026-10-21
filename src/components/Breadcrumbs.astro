@@ -43,19 +43,26 @@ interface Props {
 
 const { segments, class: className } = Astro.props;
 
-// Build the schema.org BreadcrumbList items. The spec wants a 1-indexed
-// position and an item URL for every entry, including the current page.
-// For the current page we use the request's canonical URL via
-// Astro.url.pathname so Google can confirm the loop.
+// Build the schema.org BreadcrumbList items. Positions are 1-indexed
+// and every entry except the last needs a real, distinct URL.
+//
+// Label-only MIDDLE segments (e.g. a quest's region, which has no
+// landing page) still render visually but are left out of the
+// structured data. Giving them the current page's URL would put two
+// ListItems on the same URL, which Google's validator flags. The last
+// segment uses the current page's canonical URL to close the loop.
 const baseUrl = Astro.site?.href?.replace(/\/+$/, "") ?? "";
-const schemaItems = segments.map((seg, i) => ({
-	"@type": "ListItem",
-	position: i + 1,
-	name: seg.label,
-	item: seg.href
-		? `${baseUrl}${seg.href}`
-		: `${baseUrl}${Astro.url.pathname}`,
-}));
+const schemaItems = segments
+	.filter((seg, i) => seg.href || i === segments.length - 1)
+	.map((seg, i, kept) => ({
+		"@type": "ListItem",
+		position: i + 1,
+		name: seg.label,
+		item:
+			seg.href && i < kept.length - 1
+				? `${baseUrl}${seg.href}`
+				: `${baseUrl}${Astro.url.pathname}`,
+	}));
 
 const schema = {
 	"@context": "https://schema.org",

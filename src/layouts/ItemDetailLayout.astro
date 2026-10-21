@@ -24,7 +24,8 @@ import BaseLayout from "./BaseLayout.astro";
 import SourceCard from "../components/SourceCard.astro";
 import LastUpdated from "../components/LastUpdated.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
-import PrevNextPager, { type PagerLink } from "../components/PrevNextPager.astro";
+import PrevNextPager from "../components/PrevNextPager.astro";
+import type { Pager } from "../lib/catalog-pager";
 import { getSource, type SourceType } from "../data/sources";
 import { itemIconUrl, mobSpriteUrl, mobSpriteSrcs, themePlaceholderUrl } from "../lib/maplestory-cdn";
 import Sprite from "../components/Sprite.astro";
@@ -115,10 +116,10 @@ interface Props {
 	// valid (means item has no equip context to relate to, e.g.
 	// consumables and etc items).
 	related?: RelatedItem[];
-	// Nav polish sprint: pre-computed prev/next neighbours by WZ ID
-	// order (matches the default /items list sort). Walks the reader
-	// through the catalog without returning to the index.
-	pager?: { prev: PagerLink | null; next: PagerLink | null };
+	// Pre-computed prev/next neighbours in /items display order
+	// (see lib/item-catalog). Walks the reader through the catalog
+	// without returning to the index.
+	pager?: Pager | null;
 }
 
 const { dossier: d, editorial, related = [], pager } = Astro.props;
@@ -669,13 +670,7 @@ const vendorSources = getShopsSellingItem(d.id);
 		<LastUpdated date={editorial.lastUpdated} />
 	)}
 
-	{pager && (
-		<PrevNextPager
-			prev={pager.prev}
-			next={pager.next}
-			sectionLabel="item"
-		/>
-	)}
+	<PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="item" />
 </BaseLayout>
 
 <script>

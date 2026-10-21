@@ -17,31 +17,28 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Sprite from "../../components/Sprite.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
-import { allBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
+import { faRosterBosses, nonFaBosses, getBossBySlug, threatMeta } from "../../lib/bosses";
+import { buildPagerMap } from "../../lib/catalog-pager";
 import { mobHref } from "../../lib/mob-dedup";
 import { mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import { themeForLocation } from "../../lib/region-theme";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	// Match /bosses index default sort (recommendedLevelMin ASC)
-	// so prev/next walks the roster from easiest to hardest.
-	const sorted = [...allBosses].sort(
-		(a, b) => (a.recommendedLevelMin ?? 0) - (b.recommendedLevelMin ?? 0),
+	// Walk in EXACTLY the order /bosses renders: the Founder's Access
+	// roster first, then the not-yet-live group, each already sorted by
+	// mob level inside lib/bosses. No re-sort here - re-sorting by a
+	// different key once dropped Crimson Balrog (non-FA) into the
+	// middle of the FA ladder.
+	const ordered = [...faRosterBosses, ...nonFaBosses];
+	const pagers = buildPagerMap(
+		ordered,
+		(b) => b.slug,
+		(b) => ({ href: `/bosses/${b.slug}`, label: b.mob.name }),
 	);
-	return sorted.map((b, i) => {
-		const prev = i > 0 ? sorted[i - 1] : null;
-		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
-		return {
-			params: { slug: b.slug },
-			props: {
-				slug: b.slug,
-				pager: {
-					prev: prev ? { href: `/bosses/${prev.slug}`, label: prev.mob.name } : null,
-					next: next ? { href: `/bosses/${next.slug}`, label: next.mob.name } : null,
-				},
-			},
-		};
-	});
+	return ordered.map((b) => ({
+		params: { slug: b.slug },
+		props: { slug: b.slug, pager: pagers.get(b.slug) ?? null },
+	}));
 };
 
 const { slug, pager } = Astro.props;
@@ -204,11 +201,7 @@ const pageTheme = boss.themeOverride ?? themeForLocation(spawnNames, primaryRegi
 		</p>
 	</section>
 
-	<PrevNextPager
-		prev={pager.prev}
-		next={pager.next}
-		sectionLabel="boss"
-	/>
+	<PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="boss" />
 </BaseLayout>
 
 <style>

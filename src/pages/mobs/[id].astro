@@ -20,6 +20,7 @@ import { mobSpriteUrl, mobSpriteSrcs, itemIconUrl, themePlaceholderUrl } from ".
 import Sprite from "../../components/Sprite.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
+import { buildPagerMap } from "../../lib/catalog-pager";
 import { themeForLocation } from "../../lib/region-theme";
 import { isCanonicalMobDossier } from "../../lib/mob-dedup";
 import { dropsForMob } from "../../lib/mob-drops";
@@ -33,26 +34,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	// Only render pages for canonical dossiers. Duplicate dossiers
 	// (same wzId, hollow drop tables) are redirected to their winner
 	// by `public/_redirects` - see scripts/generate-mob-redirects.mjs.
-	const canonical = mobDossiers.filter(isCanonicalMobDossier);
+	// Same set + order as /mobs: canonical dossiers, ID ascending.
+	const canonical = mobDossiers
+		.filter(isCanonicalMobDossier)
+		.sort((a, b) => a.id - b.id);
+	const pagers = buildPagerMap(
+		canonical,
+		(m) => m.id,
+		(m) => ({ href: `/mobs/${m.id}`, label: m.name }),
+	);
 
-	// Match /mobs index default sort (by WZ ID ASC) so prev/next
-	// walks the catalog in the same order a browser would.
-	const sorted = [...canonical].sort((a: any, b: any) => a.id - b.id);
-
-	return sorted.map((d, i) => {
-		const prev = i > 0 ? sorted[i - 1] : null;
-		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
-		return {
-			params: { id: String(d.id) },
-			props: {
-				d,
-				pager: {
-					prev: prev ? { href: `/mobs/${prev.id}`, label: prev.name } : null,
-					next: next ? { href: `/mobs/${next.id}`, label: next.name } : null,
-				},
-			},
-		};
-	});
+	return canonical.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d, pager: pagers.get(d.id) ?? null },
+	}));
 };
 
 const { d, pager } = Astro.props;
@@ -305,11 +300,7 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 		)}
 	</section>
 
-	<PrevNextPager
-		prev={pager.prev}
-		next={pager.next}
-		sectionLabel="mob"
-	/>
+	<PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="mob" />
 	</div>
 </BaseLayout>
 

@@ -22,6 +22,12 @@
  * different widget.
  */
 
+import indexData from "../data/db/index.json";
+import { loserMobIds } from "../lib/mob-dedup";
+import { allBosses } from "../lib/bosses";
+import { isShownMapKind } from "../lib/map-catalog";
+import { getQuestCards } from "../lib/quest-catalog";
+
 interface Props {
 	/** The current URL path. Pass Astro.url.pathname. */
 	currentPath: string;
@@ -32,20 +38,31 @@ const { currentPath } = Astro.props;
 interface Entry {
 	href: string;
 	label: string;
-	/** Approximate count of records in this section. Hard-coded here
-	 *  rather than parsed at render time so we don't pay a 7000-row
-	 *  JSON load on every DB page. Values refreshed when the db build
-	 *  script re-generates src/data/db/*.json; adjust manually. */
 	count: number;
 }
 
+// Counts are DERIVED from the same sources each landing page lists,
+// so a DB rebuild can never leave the strip advertising stale numbers.
+// Cost is zero at runtime (static build) and ~zero at build time: JSON
+// imports are module-cached, parsed once per build, not once per page.
+// Every count comes from the same source/filter its landing page lists
+// (mob dedup, map kinds, the merged quest card list), so the chip
+// always equals the row count the reader actually sees.
 const ENTRIES: Entry[] = [
-	{ href: "/items", label: "Items", count: 7431 },
-	{ href: "/mobs", label: "Mobs", count: 101 },
-	{ href: "/npcs", label: "NPCs", count: 226 },
-	{ href: "/maps", label: "Maps", count: 305 },
-	{ href: "/quests", label: "Quests", count: 316 },
-	{ href: "/bosses", label: "Bosses", count: 6 },
+	{ href: "/items", label: "Items", count: indexData.items.length },
+	{
+		href: "/mobs",
+		label: "Mobs",
+		count: indexData.mobs.filter((m) => !loserMobIds.has(m.id)).length,
+	},
+	{ href: "/npcs", label: "NPCs", count: indexData.npcs.length },
+	{
+		href: "/maps",
+		label: "Maps",
+		count: indexData.maps.filter((m) => isShownMapKind(m.kind)).length,
+	},
+	{ href: "/quests", label: "Quests", count: (await getQuestCards()).length },
+	{ href: "/bosses", label: "Bosses", count: allBosses.length },
 ];
 
 function isActive(href: string): boolean {

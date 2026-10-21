@@ -29,58 +29,14 @@ import StatusBadge from "../../components/StatusBadge.astro";
 import indexData from "../../data/db/index.json";
 import generatedAt from "../../data/db/generated-at.json";
 import { itemIconUrl } from "../../lib/maplestory-cdn";
+import { buildItemSections } from "../../lib/item-catalog";
 
 const { items } = indexData;
 
-// Group items by (category, subCategory). Use "Uncategorized" as
-// the fallback bucket for items with no subCategory (mostly rare
-// Setup entries). The GROUP_ORDER controls visual ordering - a
-// player scans Equipment first, then Consumable, then materials.
-const GROUP_ORDER: Array<[string, string[]]> = [
-	["Equipment", ["Weapon", "Overall", "Top", "Bottom", "Shoes", "Glove", "Hat", "Cape", "Shield", "Earring", "Face Accessory", "Eye Accessory", "Pendant", "Belt", "Ring"]],
-	["Consumable", ["Consumable"]],
-	["Etc", ["Etc"]],
-	["Setup", ["Setup"]],
-];
-
-// Bucket items by category+sub. Preserves item.id sort within each.
-const groups: Record<string, Record<string, typeof items>> = {};
-for (const item of items.sort((a, b) => a.id - b.id)) {
-	const cat = item.category ?? "Unknown";
-	const sub = item.sub ?? "Uncategorized";
-	if (!groups[cat]) groups[cat] = {};
-	if (!groups[cat][sub]) groups[cat][sub] = [];
-	groups[cat][sub].push(item);
-}
-
-// Flatten to an ordered array of { category, sub, items[] } sections
-// so the template can just .map() them. Any subcategory not in the
-// explicit GROUP_ORDER is appended alpha at the end of its category.
-const sections: Array<{ category: string; sub: string; items: typeof items }> = [];
-for (const [cat, subOrder] of GROUP_ORDER) {
-	const catGroups = groups[cat];
-	if (!catGroups) continue;
-	const seen = new Set<string>();
-	for (const sub of subOrder) {
-		if (catGroups[sub]) {
-			sections.push({ category: cat, sub, items: catGroups[sub] });
-			seen.add(sub);
-		}
-	}
-	// Trailing "unknown subs" for this category, alpha order.
-	for (const sub of Object.keys(catGroups).sort()) {
-		if (!seen.has(sub)) {
-			sections.push({ category: cat, sub, items: catGroups[sub] });
-		}
-	}
-}
-// Catch categories not in GROUP_ORDER (defensive).
-for (const cat of Object.keys(groups).sort()) {
-	if (GROUP_ORDER.some(([c]) => c === cat)) continue;
-	for (const sub of Object.keys(groups[cat]).sort()) {
-		sections.push({ category: cat, sub, items: groups[cat][sub] });
-	}
-}
+// Sectioned display order (category -> subcategory -> WZ ID). Lives in
+// lib/item-catalog so the /items/[item] pager walks the exact same
+// sequence a reader sees here.
+const sections = buildItemSections(items);
 
 const categories = [...new Set(items.map((i) => i.category))].sort();
 const editorialCount = items.filter((i) => i.hasEditorial).length;

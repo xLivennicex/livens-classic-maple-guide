@@ -14,6 +14,7 @@
     "db:build": "node scripts/build-database.mjs && astro build && pagefind --site dist",
     "snapshot": "node scripts/snapshot-datamine.mjs",
     "audit:links": "node scripts/audit-links.mjs",
+    "audit:nav": "node scripts/audit-nav-contract.mjs",
     "audit:sprites": "node scripts/audit-sprites.mjs",
     "audit:vi": "node scripts/audit-vi-references.mjs",
     "audit:guides": "node scripts/audit-guide-coverage.mjs",

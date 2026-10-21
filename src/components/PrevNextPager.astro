@@ -7,15 +7,10 @@
  * catalog by going prev/next without returning to the index. Great for
  * curious readers skimming a category.
  *
- * Usage (inside a .astro file):
+ * Usage: build neighbours with buildPagerMap() from lib/catalog-pager
+ * (fed the index page's display order), then:
  *
- *   const prev = findPrev(myId, allIds);
- *   const next = findNext(myId, allIds);
- *   <PrevNextPager
- *     prev={prev && { href: `/items/${prev.id}`, label: prev.name }}
- *     next={next && { href: `/items/${next.id}`, label: next.name }}
- *     sectionLabel="item"
- *   />
+ *   <PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="item" />
  *
  * Both prev and next are OPTIONAL - the component renders a half-row
  * when one direction is missing (first / last entry in the series).
@@ -24,10 +19,8 @@
  * e.g. "Previous and next item". Default: "entry".
  */
 
-export interface PagerLink {
-	href: string;
-	label: string;
-}
+import type { PagerLink } from "../lib/catalog-pager";
+export type { PagerLink };
 
 interface Props {
 	prev?: PagerLink | null;

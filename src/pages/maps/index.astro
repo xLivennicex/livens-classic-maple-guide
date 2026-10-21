@@ -21,43 +21,13 @@ import indexData from "../../data/db/index.json";
 import generatedAt from "../../data/db/generated-at.json";
 import { mapThumbnailSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
+import { buildMapRegions, regionAnchorId } from "../../lib/map-catalog";
 
-// Only surface the "user-facing" kinds. Dev/event maps stay in the
-// dossier for cross-reference but are hidden from the main list.
-const SHOWN_KINDS = new Set(["training", "hidden", "town"]);
-const maps = indexData.maps
-	.filter((m) => SHOWN_KINDS.has(m.kind))
-	.sort((a, b) => a.id - b.id);
-
-// Region order prioritizes the reader's journey (Maple Island ->
-// Victoria Island -> Ossyria). The datamine collapses everything
-// else (Sleepywood, party quest dungeons, Free Market, 2nd-job
-// advancement zones) into 'Other'. If the datamine ever exposes
-// finer regions, they'll slot in here in reader-journey order.
-const REGION_ORDER = [
-	"Maple Island",
-	"Victoria Island",
-	"Ossyria",
-	"Other",
-];
-
-const groups: Record<string, typeof maps> = {};
-for (const m of maps) {
-	const r = m.region || "Other";
-	if (!groups[r]) groups[r] = [];
-	groups[r].push(m);
-}
-const orderedRegions: Array<{ region: string; maps: typeof maps }> = [];
-const seen = new Set<string>();
-for (const r of REGION_ORDER) {
-	if (groups[r]) {
-		orderedRegions.push({ region: r, maps: groups[r] });
-		seen.add(r);
-	}
-}
-for (const r of Object.keys(groups).sort()) {
-	if (!seen.has(r)) orderedRegions.push({ region: r, maps: groups[r] });
-}
+// Browsable maps (dev/event hidden) grouped by region in reader-journey
+// order. Built in lib/map-catalog so the DB strip count, the
+// /maps/[id] pager, and breadcrumb region links all agree with it.
+const orderedRegions = buildMapRegions(indexData.maps);
+const maps = orderedRegions.flatMap((r) => r.maps);
 
 // Human-friendly labels + counts for the filter chips.
 const KIND_META: Record<string, { label: string; }> = {
@@ -139,7 +109,12 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 
 	<div class="regions">
 		{orderedRegions.map((r) => (
-			<details class="region" data-region={r.region} open>
+			<details
+				class="region"
+				id={regionAnchorId(r.region)}
+				data-region={r.region}
+				open
+			>
 				<summary class="region-header disclosure-summary">
 					<span class="disclosure-summary__chevron" aria-hidden="true">&rsaquo;</span>
 					<h2 class="region-header__title">{r.region}</h2>
@@ -292,6 +267,9 @@ const buildDate = new Date(generatedAt.timestamp).toISOString().slice(0, 10);
 
 	.regions { display: flex; flex-direction: column; gap: 0.8rem; }
 	.region {
+		/* Breadcrumb links land here via #region-*; keep the header
+		   off the very top edge of the viewport. */
+		scroll-margin-top: 1rem;
 		background: var(--surface-card);
 		border: 2px solid var(--border-card);
 		border-radius: 0.75rem;

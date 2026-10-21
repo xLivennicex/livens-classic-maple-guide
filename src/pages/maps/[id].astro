@@ -19,34 +19,38 @@ import { mapMinimapUrl, mapRenderUrl, mobSpriteUrl, mobSpriteSrcs, npcSpriteUrl,
 import Sprite from "../../components/Sprite.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
+import { buildPagerMap } from "../../lib/catalog-pager";
 import mobDossiers from "../../data/db/mobs.json";
 import { mobHref } from "../../lib/mob-dedup";
 import npcDossiers from "../../data/db/npcs.json";
 import { themeForLocation } from "../../lib/region-theme";
+import { buildMapRegions, mapRegionOf, mapsInDisplayOrder, regionAnchorId } from "../../lib/map-catalog";
 
 // Look up each NPC's WZ ID for sprite rendering. Our map dossier
 // stores `npc.id` (internal), but sprite URLs need the WZ ID which
 // lives in the NPC dossier. O(1) lookup via pre-built map.
 const npcWzById = new Map(npcDossiers.map((n) => [n.id, n.wzId]));
 
+// Regions that actually get a section on /maps (i.e. contain at least
+// one browsable map). An event-only region has no anchor to land on,
+// so its breadcrumb segment renders as plain text instead of a link.
+const listedRegions = new Set(buildMapRegions(mapDossiers).map((r) => r.region));
+
 export const getStaticPaths: GetStaticPaths = async () => {
-	// Match /maps default sort (WZ ID ASC) so prev/next walks the
-	// catalog in the same order a reader would see on the index.
-	const sorted = [...mapDossiers].sort((a: any, b: any) => a.id - b.id);
-	return sorted.map((d, i) => {
-		const prev = i > 0 ? sorted[i - 1] : null;
-		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
-		return {
-			params: { id: String(d.id) },
-			props: {
-				d,
-				pager: {
-					prev: prev ? { href: `/maps/${prev.id}`, label: prev.name } : null,
-					next: next ? { href: `/maps/${next.id}`, label: next.name } : null,
-				},
-			},
-		};
-	});
+	// Pager walks ONLY the maps /maps lists (WZ ID ASC, user-facing
+	// kinds). Event/dev maps keep their dossier pages for cross-links
+	// but get no pager - "Next" must never drop a reader into a debug
+	// map the index deliberately hides.
+	const pagerById = buildPagerMap(
+		mapsInDisplayOrder(mapDossiers),
+		(m) => m.id,
+		(m) => ({ href: `/maps/${m.id}`, label: m.name }),
+	);
+
+	return mapDossiers.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d, pager: pagerById.get(d.id) ?? null },
+	}));
 };
 
 const { d, pager } = Astro.props;
@@ -127,7 +131,14 @@ const pageTheme = themeForLocation(
 	<Breadcrumbs
 		segments={[
 			{ href: "/maps", label: "Maps" },
-			...(d.region ? [{ href: `/maps#${d.region.toLowerCase().replace(/\s+/g, "-")}`, label: d.region }] : []),
+			...(d.region
+				? [{
+						href: listedRegions.has(mapRegionOf(d))
+							? `/maps#${regionAnchorId(mapRegionOf(d))}`
+							: undefined,
+						label: d.region,
+					}]
+				: []),
 			{ label: d.name },
 		]}
 	/>
@@ -316,11 +327,7 @@ const pageTheme = themeForLocation(
 		</section>
 	)}
 
-	<PrevNextPager
-		prev={pager.prev}
-		next={pager.next}
-		sectionLabel="map"
-	/>
+	<PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="map" />
 </BaseLayout>
 
 <style>

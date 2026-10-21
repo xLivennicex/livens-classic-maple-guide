@@ -21,16 +21,18 @@
  * Party quests live at /party-quests (same collection, filtered).
  */
 
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import DatabaseStrip from "../../components/DatabaseStrip.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
-import questDossiers from "../../data/db/quests.json";
+import { getQuestCards } from "../../lib/quest-catalog";
 
 // Level-tier definitions. Half-open ranges [lo, hi). Order matters -
-// this drives section render order.
+// this drives section render order. Tiers must cover EVERY possible
+// levelMin: the first tier starts at 0 because quests with no level
+// requirement in the datamine are normalized to levelMin 0, and a
+// lo of 1 used to drop them from the page entirely.
 const LEVEL_TIERS = [
-	{ id: "1-10", label: "Levels 1-10", lede: "Maple Island tutorial + arrival at Victoria Island. Everything a fresh character encounters.", lo: 1, hi: 11 },
+	{ id: "1-10", label: "Levels 1-10", lede: "Maple Island tutorial + arrival at Victoria Island. Everything a fresh character encounters.", lo: 0, hi: 11 },
 	{ id: "11-20", label: "Levels 11-20", lede: "First-job settlement quests. You've picked Warrior / Magician / Bowman / Thief and are learning the town where you live.", lo: 11, hi: 21 },
 	{ id: "21-30", label: "Levels 21-30", lede: "Mid-first-job. Longer chains, first named items, and the run-up to second-job advancement at 30.", lo: 21, hi: 31 },
 	{ id: "31-40", label: "Levels 31-40", lede: "Early second-job. Real stat scrolls start appearing, Forgotten Hollow opens at 39.", lo: 31, hi: 41 },
@@ -56,61 +58,10 @@ const CATEGORY_META: Record<string, { label: string; color: string }> = {
 	datamined: { label: "Datamined", color: "#8a8a8a" },
 };
 
-// Merge editorial + dossier quests into a single unified list so
-// every one of the 322 datamined quests is discoverable, not just
-// the 90 with hand-authored MDX pages. Both variants link to
-// /quests/{id} - the [id] route already handles both editorial
-// slugs and numeric dossier IDs (dual-path pattern from round 19).
-const allEditorial = await getCollection("quests");
-const nonPqEditorial = allEditorial.filter((q) => q.data.category !== "party-quest");
-const editorialQuestIds = new Set(nonPqEditorial.map((e) => e.data.questId));
-
-// Normalize both sources to a common card-shape so the render loop
-// stays simple. Editorial cards get their rich fields; dossier-only
-// cards fall back to datamine values + a "Datamined" pseudo-category.
-type Card = {
-	href: string;
-	name: string;
-	levelMin: number;
-	category: string;
-	npcName: string;
-	npcLocation: string;
-	tagline: string | null;
-	classReq: string | null;
-	isEditorial: boolean;
-};
-
-const editorialCards: Card[] = nonPqEditorial.map((q) => ({
-	href: `/quests/${q.id}`,
-	name: q.data.name,
-	levelMin: q.data.levelMin,
-	category: q.data.category,
-	npcName: q.data.npcName,
-	npcLocation: q.data.npcLocation,
-	tagline: q.data.tagline,
-	classReq: q.data.classReq ?? null,
-	isEditorial: true,
-}));
-
-const dossierOnlyCards: Card[] = questDossiers
-	.filter((d) => !editorialQuestIds.has(d.id))
-	.map((d) => ({
-		href: `/quests/${d.id}`,
-		name: d.name,
-		levelMin: d.levelMin ?? 0,
-		category: "datamined",
-		npcName: d.npcName ?? "Unknown giver",
-		npcLocation: d.startingMaps?.[0]?.mapName ?? d.region ?? "—",
-		tagline: null,
-		classReq: null,
-		isEditorial: false,
-	}));
-
-// Editorial first within each tier so the richest cards lead the
-// eye. Both lists are already level-ordered.
-const cards: Card[] = [...editorialCards, ...dossierOnlyCards].sort(
-	(a, b) => a.levelMin - b.levelMin,
-);
+// Unified editorial + dossier-only card list, in display order. Built
+// in lib/quest-catalog so the /quests/[id] pager and the DB strip
+// count use the exact list rendered here.
+const cards = await getQuestCards();
 
 const buckets = LEVEL_TIERS.map((tier) => ({
 	...tier,
@@ -123,7 +74,7 @@ const buckets = LEVEL_TIERS.map((tier) => ({
 })).filter((b) => b.entries.length > 0);
 
 const totalCount = cards.length;
-const editorialTotal = editorialCards.length;
+const editorialTotal = cards.filter((c) => c.isEditorial).length;
 ---
 
 <BaseLayout
@@ -204,7 +155,9 @@ const editorialTotal = editorialCards.length;
 								href={quest.href}
 							>
 								<div class="quest-card__topline">
-									<span class="quest-card__level">L{quest.levelMin}+</span>
+									<span class="quest-card__level">
+										{quest.levelMin > 0 ? `L${quest.levelMin}+` : "No level req"}
+									</span>
 									<span
 										class="quest-card__cat"
 										style={`background:${meta.color}`}

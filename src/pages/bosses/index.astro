@@ -20,11 +20,16 @@ import Sprite from "../../components/Sprite.astro";
 import DatabaseStrip from "../../components/DatabaseStrip.astro";
 import { allBosses, faRosterBosses, nonFaBosses, threatMeta } from "../../lib/bosses";
 import { mobSpriteSrcs, themePlaceholderUrl } from "../../lib/maplestory-cdn";
+
+// Derived from the manifest so the meta description can't go stale.
+// The hand-written list it replaced silently omitted Shade after the
+// manifest grew to seven entries.
+const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 ---
 
 <BaseLayout
 	title="Bosses - Liven's Classic Maple Guide"
-	description="Every boss in the MapleStory Classic traditional MapleStory datamine - Mano, King Slime, Crimson Balrog, Jr. Balrog, Mushmom, Zombie Mushmom. Stats, spawn locations, strategy, drops."
+	description={`Every boss in the MapleStory Classic datamine - ${bossNames}. Stats, spawn locations, strategy, drops.`}
 	currentPath="/bosses"
 	theme="sleepywood"
 >

@@ -20,27 +20,21 @@ import { themeForLocation } from "../../lib/region-theme";
 import Sprite from "../../components/Sprite.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import PrevNextPager from "../../components/PrevNextPager.astro";
+import { buildPagerMap } from "../../lib/catalog-pager";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	// Match /npcs index default sort (alpha by name) so prev/next
 	// mirrors the order a browser would see on the index page.
-	const sorted = [...npcDossiers].sort((a: any, b: any) =>
-		a.name.localeCompare(b.name),
+	const sorted = [...npcDossiers].sort((a, b) => a.name.localeCompare(b.name));
+	const pagers = buildPagerMap(
+		sorted,
+		(n) => n.id,
+		(n) => ({ href: `/npcs/${n.id}`, label: n.name }),
 	);
-	return sorted.map((d, i) => {
-		const prev = i > 0 ? sorted[i - 1] : null;
-		const next = i < sorted.length - 1 ? sorted[i + 1] : null;
-		return {
-			params: { id: String(d.id) },
-			props: {
-				d,
-				pager: {
-					prev: prev ? { href: `/npcs/${prev.id}`, label: prev.name } : null,
-					next: next ? { href: `/npcs/${next.id}`, label: next.name } : null,
-				},
-			},
-		};
-	});
+	return sorted.map((d) => ({
+		params: { id: String(d.id) },
+		props: { d, pager: pagers.get(d.id) ?? null },
+	}));
 };
 
 const { d, pager } = Astro.props;
@@ -146,11 +140,7 @@ for (const q of d.questsGiven) {
 		</section>
 	)}
 
-	<PrevNextPager
-		prev={pager.prev}
-		next={pager.next}
-		sectionLabel="NPC"
-	/>
+	<PrevNextPager prev={pager?.prev} next={pager?.next} sectionLabel="NPC" />
 </BaseLayout>
 
 <style>
