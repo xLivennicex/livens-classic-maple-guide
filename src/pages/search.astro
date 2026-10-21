@@ -164,19 +164,45 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 	/* Tighten a few Pagefind default styles so they blend better with
 	 * our card-and-panel aesthetic. Prefixed selectors so we don't
-	 * accidentally clobber anything outside the search widget. */
+	 * accidentally clobber anything outside the search widget.
+	 *
+	 * Specificity traps (both shipped broken before):
+	 * - Input: do NOT set `padding`. Pagefind reserves ~54px on the
+	 *   left for its magnifier icon; our old shorthand out-ranked it
+	 *   and the icon sat on top of the query text.
+	 * - Result card: Pagefind's `.pagefind-ui__result.svelte-x.svelte-x`
+	 *   is 0,3,0 - a TIE with `.search-container[cid] .x` - and its
+	 *   stylesheet loads later, so it silently won (padding: 30px 0, no
+	 *   inline padding). The extra `.pagefind-ui` ancestor (0,4,0)
+	 *   makes our card rules actually apply. */
 	.search-container :global(.pagefind-ui__search-input) {
 		border-radius: 0.6rem;
 		border: 2px solid var(--border-card);
-		padding: 0.7rem 0.9rem;
 	}
 
-	.search-container :global(.pagefind-ui__result) {
+	.search-container :global(.pagefind-ui .pagefind-ui__result) {
 		border: 2px solid var(--border-card);
 		border-radius: 0.75rem;
 		background: var(--surface-card);
 		margin-bottom: 0.7rem;
 		padding: 0.9rem 1.1rem;
+	}
+
+	.search-container :global(.pagefind-ui .pagefind-ui__result-inner) {
+		margin-top: 0;
+	}
+
+	/* "57 results for zakum" sat directly on the scenic page
+	 * background and was hard to read; give it a card surface. */
+	.search-container :global(.pagefind-ui__message) {
+		display: inline-flex;
+		height: auto;
+		margin: 0.9rem 0 0.6rem;
+		padding: 0.4rem 0.85rem;
+		background: var(--surface-card);
+		border: 2px solid var(--border-card);
+		border-radius: 0.5rem;
+		color: var(--text-heading);
 	}
 
 	.search-container :global(.pagefind-ui__result-link) {
