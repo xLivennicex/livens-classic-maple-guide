@@ -65,6 +65,18 @@
 	box-sizing: border-box;
 }
 
+/* The `hidden` attribute must always hide. Its UA rule is plain
+ * `[hidden] { display: none }`, which ANY class selector setting
+ * display (flex/grid/block) beats on specificity - so JS filters that
+ * toggle `el.hidden` silently stopped working wherever a card set its
+ * own display. Hit three times: .gender-row, .term/.letter-block
+ * (each patched locally), then .map-card / .npc-card on the /maps and
+ * /npcs filters. One global rule instead of a per-component patch;
+ * Bootstrap's Reboot ships the same line. */
+[hidden] {
+	display: none !important;
+}
+
 html {
 	scroll-behavior: smooth;
 }

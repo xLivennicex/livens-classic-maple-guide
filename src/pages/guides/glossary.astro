@@ -290,14 +290,8 @@ const categoryCounts = sortedTerms.reduce(
 		border-radius: 0.5rem;
 		scroll-margin-top: 5rem;
 	}
-	/* Class selectors beat the UA [hidden] {display:none} rule
-	 * on specificity, so explicitly restore hidden behavior for
-	 * filtered terms and empty letter blocks. .term[hidden] has
-	 * higher specificity than .term via the attribute selector. */
-	.term[hidden],
-	.letter-block[hidden] {
-		display: none;
-	}
+	/* Filtered terms / empty letter blocks hide via the `hidden`
+	 * attribute; global.css guarantees [hidden] always wins. */
 	.term__head {
 		display: flex;
 		align-items: baseline;

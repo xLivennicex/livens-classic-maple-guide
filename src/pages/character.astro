@@ -1140,11 +1140,9 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 		color: var(--text-muted); font-style: italic;
 	}
 	/* Gender toggle - segmented control that only appears on
-	 * Face and Hair tabs. Hidden by JS on other slots.
-	 * `display: flex` would otherwise override the `hidden`
-	 * attribute's implicit display:none - hence the explicit
-	 * [hidden] override. Without it, users could click the
-	 * leaked toggle on Hat/Skin and silently corrupt the
+	 * Face and Hair tabs. Hidden by JS (the `hidden` attribute) on
+	 * other slots. global.css makes [hidden] beat this display:flex;
+	 * a leaked toggle on Hat/Skin would silently corrupt the
 	 * persisted gender preference. */
 	.gender-row {
 		display: flex;
@@ -1153,7 +1151,6 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 		margin: 0 0 0.6rem;
 		font-size: 0.85rem;
 	}
-	.gender-row[hidden] { display: none; }
 	.gender-row__label { color: var(--text-secondary); font-weight: 600; }
 	.gender-toggle {
 		display: inline-flex;
