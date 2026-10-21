@@ -21,6 +21,7 @@
  */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import characterWhitelist from "../data/character-item-whitelist.json";
 import {
 	CHARACTER_SLOTS, DEFAULT_BUILD,
@@ -89,11 +90,12 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 	    leaves + sky). Without it, the eyebrow disappears into
 	    clouds and the h1 fights the tree silhouette. */}
 	<div class="hero-plate">
-		<nav class="crumbs" aria-label="Breadcrumb">
-			<a href="/">Home</a>
-			<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-			<span aria-current="page">Character Customizer</span>
-		</nav>
+		<Breadcrumbs
+			segments={[
+				{ href: "/", label: "Home" },
+				{ label: "Character Customizer" },
+			]}
+		/>
 
 		<header class="cust-hero">
 			<span class="eyebrow">Interactive sandbox</span>
@@ -785,6 +787,7 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 </script>
 
 <style>
+	.hero-plate :global(.breadcrumbs) { margin: 0 0 0.35rem; }
 	/* Hero plate - frosted-glass panel that rescues text contrast
 	 * against the theme's photographic backdrop. Uses backdrop-blur
 	 * where supported (all modern browsers) with a solid rgba
@@ -813,9 +816,6 @@ for (const [k, v] of Object.entries(bySlot)) slotTotals[k] = v.length;
 			backdrop-filter: blur(10px);
 		}
 	}
-	.hero-plate .crumbs { margin: 0 0 0.35rem; font-size: 0.9rem; color: #4a5b70; }
-	.hero-plate .crumbs a { color: #2c4a6b; }
-	.hero-plate .crumbs__sep { margin: 0 0.4rem; color: #8b9aae; }
 	.hero-plate .eyebrow {
 		display: inline-block; font-size: 0.75rem; font-weight: 800;
 		letter-spacing: 0.08em; text-transform: uppercase;

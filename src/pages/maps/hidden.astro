@@ -14,6 +14,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import indexData from "../../data/db/index.json";
 
 const hiddenMaps = indexData.maps
@@ -77,13 +78,13 @@ function findMapByName(name: string): HiddenMap | undefined {
 	theme="ellinia"
 	decorations={false}
 >
-	<nav class="crumbs" aria-label="Breadcrumb">
-		<a href="/">Home</a>
-		<span class="crumbs__sep">&rsaquo;</span>
-		<a href="/maps">Maps</a>
-		<span class="crumbs__sep">&rsaquo;</span>
-		<span aria-current="page">Hidden Streets</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/", label: "Home" },
+			{ href: "/maps", label: "Maps" },
+			{ label: "Hidden Streets" },
+		]}
+	/>
 
 	<header class="section-heading">
 		<span class="eyebrow">Map Sub-Catalog</span>
@@ -176,19 +177,6 @@ function findMapByName(name: string): HiddenMap | undefined {
 </BaseLayout>
 
 <style>
-	.crumbs {
-		margin: 1rem 0 0.5rem;
-		font-size: 0.9rem;
-		color: var(--text-muted);
-	}
-	.crumbs__sep {
-		margin: 0 0.4rem;
-	}
-	.crumbs a {
-		color: var(--accent-primary);
-		text-decoration: none;
-	}
-	.crumbs a:hover { text-decoration: underline; }
 
 	.section-heading {
 		max-width: 70ch;

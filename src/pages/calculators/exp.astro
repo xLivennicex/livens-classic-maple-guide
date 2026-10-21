@@ -19,6 +19,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import mobs from "../../data/db/mobs.json";
 import { EXP_TO_NEXT, LEVEL_CAP, isLevelVerified } from "../../data/exp-table";
 import { HUNT_MAPS } from "../../data/hunt-recommender";
@@ -78,11 +79,13 @@ const defaultMob = combatMobs.find((m) => m.name === "Orange Mushroom")
 	decorations={false}
 >
 	<div class="hero-plate">
-		<nav class="crumbs" aria-label="Breadcrumb">
-			<a href="/">Home</a>
-			<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-			<span aria-current="page">EXP Calculator</span>
-		</nav>
+		<Breadcrumbs
+			segments={[
+				{ href: "/", label: "Home" },
+				{ href: "/calculators", label: "Calculators" },
+				{ label: "EXP Calculator" },
+			]}
+		/>
 
 		<header class="calc-hero">
 			<span class="eyebrow">Grind planner</span>
@@ -570,9 +573,6 @@ document.addEventListener("astro:page-load", () => {
 		border: 1px solid var(--border-card);
 		margin-bottom: 1.5rem;
 	}
-	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs__sep { margin: 0 0.35rem; }
 	.calc-hero h1 { margin: 0.3rem 0; }
 	.calc-hero .lede { max-width: 55rem; line-height: 1.6; color: var(--text-body); }
 

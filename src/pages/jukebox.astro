@@ -21,6 +21,7 @@
  */
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import { themeAudio, type ThemeName } from "../data/audio";
 import { CLIENT_BGM_CATALOG, groupByRegion } from "../data/audio-catalog";
 
@@ -69,11 +70,12 @@ const tracksJson = JSON.stringify(tracks);
 	decorations={false}
 >
 	<div class="hero-plate">
-		<nav class="crumbs" aria-label="Breadcrumb">
-			<a href="/">Home</a>
-			<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-			<span aria-current="page">Jukebox</span>
-		</nav>
+		<Breadcrumbs
+			segments={[
+				{ href: "/", label: "Home" },
+				{ label: "Jukebox" },
+			]}
+		/>
 
 		<header class="jb-hero">
 			<span class="eyebrow">Community jukebox</span>
@@ -430,9 +432,6 @@ document.addEventListener("astro:page-load", () => {
 		border: 1px solid var(--border-card);
 		margin-bottom: 1.5rem;
 	}
-	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs__sep { margin: 0 0.35rem; }
 
 	.jb-hero h1 { margin: 0.3rem 0; }
 	.jb-hero .lede {

@@ -13,6 +13,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Sprite from "../../components/Sprite.astro";
 import {
 	KPQ_META, KPQ_REWARDS, KPQ_BONUS_ROOM_DROPS, KPQ_ENTRY_REQUIREMENTS,
@@ -71,15 +72,14 @@ const bonusTables = [
 	theme="kerning"
 	decorations={true}
 >
-	<nav class="crumbs" aria-label="Breadcrumb">
-		<a href="/world">World Map</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<a href="/world/victoria-island">Victoria Island</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<a href="/world/victoria-island/kerning-city">Kerning City</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<span aria-current="page">Kerning Party Quest</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/world", label: "World Map" },
+			{ href: "/world/victoria-island", label: "Victoria Island" },
+			{ href: "/world/victoria-island/kerning-city", label: "Kerning City" },
+			{ label: "Kerning Party Quest" },
+		]}
+	/>
 
 	<!-- ============================================================ -->
 	<header class="kpq-hero">
@@ -686,8 +686,6 @@ const bonusTables = [
 </script>
 
 <style>
-	.crumbs { margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-secondary); }
-	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
 	/* -------- Hero -------- */
 	.kpq-hero {
 		display: grid;

@@ -19,6 +19,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import { MOB_DROP_CATALOG, ITEM_DROP_SOURCES, DROP_INDEX_STATS } from "../../data/drop-index";
 
 // Ship both catalogs to the client. Slim projections keep the
@@ -33,13 +34,13 @@ const itemsJson = JSON.stringify(ITEM_DROP_SOURCES);
 	theme="sleepywood"
 	currentPath="/calculators/drops"
 >
-	<nav class="crumbs">
-		<a href="/">Home</a>
-		<span class="crumbs__sep">&middot;</span>
-		<a href="/calculators/exp">Calculators</a>
-		<span class="crumbs__sep">&middot;</span>
-		<span>Drops</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/", label: "Home" },
+			{ href: "/calculators", label: "Calculators" },
+			{ label: "Drops" },
+		]}
+	/>
 
 	<header class="calc-hero">
 		<p class="eyebrow">Calculator</p>
@@ -567,9 +568,6 @@ document.addEventListener("astro:page-load", () => {
 </script>
 
 <style>
-	.crumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem; }
-	.crumbs a { color: var(--accent-primary); text-decoration: none; }
-	.crumbs__sep { margin: 0 0.35rem; }
 
 	.calc-hero { margin-bottom: 1.5rem; }
 	.calc-hero .lede { color: var(--text-body); line-height: 1.55; max-width: 55rem; }

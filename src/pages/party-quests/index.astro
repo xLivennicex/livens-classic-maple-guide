@@ -14,6 +14,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import { KPQ_META } from "../../data/party-quests/kerning-pq";
 import { mobSpriteSrcs } from "../../lib/maplestory-cdn";
 import Sprite from "../../components/Sprite.astro";
@@ -99,11 +100,12 @@ const planned = walkthroughs.filter((w) => w.status === "planned");
 	currentPath="/party-quests"
 	theme="kerning"
 >
-	<nav class="crumbs" aria-label="Breadcrumb">
-		<a href="/">Home</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<span aria-current="page">Party Quests</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/", label: "Home" },
+			{ label: "Party Quests" },
+		]}
+	/>
 
 	<header class="section-heading">
 		<span class="eyebrow eyebrow--card">Walkthrough catalog</span>
@@ -178,8 +180,6 @@ const planned = walkthroughs.filter((w) => w.status === "planned");
 </BaseLayout>
 
 <style>
-	.crumbs { margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-secondary); }
-	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
 	h1 { font-size: 2.2rem; margin: 0.3rem 0 0.5rem; color: var(--accent-primary); }
 	.lede { max-width: 44rem; line-height: 1.6; color: var(--text-secondary); }
 	.section-title {

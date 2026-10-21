@@ -108,6 +108,14 @@ const schema = {
 	.breadcrumbs {
 		margin: 0 0 1rem;
 		font-size: 0.88rem;
+		/* Trails usually sit directly on a theme's scenic background
+		   (sky, foliage), not on a card. Same halo token + fallback the
+		   hero headings use (global.css, --hero-halo), so breadcrumbs
+		   stay legible wherever hero text does. */
+		text-shadow: var(--hero-halo,
+			0 1px 0 rgba(255, 253, 246, 0.75),
+			0 0 4px rgba(255, 253, 246, 0.55),
+			0 0 10px rgba(255, 253, 246, 0.35));
 	}
 
 	.breadcrumbs__list {

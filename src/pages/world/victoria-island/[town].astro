@@ -14,6 +14,7 @@
  */
 
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Sprite from "../../../components/Sprite.astro";
 import { victoriaTowns } from "../../../data/victoria-island";
 import mapDossiers from "../../../data/db/maps.json";
@@ -88,13 +89,13 @@ const stats = {
 	theme={town.theme}
 	decorations={true}
 >
-	<nav class="crumbs" aria-label="Breadcrumb">
-		<a href="/world">World Map</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<a href="/world/victoria-island">Victoria Island</a>
-		<span class="crumbs__sep" aria-hidden="true">&rsaquo;</span>
-		<span aria-current="page">{town.name}</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/world", label: "World Map" },
+			{ href: "/world/victoria-island", label: "Victoria Island" },
+			{ label: town.name },
+		]}
+	/>
 
 	<!-- ============================================================ -->
 	<header class="town-hero">
@@ -437,13 +438,6 @@ const stats = {
 	 * hardcode per-town colors here. That means one CSS block works
 	 * for every town's page, and if we add a new theme file it just
 	 * works when passed to `theme={...}` on BaseLayout above. */
-
-	.crumbs {
-		margin: 1rem 0 0.5rem;
-		font-size: 0.9rem;
-		color: var(--text-secondary, #4a3a1a);
-	}
-	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
 
 	/* -------- Hero -------- */
 	.town-hero {

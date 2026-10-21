@@ -21,6 +21,7 @@
  */
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Sprite from "../../components/Sprite.astro";
 import {
 	victoriaTowns,
@@ -91,11 +92,12 @@ function townDossier(mapId: number) {
 	theme="henesys"
 	decorations={true}
 >
-	<nav class="crumbs" aria-label="Breadcrumb">
-		<a href="/world">&larr; World Map</a>
-		<span class="crumbs__sep" aria-hidden="true">&middot;</span>
-		<span aria-current="page">Victoria Island</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/world", label: "World Map" },
+			{ label: "Victoria Island" },
+		]}
+	/>
 
 	<!-- ============================================================ -->
 	<header class="vi-hero">
@@ -378,11 +380,6 @@ function townDossier(mapId: number) {
 </BaseLayout>
 
 <style>
-	.crumbs {
-		margin: 1rem 0 0.5rem;
-		font-size: 0.9rem;
-	}
-	.crumbs__sep { margin: 0 0.4rem; color: var(--text-muted); }
 	/* -------- Hero -------- */
 	.vi-hero {
 		padding: 1.75rem 2rem 1.5rem;

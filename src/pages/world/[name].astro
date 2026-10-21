@@ -9,6 +9,7 @@
 
 import type { GetStaticPaths } from "astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import WorldMapView from "../../components/WorldMapView.astro";
 import worldMaps from "../../data/db/worldmaps.json";
 import mapDossiers from "../../data/db/maps.json";
@@ -83,11 +84,12 @@ const subRegions = (wm.links ?? []).map((l) => ({
 	currentPath="/world"
 	theme={themeForLocation([displayName, name])}
 >
-	<nav class="crumbs">
-		<a href="/world">&larr; World Map</a>
-		<span class="crumbs__sep">&middot;</span>
-		<span>{displayName}</span>
-	</nav>
+	<Breadcrumbs
+		segments={[
+			{ href: "/world", label: "World Map" },
+			{ label: displayName },
+		]}
+	/>
 
 	<section class="section-heading">
 		<div>
@@ -133,17 +135,6 @@ const subRegions = (wm.links ?? []).map((l) => ({
 </BaseLayout>
 
 <style>
-	/* Breadcrumbs sit directly on the theme's scenic background
-	   (no card wrapper here yet), so we need a text-shadow halo
-	   to guarantee legibility against light-blue sky imagery.
-	   WCAG contrast preserved without adding a boxed chip. */
-	.crumbs {
-		font-size: 0.85rem; color: var(--text-body); margin-bottom: 1rem;
-		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.7);
-	}
-	.crumbs a { color: var(--accent-primary); text-decoration: none; font-weight: 500; }
-	.crumbs a:hover { text-decoration: underline; }
-	.crumbs__sep { margin: 0 0.4rem; opacity: 0.6; }
 
 	.eyebrow {
 		display: inline-block; font-size: 0.75rem; font-weight: bold;
