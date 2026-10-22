@@ -230,6 +230,34 @@ export const sources: ArchivedSource[] = [
 		],
 	},
 	{
+		slug: "nexon-grand-launch-maintenance-notes",
+		title: "Scheduled Grand Launch Maintenance - October 21, 2026 (v1.0.0 patch notes)",
+		publisher: "NEXON",
+		publishedOn: "October 21, 2026",
+		sourceType: "official-announcement",
+		topics: ["Patch Notes", "Grand Launch", "Drops", "Bosses", "Kerning City Party Quest"],
+		originalUrl:
+			"https://www.nexon.com/maplestory/news/maintenance/46800/completed-scheduled-grand-launch-october-21-2026",
+		archiveUrl:
+			"https://web.archive.org/web/2026*/https://www.nexon.com/maplestory/news/maintenance/46800/completed-scheduled-grand-launch-october-21-2026",
+		checkedOn: "2026-10-22",
+		status: "current",
+		summary:
+			"The v1.0.0 launch-day patch notes. Beyond the release notes: more potion drops from Lv. 10-30 monsters, new Victoria Island quests and monster drops (unspecified), randomized field boss respawns, KPQ in Channels 8-12, The Murky Swamp II, Free Market Rooms 12-20, and corrected stagger thresholds for five drake/tortie monsters. The Oct 22 follow-up (post 47098) added the Debt System and a trade-requirement fix for KPQ coupons.",
+		confirmedFacts: [
+			"Increased the potion drop rate for monsters between Lv. 10 and 30",
+			"Added new quests in Victoria Island (not itemized)",
+			"Added drop items for some monsters in Victoria Island (not itemized)",
+			"Adjusted field boss respawn times to be more randomized",
+			"Added Kerning City Party Quest to Channels 8-12; expanded Windia to 40 channels",
+			"Reduced the ore counts from the KPQ Companion's Magic Box; it can now drop the Lakelis Statue housing decoration",
+			"Added The Murky Swamp II in the Kerning City area; Free Market Rooms 12-20",
+			"Corrected an unintentionally low stagger threshold for Copper Drake, Tortie, Drake, Red Drake, and Wild Kargo",
+			"The Excavation Site is not mentioned in these notes",
+			"A separate Oct 22 unscheduled-maintenance post (47098) added the Debt System and stability optimizations, and fixed accounts below the trade requirement being unable to drop KPQ coupons and passes",
+		],
+	},
+	{
 		slug: "nexon-inkwell-future-of-classic-world",
 		title: "Inkwell on the Future of Global MapleStory and Classic World",
 		publisher: "NEXON",

@@ -108,7 +108,7 @@ in the sources section at the bottom of this page).
 | [Mano](/bosses/mano) | 20 | Open, 1-hour spawn timer |
 | [King Slime](/bosses/king-slime) | via Kerning PQ | Via PQ bonus stage |
 | [Jr. Balrog](/bosses/jr-balrog) | 80 | Open |
-| [Mushmom](/bosses/mushmom) | 40 | Open, 1-hour per channel |
+| [Mushmom](/bosses/mushmom) | 40 | Open; respawn times randomized by the Oct 21 patch |
 | [Zombie Mushmom](/bosses/zombie-mushmom) | 55 | Open |
 | [Shade](/bosses/shade) | 47 | Open (999 evasion — [Cleric mandatory](/cleric-build#bossing)) |
 

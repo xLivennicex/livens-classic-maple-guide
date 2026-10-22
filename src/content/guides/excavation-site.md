@@ -14,9 +14,10 @@ eyebrow: "Training Area"
 heading: "The Excavation Site"
 tagline: "Twelve maps, eight monsters, Lv 19 to Lv 73 - and the only new training area at Grand Launch. Masks up front, undead in the back."
 verificationStatus: "official-announcement"
-verificationNote: "The area and its monster list are from Nexon's Grand Launch release notes. Map layout, spawn counts, connections, and every monster stat (level, HP, EXP, defenses, avoidability, elements, undead flag) are from the Classic World client datamine via osmsdataexplorer.com (October 22, 2026), and agree with NiaMeowDB's monster and map pages. Spawn counts are spawn points per map, not respawn rates; we don't publish EXP-per-hour estimates because the client data doesn't include respawn timing."
+verificationNote: "The area and its monster list are from Nexon's Grand Launch release notes (the only official mention is one bullet). The v1.0.0 patch notes add a potion-drop buff for Lv 10-30 monsters. Map layout, spawn counts, connections, and every monster stat (level, HP, EXP, defenses, avoidability, elements, undead flag) are from the Classic World client datamine via osmsdataexplorer.com (October 22, 2026), and agree with NiaMeowDB's monster and map pages. Spawn counts are spawn points per map, not respawn rates; we don't publish EXP-per-hour estimates because the client data doesn't include respawn timing."
 sourceSlugs:
   - nexon-grand-launch-release-notes
+  - nexon-grand-launch-maintenance-notes
   - osmsdataexplorer
 toc:
   - { href: "#layout", label: "Layout" }
@@ -26,6 +27,9 @@ toc:
   - { href: "#cliff", label: "Lv 63-73: Tomb IV & Cliff" }
   - { href: "#by-class", label: "By class" }
   - { href: "#monsters", label: "All 8 monsters" }
+  - { href: "#drops", label: "Drops" }
+  - { href: "#camp", label: "The camp: NPCs and quests" }
+  - { href: "#sources", label: "What is confirmed, and what is not" }
 ---
 
 The Excavation Site is the one new map area in Nexon's Grand Launch release
@@ -131,8 +135,83 @@ stretch, this cliff and [Jr. Balrog](/bosses/jr-balrog) are the main event
 | [Officer Skeleton](/mobs/68) | 63 | 5,976 | 242 | 15 / 15 | 37 | Undead; weak: Holy |
 | [Commander Skeleton](/mobs/69) | 73 | 11,915 | 390 | 15 / 15 | 42 | Undead; weak: Holy; strong: Ice; immune: Poison |
 
-Drops on each monster page are community-reported (NiaMeowDB vote scores,
-not drop rates); the deep-end skeletons have very few reports so far.
+<h2 id="drops">Drops</h2>
+
+Nexon's v1.0.0 patch notes say it "increased the potion drop rate for
+monsters between Lv. 10 and 30" - that covers the Ghost Stumps and both
+masks - and "added drop items for some monsters in Victoria Island"
+without naming which. Nothing in the notes names the Excavation Site.
+
+What players have reported so far (NiaMeowDB vote scores - **not drop
+rates**; higher means more people confirmed it). This is a snapshot; each
+monster page shows the current list.
+
+| Monster | Reported | Most-confirmed drops | Notable |
+| --- | --- | --- | --- |
+| [Ghost Stump](/mobs/39) | 10 | [Adamantium Ore](/items/4010003), [Aquamarine Ore](/items/4020002), [Bronze Viking Helm](/items/1002057) | Lv 20 hats and tops |
+| [Wooden Mask](/mobs/42) | 20 | [Stiff Feather](/items/4003002), [Silver Ore](/items/4010004), [Orange Potion](/items/2000001), [Blue Potion](/items/2000003) | Earring STR and Topwear HP scrolls (Intermediate) |
+| [Rocky Mask](/mobs/64) | 15 | [Stiff Feather](/items/4003002), [Blue Potion](/items/2000003), [Bronze Ore](/items/4010000), [Sapphire Ore](/items/4020005) | Two-handed Sword Attack Scroll (Intermediate) is its top scroll |
+| [Skeledog](/mobs/65) | 11 | [Steel Tower Shield](/items/1092013), [Brown Guiltian](/items/1002146), [Amethyst Ore](/items/4020001) | Lv 40 gear, Spear Attack Scroll (Intermediate) |
+| [Mummydog](/mobs/66) | 12 | [Red Jangoon Armor](/items/1041065), [Brown Piettra](/items/1041069), [White Potion](/items/2000002) | A Lv 50 Serpent's Tongue |
+| [Skeleton Soldier](/mobs/67) | 9 | [Sapphire Ore](/items/4020005), [Red-Lined Kismet](/items/1050033), [The Rising](/items/1412007) | Lv 50 gear; Pet Equip Jump Scroll |
+| [Officer Skeleton](/mobs/68) | 1 | [Red-Lined Kismet](/items/1050033) | Almost no data yet |
+| [Commander Skeleton](/mobs/69) | 0 | - | No confirmed drops yet |
+
+The pattern fits the community talk: the masks are the Intermediate
+scroll source for the low band, and the Lv 50 equipment starts with the
+Mummydogs and Skeleton Soldiers. But a few votes is not a drop rate, and
+nobody has published rates for this area. The deep-end skeletons are the
+least understood part of the whole complex.
+
+<h2 id="camp">The camp: NPCs and quests</h2>
+
+[Excavation Site &lt;Camp&gt;](/maps/10004133) is a safe town map with no
+monsters, between Excavation Site III and Remains &lt;Tomb&gt; I. It has
+three NPCs - **Shuang**, **Shawn**, and a **Bulletin Board** - and in the
+Classic World client data all three are scenery: idle chatter only, no
+shop, no teleport, and no quests attached. None of the 343 quests in the
+client data starts, ends, or takes place in the Excavation Site.
+
+Older (traditional MapleStory) wiki data attaches quests to this area -
+"Notice from the Excavation Team" (Lv 60+, kill Skeleton Soldiers,
+Officers, and Commanders, turn in Rib, Pelvic Bone, and Horse Skull for
+an attack-scroll reward) is the main one. **Treat that as unconfirmed.**
+Nexon's launch patch did add "new quests in Victoria Island" without
+listing them, so one of these could be live, but nothing we can verify
+says so. If you find the Bulletin Board or Shuang gives you a quest, tell
+us and we'll add it.
+
+<h2 id="sources">What is confirmed, and what is not</h2>
+
+| Claim | Status |
+| --- | --- |
+| The area exists in Perion, with these 8 monsters | **Official** (Grand Launch release notes) |
+| It is entered from Rocky Road III | Client data and wiki agree |
+| It has 12 maps | Client data and the wiki agree (Nexon gives no count). NiaMeowDB lists only 4 of them |
+| Levels, HP, EXP, defenses, elements | **Client data**; the levels also match launch-day player videos |
+| Spawn counts per map | Client data |
+| Drops | Community-reported only |
+| Quests and NPC functions | Nothing confirmed |
+| EXP per hour, best level to train | **Nobody has published numbers.** Don't trust anyone who says otherwise this week |
+
+**One real disagreement:** the older wiki lists lower-HP, different-EXP
+stats for several of these monsters (for example Ghost Stump at 330 HP
+and Commander Skeleton at 15,300 HP and 315 EXP). Those look like
+traditional MapleStory values. We use the Classic World client's numbers
+(Ghost Stump 404 HP, Commander Skeleton 11,915 HP and 390 EXP), which
+NiaMeowDB also shows, and we label our stats source on every monster page.
+
+**What players are saying** (anecdotal - it comes from video titles and
+comments, and some of it was recorded before servers opened):
+- Expect crowding. Players predict hard-to-find spots, and bots farming
+  glove attack scrolls.
+- Launch-day video titles promise scroll drops and Lv 50 equipment (our
+  drop table above shows both). The masks are described as good for
+  mesos with low potion use, and as a scroll farm for area-attack classes.
+- Clerics: one commenter says high magic defense hurts them, another says
+  they are "giga broken". The client data supports the second: the
+  skeleton family has only 15 magic defense and every one of them is weak to
+  Holy. Only the Wooden Mask (30) has meaningful magic defense.
 
 Nearby: [Stumpy](/bosses/stumpy), Grand Launch's new boss, lives in Parched
 Land off East Rocky Mountain V.

@@ -67,8 +67,9 @@ data, and the site's stats pipeline now uses that data for every mob.
 | [Jr. Balrog](/bosses/jr-balrog) | 80 | 325,400 | 2,188 | The Cursed Sanctuary | Holy | Poison (immune) |
 
 Snapshot of the October 22 client data; the boss pages update with every
-data refresh. Spawn timers aren't in the client data, so if a boss is down,
-check other channels. Drops on the boss pages are community-reported (vote
+data refresh. Spawn timers aren't in the client data, and Nexon's v1.0.0
+patch notes say field boss respawn times were made "more randomized", so
+if a boss is down, check other channels. Drops on the boss pages are community-reported (vote
 scores, not drop rates).
 
 The shape of the ladder is the big change from traditional MapleStory:
@@ -157,7 +158,9 @@ Below that, King Slime's 2,400 comes with a full Kerning PQ clear.
 **Are spawns per channel?**
 
 Each channel has its own boss. If one is down, check other channels. The
-client data doesn't include respawn timers.
+client data doesn't include respawn timers, and the Oct 21 patch made field
+boss respawns "more randomized" (Nexon), so any fixed-timer advice from
+before launch is out of date.
 
 **Is there a Zakum fight?**
 
