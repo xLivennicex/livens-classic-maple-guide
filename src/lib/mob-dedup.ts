@@ -24,26 +24,15 @@
  */
 
 import mobDossiers from "../data/db/mobs.json";
+import { compareCanonicalMob, mobDossierRichness } from "./mob-canonical.mjs";
+
+// Ranking rules live in mob-canonical.mjs (shared with the redirect
+// generator script); re-exported so existing imports keep working.
+export { compareCanonicalMob, mobDossierRichness };
 
 type MobDossier = (typeof mobDossiers)[number];
 
-/**
- * Score a mob dossier by how much cross-reference data it carries.
- * Higher = richer = the dossier ID we prefer as canonical.
- *
- * Weights (empirically tuned to consistently pick the "real" dossier
- * for every known duplicate pair as of 2026-09-23):
- *   - spawn maps × 3  (strongest signal: unique spawn locations)
- *   - drops     × 2  (next: dropped items)
- *   - quests    × 1  (weakest: quest cross-refs)
- */
-export function mobDossierRichness(m: MobDossier): number {
-	return (
-		(m.mapsSpawnedOn?.length ?? 0) * 3 +
-		(m.drops?.length ?? 0) * 2 +
-		(m.requiredByQuests?.length ?? 0)
-	);
-}
+
 
 interface DedupTables {
 	/** Set of dossier IDs that are the canonical winner for their wzId. */
@@ -90,12 +79,7 @@ function buildDedupTables(): DedupTables {
 			continue;
 		}
 		duplicateGroupCount++;
-		// Sort by richness descending, tiebreak by lower ID (stable
-		// picks for otherwise-identical dossiers).
-		const sorted = [...group].sort((a, b) => {
-			const dr = mobDossierRichness(b) - mobDossierRichness(a);
-			return dr !== 0 ? dr : a.id - b.id;
-		});
+		const sorted = [...group].sort(compareCanonicalMob);
 		const winner = sorted[0]!;
 		winnerIds.add(winner.id);
 		for (let i = 1; i < sorted.length; i++) {

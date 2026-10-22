@@ -56,6 +56,12 @@ const { d, pager } = Astro.props;
 // dossier we don't publish (Zombie Mushroom's Bowman Dark Marble
 // lives on 800011, not 21). dropsForMob folds those back in.
 const drops = dropsForMob(d.id);
+
+// Stats provenance + client-only elemental data (set by the build
+// pipeline; absent on older dossiers, hence the guarded reads).
+const statsSource = "statsSource" in d ? (d as { statsSource?: string | null }).statsSource ?? null : null;
+const elements = (d.stats && "elements" in d.stats ? (d.stats as { elements?: Record<string, string> | null }).elements : null) ?? {};
+const elementEntries = Object.entries(elements);
 const questDropCount = drops.filter((drop) => drop.isQuestItem).length;
 
 // Theme by scanning ALL spawn map names for a town substring so
@@ -175,23 +181,31 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 				<div class="stat"><span class="stat__label">Accuracy</span><span class="stat__val">{d.stats.accuracy ?? "?"}</span></div>
 				<div class="stat"><span class="stat__label">Evasion</span><span class="stat__val">{d.stats.evasion ?? "?"}</span></div>
 			</div>
-			{/* Sprint 97.5: attribution conditionally swaps based on
-			    where the stats came from. MeowDB-sourced mobs are the
-			    CoT2-original spawns (no upstream WZ ID); the classic
-			    reused mobs still come from maplestory.io. */}
-			{"dataSource" in d && (d as { dataSource?: string }).dataSource === "meowdb" ? (
+			{elementEntries.length > 0 && (
+				<p class="elements">
+					<span class="stat__label">Elements</span>
+					{elementEntries.map(([element, effect]) => (
+						<span class:list={["element-chip", `element-chip--${String(effect).toLowerCase()}`]}>
+							{effect} to {element}
+						</span>
+					))}
+				</p>
+			)}
+			{/* Attribution follows where the build pipeline got the stats
+			    (mob.statsSource): the Classic World client export first,
+			    GMS v83 only as a fallback for mobs the export lacks. */}
+			{statsSource === "classic-world-client" ? (
 				<p class="muted-note">
-					Stats mirrored from
-					<a href={`https://meowdb.com/msclassic/monsters/${d.id}`} target="_blank" rel="noopener">MeowDB</a>
-					(Classic World test-client dump). Values reflect the CoT2
-					datamine and may differ once Founder's Access opens.
+					Stats from the Classic World client datamine via
+					<a href="https://osmsdataexplorer.com" target="_blank" rel="noopener">osmsdataexplorer.com</a>.
 				</p>
 			) : (
 				<p class="muted-note">
-					Base stats mirrored from
+					Stats from
 					<a href={`https://maplestory.io/api/GMS/83/mob/${d.wzId}`} target="_blank" rel="noopener">maplestory.io</a>
-					(GMS traditional MapleStory Mob.wz). Classic World values may differ - Founder's
-					Access will let us verify in-game.
+					(traditional GMS v83) because this mob isn't in the Classic
+					World client export. Classic World has restatted many mobs,
+					so treat these numbers as approximate.
 				</p>
 			)}
 		</section>
@@ -439,6 +453,28 @@ const pageTheme = themeForLocation(spawnNames, primaryRegion);
 		margin: 0 0 0.8rem; font-style: italic;
 	}
 	.muted-note a { color: var(--accent-primary); }
+
+	/* Elemental modifiers from the Classic World client export. */
+	.elements {
+		display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+		margin: 0.6rem 0 0.8rem;
+	}
+	.element-chip {
+		font-size: 0.8rem; font-weight: 600;
+		padding: 0.15rem 0.55rem; border-radius: 999px;
+		border: 1px solid var(--border-card);
+		background: var(--surface-card);
+		color: var(--text-body);
+	}
+	/* Weak = good news for the attacker: highlight it. */
+	.element-chip--weak {
+		border-color: var(--accent-primary);
+		color: var(--accent-primary);
+	}
+	.element-chip--strong,
+	.element-chip--immune {
+		color: var(--text-muted);
+	}
 	.drop-table {
 		display: flex; flex-direction: column; gap: 0.3rem;
 	}

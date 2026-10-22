@@ -8,16 +8,10 @@
 /quests/ronnies-house-building-chain/  /quests/ronnie-house-building-chain   301
 
 # BEGIN mob-dossier-dedup (managed by scripts/generate-mob-redirects.mjs)
-# Auto-generated 2026-09-23. 18 redirects.
+# Auto-generated 2026-10-22. 21 redirects.
 # Each line: <duplicate_dossier_path>  <canonical_dossier_path>  301
 # See src/lib/mob-dedup.ts + scripts/generate-mob-redirects.mjs
 
-# Nependeath (wz 4230105)
-/mobs/39 /mobs/1036/ 301
-/mobs/39/ /mobs/1036/ 301
-# Dark Nependeath (wz 4130102)
-/mobs/42 /mobs/1045/ 301
-/mobs/42/ /mobs/1045/ 301
 # Ligator (wz 3110100)
 /mobs/800000 /mobs/29/ 301
 /mobs/800000/ /mobs/29/ 301
@@ -51,20 +45,35 @@
 # Lupin (wz 3210800)
 /mobs/800017 /mobs/35/ 301
 /mobs/800017/ /mobs/35/ 301
+# Stirge (wz 2300100)
+/mobs/800020 /mobs/17/ 301
+/mobs/800020/ /mobs/17/ 301
+# Stirge (wz 2300100)
+/mobs/800021 /mobs/17/ 301
+/mobs/800021/ /mobs/17/ 301
+# Flyeye (wz 4230107)
+/mobs/800022 /mobs/1032/ 301
+/mobs/800022/ /mobs/1032/ 301
+# Flyeye (wz 4230107)
+/mobs/800023 /mobs/1032/ 301
+/mobs/800023/ /mobs/1032/ 301
+# Goblin Fire (wz 9300064)
+/mobs/800025 /mobs/800024/ 301
+/mobs/800025/ /mobs/800024/ 301
 # Mano (wz 9300184)
-/mobs/800018 /mobs/700004/ 301
-/mobs/800018/ /mobs/700004/ 301
+/mobs/810000 /mobs/700004/ 301
+/mobs/810000/ /mobs/700004/ 301
 # King Slime (wz 9300003)
-/mobs/800019 /mobs/800003/ 301
-/mobs/800019/ /mobs/800003/ 301
+/mobs/810001 /mobs/800003/ 301
+/mobs/810001/ /mobs/800003/ 301
 # Mushmom (wz 6130101)
-/mobs/800020 /mobs/700000/ 301
-/mobs/800020/ /mobs/700000/ 301
+/mobs/810002 /mobs/700000/ 301
+/mobs/810002/ /mobs/700000/ 301
 # Zombie Mushmom (wz 6300005)
-/mobs/800021 /mobs/700002/ 301
-/mobs/800021/ /mobs/700002/ 301
+/mobs/810003 /mobs/700002/ 301
+/mobs/810003/ /mobs/700002/ 301
 # Jr. Balrog (wz 6400008)
-/mobs/800023 /mobs/700001/ 301
-/mobs/800023/ /mobs/700001/ 301
+/mobs/810005 /mobs/700001/ 301
+/mobs/810005/ /mobs/700001/ 301
 
 # END mob-dossier-dedup

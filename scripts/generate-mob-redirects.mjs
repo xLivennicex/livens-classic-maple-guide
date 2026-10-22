@@ -25,22 +25,15 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+// Same ranking module the site uses (src/lib/mob-canonical.mjs) - the
+// redirects can't drift from which dossier the pages treat as canonical.
+import { compareCanonicalMob, mobDossierRichness as richness } from "../src/lib/mob-canonical.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..");
 const MOBS_JSON = resolve(REPO_ROOT, "src/data/db/mobs.json");
 const OUT = resolve(REPO_ROOT, "public/_redirects");
 
-// Match src/lib/mob-dedup.ts exactly. If this drifts we get a
-// build-time inconsistency where the mob page redirects to a
-// dossier that itself doesn't exist. Keep them in lockstep.
-function richness(m) {
-	return (
-		(m.mapsSpawnedOn?.length ?? 0) * 3 +
-		(m.drops?.length ?? 0) * 2 +
-		(m.requiredByQuests?.length ?? 0)
-	);
-}
 
 const mobs = JSON.parse(await readFile(MOBS_JSON, "utf8"));
 
@@ -55,10 +48,7 @@ for (const m of mobs) {
 const redirects = [];
 for (const [, group] of byWzId) {
 	if (group.length < 2) continue;
-	const sorted = [...group].sort((a, b) => {
-		const dr = richness(b) - richness(a);
-		return dr !== 0 ? dr : a.id - b.id;
-	});
+	const sorted = [...group].sort(compareCanonicalMob);
 	const winner = sorted[0];
 	for (let i = 1; i < sorted.length; i++) {
 		const loser = sorted[i];

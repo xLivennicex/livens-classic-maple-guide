@@ -1,103 +1,474 @@
 {
-  "1": 9300018,
-  "2": 100100,
-  "3": 100101,
-  "4": 120100,
-  "5": 130101,
-  "6": 130100,
-  "7": 210100,
-  "8": 1210100,
-  "9": 1210102,
-  "10": 1210101,
-  "11": 1110101,
-  "12": 1120100,
-  "13": 1110100,
-  "14": 1210103,
-  "15": 1130100,
-  "16": 2220100,
-  "17": 2300100,
-  "18": 2130103,
-  "19": 2110200,
-  "20": 2130100,
-  "21": 2230101,
-  "22": 2230102,
-  "23": 2230100,
-  "24": 4230103,
-  "25": 3000001,
-  "26": 3000002,
-  "27": 3000003,
-  "28": 3000004,
-  "29": 3110100,
-  "30": 3210100,
-  "31": 3230100,
-  "32": 3230101,
-  "33": 3230300,
-  "34": 3230301,
-  "35": 3210800,
-  "36": 3230102,
-  "37": 4230100,
-  "38": 4230101,
-  "39": 4230105,
-  "40": 4130100,
-  "41": 4130101,
-  "42": 4130102,
-  "43": 4230102,
-  "44": 4230104,
-  "45": 5130100,
-  "46": 5130103,
-  "47": 5300100,
-  "48": 5130101,
-  "49": 5130102,
-  "50": 6130100,
-  "51": 6230100,
-  "52": 7130100,
-  "53": 7130101,
-  "54": null,
-  "55": null,
-  "56": null,
-  "57": null,
-  "58": null,
-  "59": null,
-  "60": null,
-  "61": null,
-  "62": null,
-  "63": null,
-  "90": 9100001,
-  "91": 9100000,
-  "92": null,
-  "93": 9100002,
-  "94": 9100003,
-  "700000": 6130101,
-  "700001": 6400008,
-  "700002": 6300005,
-  "700003": null,
-  "700004": 9300184,
-  "700005": 6400006,
-  "700006": 5090000,
-  "800000": 3110100,
-  "800001": 2130103,
-  "800002": 3230100,
-  "800003": 9300003,
-  "800010": 2230100,
-  "800011": 2230101,
-  "800012": 3230100,
-  "800013": 2110200,
-  "800014": 4230100,
-  "800015": 2220100,
-  "800016": 3210100,
-  "800017": 3210800,
-  "810000": 9300184,
-  "810001": 9300003,
-  "810002": 6130101,
-  "810003": 6300005,
-  "810004": null,
-  "810005": 6400008,
-  "900000": null,
-  "9100000": null,
-  "9990000": null,
-  "9990001": null,
-  "9990002": null,
-  "9990003": null,
-  "9990004": null,
-  "9990005": null
+  "1": {
+    "name": "Tutorial Jr. Sentinel",
+    "wzId": 9300018
+  },
+  "2": {
+    "name": "Snail",
+    "wzId": 100100
+  },
+  "3": {
+    "name": "Blue Snail",
+    "wzId": 100101
+  },
+  "4": {
+    "name": "Shroom",
+    "wzId": 120100
+  },
+  "5": {
+    "name": "Red Snail",
+    "wzId": 130101
+  },
+  "6": {
+    "name": "Stump",
+    "wzId": 130100
+  },
+  "7": {
+    "name": "Slime",
+    "wzId": 210100
+  },
+  "8": {
+    "name": "Pig",
+    "wzId": 1210100
+  },
+  "9": {
+    "name": "Orange Mushroom",
+    "wzId": 1210102
+  },
+  "10": {
+    "name": "Ribbon Pig",
+    "wzId": 1210101
+  },
+  "11": {
+    "name": "Dark Stump",
+    "wzId": 1110101
+  },
+  "12": {
+    "name": "Octopus",
+    "wzId": 1120100
+  },
+  "13": {
+    "name": "Green Mushroom",
+    "wzId": 1110100
+  },
+  "14": {
+    "name": "Bubbling",
+    "wzId": 1210103
+  },
+  "15": {
+    "name": "Axe Stump",
+    "wzId": 1130100
+  },
+  "16": {
+    "name": "Blue Mushroom",
+    "wzId": 2220100
+  },
+  "17": {
+    "name": "Stirge",
+    "wzId": 2300100
+  },
+  "18": {
+    "name": "Jr. Necki",
+    "wzId": 2130103
+  },
+  "19": {
+    "name": "Horny Mushroom",
+    "wzId": 2110200
+  },
+  "20": {
+    "name": "Dark Axe Stump",
+    "wzId": 2130100
+  },
+  "21": {
+    "name": "Zombie Mushroom",
+    "wzId": 2230101
+  },
+  "22": {
+    "name": "Wild Boar",
+    "wzId": 2230102
+  },
+  "23": {
+    "name": "Evil Eye",
+    "wzId": 2230100
+  },
+  "24": {
+    "name": "Iron Hog",
+    "wzId": 4230103
+  },
+  "25": {
+    "name": "Fairy 1",
+    "wzId": 3000001
+  },
+  "26": {
+    "name": "Fairy 2",
+    "wzId": 3000002
+  },
+  "27": {
+    "name": "Fairy 3",
+    "wzId": 3000003
+  },
+  "28": {
+    "name": "Fairy 4",
+    "wzId": 3000004
+  },
+  "29": {
+    "name": "Ligator",
+    "wzId": 3110100
+  },
+  "30": {
+    "name": "Fire Boar",
+    "wzId": 3210100
+  },
+  "31": {
+    "name": "Curse Eye",
+    "wzId": 3230100
+  },
+  "32": {
+    "name": "Jr. Wraith",
+    "wzId": 3230101
+  },
+  "33": {
+    "name": "Jr. Boogie 1",
+    "wzId": 3230300
+  },
+  "34": {
+    "name": "Jr. Boogie 2",
+    "wzId": 3230301
+  },
+  "35": {
+    "name": "Lupin",
+    "wzId": 3210800
+  },
+  "36": {
+    "name": "Lorang",
+    "wzId": 3230102
+  },
+  "37": {
+    "name": "Cold Eye",
+    "wzId": 4230100
+  },
+  "38": {
+    "name": "Zombie Lupin",
+    "wzId": 4230101
+  },
+  "39": {
+    "name": "Ghost Stump",
+    "wzId": 1140100
+  },
+  "40": {
+    "name": "Copper Drake",
+    "wzId": 4130100
+  },
+  "41": {
+    "name": "Tortie",
+    "wzId": 4130101
+  },
+  "42": {
+    "name": "Wooden Mask",
+    "wzId": 2230110
+  },
+  "43": {
+    "name": "Wraith",
+    "wzId": 4230102
+  },
+  "44": {
+    "name": "Clang",
+    "wzId": 4230104
+  },
+  "45": {
+    "name": "Drake",
+    "wzId": 5130100
+  },
+  "46": {
+    "name": "Croco",
+    "wzId": 5130103
+  },
+  "47": {
+    "name": "Malady",
+    "wzId": 5300100
+  },
+  "48": {
+    "name": "Stone Golem",
+    "wzId": 5130101
+  },
+  "49": {
+    "name": "Dark Stone Golem",
+    "wzId": 5130102
+  },
+  "50": {
+    "name": "Red Drake",
+    "wzId": 6130100
+  },
+  "51": {
+    "name": "Wild Kargo",
+    "wzId": 6230100
+  },
+  "52": {
+    "name": "Tauromacis",
+    "wzId": 7130100
+  },
+  "53": {
+    "name": "Taurospear",
+    "wzId": 7130101
+  },
+  "54": {
+    "name": "Glowshroom",
+    "wzId": null
+  },
+  "55": {
+    "name": "Raffle",
+    "wzId": null
+  },
+  "56": {
+    "name": "Golden Stirge",
+    "wzId": null
+  },
+  "57": {
+    "name": "Aqumander",
+    "wzId": null
+  },
+  "58": {
+    "name": "Echopus",
+    "wzId": null
+  },
+  "59": {
+    "name": "Rafflesia",
+    "wzId": null
+  },
+  "60": {
+    "name": "Duskmander",
+    "wzId": null
+  },
+  "61": {
+    "name": "Myewood",
+    "wzId": null
+  },
+  "62": {
+    "name": "Rotten Mushroom",
+    "wzId": null
+  },
+  "63": {
+    "name": "Sporewood",
+    "wzId": null
+  },
+  "64": {
+    "name": "Rocky Mask",
+    "wzId": 2230111
+  },
+  "65": {
+    "name": "Skeledog",
+    "wzId": 4230125
+  },
+  "66": {
+    "name": "Mummydog",
+    "wzId": 4230126
+  },
+  "67": {
+    "name": "Skeleton Soldier",
+    "wzId": 5150001
+  },
+  "68": {
+    "name": "Officer Skeleton",
+    "wzId": 6230602
+  },
+  "69": {
+    "name": "Commander Skeleton",
+    "wzId": 7130103
+  },
+  "90": {
+    "name": "Super Jr. Necki",
+    "wzId": 9100001
+  },
+  "91": {
+    "name": "Super Slime",
+    "wzId": 9100000
+  },
+  "92": {
+    "name": "Super Ribbon Pig",
+    "wzId": null
+  },
+  "93": {
+    "name": "Super Stirge",
+    "wzId": 9100002
+  },
+  "94": {
+    "name": "Ultra Jr. Necki 1",
+    "wzId": 9100003
+  },
+  "1032": {
+    "name": "Flyeye",
+    "wzId": 4230107
+  },
+  "700000": {
+    "name": "Mushmom",
+    "wzId": 6130101
+  },
+  "700001": {
+    "name": "Jr. Balrog",
+    "wzId": 6400008
+  },
+  "700002": {
+    "name": "Zombie Mushmom",
+    "wzId": 6300005
+  },
+  "700003": {
+    "name": "Rotten Mushmom",
+    "wzId": null
+  },
+  "700004": {
+    "name": "Mano",
+    "wzId": 9300184
+  },
+  "700005": {
+    "name": "Crimson Balrog",
+    "wzId": 6400006
+  },
+  "700006": {
+    "name": "Shade",
+    "wzId": 5090000
+  },
+  "700007": {
+    "name": "Stumpy",
+    "wzId": 3220000
+  },
+  "700008": {
+    "name": "Faust",
+    "wzId": 5220002
+  },
+  "800000": {
+    "name": "Ligator",
+    "wzId": 3110100
+  },
+  "800001": {
+    "name": "Jr. Necki",
+    "wzId": 2130103
+  },
+  "800002": {
+    "name": "Curse Eye",
+    "wzId": 3230100
+  },
+  "800003": {
+    "name": "King Slime",
+    "wzId": 9300003
+  },
+  "800010": {
+    "name": "Evil Eye",
+    "wzId": 2230100
+  },
+  "800011": {
+    "name": "Zombie Mushroom",
+    "wzId": 2230101
+  },
+  "800012": {
+    "name": "Curse Eye",
+    "wzId": 3230100
+  },
+  "800013": {
+    "name": "Horny Mushroom",
+    "wzId": 2110200
+  },
+  "800014": {
+    "name": "Cold Eye",
+    "wzId": 4230100
+  },
+  "800015": {
+    "name": "Blue Mushroom",
+    "wzId": 2220100
+  },
+  "800016": {
+    "name": "Fire Boar",
+    "wzId": 3210100
+  },
+  "800017": {
+    "name": "Lupin",
+    "wzId": 3210800
+  },
+  "800019": {
+    "name": "Moon Bunny",
+    "wzId": 4230300
+  },
+  "800020": {
+    "name": "Stirge",
+    "wzId": 2300100
+  },
+  "800021": {
+    "name": "Stirge",
+    "wzId": 2300100
+  },
+  "800022": {
+    "name": "Flyeye",
+    "wzId": 4230107
+  },
+  "800023": {
+    "name": "Flyeye",
+    "wzId": 4230107
+  },
+  "800024": {
+    "name": "Goblin Fire",
+    "wzId": 9300064
+  },
+  "800025": {
+    "name": "Goblin Fire",
+    "wzId": 9300064
+  },
+  "810000": {
+    "name": "Mano",
+    "wzId": 9300184
+  },
+  "810001": {
+    "name": "King Slime",
+    "wzId": 9300003
+  },
+  "810002": {
+    "name": "Mushmom",
+    "wzId": 6130101
+  },
+  "810003": {
+    "name": "Zombie Mushmom",
+    "wzId": 6300005
+  },
+  "810004": {
+    "name": "Rotten Mushmom",
+    "wzId": null
+  },
+  "810005": {
+    "name": "Jr. Balrog",
+    "wzId": 6400008
+  },
+  "900000": {
+    "name": "Orange Slime",
+    "wzId": null
+  },
+  "910000": {
+    "name": "Straw Traning Dummy",
+    "wzId": null
+  },
+  "9100000": {
+    "name": "Monsters Near Your Level",
+    "wzId": null
+  },
+  "9990000": {
+    "name": "Test(Basic)",
+    "wzId": null
+  },
+  "9990001": {
+    "name": "Test(Fire)",
+    "wzId": null
+  },
+  "9990002": {
+    "name": "Test(Poison)",
+    "wzId": null
+  },
+  "9990003": {
+    "name": "Test(Ice)",
+    "wzId": null
+  },
+  "9990004": {
+    "name": "Test(Lightning)",
+    "wzId": null
+  },
+  "9990005": {
+    "name": "Test(Undead)",
+    "wzId": null
+  }
 }

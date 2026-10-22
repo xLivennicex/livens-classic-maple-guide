@@ -39,6 +39,8 @@ const ENDPOINTS = [
 	"crafting.json",
 	"lookups.json",
 	"maps.json",
+	// Classic World client monster stats. Same mob ids as lookups.mob_names.
+	"monsters.json",
 ];
 
 // ---------- fetch ----------
@@ -68,50 +70,90 @@ async function fetchJson(name) {
  * with `rm src/data/db/npc-wz-cache.json && npm run db` when NPC
  * roster changes materially (extremely rare).
  */
-async function resolveNpcWzIds(npcs) {
-	const cachePath = join(OUT_DIR, "npc-wz-cache.json");
-	if (existsSync(cachePath)) {
-		const cache = JSON.parse(await readFile(cachePath, "utf8"));
-		process.stdout.write(`  npc WZ mapping: cache hit (${Object.keys(cache).length} entries)\n`);
-		return cache;
+/**
+ * Incremental name -> WZ ID resolution with a git-tracked disk cache.
+ *
+ * Re-resolves an entity when it is NEW (id not cached) or RENAMED (id
+ * cached under a different name). Upstream reuses ids: after Grand
+ * Launch, mob 39 went from "Nependeath" to "Ghost Stump", and an
+ * id-only cache kept Nependeath's WZ id - wrong sprite, wrong stats.
+ *
+ * On disk: { "<id>": { "name": "...", "wzId": 123 | null } }.
+ * Legacy entries (bare wzId, no name) are adopted as-is and stamped
+ * with the current name; they can't reveal renames that happened before
+ * this format existed. Entities no longer upstream are pruned.
+ * Returns the plain { id: wzId } map the call sites expect.
+ *
+ * To force a full re-resolve, delete the cache file.
+ */
+async function resolveWzIdsIncremental({ label, cacheFile, entities, resolveOne, progressEvery = 25 }) {
+	const cachePath = join(OUT_DIR, cacheFile);
+	const stored = existsSync(cachePath) ? JSON.parse(await readFile(cachePath, "utf8")) : {};
+	const entries = {};
+	for (const [id, v] of Object.entries(stored)) {
+		entries[id] = v !== null && typeof v === "object" ? v : { name: null, wzId: v };
 	}
 
-	console.log(`  npc WZ mapping: no cache - scraping maplestory.io (this takes ~2-3 min, one-time cost)`);
-	const mapping = {};   // ourId -> wzId | null
-	const queue = [...npcs];
-	let done = 0;
-	const CONCURRENCY = 10;
+	const isNew = (e) => !(String(e.id) in entries);
+	const isRenamed = (e) => !isNew(e) && entries[e.id].name !== null && entries[e.id].name !== e.name;
+	const missing = entities.filter((e) => isNew(e) || isRenamed(e));
+	const renamed = missing.filter(isRenamed);
 
-	const worker = async () => {
-		while (queue.length > 0) {
-			const npc = queue.pop();
-			try {
-				const r = await fetch(
-					`https://maplestory.io/api/GMS/83/npc?searchFor=${encodeURIComponent(npc.name)}`,
-				);
-				if (r.ok) {
-					const j = await r.json();
-					const exact = j.filter((n) => n.name === npc.name);
-					// Prefer exact-name match; fall back to first fuzzy hit.
-					mapping[npc.id] = exact[0]?.id ?? j[0]?.id ?? null;
-				} else {
-					mapping[npc.id] = null;
+	if (missing.length > 0) {
+		console.log(`  ${label} WZ mapping: resolving ${missing.length} (${missing.length - renamed.length} new, ${renamed.length} renamed) via maplestory.io`);
+		for (const e of renamed) console.log(`    renamed upstream: ${label} ${e.id} "${entries[e.id].name}" -> "${e.name}"`);
+		const queue = [...missing];
+		let done = 0;
+		const CONCURRENCY = 10;
+		const worker = async () => {
+			while (queue.length > 0) {
+				const entity = queue.pop();
+				let wzId = null;
+				try {
+					wzId = await resolveOne(entity);
+				} catch {
+					wzId = null;
 				}
-			} catch {
-				mapping[npc.id] = null;
+				entries[entity.id] = { name: entity.name, wzId };
+				done++;
+				if (done % progressEvery === 0) process.stdout.write(`${done} `);
 			}
-			done++;
-			if (done % 25 === 0) process.stdout.write(`${done} `);
-		}
-	};
-	await Promise.all(Array(CONCURRENCY).fill(0).map(worker));
+		};
+		await Promise.all(Array(CONCURRENCY).fill(0).map(worker));
+		const ok = missing.filter((e) => entries[e.id].wzId != null).length;
+		console.log(`\n  ${label} WZ mapping: resolved ${ok}/${missing.length}`);
+	} else {
+		process.stdout.write(`  ${label} WZ mapping: cache hit (${entities.length} entries)\n`);
+	}
+
+	// Persist only current entities, every entry stamped with its name.
+	const current = {};
+	for (const e of entities) current[e.id] = { name: e.name, wzId: entries[e.id]?.wzId ?? null };
 	if (!existsSync(OUT_DIR)) await mkdir(OUT_DIR, { recursive: true });
-	await writeFile(cachePath, JSON.stringify(mapping, null, 2));
-	const resolved = Object.values(mapping).filter(Boolean).length;
-	console.log(`\n  npc WZ mapping: resolved ${resolved}/${npcs.length}, cached to ${cachePath}`);
-	return mapping;
+	await writeFile(cachePath, JSON.stringify(current, null, 2));
+	return Object.fromEntries(Object.entries(current).map(([id, v]) => [id, v.wzId]));
 }
 
+/** GET a maplestory.io search endpoint; null on non-OK. */
+async function searchMaplestoryIo(kind, name) {
+	const r = await fetch(`https://maplestory.io/api/GMS/83/${kind}?searchFor=${encodeURIComponent(name)}`);
+	return r.ok ? r.json() : null;
+}
+
+async function resolveNpcWzIds(npcs) {
+	return resolveWzIdsIncremental({
+		label: "npc",
+		cacheFile: "npc-wz-cache.json",
+		entities: npcs,
+		resolveOne: async (npc) => {
+			const j = await searchMaplestoryIo("npc", npc.name);
+			if (!j) return null;
+			const exact = j.filter((n) => n.name === npc.name);
+			// Prefer exact-name match; fall back to first fuzzy hit.
+			return exact[0]?.id ?? j[0]?.id ?? null;
+		},
+	});
+}
 /**
  * Resolve every mob's maplestory.io WZ ID via the search endpoint,
  * with disk caching. Mirror of resolveNpcWzIds; documented separately
@@ -130,49 +172,19 @@ async function resolveNpcWzIds(npcs) {
  * stats (the disclaimer covers that gracefully).
  */
 async function resolveMobWzIds(mobs) {
-	const cachePath = join(OUT_DIR, "mob-wz-cache.json");
-	if (existsSync(cachePath)) {
-		const cache = JSON.parse(await readFile(cachePath, "utf8"));
-		process.stdout.write(`  mob WZ mapping: cache hit (${Object.keys(cache).length} entries)\n`);
-		return cache;
-	}
-
-	console.log(`  mob WZ mapping: no cache - scraping maplestory.io (~1-2 min, one-time cost)`);
-	const mapping = {};   // ourId -> wzId | null
-	const queue = [...mobs];
-	let done = 0;
-	const CONCURRENCY = 10;
-
-	const worker = async () => {
-		while (queue.length > 0) {
-			const mob = queue.pop();
-			try {
-				const r = await fetch(
-					`https://maplestory.io/api/GMS/83/mob?searchFor=${encodeURIComponent(mob.name)}`,
-				);
-				if (r.ok) {
-					const j = await r.json();
-					const exact = j.filter((m) => m.name === mob.name);
-					// Prefer exact-name match; fall back to first fuzzy hit.
-					mapping[mob.id] = exact[0]?.id ?? j[0]?.id ?? null;
-				} else {
-					mapping[mob.id] = null;
-				}
-			} catch {
-				mapping[mob.id] = null;
-			}
-			done++;
-			if (done % 25 === 0) process.stdout.write(`${done} `);
-		}
-	};
-	await Promise.all(Array(CONCURRENCY).fill(0).map(worker));
-	if (!existsSync(OUT_DIR)) await mkdir(OUT_DIR, { recursive: true });
-	await writeFile(cachePath, JSON.stringify(mapping, null, 2));
-	const resolved = Object.values(mapping).filter(Boolean).length;
-	console.log(`\n  mob WZ mapping: resolved ${resolved}/${mobs.length}, cached to ${cachePath}`);
-	return mapping;
+	return resolveWzIdsIncremental({
+		label: "mob",
+		cacheFile: "mob-wz-cache.json",
+		entities: mobs,
+		resolveOne: async (mob) => {
+			const j = await searchMaplestoryIo("mob", mob.name);
+			if (!j) return null;
+			const exact = j.filter((m) => m.name === mob.name);
+			// Prefer exact-name match; fall back to first fuzzy hit.
+			return exact[0]?.id ?? j[0]?.id ?? null;
+		},
+	});
 }
-
 /**
  * Fetch per-mob combat stats (level, HP, MP, EXP, attack, defense,
  * accuracy, evasion, elemental flags) from maplestory.io using
@@ -260,61 +272,24 @@ async function fetchMobStats(wzIds) {
  * instant every subsequent build.
  */
 async function resolveMapWzIds(dossierMaps) {
-	const cachePath = join(OUT_DIR, "map-wz-cache.json");
-	if (existsSync(cachePath)) {
-		const cache = JSON.parse(await readFile(cachePath, "utf8"));
-		process.stdout.write(`  map WZ mapping: cache hit (${Object.keys(cache).length} entries)\n`);
-		return cache;
-	}
-
-	console.log(`  map WZ mapping: no cache - scraping maplestory.io (~1-2 min, one-time cost)`);
-	const mapping = {};
-	const queue = [...dossierMaps];
-	let done = 0;
-	const CONCURRENCY = 10;
-
-	const worker = async () => {
-		while (queue.length > 0) {
-			const m = queue.pop();
-			try {
-				const r = await fetch(
-					`https://maplestory.io/api/GMS/83/map?searchFor=${encodeURIComponent(m.name)}`,
-				);
-				if (r.ok) {
-					const j = await r.json();
-					const exact = j.filter(
-						(x) => x.name === m.name && x.streetName === m.streetName,
-					);
-					const nameOnly = j.filter((x) => x.name === m.name);
-					// Only accept matches where NAME agrees. The old
-					// `?? j[0]?.id` fallback was the source of the
-					// "Victoria Road" world-map pin pointing at Yellow
-					// Mushroom House: dossier 88000000 has name="Victoria
-					// Road" which never matches any WZ map's `name`
-					// (Victoria Road is always a streetName in WZ), so it
-					// fell through to the first search hit - Henesys
-					// (WZ 100000000) - and clobbered real Henesys in the
-					// reverse map. Null means "we don't know", which is
-					// correct here.
-					mapping[m.id] = exact[0]?.id ?? nameOnly[0]?.id ?? null;
-				} else {
-					mapping[m.id] = null;
-				}
-			} catch {
-				mapping[m.id] = null;
-			}
-			done++;
-			if (done % 50 === 0) process.stdout.write(`${done} `);
-		}
-	};
-	await Promise.all(Array(CONCURRENCY).fill(0).map(worker));
-	if (!existsSync(OUT_DIR)) await mkdir(OUT_DIR, { recursive: true });
-	await writeFile(cachePath, JSON.stringify(mapping, null, 2));
-	const resolved = Object.values(mapping).filter(Boolean).length;
-	console.log(`\n  map WZ mapping: resolved ${resolved}/${dossierMaps.length}, cached to ${cachePath}`);
-	return mapping;
+	return resolveWzIdsIncremental({
+		label: "map",
+		cacheFile: "map-wz-cache.json",
+		entities: dossierMaps,
+		progressEvery: 50,
+		resolveOne: async (m) => {
+			const j = await searchMaplestoryIo("map", m.name);
+			if (!j) return null;
+			const exact = j.filter((x) => x.name === m.name && x.streetName === m.streetName);
+			const nameOnly = j.filter((x) => x.name === m.name);
+			// Only accept matches where NAME agrees. A `?? j[0]?.id` fallback
+			// once pointed the "Victoria Road" world-map pin at Henesys
+			// (dossier 88000000's name never matches a WZ map name, so it fell
+			// through to the first search hit). Null means "we don't know".
+			return exact[0]?.id ?? nameOnly[0]?.id ?? null;
+		},
+	});
 }
-
 /**
  * Fetch every WorldMap.img entry from maplestory.io and materialize
  * it into a clean pin-graph plus PNG assets on disk.
@@ -713,7 +688,37 @@ function buildItemDossier(item, indexes, editorial, lookups) {
 	};
 }
 
-function buildMobDossier(mobId, mobName, indexes, wzId = null, stats = null) {
+/**
+ * Map an osmsdataexplorer monsters.json record (the Classic World client)
+ * onto our mob.stats shape. Absent numeric fields mean 0 in the client
+ * data (e.g. Skeleton Soldier has no `mp`); flags are absent when false.
+ *
+ * These are the authoritative Classic World numbers. maplestory.io serves
+ * traditional GMS v83 values, which Classic World has restatted for many
+ * mobs (Stumpy: 19,220 HP here vs 7,000 in v83).
+ */
+function classicWorldMobStats(m) {
+	return {
+		level: m.level ?? null,
+		maxHP: m.hp ?? null,
+		maxMP: m.mp ?? 0,
+		exp: m.exp ?? null,
+		physicalDamage: m.PADamage ?? 0,
+		physicalDefense: m.PDDamage ?? 0,
+		magicDamage: m.MADamage ?? 0,
+		magicDefense: m.MDDamage ?? 0,
+		accuracy: m.acc ?? 0,
+		evasion: m.eva ?? 0,
+		speed: m.speed ?? 0,
+		isBodyAttack: null, // not in the client export
+		isUndead: Boolean(m.undead),
+		isBoss: Boolean(m.is_boss),
+		// Extra client-only detail: { Fire: "Weak", Lightning: "Strong", ... }
+		elements: m.elements ?? null,
+	};
+}
+
+function buildMobDossier(mobId, mobName, indexes, wzId = null, stats = null, statsSource = null) {
 	return {
 		id: Number(mobId),
 		name: mobName,
@@ -725,6 +730,10 @@ function buildMobDossier(mobId, mobName, indexes, wzId = null, stats = null) {
 		// null when wzId didn't resolve. Individual fields can also
 		// be null even when stats is present (dev-only mobs, etc).
 		stats,
+		// Where `stats` came from: "classic-world-client" (osmsdataexplorer
+		// monsters.json) or "maplestory-io-v83" (fallback for mobs the client
+		// export lacks). null when no stats. The UI attributes accordingly.
+		statsSource,
 		requiredByQuests: indexes.mobRequiredBy.get(Number(mobId)) ?? [],
 	};
 }
@@ -894,7 +903,7 @@ async function main() {
 	console.log("build-database.mjs - cross-referencing CoT 2 datamine\n");
 
 	// Fetch all endpoints in parallel
-	const [items, quests, crafting, lookups, maps] = await Promise.all(
+	const [items, quests, crafting, lookups, maps, monsters] = await Promise.all(
 		ENDPOINTS.map((e) => fetchJson(e)),
 	);
 
@@ -953,12 +962,22 @@ async function main() {
 		[...new Set(Object.values(mobWzMap).filter((id) => id != null))],
 	);
 
+	// Stats: Classic World client first, maplestory.io (GMS v83) fallback.
+	const cwMobs = new Map((monsters.monsters ?? []).map((m) => [Number(m.id), m]));
+	let fromClient = 0;
+	let fromV83 = 0;
 	const mobDossiers = mobSeed.map(({ id, name }) => {
 		const wzId = mobWzMap[id] ?? null;
-		const stats = wzId != null ? (statsByWz.get(wzId) ?? null) : null;
-		return buildMobDossier(id, name, indexes, wzId, stats);
+		const cw = cwMobs.get(Number(id));
+		if (cw) {
+			fromClient++;
+			return buildMobDossier(id, name, indexes, wzId, classicWorldMobStats(cw), "classic-world-client");
+		}
+		const v83 = wzId != null ? (statsByWz.get(wzId) ?? null) : null;
+		if (v83) fromV83++;
+		return buildMobDossier(id, name, indexes, wzId, v83, v83 ? "maplestory-io-v83" : null);
 	});
-	console.log(`  built ${mobDossiers.length} mob dossiers`);
+	console.log(`  built ${mobDossiers.length} mob dossiers - stats: ${fromClient} Classic World client, ${fromV83} GMS v83 fallback, ${mobDossiers.length - fromClient - fromV83} none`);
 
 	// Scrape crowdsourced drop tables from MeowDB. 195 mobs, 10
 	// parallel workers = ~5-10s in practice. Fail-quiet per-mob

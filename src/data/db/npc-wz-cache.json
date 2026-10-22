@@ -1,228 +1,1206 @@
 {
-  "1": 2101,
-  "2": 2100,
-  "3": 2000,
-  "4": 2102,
-  "5": 2001,
-  "6": 2002,
-  "7": 2004,
-  "8": 2003,
-  "9": 1011001,
-  "10": 2103,
-  "11": 12100,
-  "12": 20002,
-  "13": 20100,
-  "14": 20001,
-  "15": 22000,
-  "16": 21000,
-  "17": 12000,
-  "18": 10000,
-  "19": 12101,
-  "20": 11000,
-  "21": 11100,
-  "100": 20000,
-  "101": 1002000,
-  "102": 1002001,
-  "103": 1002100,
-  "104": 1002004,
-  "105": 1002005,
-  "106": 1002006,
-  "107": 1002101,
-  "108": 1001001,
-  "109": 1001100,
-  "110": 1001000,
-  "111": 1002003,
-  "112": 1002002,
-  "113": null,
-  "114": 9000029,
-  "200": 1012000,
-  "201": 1010100,
-  "202": 1012003,
-  "203": 1012106,
-  "204": 1012108,
-  "205": 1012109,
-  "206": 1012111,
-  "207": 1012101,
-  "208": 1012002,
-  "209": 1012004,
-  "210": 1011000,
-  "211": 1011001,
-  "212": 1011100,
-  "213": 1052004,
-  "214": 1052005,
-  "215": 1012103,
-  "216": 1012104,
-  "217": 1012105,
-  "218": 1012102,
-  "219": 1012005,
-  "220": 1012009,
-  "221": 1012100,
-  "222": 1012006,
-  "223": 1012007,
-  "224": 1012110,
-  "225": 1012107,
-  "226": 1040000,
-  "227": 1072002,
-  "228": 1012008,
-  "229": null,
-  "230": 1012113,
-  "231": null,
-  "232": null,
-  "233": null,
-  "234": null,
-  "235": null,
-  "236": null,
-  "237": null,
-  "238": null,
-  "239": null,
-  "300": 1032105,
-  "301": 1012000,
-  "302": 1002004,
-  "303": 1032002,
-  "304": 1032100,
-  "305": 1032101,
-  "306": 1032003,
-  "307": 1032006,
-  "308": 1032104,
-  "309": 1032106,
-  "310": 1031000,
-  "311": 1031001,
-  "312": 1031100,
-  "313": 10201,
-  "314": 1032004,
-  "315": 1043000,
-  "316": 1043001,
-  "317": 1032102,
-  "318": 1032103,
-  "319": 1072001,
-  "320": 1061004,
-  "321": null,
-  "322": 1032007,
-  "323": 1032008,
-  "324": 1032009,
-  "325": 1061009,
-  "326": null,
-  "327": null,
-  "328": null,
-  "400": 1012000,
-  "401": 1052002,
-  "402": 1052000,
-  "403": 1052102,
-  "404": 1052012,
-  "405": 1052017,
-  "406": 1052103,
-  "407": 1052106,
-  "408": 1051000,
-  "409": 1051001,
-  "410": 1051002,
-  "411": 10203,
-  "412": 1052105,
-  "413": 1052100,
-  "414": 1052101,
-  "415": 1052003,
-  "416": 1052104,
-  "417": 1052006,
-  "418": 1052007,
-  "419": 1052011,
-  "420": 1052008,
-  "421": 1052008,
-  "422": 1052008,
-  "423": 1061009,
-  "424": 1072003,
-  "425": null,
-  "426": 1092010,
-  "427": null,
-  "428": 2080002,
-  "429": null,
-  "430": 9201034,
-  "431": null,
-  "432": null,
-  "433": null,
-  "434": null,
-  "435": null,
-  "436": null,
-  "500": 1012000,
-  "501": 1020000,
-  "502": 1022002,
-  "503": 1022003,
-  "504": null,
-  "505": 1022005,
-  "506": 1022007,
-  "507": 1021000,
-  "508": 1021001,
-  "509": 1021100,
-  "510": 1022100,
-  "511": 10202,
-  "512": 1022006,
-  "513": 1040001,
-  "514": 1072000,
-  "600": 1012000,
-  "601": 1002004,
-  "602": 1061000,
-  "603": 1061005,
-  "604": 1061008,
-  "605": 2040050,
-  "606": 1061100,
-  "607": 1061002,
-  "608": 1061003,
-  "609": 1061006,
-  "610": 1061007,
-  "611": 1063000,
-  "612": 1063001,
-  "613": 1063002,
-  "614": 1061001,
-  "615": 1061009,
-  "616": null,
-  "700": null,
-  "701": null,
-  "702": null,
-  "703": null,
-  "704": null,
-  "705": null,
-  "706": null,
-  "707": null,
-  "708": null,
-  "709": null,
-  "710": null,
-  "711": null,
-  "712": null,
-  "713": null,
-  "714": null,
-  "800": 1081000,
-  "801": 1081001,
-  "802": 1081100,
-  "803": 1081101,
-  "804": 1081102,
-  "800000": 9020000,
-  "800001": 9020001,
-  "800002": 1052103,
-  "800003": 1072002,
-  "800004": 1072001,
-  "800005": 1072003,
-  "800006": 1072000,
-  "800007": 9250025,
-  "800008": 9030000,
-  "800009": 9030100,
-  "800010": null,
-  "800011": null,
-  "800012": null,
-  "800013": null,
-  "800014": null,
-  "800015": null,
-  "800016": 2007,
-  "800017": null,
-  "800018": null,
-  "900001": 2007,
-  "900003": 1092008,
-  "900004": null,
-  "900010": 9000000,
-  "900011": 9000006,
-  "900012": 9000002,
-  "900013": 9000010,
-  "900014": 9000007,
-  "900015": 9000008,
-  "900016": 1021001,
-  "900026": 9201028,
-  "9010000": 2007,
-  "9090000": 1022005
+  "1": {
+    "name": "Heena",
+    "wzId": 2101
+  },
+  "2": {
+    "name": "Sera",
+    "wzId": 2100
+  },
+  "3": {
+    "name": "Roger",
+    "wzId": 2000
+  },
+  "4": {
+    "name": "Nina",
+    "wzId": 2102
+  },
+  "5": {
+    "name": "Sen",
+    "wzId": 2001
+  },
+  "6": {
+    "name": "Peter",
+    "wzId": 2002
+  },
+  "7": {
+    "name": "Todd",
+    "wzId": 2004
+  },
+  "8": {
+    "name": "Robin",
+    "wzId": 2003
+  },
+  "9": {
+    "name": "Sam",
+    "wzId": 1011001
+  },
+  "10": {
+    "name": "Maria",
+    "wzId": 2103
+  },
+  "11": {
+    "name": "Mai",
+    "wzId": 12100
+  },
+  "12": {
+    "name": "Biggs",
+    "wzId": 20002
+  },
+  "13": {
+    "name": "Yoona",
+    "wzId": 20100
+  },
+  "14": {
+    "name": "Bari",
+    "wzId": 20001
+  },
+  "15": {
+    "name": "Shanks",
+    "wzId": 22000
+  },
+  "16": {
+    "name": "Pan",
+    "wzId": 21000
+  },
+  "17": {
+    "name": "Lucas",
+    "wzId": 12000
+  },
+  "18": {
+    "name": "Pio",
+    "wzId": 10000
+  },
+  "19": {
+    "name": "Rain",
+    "wzId": 12101
+  },
+  "20": {
+    "name": "Sid",
+    "wzId": 11000
+  },
+  "21": {
+    "name": "Lucy",
+    "wzId": 11100
+  },
+  "100": {
+    "name": "John",
+    "wzId": 20000
+  },
+  "101": {
+    "name": "Phil",
+    "wzId": 1002000
+  },
+  "102": {
+    "name": "Teo",
+    "wzId": 1002001
+  },
+  "103": {
+    "name": "Jane",
+    "wzId": 1002100
+  },
+  "104": {
+    "name": "VIP Cab",
+    "wzId": 1002004
+  },
+  "105": {
+    "name": "Mr. Kim",
+    "wzId": 1002005
+  },
+  "106": {
+    "name": "Chef",
+    "wzId": 1002006
+  },
+  "107": {
+    "name": "Olaf",
+    "wzId": 1002101
+  },
+  "108": {
+    "name": "Natasha",
+    "wzId": 1001001
+  },
+  "109": {
+    "name": "Mina",
+    "wzId": 1001100
+  },
+  "110": {
+    "name": "Silver",
+    "wzId": 1001000
+  },
+  "111": {
+    "name": "Mr. Goldstein",
+    "wzId": 1002003
+  },
+  "112": {
+    "name": "Pason",
+    "wzId": 1002002
+  },
+  "113": {
+    "name": "Mariel",
+    "wzId": null
+  },
+  "114": {
+    "name": "Inky",
+    "wzId": 9000029
+  },
+  "200": {
+    "name": "Regular Cab",
+    "wzId": 1012000
+  },
+  "201": {
+    "name": "Rina",
+    "wzId": 1010100
+  },
+  "202": {
+    "name": "Chief Stan",
+    "wzId": 1012003
+  },
+  "203": {
+    "name": "Mrs. Ming Ming",
+    "wzId": 1012106
+  },
+  "204": {
+    "name": "Camila",
+    "wzId": 1012108
+  },
+  "205": {
+    "name": "Jay",
+    "wzId": 1012109
+  },
+  "206": {
+    "name": "Bruce",
+    "wzId": 1012111
+  },
+  "207": {
+    "name": "Maya",
+    "wzId": 1012101
+  },
+  "208": {
+    "name": "Vicious",
+    "wzId": 1012002
+  },
+  "209": {
+    "name": "Doofus",
+    "wzId": 1012004
+  },
+  "210": {
+    "name": "Karl",
+    "wzId": 1011000
+  },
+  "211": {
+    "name": "Sam",
+    "wzId": 1011001
+  },
+  "212": {
+    "name": "Luna",
+    "wzId": 1011100
+  },
+  "213": {
+    "name": "Denma the Owner",
+    "wzId": 1052004
+  },
+  "214": {
+    "name": "Dr. Feeble",
+    "wzId": 1052005
+  },
+  "215": {
+    "name": "Natalie",
+    "wzId": 1012103
+  },
+  "216": {
+    "name": "Brittany",
+    "wzId": 1012104
+  },
+  "217": {
+    "name": "Ms. Tan",
+    "wzId": 1012105
+  },
+  "218": {
+    "name": "Pia",
+    "wzId": 1012102
+  },
+  "219": {
+    "name": "Cloy",
+    "wzId": 1012005
+  },
+  "220": {
+    "name": "Mr. Lee",
+    "wzId": 1012009
+  },
+  "221": {
+    "name": "Athena Pierce",
+    "wzId": 1012100
+  },
+  "222": {
+    "name": "Trainer Bartos",
+    "wzId": 1012006
+  },
+  "223": {
+    "name": "Trainer Frod",
+    "wzId": 1012007
+  },
+  "224": {
+    "name": "Anne",
+    "wzId": 1012110
+  },
+  "225": {
+    "name": "Utah",
+    "wzId": 1012107
+  },
+  "226": {
+    "name": "Luke",
+    "wzId": 1040000
+  },
+  "227": {
+    "name": "Bowman Job Instructor",
+    "wzId": 1072002
+  },
+  "228": {
+    "name": "Casey",
+    "wzId": 1012008
+  },
+  "229": {
+    "name": "Arthur",
+    "wzId": null
+  },
+  "230": {
+    "name": "Tommy",
+    "wzId": 1012113
+  },
+  "231": {
+    "name": "Bianca",
+    "wzId": null
+  },
+  "232": {
+    "name": "Raymond",
+    "wzId": null
+  },
+  "233": {
+    "name": "Oak",
+    "wzId": null
+  },
+  "234": {
+    "name": "Flint",
+    "wzId": null
+  },
+  "235": {
+    "name": "Community Board",
+    "wzId": null
+  },
+  "236": {
+    "name": "Doorbell",
+    "wzId": null
+  },
+  "237": {
+    "name": "Mailbox",
+    "wzId": null
+  },
+  "238": {
+    "name": "Worn Wooden Chest",
+    "wzId": null
+  },
+  "239": {
+    "name": "Reinforced Wooden Chest",
+    "wzId": null
+  },
+  "300": {
+    "name": "Estelle",
+    "wzId": 1032105
+  },
+  "301": {
+    "name": "Regular Cab",
+    "wzId": 1012000
+  },
+  "302": {
+    "name": "VIP Cab",
+    "wzId": 1002004
+  },
+  "303": {
+    "name": "Francois",
+    "wzId": 1032002
+  },
+  "304": {
+    "name": "Arwen the Fairy",
+    "wzId": 1032100
+  },
+  "305": {
+    "name": "Rowen the Fairy",
+    "wzId": 1032101
+  },
+  "306": {
+    "name": "Shane",
+    "wzId": 1032003
+  },
+  "307": {
+    "name": "Mr. Park",
+    "wzId": 1032006
+  },
+  "308": {
+    "name": "Betty",
+    "wzId": 1032104
+  },
+  "309": {
+    "name": "Wing the Fairy",
+    "wzId": 1032106
+  },
+  "310": {
+    "name": "Flora the Fairy",
+    "wzId": 1031000
+  },
+  "311": {
+    "name": "Serabi the Fairy",
+    "wzId": 1031001
+  },
+  "312": {
+    "name": "Len the Fairy",
+    "wzId": 1031100
+  },
+  "313": {
+    "name": "Grendel the Really Old",
+    "wzId": 10201
+  },
+  "314": {
+    "name": "Louis",
+    "wzId": 1032004
+  },
+  "315": {
+    "name": "A pile of flowers",
+    "wzId": 1043000
+  },
+  "316": {
+    "name": "A pile of herbs",
+    "wzId": 1043001
+  },
+  "317": {
+    "name": "Mar the Fairy",
+    "wzId": 1032102
+  },
+  "318": {
+    "name": "El Moth",
+    "wzId": 1032103
+  },
+  "319": {
+    "name": "Magician Job Instructor",
+    "wzId": 1072001
+  },
+  "320": {
+    "name": "Ronnie",
+    "wzId": 1061004
+  },
+  "321": {
+    "name": "Fully Bloomed Bluebell",
+    "wzId": null
+  },
+  "322": {
+    "name": "Joel",
+    "wzId": 1032007
+  },
+  "323": {
+    "name": "Cherry",
+    "wzId": 1032008
+  },
+  "324": {
+    "name": "Purin",
+    "wzId": 1032009
+  },
+  "325": {
+    "name": "Door of Dimension",
+    "wzId": 1061009
+  },
+  "326": {
+    "name": "Lyn the Librarian",
+    "wzId": null
+  },
+  "327": {
+    "name": "Sabrina the Scribe",
+    "wzId": null
+  },
+  "328": {
+    "name": "Jon the Justicar",
+    "wzId": null
+  },
+  "400": {
+    "name": "Regular Cab",
+    "wzId": 1012000
+  },
+  "401": {
+    "name": "JM From tha Streetz",
+    "wzId": 1052002
+  },
+  "402": {
+    "name": "Alex",
+    "wzId": 1052000
+  },
+  "403": {
+    "name": "Shumi",
+    "wzId": 1052102
+  },
+  "404": {
+    "name": "Mong from Kong",
+    "wzId": 1052012
+  },
+  "405": {
+    "name": "Mr. Hong",
+    "wzId": 1052017
+  },
+  "406": {
+    "name": "Nella",
+    "wzId": 1052103
+  },
+  "407": {
+    "name": "Icarus",
+    "wzId": 1052106
+  },
+  "408": {
+    "name": "Cutthroat Manny",
+    "wzId": 1051000
+  },
+  "409": {
+    "name": "Don Hwang",
+    "wzId": 1051001
+  },
+  "410": {
+    "name": "Dr. Faymus",
+    "wzId": 1051002
+  },
+  "411": {
+    "name": "Dark Lord",
+    "wzId": 10203
+  },
+  "412": {
+    "name": "Jane Doe",
+    "wzId": 1052105
+  },
+  "413": {
+    "name": "Don Giovanni",
+    "wzId": 1052100
+  },
+  "414": {
+    "name": "Andre",
+    "wzId": 1052101
+  },
+  "415": {
+    "name": "Chris",
+    "wzId": 1052003
+  },
+  "416": {
+    "name": "Tulcus",
+    "wzId": 1052104
+  },
+  "417": {
+    "name": "Jake",
+    "wzId": 1052006
+  },
+  "418": {
+    "name": "The Ticket Gate",
+    "wzId": 1052007
+  },
+  "419": {
+    "name": "Exit",
+    "wzId": 1052011
+  },
+  "420": {
+    "name": "Treasure Chest",
+    "wzId": 1052008
+  },
+  "421": {
+    "name": "Treasure Chest",
+    "wzId": 1052008
+  },
+  "422": {
+    "name": "Treasure Chest",
+    "wzId": 1052008
+  },
+  "423": {
+    "name": "Door of Dimension",
+    "wzId": 1061009
+  },
+  "424": {
+    "name": "Thief Job Instructor",
+    "wzId": 1072003
+  },
+  "425": {
+    "name": "Roxy",
+    "wzId": null
+  },
+  "426": {
+    "name": "Jack",
+    "wzId": 1092010
+  },
+  "427": {
+    "name": "Scarlett",
+    "wzId": null
+  },
+  "428": {
+    "name": "Max",
+    "wzId": 2080002
+  },
+  "429": {
+    "name": "Weston",
+    "wzId": null
+  },
+  "430": {
+    "name": "Ben",
+    "wzId": 9201034
+  },
+  "431": {
+    "name": "Community Board",
+    "wzId": null
+  },
+  "432": {
+    "name": "Doorbell",
+    "wzId": null
+  },
+  "433": {
+    "name": "Mailbox",
+    "wzId": null
+  },
+  "434": {
+    "name": "Rusty Safe",
+    "wzId": null
+  },
+  "435": {
+    "name": "Reinforced Safe",
+    "wzId": null
+  },
+  "436": {
+    "name": "Slade",
+    "wzId": null
+  },
+  "500": {
+    "name": "Regular Cab",
+    "wzId": 1012000
+  },
+  "501": {
+    "name": "Blackbull",
+    "wzId": 1020000
+  },
+  "502": {
+    "name": "Manji",
+    "wzId": 1022002
+  },
+  "503": {
+    "name": "Mr. Thunder",
+    "wzId": 1022003
+  },
+  "504": {
+    "name": "Silas Irons",
+    "wzId": null
+  },
+  "505": {
+    "name": "Mr. Wang",
+    "wzId": 1022005
+  },
+  "506": {
+    "name": "Ayan",
+    "wzId": 1022007
+  },
+  "507": {
+    "name": "River",
+    "wzId": 1021000
+  },
+  "508": {
+    "name": "Harry",
+    "wzId": 1021001
+  },
+  "509": {
+    "name": "Arturo",
+    "wzId": 1021100
+  },
+  "510": {
+    "name": "Sophia",
+    "wzId": 1022100
+  },
+  "511": {
+    "name": "Dances with Balrog",
+    "wzId": 10202
+  },
+  "512": {
+    "name": "Winston",
+    "wzId": 1022006
+  },
+  "513": {
+    "name": "Mike",
+    "wzId": 1040001
+  },
+  "514": {
+    "name": "Warrior Job Instructor",
+    "wzId": 1072000
+  },
+  "515": {
+    "name": "Shuang",
+    "wzId": 9040000
+  },
+  "516": {
+    "name": "Shawn",
+    "wzId": 9040002
+  },
+  "517": {
+    "name": "Bulletin Board",
+    "wzId": 9040011
+  },
+  "600": {
+    "name": "Regular Cab",
+    "wzId": 1012000
+  },
+  "601": {
+    "name": "VIP Cab",
+    "wzId": 1002004
+  },
+  "602": {
+    "name": "Chrishrama",
+    "wzId": 1061000
+  },
+  "603": {
+    "name": "Sabitrama",
+    "wzId": 1061005
+  },
+  "604": {
+    "name": "Mr. Oh",
+    "wzId": 1061008
+  },
+  "605": {
+    "name": "Eurek the Alchemist",
+    "wzId": 2040050
+  },
+  "606": {
+    "name": "Hotel Receptionist",
+    "wzId": 1061100
+  },
+  "607": {
+    "name": "Mr. Sweatbottom",
+    "wzId": 1061002
+  },
+  "608": {
+    "name": "Mr. Wetbottom",
+    "wzId": 1061003
+  },
+  "609": {
+    "name": "Mysterious Statue",
+    "wzId": 1061006
+  },
+  "610": {
+    "name": "Crumbling Statue",
+    "wzId": 1061007
+  },
+  "611": {
+    "name": "A pile of pink flowers",
+    "wzId": 1063000
+  },
+  "612": {
+    "name": "A pile of blue flowers",
+    "wzId": 1063001
+  },
+  "613": {
+    "name": "A pile of white flowers",
+    "wzId": 1063002
+  },
+  "614": {
+    "name": "24 Hr Mobile Store",
+    "wzId": 1061001
+  },
+  "615": {
+    "name": "Door of Dimension",
+    "wzId": 1061009
+  },
+  "616": {
+    "name": "Bluebell Bud",
+    "wzId": null
+  },
+  "700": {
+    "name": "Luma",
+    "wzId": null
+  },
+  "701": {
+    "name": "Zelya",
+    "wzId": null
+  },
+  "702": {
+    "name": "Myen",
+    "wzId": null
+  },
+  "703": {
+    "name": "Myra",
+    "wzId": null
+  },
+  "704": {
+    "name": "Cave Fairy's Storage",
+    "wzId": null
+  },
+  "705": {
+    "name": "Fully Bloomed Bluebell",
+    "wzId": null
+  },
+  "706": {
+    "name": "Bluebell Bud",
+    "wzId": null
+  },
+  "707": {
+    "name": "Nyroth",
+    "wzId": null
+  },
+  "708": {
+    "name": "Nyra",
+    "wzId": null
+  },
+  "709": {
+    "name": "Torin",
+    "wzId": null
+  },
+  "710": {
+    "name": "Nyroth",
+    "wzId": null
+  },
+  "711": {
+    "name": "Jaime the Wandering Explorer",
+    "wzId": null
+  },
+  "712": {
+    "name": "Daniel the Scholar",
+    "wzId": null
+  },
+  "713": {
+    "name": "Fully Bloomed Bluebell",
+    "wzId": null
+  },
+  "714": {
+    "name": "Corrupted Bluebell",
+    "wzId": null
+  },
+  "715": {
+    "name": "Tamya",
+    "wzId": null
+  },
+  "800": {
+    "name": "Valen",
+    "wzId": 1081000
+  },
+  "801": {
+    "name": "Pison",
+    "wzId": 1081001
+  },
+  "802": {
+    "name": "Riel",
+    "wzId": 1081100
+  },
+  "803": {
+    "name": "Roel",
+    "wzId": 1081101
+  },
+  "804": {
+    "name": "Rael",
+    "wzId": 1081102
+  },
+  "1000": {
+    "name": "Agatha",
+    "wzId": 2012000
+  },
+  "1001": {
+    "name": "Platform Usher",
+    "wzId": null
+  },
+  "1002": {
+    "name": "Sunny",
+    "wzId": 2012013
+  },
+  "1003": {
+    "name": "Aileen",
+    "wzId": 2012016
+  },
+  "1004": {
+    "name": "Rini",
+    "wzId": 2012001
+  },
+  "1005": {
+    "name": "Shuri",
+    "wzId": 2010005
+  },
+  "1006": {
+    "name": "Erin",
+    "wzId": 2012002
+  },
+  "1007": {
+    "name": "Staff Sergeant Charlie",
+    "wzId": 2010000
+  },
+  "1008": {
+    "name": "Corporal Wilson",
+    "wzId": 2010004
+  },
+  "1009": {
+    "name": "Corporal Easy",
+    "wzId": 2030002
+  },
+  "1010": {
+    "name": "Lisa",
+    "wzId": 2012012
+  },
+  "1011": {
+    "name": "Trina",
+    "wzId": 2010006
+  },
+  "1012": {
+    "name": "Neri the Fairy",
+    "wzId": 2012003
+  },
+  "1013": {
+    "name": "Nuri the Fairy",
+    "wzId": 2012004
+  },
+  "1014": {
+    "name": "Edel the Fairy",
+    "wzId": 2012005
+  },
+  "1015": {
+    "name": "Kriel the Fairy",
+    "wzId": 2012011
+  },
+  "1016": {
+    "name": "Elma the Housekeeper",
+    "wzId": 2012010
+  },
+  "1017": {
+    "name": "Neve",
+    "wzId": 2010003
+  },
+  "1018": {
+    "name": "Franz the Owner",
+    "wzId": 2010002
+  },
+  "1019": {
+    "name": "Riza the Assistant",
+    "wzId": 2012009
+  },
+  "1020": {
+    "name": "Mino the Owner",
+    "wzId": 2010001
+  },
+  "1021": {
+    "name": "Rinz the Assistant",
+    "wzId": 2012007
+  },
+  "1022": {
+    "name": "Romi",
+    "wzId": 2012008
+  },
+  "1023": {
+    "name": "Spiruna",
+    "wzId": 2032001
+  },
+  "1024": {
+    "name": "????",
+    "wzId": 2032000
+  },
+  "1025": {
+    "name": "Barun",
+    "wzId": 2022002
+  },
+  "1026": {
+    "name": "Huckle",
+    "wzId": 2030012
+  },
+  "1027": {
+    "name": "Statue",
+    "wzId": 2030005
+  },
+  "1028": {
+    "name": "Orbis Magic Spot",
+    "wzId": 2012014
+  },
+  "1029": {
+    "name": "El Nath Magic Spot",
+    "wzId": 2012015
+  },
+  "1030": {
+    "name": "Heracle",
+    "wzId": 2010007
+  },
+  "1100": {
+    "name": "Master Sergeant Fox",
+    "wzId": 2020003
+  },
+  "1101": {
+    "name": "Sergeant Bravo",
+    "wzId": 2030001
+  },
+  "1102": {
+    "name": "Jade",
+    "wzId": 2020006
+  },
+  "1103": {
+    "name": "Scadur",
+    "wzId": 2020007
+  },
+  "1104": {
+    "name": "Tylus",
+    "wzId": 2020008
+  },
+  "1105": {
+    "name": "Robeira",
+    "wzId": 2020009
+  },
+  "1106": {
+    "name": "Rene",
+    "wzId": 2020010
+  },
+  "1107": {
+    "name": "Arec",
+    "wzId": 2020011
+  },
+  "1108": {
+    "name": "Vogen",
+    "wzId": 2020000
+  },
+  "1109": {
+    "name": "Gordon",
+    "wzId": 2020002
+  },
+  "1110": {
+    "name": "Mr. Thalj",
+    "wzId": null
+  },
+  "1111": {
+    "name": "Alcaster",
+    "wzId": 2020005
+  },
+  "1112": {
+    "name": "Scott",
+    "wzId": 2020001
+  },
+  "1113": {
+    "name": "Rumi",
+    "wzId": 2022000
+  },
+  "1114": {
+    "name": "Hana",
+    "wzId": 2022001
+  },
+  "1115": {
+    "name": "Jeff",
+    "wzId": 2030000
+  },
+  "1116": {
+    "name": "Glibber",
+    "wzId": 2030009
+  },
+  "1117": {
+    "name": "Adobis",
+    "wzId": 2030008
+  },
+  "1118": {
+    "name": "Amon",
+    "wzId": 2030010
+  },
+  "1119": {
+    "name": "Ali",
+    "wzId": 2030011
+  },
+  "1120": {
+    "name": "Aura",
+    "wzId": 2032002
+  },
+  "1121": {
+    "name": "Lira",
+    "wzId": 2032003
+  },
+  "1122": {
+    "name": "Rock Covered in Snow",
+    "wzId": 2030003
+  },
+  "1123": {
+    "name": "Holy Stone",
+    "wzId": 2030006
+  },
+  "1124": {
+    "name": "Small Tomb",
+    "wzId": 2030004
+  },
+  "1125": {
+    "name": "Piece of Statue",
+    "wzId": 2030007
+  },
+  "800000": {
+    "name": "Lakelis",
+    "wzId": 9020000
+  },
+  "800001": {
+    "name": "Cloto",
+    "wzId": 9020001
+  },
+  "800002": {
+    "name": "Nella",
+    "wzId": 1052103
+  },
+  "800003": {
+    "name": "Bowman Job Instructor",
+    "wzId": 1072002
+  },
+  "800004": {
+    "name": "Magician Job Instructor",
+    "wzId": 1072001
+  },
+  "800005": {
+    "name": "Thief Job Instructor",
+    "wzId": 1072003
+  },
+  "800006": {
+    "name": "Warrior Job Instructor",
+    "wzId": 1072000
+  },
+  "800007": {
+    "name": "Free Market Maple TV",
+    "wzId": 9250025
+  },
+  "800008": {
+    "name": "Fredrick",
+    "wzId": 9030000
+  },
+  "800009": {
+    "name": "Scrooge",
+    "wzId": 9030100
+  },
+  "800010": {
+    "name": "Anvil",
+    "wzId": null
+  },
+  "800011": {
+    "name": "Weaponcrafting Station",
+    "wzId": null
+  },
+  "800012": {
+    "name": "Sewing Machine",
+    "wzId": null
+  },
+  "800013": {
+    "name": "Woodcrafting Station",
+    "wzId": null
+  },
+  "800014": {
+    "name": "Leatherworking Station",
+    "wzId": null
+  },
+  "800015": {
+    "name": "Arcane Station",
+    "wzId": null
+  },
+  "800016": {
+    "name": "Maple Administrator",
+    "wzId": 2007
+  },
+  "800017": {
+    "name": "Zelya",
+    "wzId": null
+  },
+  "800018": {
+    "name": "Lewis",
+    "wzId": null
+  },
+  "800019": {
+    "name": "Tory",
+    "wzId": 1012112
+  },
+  "800020": {
+    "name": "Timmy",
+    "wzId": null
+  },
+  "800021": {
+    "name": "Growlie",
+    "wzId": 1012114
+  },
+  "900000": {
+    "name": "Maple Administrator",
+    "wzId": 2007
+  },
+  "900001": {
+    "name": "Maple Administrator",
+    "wzId": 2007
+  },
+  "900002": {
+    "name": "Maple Administrator",
+    "wzId": 2007
+  },
+  "900003": {
+    "name": "Lyn",
+    "wzId": 1092008
+  },
+  "900004": {
+    "name": "Whitney",
+    "wzId": null
+  },
+  "900010": {
+    "name": "Paul",
+    "wzId": 9000000
+  },
+  "900011": {
+    "name": "Vikoon",
+    "wzId": 9000006
+  },
+  "900012": {
+    "name": "Pietro",
+    "wzId": 9000002
+  },
+  "900013": {
+    "name": "Pietra",
+    "wzId": 9000010
+  },
+  "900014": {
+    "name": "Chun Ji",
+    "wzId": 9000007
+  },
+  "900015": {
+    "name": "Mr. Pickall",
+    "wzId": 9000008
+  },
+  "900016": {
+    "name": "Harry",
+    "wzId": 1021001
+  },
+  "900017": {
+    "name": "Rooney",
+    "wzId": 1022101
+  },
+  "900018": {
+    "name": "Rupi",
+    "wzId": 2002000
+  },
+  "900019": {
+    "name": "Rudi",
+    "wzId": 2002001
+  },
+  "900020": {
+    "name": "Torr",
+    "wzId": 2002002
+  },
+  "900021": {
+    "name": "Branch Snowman",
+    "wzId": 2001001
+  },
+  "900022": {
+    "name": "Metal Bucket Snowman",
+    "wzId": 2001002
+  },
+  "900023": {
+    "name": "Straw Hat Snowman",
+    "wzId": 2001003
+  },
+  "900024": {
+    "name": "Scarf Snowman",
+    "wzId": 2001004
+  },
+  "900025": {
+    "name": "Cliff",
+    "wzId": 2001000
+  },
+  "900026": {
+    "name": "Malady",
+    "wzId": 9201028
+  },
+  "9010000": {
+    "name": "Maple Administrator",
+    "wzId": 2007
+  },
+  "9090000": {
+    "name": "Mr. Wang",
+    "wzId": 1022005
+  }
 }
