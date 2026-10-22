@@ -247,14 +247,14 @@ This section covers every throwing star in Classic World's datamine, ranked by W
 | **[Subi](/items/2070000)** | 2070000 | 10 | **+15** | 500 | 250 | [Mano](/mobs/700004) (L20 mini-boss). (Jr. Sentinel also dropped these in CoT2, cut from Founder's Access.) |
 | **[Wolbi](/items/2070001)** | 2070001 | 10 | **+17** | 500 | 500 | [Fire Boar](/mobs/30) (L32), Leatty (L32), Jr. Cellion (L33) |
 | **[Snowball](/items/2070008)** | 2070008 | 10 | **+17** | 800 | 500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37) |
-| **[Mokbi](/items/2070002)** | 2070002 | 10 | **+19** | 700 | 1,000 | Jr. Wraith (L35), [Cold Eye](/mobs/37) (L40), [Stone Golem](/mobs/47) (L55), Jr. Pepe (L35) |
-| **[Wooden Top](/items/2070009)** | 2070009 | 10 | **+19** | 800 | 500 | Axe Stump (L17), Dark Axe Stump (L22) |
-| **[Kumbi](/items/2070003)** | 2070003 | 10 | **+21** | 700 | 1,500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37), Drake (L50), [Stone Golem](/mobs/47) (L55), Jr. Grupin (L33) |
+| **[Mokbi](/items/2070002)** | 2070002 | 10 | **+19** | 700 | 1,000 | Jr. Wraith (L34), [Cold Eye](/mobs/37) (L40), [Stone Golem](/mobs/47) (L56), Jr. Pepe (L35) |
+| **[Wooden Top](/items/2070009)** | 2070009 | 10 | **+19** | 800 | 500 | Axe Stump (L17), Dark Axe Stump (L23) |
+| **[Kumbi](/items/2070003)** | 2070003 | 10 | **+21** | 700 | 1,500 | [Fire Boar](/mobs/30) (L32), [Lupin](/mobs/35) (L37), Drake (L50), [Stone Golem](/mobs/47) (L56), Jr. Grupin (L33) |
 | **[Icicle](/items/2070010)** | 2070010 | 10 | **+21** | 800 | 500 | [Cold Eye](/mobs/37) (L40) |
-| **[Tobi](/items/2070004)** | 2070004 | 10 | **+23** | 1,000 | 2,500 | [Stone Golem](/mobs/47) (L55), Dark Stone Golem (L58), Wild Kargo (L62), White Fang (L58) |
+| **[Tobi](/items/2070004)** | 2070004 | 10 | **+23** | 1,000 | 2,500 | [Stone Golem](/mobs/47) (L56), Dark Stone Golem (L58), Wild Kargo (L62), White Fang (L58) |
 | **[Steely](/items/2070005)** | 2070005 | 10 | **+25** | 1,000 | 10,000 | Red Drake (L60), Tauromacis (L70) |
-| **[Ilbi](/items/2070006)** ¹ | 2070006 | 10 | **+27** | 800 | 20,000 | **[Mushmom](/bosses/mushmom) (L60 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L65 boss)**, Lycanthrope (L80) |
-| **[Hwabi](/items/2070007)** ² | 2070007 | 10 | **+29** | 800 | 25,000 | **[Jr. Balrog](/bosses/jr-balrog) (L55 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L65 boss)** |
+| **[Ilbi](/items/2070006)** ¹ | 2070006 | 10 | **+27** | 800 | 20,000 | **[Mushmom](/bosses/mushmom) (L40 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L55 boss)**, Lycanthrope (L80) |
+| **[Hwabi](/items/2070007)** ² | 2070007 | 10 | **+29** | 800 | 25,000 | **[Jr. Balrog](/bosses/jr-balrog) (L80 boss)**, **[Zombie Mushmom](/bosses/zombie-mushmom) (L55 boss)** |
 
 *Data source: CoT 2 items.json (WATK + reqLevel parsed from item descriptions), mobs.json drop tables, cross-referenced 2026-09.*
 
@@ -283,7 +283,7 @@ This section covers every throwing star in Classic World's datamine, ranked by W
 
 Three "flavor" stars sit next to the main progression. All are +17 to +21 WATK - same tier as Wolbi/Mokbi/Kumbi - but drop from much lower-level mobs:
 
-- **[Wooden Top](/items/2070009)** (+19 WATK) drops from **Axe Stump (L17)** and **Dark Axe Stump (L22)**. This is arguably the single most efficient star farm in the whole game for a fresh L30 Rogue - Axe Stumps are trivial to solo at L30-35, and +19 WATK matches Mokbi's damage tier without paying 1,000 mesos per bundle to a Kerning shop. Also called out in the [training routes guide](/training-routes).
+- **[Wooden Top](/items/2070009)** (+19 WATK) drops from **Axe Stump (L17)** and **Dark Axe Stump (L23)**. This is arguably the single most efficient star farm in the whole game for a fresh L30 Rogue - Axe Stumps are trivial to solo at L30-35, and +19 WATK matches Mokbi's damage tier without paying 1,000 mesos per bundle to a Kerning shop. Also called out in the [training routes guide](/training-routes).
 - **[Snowball](/items/2070008)** (+17 WATK, matches Wolbi) drops from Fire Boar / Lupin at L32-37. Same tier as Wolbi so it's mostly a cosmetic swap, but it stacks to 800 vs Wolbi's 500 - fewer inventory refills on long grinds.
 - **[Icicle](/items/2070010)** (+21 WATK, matches Kumbi) drops from Cold Eye (L40). Also stacks to 800. Cold Eye grinding at L40-45 is a classic Sin training route, so if you're already there for the EXP you'll auto-farm Icicles.
 
@@ -303,8 +303,8 @@ Here's where honesty matters. **The top two star tiers only drop from world boss
 
 Drops from:
 
-- **[Mushmom](/bosses/mushmom)** (L55, 20,000 HP, world boss) - once per real-world hour per channel, spawns in one of ~7 possible Henesys-area hidden streets, replacing a Green Mushroom mob. First-hit-wins culture in most classic servers.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (L60, 35,000 HP, world boss) - deep Sleepywood hidden street, same once-per-hour-per-channel spawn.
+- **[Mushmom](/bosses/mushmom)** (Lv 40, 34,440 HP, world boss) - spawns in Someone Else's House; if she's down, check other channels. First-hit-wins culture in most classic servers.
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55, 66,640 HP, world boss) - spawns in The Grave of Mushmom; check other channels if she's down.
 - **Lycanthrope** (L80, 27,000 HP, regular mob) - not yet mapped in the CoT 2 datamine's spawn table, but community reports place it in unnamed higher-level content.
 
 **Grind reality footnote ¹ — Mushmom Ilbi is a multi-week commitment for most players.** Rough math:
@@ -327,8 +327,8 @@ Drops from:
 
 Drops from:
 
-- **[Jr. Balrog](/bosses/jr-balrog)** (L55, 30,000 HP, world boss) - Deep Sleepywood dungeon, hourly respawn per channel.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (L60, 35,000 HP, world boss) - Same hunt as Ilbi, dual-drop boss.
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80, 325,400 HP, world boss) - The Cursed Sanctuary in the Sleepywood dungeon. A full-party endgame fight, not a farm.
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55, 66,640 HP, world boss) - Same hunt as Ilbi, dual-drop boss.
 
 **Grind reality footnote ² — Hwabi is arguably harder to farm than Ilbi.** Both drop sources are world bosses with hourly spawns and heavy competition, and neither is a soloable fight for a Sin below the mid-50s. Jr. Balrog specifically is a party fight - most Sins need a warrior tank or a full 3-6 party to reliably clear him.
 
@@ -343,7 +343,7 @@ Drops from:
 | 10-29 | Subi Throwing Stars | Kerning shop (250 meso) | +15 WATK |
 | 30-39 | **Wooden Top** ⭐ | Farm Axe Stumps (L17-22) | +19 WATK |
 | 40-49 | **Icicle** ⭐ | Farm Cold Eyes (L40) - dual purpose training | +21 WATK |
-| 50-59 | **Tobi** ⭐ | Farm Stone Golems / White Fangs (L55-58) | +23 WATK |
+| 50-59 | **Tobi** ⭐ | Farm Stone Golems / White Fangs (L56-58) | +23 WATK |
 | 60-69 | **Steely** ⭐ | Farm Red Drakes (Sleepywood dungeon, L60) | +25 WATK |
 | 70+ | **Ilbi** (aspirational) | Mushmom / Zombie Mushmom farming, ~11-33h per bundle | +27 WATK |
 | 70+ (whale) | **Hwabi** (flex) | Jr. Balrog / Zombie Mushmom party runs | +29 WATK |
@@ -377,18 +377,18 @@ If you already know your training map, use this reverse lookup:
 | Leatty | 32 | Wolbi |
 | Jr. Cellion | 33 | Wolbi |
 | Jr. Grupin | 33 | Kumbi |
-| Jr. Wraith / Jr. Pepe | 35 | Mokbi |
+| Jr. Wraith / Jr. Pepe | 34 | Mokbi |
 | Lupin | 37 | Kumbi, Snowball |
 | Cold Eye | 40 | Mokbi, Icicle |
 | Drake | 50 | Kumbi |
-| Stone Golem | 55 | Mokbi, Kumbi, Tobi |
-| Jr. Balrog | 55 (boss) | **Hwabi** |
+| Stone Golem | 56 | Mokbi, Kumbi, Tobi |
+| Jr. Balrog | 80 (boss) | **Hwabi** |
 | Dark Stone Golem | 58 | Tobi |
 | White Fang | 58 | Tobi |
-| Mushmom | 60 (boss) | **Ilbi** |
+| Mushmom | 40 (boss) | **Ilbi** |
 | Red Drake | 60 | Steely |
 | Wild Kargo | 62 | Tobi |
-| Zombie Mushmom | 65 (boss) | **Ilbi**, **Hwabi** |
+| Zombie Mushmom | 55 (boss) | **Ilbi**, **Hwabi** |
 | Tauromacis | 70 | Steely |
 | Lycanthrope | 80 | **Ilbi** |
 

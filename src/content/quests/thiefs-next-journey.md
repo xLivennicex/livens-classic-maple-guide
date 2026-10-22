@@ -68,7 +68,7 @@ editorial: |
   <h3>THE branch choice - completely different playstyles</h3>
   <p>Assassin vs Bandit is the most divergent 2nd-job fork in
   MapleStory - see the
-  <a href="/jobs/thief#second-jobs">Thief second-job branches
+  <a href="/jobs/thief#second-job">Thief second-job branches
   guide</a>:</p>
   <ul>
     <li><strong>Assassin (claws + throwing stars):</strong> ranged

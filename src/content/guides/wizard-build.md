@@ -321,12 +321,12 @@ farming guide's FA caveat section</a>.
 
 - **[Mano](/bosses/mano)** (Lv 20) — Both branches tag Mano from
   range. F/P uses Fire Arrow if accessible, I/L uses Cold Beam.
-- **[Mushmom](/bosses/mushmom)** (Lv 60) — Not elementally weak to
+- **[Mushmom](/bosses/mushmom)** (Lv 40) — Not elementally weak to
   anything specific. Wizard DPS is medium here. Not your fight.
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55) — **I/L freeze-lock
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80) — **I/L freeze-lock
   dominates**. Jr. Balrog's physical attacks never land. F/P takes
   longer because no freeze-lock.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 65) — Non-undead
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55) — Non-undead
   (yes, really). Not Heal-weak like a Cleric target. Wizard DPS is
   medium. Not your fight.
 - **[Shade](/bosses/shade)** (Lv 47) — Both branches hit Shade

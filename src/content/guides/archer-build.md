@@ -246,7 +246,7 @@ color-matching cosmetic preferences only.
 | 25 | [Mountain Crossbow](/items/1462003) | 47 | Slow | NPC shop |
 | 30 | [Eagle Crow](/items/1462004) | 52 | Slow | drop: [Wild Boar](/mobs/22) (Lv 25) |
 | 40 | [Heckler](/items/1462005) | 59 | Normal | drop: [Zombie Lupin](/mobs/38) |
-| 45 | [Silver Crow](/items/1462006) | 67 | Slow | drop: Fairy 3 (Lv 30) |
+| 45 | [Silver Crow](/items/1462006) | 67 | Slow | drop: Fairy 3 (Lv 29) |
 | 50 | [Rower](/items/1462007) | 72 | Slow | drop: Sporewood |
 | 60 | [Golden Crow](/items/1462008) | 82 | Slow | NPC shop |
 | 70 | [Gross Jaeger](/items/1462009) | 92 | Slow | NPC shop |
@@ -405,14 +405,14 @@ unscrolled Lv 70 Red Hinkel territory.
 
 - **[Mano](/bosses/mano)** (Lv 20) — Archer tags Mano from range
   easily. Zero melee risk.
-- **[Mushmom](/bosses/mushmom)** (Lv 60) — **Archer is the premier
+- **[Mushmom](/bosses/mushmom)** (Lv 40) — **Archer is the premier
   Mushmom KSer**. Strafe (3rd job) + Soul Arrow + ranged damage =
   Mushmom often falls before melee classes can even reach her.
   Even at 2nd job, Arrow Bomb spam clears Mushmom fast.
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55) — great in Archer-led
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80) — great in Archer-led
   parties. Soul Arrow uptime means no arrow spending during the
   fight. Iron Arrow / Arrow Bomb cycle efficiently.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 65) — **Crossbowman
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55) — **Crossbowman
   Iron Arrow + ZMM's baby adds = premier farming combo**. Pierce
   through 6 adds + ZMM in a line = free damage multiplier. This is
   the archer boss fight.

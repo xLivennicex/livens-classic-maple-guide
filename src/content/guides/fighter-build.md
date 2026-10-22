@@ -235,7 +235,7 @@ covers you against every mob in Classic World FA at your level.
 
 The only Classic World mob where accuracy matters for a solo
 Fighter is [Shade](/bosses/shade) at Lv 47 (999 evasion). Our
-[boss guide](/bosses-at-30-plus#level-47-shade) covers the
+[boss guide](/bosses-at-30-plus#shade) covers the
 Cleric-mandatory solution.
 
 <h2 id="weapon-progression">Fighter weapon progression L10-70</h2>
@@ -249,7 +249,7 @@ through for the item dossier.
 | --- | --- | --- | --- | --- |
 | 15 | [Sabre](/items/1302002) | 32 | Fast | NPC shop |
 | 20 | [Viking Sword](/items/1302004) | 37 | Fast | NPC shop |
-| 30 | [Gladius](/items/1302008) | 47 | Fast | drop: [Iron Hog](/mobs/24) (Lv 42) |
+| 30 | [Gladius](/items/1302008) | 47 | Fast | drop: [Iron Hog](/mobs/24) (Lv 28) |
 | 35 | [Cutlus](/items/1302010) | 55 | Fast | drop: [Horny Mushroom](/mobs) (Lv 22) |
 | 40 | [Traus](/items/1302012) | 60 | Fast | NPC shop |
 | 45 | [Hero's Gladius](/items/1302014) | 62 | Fast | **quest reward** |
@@ -431,12 +431,12 @@ safety net** during FA.
   Power Strike burst reliably one-shots at Lv 25+.
 - **[King Slime](/bosses/king-slime)** (via Kerning PQ) — bring your
   Fighter for the PQ bonus stage. Reliable DPS.
-- **[Mushmom](/bosses/mushmom)** (Lv 60) — Fighter is one of the
+- **[Mushmom](/bosses/mushmom)** (Lv 40) — Fighter is one of the
   best Mushmom KSers at Lv 50+. Max Weapon Mastery + Booster rolling
   into Power Strike chains burn her down fast.
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55) — Fighter + Cleric
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80) — Fighter + Cleric
   party clears in 2-3 minutes with Rage party buff running.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 65) — Fighter is
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55) — Fighter is
   physical damage, doesn't care about undead resistances. Great KSer.
 - **[Shade](/bosses/shade)** (Lv 47) — **don't bother.** Shade has
   999 evasion. Solo Fighters can't hit her. Bring a Cleric or skip.
@@ -456,10 +456,11 @@ for 4 minutes" skill that gets you boss party slots.
 
 Fighter doesn't have a bossing problem at the FA cap — your weapon
 and shield scrolling finishes before Lv 70, your 2nd-job skills are
-maxed, and Rage is online. The reality check is just that **FA has
-no bosses above Zombie Mushmom's Lv 65 cooldown**. See
-[Bosses at 30+](/bosses-at-30-plus#the-l70-100-content-ceiling) for
-the honest "what to do at FA cap" writeup.
+maxed, and Rage is online. Past Zombie Mushmom (Lv 55) the only boss
+left is **Jr. Balrog at Lv 80 with 325,400 HP** - a full-party fight
+where a Fighter's steady physical damage is welcome. See the
+[boss ladder](/bosses-at-30-plus#jr-balrog) and the
+[Lv 70-100 guide](/level-70-100-capstone).
 
 <h2 id="faq">FAQ</h2>
 

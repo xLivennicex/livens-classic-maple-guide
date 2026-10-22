@@ -201,12 +201,12 @@ This is a late-game-specialist pivot — not recommended for FA play.
 
 ### FA roster boss performance
 
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55) — **Page's premier
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80) — **Page's premier
   fight**. Threaten debuffs Jr. Balrog's physical attacks; Power
   Guard reflects his melee hits. Party DPS cleans up safely.
-- **[Mushmom](/bosses/mushmom)** (Lv 60) — Fine. Page damage is
+- **[Mushmom](/bosses/mushmom)** (Lv 40) — Fine. Page damage is
   medium but survivability is highest.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 65) — Page can
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55) — Page can
   front-line tank ZMM while the party DPS from range. Threaten +
   Power Guard rotation is strong here.
 - **[Shade](/bosses/shade)** (Lv 47) — 999 evasion wall. Page can't

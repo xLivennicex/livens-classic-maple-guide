@@ -219,7 +219,7 @@ are the two "cheap boss drop upgrade" moments for Bandit progression.
 <h2 id="armor-progression">Bandit armor progression</h2>
 
 Bandits use the same Thief armor pool as Assassins. See the
-[Assassin build guide armor section](/assassin-build#armor-progression)
+[Assassin build guide armor section](/assassin-build#armor-progression-and-the-sauna-robe)
 for the full progression.
 
 ### Key picks

@@ -66,7 +66,7 @@ editorial: |
 
   <h3>The branch choice - PERMANENT</h3>
   <p>Both branches are ranged physical DPS. See the
-  <a href="/jobs/bowman#second-jobs">Bowman second-job branches
+  <a href="/jobs/bowman#second-job">Bowman second-job branches
   guide</a> for the full comparison:</p>
   <ul>
     <li><strong>Hunter (Bow):</strong> faster attack speed, lower

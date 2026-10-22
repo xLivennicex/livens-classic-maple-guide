@@ -120,10 +120,10 @@ investments at Lv 50+. Density beats per-kill size this bracket.
 | --- | --- | --- | --- |
 | [Lupin](/mobs/35) | 37 | ~36 | [Monkey Swamp I](/maps/10003095) |
 | [Fire Boar](/mobs/30) | 32 | ~31 | [The Burnt Land I-V](/maps/10004111) |
-| [Curse Eye](/mobs/31) | 35 | ~34 | [Sleepy Dungeon V](/maps/10005054) · Forgotten Hollow |
-| [Jr. Wraith](/mobs/32) | 35 | ~34 | [Line 2 Area 1](/maps/10003066) |
-| [Ligator](/mobs/29) | 32 | ~31 | [The Swamp of Despair I](/maps/10003090) |
-| [Lorang](/mobs/36) | 37 | ~36 | [A Look-Out Shed Around the Beach](/maps/10007010) |
+| [Curse Eye](/mobs/31) | 33 | ~32 | [Sleepy Dungeon V](/maps/10005054) · Forgotten Hollow |
+| [Jr. Wraith](/mobs/32) | 34 | ~33 | [Line 2 Area 1](/maps/10003066) |
+| [Ligator](/mobs/29) | 31 | ~30 | [The Swamp of Despair I](/maps/10003090) |
+| [Lorang](/mobs/36) | 38 | ~37 | [A Look-Out Shed Around the Beach](/maps/10007010) |
 
 ### Pick-your-rotation
 
@@ -154,8 +154,8 @@ investments at Lv 50+. Density beats per-kill size this bracket.
 - **Jr. Boogie 1/2** have only 3-5 drop entries and are notorious
   for one-shot-potential at underleveled characters. Low meso + risk =
   skip.
-- **Dark Nependeath** has 0 drops in our DB and no spawn-map data.
-  Avoid until better scrape coverage lands.
+- **Dark Nependeath** isn't in the Classic World datamine at Grand
+  Launch (its old id now belongs to Wooden Mask) - don't plan around it.
 
 <h2 id="level-40-50-meso-rotation">Level 40-50: The pre-Zakum climb</h2>
 
@@ -167,10 +167,10 @@ Swamp III (Zombie Lupins) and the Pig Park iron-hog cycle.
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
 | [Cold Eye](/mobs/37) | 40 | ~39 | [Tunnel That Lost Light I](/maps/10005076) · [II](/maps/10005077) |
-| [Iron Hog](/mobs/24) | 42 | ~41 | [Pig Park II](/maps/10001004) · [Pig Park](/maps/10001003) |
-| [Zombie Lupin](/mobs/38) | 40 | ~39 | [Monkey Swamp III](/maps/10003097) · [Tree Dungeon](/maps/10002022) |
+| [Iron Hog](/mobs/24) | 28 | ~27 | [Pig Park II](/maps/10001004) · [Pig Park](/maps/10001003) |
+| [Zombie Lupin](/mobs/38) | 41 | ~40 | [Monkey Swamp III](/maps/10003097) · [Tree Dungeon](/maps/10002022) |
 | [Wraith](/mobs/43) | 48 | ~47 | [Line 2 Area 3](/maps/10003068) |
-| [Clang](/mobs/44) | 48 | ~47 | [Lorang and Clang](/maps/10007030) beach loops |
+| [Clang](/mobs/44) | 49 | ~48 | [Lorang and Clang](/maps/10007030) beach loops |
 | [Tortie](/mobs/41) | 46 | ~45 | [Hot Sand](/maps/10007040) |
 | [Copper Drake](/mobs/40) | 45 | ~44 | [East Rocky Mountain VII](/maps/10004056) · [Dangerous Valley](/maps/10004101) |
 
@@ -187,12 +187,6 @@ Swamp III (Zombie Lupins) and the Pig Park iron-hog cycle.
   are a known mid-bracket gear drop. Pairs nicely with the
   [L40-50 training route](/training-routes#levels-40-50-party-play).
 
-### Dark Nependeath warning (again)
-
-Still 0 drops and no spawn data at the Oct 11 build. If you see this
-mob in a guide elsewhere, double-check against our [mobs
-index](/mobs) before planning a route around it.
-
 <h2 id="level-50-60-meso-rotation">Level 50-60: Golems and the Scroll Catalyst gate</h2>
 
 Golem's Temple becomes your sustained grind this bracket. Boss
@@ -203,7 +197,7 @@ drop value.
 
 | Mob | Lv | Est. mesos/kill | Best map |
 | --- | --- | --- | --- |
-| [Stone Golem](/mobs/48) | 55 | ~54 | [Golem's Temple III](/maps/10001105) · [Entrance of Golem's Temple](/maps/10001102) |
+| [Stone Golem](/mobs/48) | 56 | ~55 | [Golem's Temple III](/maps/10001105) · [Entrance of Golem's Temple](/maps/10001102) |
 | [Dark Stone Golem](/mobs/49) | 58 | ~57 | [Sleepy Dungeon V](/maps/10005054) · [Sleepy Dungeon III](/maps/10005052) |
 | [Drake](/mobs/45) | 50 | ~49 | [Drake's Meal Table](/maps/10005090) · [Tunnel That Lost Light I](/maps/10005076) |
 | [Croco](/mobs/46) | 52 | ~51 | [Dangerous Croko I](/maps/10003093) · [II](/maps/10003094) |
@@ -281,7 +275,7 @@ Beyond Lv 80 your effective meso rate drops because:
 - No new mobs appear in the datamine above Lv 75
 - Mob levels fall behind your character level → relative EXP
   tanks → you spend more time per mob than you earn
-- The [post-30 bosses guide](/bosses-at-30-plus#the-l70-100-content-ceiling)
+- The [post-30 bosses guide](/bosses-at-30-plus#jr-balrog)
   has the full "what to do at FA cap" writeup
 
 **TL;DR: hard-cap your meso goal at Lv 75 Taurospear farm, bank what
@@ -298,9 +292,9 @@ mesos each — a huge single-drop payout compared to Etc drops.
 
 | Boss | Lv | Known meso-value drops |
 | --- | --- | --- |
-| [Mushmom](/bosses/mushmom) | 60 | [Armor Crafting Catalyst](/items/4130002) 1000m · [Mushmom Spore](/items/4000048) 400m |
-| [Jr. Balrog](/bosses/jr-balrog) | 55 | [Two-Handed Weapon Crafting Catalyst](/items/4130001) 1000m · scroll drops |
-| [Zombie Mushmom](/bosses/zombie-mushmom) | 65 | [Scroll Crafting Catalyst](/items/4130003) 1000m · [Poisonous Mushroom](/items/4000064) 500m · [Two-Handed Weapon Crafting Catalyst](/items/4130001) 1000m |
+| [Mushmom](/bosses/mushmom) | 40 | [Armor Crafting Catalyst](/items/4130002) 1000m · [Mushmom Spore](/items/4000048) 400m |
+| [Jr. Balrog](/bosses/jr-balrog) | 80 | [Two-Handed Weapon Crafting Catalyst](/items/4130001) 1000m · scroll drops |
+| [Zombie Mushmom](/bosses/zombie-mushmom) | 55 | [Scroll Crafting Catalyst](/items/4130003) 1000m · [Poisonous Mushroom](/items/4000064) 500m · [Two-Handed Weapon Crafting Catalyst](/items/4130001) 1000m |
 
 ### Why this matters
 
@@ -324,14 +318,14 @@ pieces to **keep and sell at the nearest NPC**, not auto-dispose.
 
 | Item | NPC sell | Dropped by | Notes |
 | --- | --- | --- | --- |
-| [One-Handed Weapon Crafting Catalyst](/items/4130000) | 1,000m | Crimson Balrog (Lv 44) | *Crimson Balrog not in FA — post-launch* |
-| [Two-Handed Weapon Crafting Catalyst](/items/4130001) | 1,000m | Zombie Mushmom (Lv 65) | FA boss cooldown target |
-| [Armor Crafting Catalyst](/items/4130002) | 1,000m | Mushmom (Lv 60) | FA boss cooldown target |
-| [Scroll Crafting Catalyst](/items/4130003) | 1,000m | Zombie Mushmom (Lv 65) | FA boss cooldown target |
+| [One-Handed Weapon Crafting Catalyst](/items/4130000) | 1,000m | Crimson Balrog (Lv 100) | *Crimson Balrog not in FA — post-launch* |
+| [Two-Handed Weapon Crafting Catalyst](/items/4130001) | 1,000m | Zombie Mushmom (Lv 55) | FA boss cooldown target |
+| [Armor Crafting Catalyst](/items/4130002) | 1,000m | Mushmom (Lv 40) | FA boss cooldown target |
+| [Scroll Crafting Catalyst](/items/4130003) | 1,000m | Zombie Mushmom (Lv 55) | FA boss cooldown target |
 | [Rotten Mushmom Cap](/items/4000065) | 600m | Rotten Mushmom | Rare secondary drop |
-| [Poisonous Mushroom](/items/4000064) | 500m | Zombie Mushmom (Lv 65) | Common ZMM drop |
+| [Poisonous Mushroom](/items/4000064) | 500m | Zombie Mushmom (Lv 55) | Common ZMM drop |
 | [Black Crystal Ore](/items/4020008) | 500m | Taurospear (Lv 75) | FA L70+ grind bonus income |
-| [Mushmom Spore](/items/4000048) | 400m | Mushmom (Lv 60) | Common Mushmom drop |
+| [Mushmom Spore](/items/4000048) | 400m | Mushmom (Lv 40) | Common Mushmom drop |
 | [Arwen's Glass Shoe](/items/4001000) | 250m | Fire Boar (Lv 32) | L30-40 grinder bonus |
 | [Diamond Ore](/items/4020007) | 240m | Orange Mushroom (Lv 8) | Pre-30 bonus (don't grind for it, but keep if dropped) |
 | [Dragon Skin](/items/4000050) | 200m | Drake (Lv 50) | L50-60 grinder bonus |

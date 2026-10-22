@@ -349,8 +349,8 @@ train with zero potion costs:
 | Lv | Map | Primary target | Why |
 | --- | --- | --- | --- |
 | 20-30 | [Zombie Mushroom](/mobs) spawns in Sleepywood & Ant Tunnel | 500-800 HP undead | Easy Heal 1-shot territory. Doubles as Blue Chaos Robe farm. |
-| 30-40 | [Jr. Wraith](/mobs/32) in Line 2 Area 1 | ~2500 HP, Lv 35 | Rich Heal grind. See [Line 2 training route](/training-routes#line-2-area-1-eleveny-fave-30-33). |
-| 40-50 | Zombie Lupin in Monkey Swamp | ~5000 HP, Lv 40 | Dense spawn, Heal 2-shot territory. |
+| 30-40 | [Jr. Wraith](/mobs/32) in Line 2 Area 1 | 982 HP, Lv 34 | Rich Heal grind. See [Line 2 training route](/training-routes#line-2-area-1--the-cleric-map). |
+| 40-50 | Zombie Lupin in Monkey Swamp | 1,774 HP, Lv 41 | Dense spawn, Heal 2-shot territory. |
 | 50-60 | Rotten Mushroom in Forgotten Hollow | ~8000 HP, Lv 55 | High EXP per kill, Rotten Mushmom boss roam. |
 | 60-70 | Rotten Mushmom in [Rotten Mushmom's Lair](/maps/10006121) | boss roam | Capstone Cleric farm — hits like a truck but you solo-heal through. |
 
@@ -370,9 +370,9 @@ level 1 is enough; don't max it.
 ### FA roster boss performance
 
 - **[Mano](/bosses/mano)** (Lv 20) — Holy Arrow from range. Cleric is fine but low priority on Mano runs.
-- **[Mushmom](/bosses/mushmom)** (Lv 60) — Heal + Holy Arrow combo. Not undead so no 2× bonus. Still viable.
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55) — Cleric parties love you. Bless keeps everyone's ACC + damage up, Heal sustains the party, Invincible saves bad positioning.
-- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 65) — **This is YOUR boss**. ZMM is undead, so Heal does 2× damage. A Lv 55+ Cleric can solo ZMM with pure Heal.
+- **[Mushmom](/bosses/mushmom)** (Lv 40) — Heal + Holy Arrow combo. Not undead so no 2× bonus. Still viable.
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80) — Cleric parties love you. Bless keeps everyone's ACC + damage up, Heal sustains the party, Invincible saves bad positioning.
+- **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55) — **This is YOUR boss**. ZMM is undead, so Heal does 2× damage. A Lv 55+ Cleric can solo ZMM with pure Heal.
 - **[Shade](/bosses/shade)** (Lv 47) — 999 evasion makes everyone else useless. **Cleric Holy Arrow has magic hit so ACC doesn't apply the same way.** You CAN damage Shade when melee classes can't. This is Cleric's Shade specialty.
 
 ### The Bless party invite tax

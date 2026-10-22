@@ -68,7 +68,7 @@ editorial: |
   </ol>
 
   <h3>The branch choice - PERMANENT</h3>
-  <p>See the <a href="/jobs/magician#second-jobs">Magician
+  <p>See the <a href="/jobs/magician#second-job">Magician
   second-job branches guide</a>. Once you commit, the choice is
   permanent for the character's life:</p>
   <ul>

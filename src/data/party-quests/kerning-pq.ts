@@ -28,10 +28,10 @@
 // the mushroom documentation here; if someone can produce a CW
 // screenshot showing 4-platform bonus mechanic, we'll re-check.
 //
-// Boss stats: datamine shows King Slime at Lv 40 / 8000 HP, but
-// MapleClassic Wiki (Oct 9) says Lv 32 / 16,820 HP. The wiki is more
-// recent than the pre-launch datamine snapshot, so we trust the wiki
-// for the live FA state. Documented both for transparency.
+// Boss stats: King Slime is Lv 32 / 16,820 HP / 2,400 EXP in the
+// Classic World client data (osmsdataexplorer monsters.json). Our old
+// Lv 40 / 8,000 HP figures were GMS v83 values from maplestory.io; the
+// MapleClassic Wiki (Oct 9) had the right numbers all along.
 //
 // LFG shorthand convention is a NEW addition in this version - see
 // KPQ_LFG_SHORTHAND. The J> prefix means "Joining >" (looking to
@@ -407,7 +407,7 @@ export const KPQ_META = {
 		"Stage 2 is a 4-rope puzzle (3 of 4 occupied, 4 combinations). Previously (traditional MapleStory) this was mob killing.",
 		"Stage 3 is cats-on-logs platform puzzle (5 platforms with 1-5 cats, 3 occupied, 10 combinations). Previously (traditional MapleStory) this was the barrel puzzle.",
 		"Stage 4 is barrels (6 numbered 1-6, 3 occupied, 20 combinations). Previously (traditional MapleStory) this was coin-insertion.",
-		"King Slime: Lv 32, 16,820 HP per MapleClassic Wiki (community source). Summons regular Slimes at 50% HP. On death splits into 11 regular Slimes (optional kill). Datamine shows Lv 40 / 8,000 HP but the wiki is more recent.",
+		"King Slime: Lv 32, 16,820 HP (Classic World client data, matching the MapleClassic Wiki). Strong against Fire, Ice, Lightning, and Holy. Per the wiki, summons regular Slimes at 50% HP and splits into 11 regular Slimes on death (optional kill).",
 		"Rewards: every member gets a Companion's Magic Box (item 2430000) per clear. First-ever clear also triggers Proof of Companionship for an Intermediate Earring scroll turn-in to Lakelis.",
 		"Squishy Shoes (item 1072128, L28 all-stat +1/+1/+1/+1, 5 slots) is King Slime's chance drop - the iconic KPQ chase item.",
 	],
@@ -524,8 +524,8 @@ export const kpqStages: KpqStage[] = [
 		timeLimit: "~8 minutes per community sources (not datamined).",
 		mapId: 80000400,
 		strategy: [
-			"King Slime stats (per MapleClassic Wiki Oct 9): Lv 32, HP ~16,820, EXP 2,400. The datamine shows Lv 40 / 8,000 HP but the wiki is more recent and reflects the live FA tuning.",
-			"King Slime hits HARDER with magic damage (288 M.ATK) than physical. Magicians eat more damage than Warriors in this fight.",
+			"King Slime stats (Classic World client data): Lv 32, 16,820 HP, 2,400 EXP - the MapleClassic Wiki's Oct 9 numbers were right; our old v83-based figures (Lv 40 / 8,000 HP) were not.",
+			"King Slime has 288 attack and 288 magic attack, and resists Fire, Ice, Lightning, and Holy - Magic Claw and physical attacks do the reliable damage.",
 			"At 50% HP, King Slime summons a wave of regular Slimes. Expect ~5-8 new Slimes to appear mid-fight.",
 			"On death, King Slime splits into 11 regular Slimes. These are optional kills - the stage completes when the Pass count is right. You can leave them alive if the timer is tight.",
 			"Curse Eyes have a self-heal skill. Burst them in 1-2 hits before the heal ticks.",

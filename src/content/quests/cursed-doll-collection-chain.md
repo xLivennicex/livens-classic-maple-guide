@@ -62,7 +62,7 @@ rewards:
 editorial: |
   <p>The Cursed Doll chain is a solo grind framed as five
   collection quests from Rowen the Fairy in Ellinia. The mob is
-  the same every step: <strong>Zombie Lupin</strong> (Lv. 40),
+  the same every step: <strong>Zombie Lupin</strong> (Lv. 41),
   found in the
   <a href="/maps/10002022">Monkey Forest</a>,
   <a href="/maps/10003097">Monkey Swamp</a>, and

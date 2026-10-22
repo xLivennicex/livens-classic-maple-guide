@@ -73,7 +73,7 @@ editorial: |
 
   <h3>The branch choice - PERMANENT</h3>
   <p><strong>Before you accept this quest,</strong> read the
-  <a href="/jobs/warrior#second-jobs">second-job branches section
+  <a href="/jobs/warrior#second-job">second-job branches section
   of the Warrior guide</a>. Once you commit to Fighter, Page, or
   Spearman at step 4, that decision is permanent for the life of
   the character:</p>

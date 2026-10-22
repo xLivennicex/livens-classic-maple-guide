@@ -96,7 +96,7 @@ editorial: |
   from each stage.</p>
 
   <p><strong>Stage 1 (<em>Ligator slaughter</em>, map 80000000):</strong>
-  22 Ligators (Lv32) spawn. Mash them. Clear-all before Cloto will
+  22 Ligators (Lv31) spawn. Mash them. Clear-all before Cloto will
   let the party advance. Warriors tank, ranged / mage AOE the
   pile. Easy stage - call it the warm-up.</p>
 
@@ -111,8 +111,8 @@ editorial: |
   the boss room. Spawns:</p>
   <ul>
     <li>6 x Jr. Necki (Lv21) - trash adds, pressure the backline</li>
-    <li>3 x Curse Eye (Lv35) - the real threat; hits hard, can seduce</li>
-    <li>1 x King Slime (Lv40) - 8,000 HP, 130 PDmg / 165 MDmg, body-attack, no bless/undead flags</li>
+    <li>3 x Curse Eye (Lv33) - the real threat; hits hard, can seduce</li>
+    <li>1 x King Slime (Lv 32) - 16,820 HP, 288 attack / 288 magic attack, strong against Fire, Ice, Lightning, and Holy (Classic World client data)</li>
   </ul>
   <p>King Slime is a tank-and-spank boss with no mechanical gimmicks
   in his stat block - the challenge is managing the Curse Eye adds
@@ -122,7 +122,7 @@ editorial: |
   <p><strong>Bonus Stage (<em>mushroom chest room</em>, map 80000500):</strong>
   after King Slime dies, the party teleports to a time-limited
   bonus room with Nella and <strong>36 passive mushroom reactors</strong>:
-  12 Green Mushrooms (Lv15) and 24 Horny Mushrooms (Lv22). This is
+  12 Green Mushrooms (Lv14) and 24 Horny Mushrooms (Lv22). This is
   where the "chest rewards" live - whack mushrooms, items pour out.
   Full drop tables documented in the next section.</p>
 
@@ -257,7 +257,7 @@ relatedGuides:
 
 # ==== Verification ====
 verificationStatus: "closed-test-info"
-verificationNote: "Datamine-verified via osmsdataexplorer.com Founder's Access dump: Quest ID 10311 (completion rewards 1870 EXP / 687 mesos / 1-of-4 earring scroll), NPC Lakelis (9020000), level requirement 21+, party size 4, boss King Slime (800003, Lv40, 8000HP). KPQ stage maps 80000000-80000600 confirmed via maps.json. Stage mob spawns pulled from mobs.json: Stage 1 = 22 Ligators, Last Stage = 6 Jr. Necki + 3 Curse Eye + 1 King Slime, Bonus = 12 Green Mushrooms + 24 Horny Mushrooms. Full bonus-stage drop tables (42 unique items across both mushrooms) sourced from mobs.json drops arrays with datamine score weights. King Slime's own drop table (Squishy Shoes score 7, Coupon score 1) also datamine-verified. Puzzle-stage mechanics for maps 80000100-80000300 are NOT in the datamine (no mobs, no NPC scripts exposed) - documented from traditional MapleStory KPQ convention, needs FA playtime verification."
+verificationNote: "Datamine-verified via osmsdataexplorer.com Founder's Access dump: Quest ID 10311 (completion rewards 1870 EXP / 687 mesos / 1-of-4 earring scroll), NPC Lakelis (9020000), level requirement 21+, party size 4, boss King Slime (800003, Lv 32, 16,820 HP per the Classic World client data). KPQ stage maps 80000000-80000600 confirmed via maps.json. Stage mob spawns pulled from mobs.json: Stage 1 = 22 Ligators, Last Stage = 6 Jr. Necki + 3 Curse Eye + 1 King Slime, Bonus = 12 Green Mushrooms + 24 Horny Mushrooms. Full bonus-stage drop tables (42 unique items across both mushrooms) sourced from mobs.json drops arrays with datamine score weights. King Slime's own drop table (Squishy Shoes score 7, Coupon score 1) also datamine-verified. Puzzle-stage mechanics for maps 80000100-80000300 are NOT in the datamine (no mobs, no NPC scripts exposed) - documented from traditional MapleStory KPQ convention, needs FA playtime verification."
 sourceSlugs:
   - "osmsdataexplorer"
 

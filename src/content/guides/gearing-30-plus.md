@@ -305,11 +305,11 @@ color-matching until Orbis opens post-launch.
 
 ### Boss priority
 
-- **[Mushmom](/bosses/mushmom)** (Lv 60, Henesys hidden street) — you'll
+- **[Mushmom](/bosses/mushmom)** (Lv 40, Henesys hidden street) — you'll
   be undergeared until 48+ but doable in a party. First-hit-wins
-  culture; see the [boss guide](/bosses-at-30-plus#level-60-mushmom)
+  culture; see the [boss guide](/bosses-at-30-plus#mushmom)
   for party strategy.
-- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 55, Sleepywood) — same story:
+- **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80, Sleepywood) — same story:
   party at 45+ or hold until next bracket. The Lv 42 Jr. Balrog
   cooldown-starter runs are a known FA meme because the EXP is literally
   10 and his HP is 30,000.
@@ -395,7 +395,7 @@ your realistic pick. Nexon hasn't said when Zakum will open.
 
 - **Mushmom + Jr. Balrog + Zombie Mushmom** on cooldown. Zombie Mushmom
   (Lv 65) rewards the most meaningful drops at this bracket — see her
-  entry in the [boss guide](/bosses-at-30-plus#level-65-zombie-mushmom).
+  entry in the [boss guide](/bosses-at-30-plus#zombie-mushmom).
 - **[Shade](/bosses/shade)** quest unlock at Lv 47 if you haven't done it.
   Clerics clear in minutes; everyone else accuracy-struggles. Finish
   the [Citizenship chain](/citizenship) while you're down here.
@@ -517,22 +517,23 @@ from). Hard-scroll your Gaia-tier cape and carry it to the Lv. 100 cap.
 
 ### Boss priority (Lv 70-100)
 
-The honest answer: boss hunting at this bracket is **loot-only**, not
-EXP. Zombie Mushmom's 1,500 EXP is nothing at Lv 90. See the
-[post-30 bosses guide](/bosses-at-30-plus#the-l70-100-content-ceiling)
-for the full "what to do at the FA cap" writeup. The TL;DR:
+One boss matters at this bracket: **[Jr. Balrog](/bosses/jr-balrog)**,
+Lv 80 with 325,400 HP and 2,188 EXP in the Classic World client - a
+full-party fight and the only boss still worth EXP up here. Everything
+below him is loot-only by Lv 70 (Zombie Mushmom gives 668 EXP). See the
+[boss ladder](/bosses-at-30-plus#jr-balrog). The TL;DR:
 
 - Grind training maps (see [Training routes](/training-routes))
-- Hunt bosses for crafting catalysts and scrolls, not EXP
+- Hunt bosses for crafting catalysts and scrolls - Jr. Balrog excepted
 - Bank mesos for later content: Forgotten Hollow opens in November;
   Zakum, Horntail, and Ossyria have no dates
 
 ### Scrolling priority (Lv 70-100)
 
 This is the "finish or accept it stays white" bracket. If you have
-clean gear slots at 70, scroll them now. The FA cap is not a stepping
-stone to higher-tier gear within FA — the next tier is **Grand Launch
-content**, which is at least 10 days out.
+clean gear slots at 70, scroll them now. Grand Launch added no new gear
+tier above this bracket, and Nexon hasn't dated the content that would
+(3rd Job, Ossyria), so what you scroll now is what you'll wear for a while.
 
 <h2 id="scrolling-philosophy">Scrolling philosophy</h2>
 
