@@ -1,447 +1,173 @@
 ---
 # ---------- Core metadata ----------
-title: "Bosses at 30+: The Founder's Access Progression Ladder"
-description: "Every boss you'll actually fight after 2nd job in MapleStory Classic Founder's Access, in level order. King Slime through Zombie Mushmom with datamine-verified stats, access routes, party composition, and the honest 'what drops aren't live yet' caveats."
-lastUpdated: "2026-10-11"
+title: "Bosses at 30+: The Grand Launch Boss Ladder"
+description: "Every live MapleStory Classic World boss in level order with Classic World client stats: Mano, King Slime, Stumpy, Mushmom, Shade, Zombie Mushmom, and Jr. Balrog. Where they spawn, elemental weaknesses, who should fight them, and a correction of this guide's earlier numbers."
+lastUpdated: "2026-10-22"
 tags:
   - bosses
   - post-30
   - party-play
-  - founders-access
+  - grand-launch
   - progression
-status: "Live - Founder's Access window Oct 6 to Oct 20, 2026"
+  - corrections
+status: "Grand Launch - updated October 22, 2026"
 
 # ---------- Layout ----------
 theme: "sleepywood"
 decorations: false
 eyebrow: "Post-30 Progression"
 heading: "Bosses at 30+"
-tagline: "You advanced 2nd job. Now what do you actually fight? Here's every FA-roster boss in level order with HP, access, strategy, and the honest 'is this drop live yet' answer."
+tagline: "Seven live bosses from Lv 20 to Lv 80, in level order, with the numbers from the Classic World client - which turn out to be very different from traditional MapleStory's."
 
 # ---------- Verification ----------
-verificationStatus: "launch-verified"
-verificationNote: "Boss stats (HP, level, EXP, defense, special flags) come from the Classic World FA client datamine via osmsdataexplorer.com and are cross-verified against MeowDB's live-scraped mob pages. FA availability per Nexon's Oct 3 Release Notes which explicitly enumerated the five bosses in-scope at Founder's Access: Mano, Mushmom, Shade, Zombie Mushmom, Jr. Balrog (plus King Slime via Kerning PQ). Access routes and strategy observations draw on FA tester community reports (Eleveny's training tour, msclassic.wiki Oct 8-9 writeups, MapleClassic Wiki) plus datamined mob mechanics. Drop tables are MeowDB community-sourced and refreshed on every build - but note that several FA bosses still show empty drop tables because their post-launch rewards haven't been scraped yet."
+verificationStatus: "official-announcement"
+verificationNote: "Boss roster from Nexon's Grand Launch release notes (Mano, Stumpy, Mushmom, Shade, Zombie Mushmom, Jr. Balrog, plus King Slime as the Kerning PQ finale). Levels, HP, EXP, attack, avoidability, and elemental modifiers are the Classic World client values from osmsdataexplorer.com's monsters export (snapshot October 22, 2026); they agree with NiaMeowDB's monster pages. Spawn maps come from the same datamine. Drops are community-reported (NiaMeowDB vote scores, no drop rates). The table here is a snapshot - each /bosses page reads the live data."
 sourceSlugs:
-  - nexon-founders-access-release-notes
+  - nexon-grand-launch-release-notes
   - osmsdataexplorer
-  - eleveny-training-guide
 
 # ---------- TOC ----------
 toc:
-  - { href: "#the-fa-roster-in-one-table", label: "FA roster table" }
-  - { href: "#how-to-use-this-guide", label: "How to use this" }
-  - { href: "#level-20-25-mano", label: "L20 Mano" }
-  - { href: "#level-21-30-king-slime-kpq", label: "L21-30 King Slime" }
-  - { href: "#level-47-shade", label: "L47 Shade" }
-  - { href: "#level-55-jr-balrog", label: "L55 Jr. Balrog" }
-  - { href: "#level-60-mushmom", label: "L60 Mushmom" }
-  - { href: "#level-65-zombie-mushmom", label: "L65 Zombie Mushmom" }
-  - { href: "#the-l70-100-content-ceiling", label: "L70-100 ceiling" }
-  - { href: "#class-notes", label: "Class notes" }
+  - { href: "#correction", label: "Correction" }
+  - { href: "#the-ladder", label: "The ladder" }
+  - { href: "#mano", label: "Lv 20 Mano" }
+  - { href: "#king-slime", label: "Lv 32 King Slime" }
+  - { href: "#stumpy", label: "Lv 35 Stumpy" }
+  - { href: "#mushmom", label: "Lv 40 Mushmom" }
+  - { href: "#shade", label: "Lv 48 Shade" }
+  - { href: "#zombie-mushmom", label: "Lv 55 Zombie Mushmom" }
+  - { href: "#jr-balrog", label: "Lv 80 Jr. Balrog" }
+  - { href: "#elements", label: "Elements by class" }
   - { href: "#faq", label: "FAQ" }
 ---
 
-You hit Level 30, picked your 2nd job branch, and now you're staring at the
-world map wondering what's actually worth fighting. Short answer: six bosses
-are live during the Founder's Access window (Oct 6 - Oct 20, 2026), spread
-from Lv 20 to Lv 65. Everything above Lv 65 is thin repeatable grinding:
-Nexon's release notes keep endgame bosses (Zakum, Papulatus, Pianus) out
-of both Founder's Access and Grand Launch, and Forgotten Hollow opens in
-November. Grand Launch adds one boss, Stumpy, to the Victoria Island roster.
+<h2 id="correction">Correction</h2>
 
-This guide walks the whole ladder in level order, with the datamine-verified
-HP/EXP numbers, access route, party composition that actually works for FA,
-and - honestly - which drops are *not* live yet. We're pulling stats from
-the CoT 2 client dump at
-[osmsdataexplorer.com](https://osmsdataexplorer.com/data/current),
-cross-referencing MeowDB's community drop tables, and layering editorial
-strategy on top where live gameplay has disambiguated something datamine
-can't tell us.
-
-<div class="callout callout--framing">
-<strong>Looking for the dense data?</strong> Each boss has a full dossier
-page under <a href="/bosses">/bosses</a> with the complete drop table, spawn
-map, and auto-updating stats block. This guide is the editorial progression
-layer on top. Click any boss heading below to jump to its dossier.
+<div class="callout callout--heads-up">
+<strong>This guide's numbers were wrong.</strong> It said its stats came from
+the Classic World datamine, but they were traditional MapleStory (GMS v83)
+values from a fallback source - and Classic World restatted these bosses.
+Jr. Balrog is <strong>Lv 80 with 325,400 HP</strong>, not Lv 55 with 30,000
+(the old FAQ even insisted his "10 EXP" was verified; the client says 2,188).
+Shade has 47,000 HP and 35 avoidability, not 4,800 HP and 999 evasion.
+Mushmom is Lv 40, not 60. The guide has been rewritten from the client
+data, and the site's stats pipeline now uses that data for every mob.
 </div>
 
-<h2 id="the-fa-roster-in-one-table">The FA roster in one table</h2>
-
-| Boss | Level | HP | EXP | Access | Threat |
-| --- | --- | --- | --- | --- | --- |
-| [Mano](/bosses/mano) | 20 | 2,000 | 120 | Perion hidden street | Low |
-| [King Slime](/bosses/king-slime) | 25 | 8,000 | split | Kerning PQ final stage | Low |
-| [Shade](/bosses/shade) | 56 | 4,800 | 180 | Lv 47 Citizenship quest | Moderate |
-| [Jr. Balrog](/bosses/jr-balrog) | 55 | 30,000 | 10 | Sleepywood (Cursed Sanctuary) | Moderate |
-| [Mushmom](/bosses/mushmom) | 60 | 20,000 | 1,200 | Henesys hidden street | Moderate |
-| [Zombie Mushmom](/bosses/zombie-mushmom) | 65 | 35,000 | 1,500 | Sleepywood hidden street | Moderate |
-
-Six bosses sounds thin, and honestly it is - Founder's Access is a soft
-pre-launch window, not full launch. The two bosses the Lv 70+ crowd will
-spend most of their time with are **Jr. Balrog** and **Zombie Mushmom**
-because they're the only repeatable high-HP targets.
-
-<h2 id="how-to-use-this-guide">How to use this guide</h2>
-
-Each boss section below has the same shape:
-
-- **Where** - exact access route + any quest gates
-- **Datamine stats** - level, HP, EXP, special flags (undead, body-attack)
-- **Party fit** - solo-viable? duo? full six-person?
-- **Strategy** - the actual thing to do when the fight starts
-- **Known drops** - what MeowDB has scraped so far, with the "data not yet
-  live" caveat where applicable
-- **Dossier link** - cross-ref to the full /bosses page
-
-Jump straight to the level you care about via the TOC chips above. If
-you're a Cleric reading top-to-bottom, pay extra attention to Shade and
-Zombie Mushmom - both are undead and your holy damage carries the fight.
-
-<h2 id="level-20-25-mano">Level 20-25: Mano</h2>
-
-**Where:** Perion → Excavation Site → Split Road of Beginners → north
-portal into "Sparkling Land of Vanishing" hidden street. Mano replaces one
-of the native sheep spawns when he's up.
-
-**Datamine stats** (from mobs.json via osmsdataexplorer):
-
-| Stat | Value |
-| --- | --- |
-| Level | 20 |
-| HP | 2,000 |
-| EXP | 120 |
-| Physical damage | ~110 |
-| Weakness | None |
-
-**Party fit:** Solo-friendly, kill-stealable in open channels. First-hit
-wins the drops. If you're a Lv 15-20 fresh out of Maple Island this is
-your first "real health bar" fight - take the KS culture as practice for
-Mushmom later.
-
-**Strategy:** Out-DPS everyone else. Mano does not punish mistakes - he
-hits like a wet noodle. The challenge is purely "can you tag him before
-someone else does" if there's competition on channel. Channel-hop freely.
-
-**Known drops** (as of Oct 11 build): Mano has no drops in our
-database yet - MeowDB's community scrape hasn't populated his table.
-This is a known gap - Mano's Classic World drop table has not been
-published by the community yet. See the [Mano dossier](/bosses/mano)
-for the live table (which will auto-update when drops land).
-
-<h2 id="level-21-30-king-slime-kpq">Level 21-30: King Slime (KPQ)</h2>
-
-**Where:** Kerning Party Quest at Lv 21+. King Slime is the final stage
-boss. You access the PQ by assembling a party of 3-6 players (Lv 21-30)
-in Kerning City and talking to Lakelis. [Full KPQ walkthrough](/party-quests/kerning-pq).
-
-**Datamine stats:**
-
-| Stat | Value |
-| --- | --- |
-| Level | 25 |
-| HP | 8,000 |
-| EXP | Split across party |
-
-**Party fit:** PQ-only - no solo access. The whole fight is a party
-mechanic. Mages pump Magic Claw from range, Warriors/Chief Bandits go
-melee, Cleric heals. Baby slimes spawn when he's hit; focus the big one.
-
-**Strategy:** Classic multi-DPS burn with add-management. Watch for the
-mini-slimes on hit - they're not individually threatening but can
-overwhelm an unarmored party if you let three stack. If you have a
-Cleric using Heal, the fight is trivial. Without one, bring potions.
-
-**Known drops** (KPQ bonus stage pool, verified via Eleveny's video +
-MeowDB): Blue Mushroom Cap chair (rare), Golden River weapon (rare),
-basic etc. drops in the Bonus Room. Full table at the
-[KPQ guide](/party-quests/kerning-pq).
-
-<h2 id="level-47-shade">Level 47: Shade</h2>
-
-The weirdest boss in the FA roster, and the one most players will
-unknowingly skip.
-
-**Where:** Pick up "An Old Grudge" from Arthur in Henesys at Lv 47+ as
-part of the Henesys Citizenship questline. The quest sends you to the
-**Cabin of the Forsaken**, a hidden street tucked off the standard
-Henesys-area routing. Quest-gated and **one kill per character** - this
-is NOT a repeatable free-roam world boss.
-
-**Datamine stats:**
-
-| Stat | Value |
-| --- | --- |
-| Level | 56 |
-| HP | **4,800** (surprisingly low) |
-| EXP | 180 |
-| Physical damage | 165 |
-| **Evasion** | **999** |
-| Flag | Undead |
-
-**Party fit:** Solo-viable for Clerics; frustrating-but-doable for
-accuracy-stacked ranged. Melee classes without accuracy gear should bring
-a holy partymate.
-
-**Strategy:** The 999 evasion stat is the whole fight. Physical attacks
-miss constantly. Holy damage (Cleric's Holy Arrow, future Shining Ray)
-lands reliably against undead regardless of evasion checks - which makes
-this a Cleric showcase fight. If you're not a Cleric: scroll your
-accessories for ACC, or bring a Cleric friend. The HP is low so you can
-actually feel yourself winning, which is nice.
-
-**Known drops:** Empty in our database as of Oct 11 build. Shade is a
-quest-objective boss - the "drop" is really the questline progression and
-Citizenship advancement, not a loot drop. If MeowDB adds a scraped drop
-table post-launch we'll surface it on the [Shade dossier](/bosses/shade).
-
-<div class="callout">
-<strong>Why Shade matters for the Citizenship system:</strong> Henesys
-Citizenship (via Arthur's quest chain starting Lv 12) gates several
-useful benefits - cab discount, storage keeper discount, special shop
-access. Shade's quest is one of the mid-chain gates. If you skip Shade,
-you skip Henesys Citizenship benefits for the rest of your character's
-life. Our <a href="/citizenship">Citizenship guide</a> has the full
-quest-chain context.
-</div>
-
-<h2 id="level-55-jr-balrog">Level 55: Jr. Balrog</h2>
-
-**Where:** From Sleepywood town, take Route to Cursed Sanctuary. Walk
-east until you hit "The Cursed Sanctuary" proper - Jr. Balrog spawns on
-that specific map. Respawns roughly once per real-world hour per channel.
-Free entry; no quest gate.
-
-**Datamine stats:**
-
-| Stat | Value |
-| --- | --- |
-| Level | 55 |
-| HP | 30,000 |
-| EXP | **10** |
-| Physical damage | 160 |
-| Physical defense | 420 (hard) |
-| Magic defense | 450 (very hard) |
-| Flag | Not undead |
-
-**Party fit:** Duo or trio at Lv 55+. Solo possible for a well-geared
-Ranger using Strafe from the platform edge. Zero EXP reward (yes, 10 at
-Lv 55) means **this is a loot-only grind**, not an XP target.
-
-**Strategy:** Kite the knockback. His body-attack windup telegraphs a
-huge damage tick - watch the animation and reposition during the wind-up.
-Ranged classes stand on the edge platform and Strafe/Arrow Bomb; melee
-takes the deck but should expect to use at least one potion per two
-engagements. The 450 magic defense makes mages inefficient here -
-F/P and I/L parties should pick a different grind target.
-
-**Known drops** (6 verified via MeowDB):
-
-- **White Potion** - common consumable restock
-- **Blue Potion** - common consumable restock
-- **Elixir** - the mid-tier potion that justifies the grind
-- **Two-Handed Weapon Crafting Catalyst** - crafting currency
-- **Hwabi Throwing Stars** - thief consumable
-
-Jr. Balrog's Classic World drop table in MeowDB is incomplete as of
-Oct 11; the Thief-set Silver Deputy Star has not been confirmed as a
-CW drop. See the [Jr. Balrog dossier](/bosses/jr-balrog) for the live
-table.
-
-<h2 id="level-60-mushmom">Level 60: Mushmom</h2>
-
-**Where:** Roam any of the mushroom hidden streets north of Henesys:
-"The Tree That Grew I/II/III" or the Green Mushroom hidden street.
-Mushmom replaces one of the giant mushroom mobs on a once-per-hour
-timer. **First-hit-wins** culture carried into Classic World per
-community reports; check channel chat for whether someone has an
-active claim.
-
-**Datamine stats:**
-
-| Stat | Value |
-| --- | --- |
-| Level | 60 |
-| HP | 20,000 |
-| EXP | 1,200 |
-| Physical damage | ~220 |
-| Flag | Not undead |
-
-**Party fit:** Duo at Lv 55+, or solo for a geared Ranger / Chief Bandit
-with Meso Explosion. KS competition is the usual complication, not the
-fight itself.
-
-**Strategy:** If you find her alive, unload everything. Strafe, Assaulter
-chain, Shadow-Partner Avenger - whatever your 2nd job's burst looks like.
-If a party's already fighting her, back off; Maple etiquette says the
-first-tagger has claim. Baby Mushrooms spawn alongside her (6-8 of them);
-ignore them and focus the big one.
-
-**Known drops:** Empty in our database as of Oct 11 build - this is a
-MeowDB scrape gap, not a Nexon disclosure gap. Classic World's
-Mushmom drop table has not been fully scraped yet by the community.
-[Mushmom dossier](/bosses/mushmom).
-
-<h2 id="level-65-zombie-mushmom">Level 65: Zombie Mushmom</h2>
-
-**Where:** From Sleepywood, take "The Forest East of Sleepywood" or
-"The Path to the Excavation" hidden streets. Once-per-hour spawn, same
-rotation logic as Mushmom but deeper into Sleepywood and with better
-drops.
-
-**Datamine stats:**
-
-| Stat | Value |
-| --- | --- |
-| Level | 65 |
-| HP | **35,000** |
-| EXP | 1,500 |
-| Physical damage | 250 |
-| Magic damage | 380 (ranged splash) |
-| Flag | **Undead** |
-
-**Party fit:** Duo-to-trio at Lv 60+. Clerics halve the time to kill.
-
-**Strategy:** The undead flag is the shortcut. Holy damage bypasses the
-Zombie evasion/defense math, so a Priest's Shining Ray annihilates her.
-Chief Bandits with Meso Explosion also carry. Watch the body-attack tick
-- the 250 physical damage can two-shot an underleveled Thief glass
-cannon from full HP. Avoid standing underneath her sprite.
-
-**Known drops** (10 verified via MeowDB):
-
-- **Scroll Crafting Catalyst** - the crafting currency that justifies
-  the grind. Highest score (10) in her drop table.
-- **Poisonous Mushroom** - etc. drop, mostly sellable to NPC
-- **Two-Handed Weapon Crafting Catalyst** - crafting currency
-- **Ilbi Throwing Stars** - thief consumable
-- **Earring Crit. Damage Scroll: Intermediate** - the gear-upgrade find
-- Various potions
-
-See the [Zombie Mushmom dossier](/bosses/zombie-mushmom) for the full
-table.
-
-<h2 id="the-l70-100-content-ceiling">The L70-100 content ceiling</h2>
-
-<div class="callout callout--framing">
-<strong>Need the full L70-100 playbook?</strong> This section is the
-quick summary; the dedicated
-<a href="/level-70-100-capstone">Level 70-100 Capstone guide</a>
-walks through SP holdback rules, gear finishing targets, meso banking,
-and per-class 3rd-job previews for all 10 Classic World 3rd-job
-branches.
-</div>
-
-Here's the honest part: **the FA datamine has zero quests past Lv 70**.
-We've audited our own quest database (316 entries) and the highest
-`levelMin` field in any quest is in the 60s. That's not a bug in our
-scrape - it's a hard content ceiling in the current build.
-
-What this means practically for the FA cap (Lv 100):
-
-- There is **no quest content** between Lv 70 and Lv 100
-- There are **no new bosses** between Lv 65 (Zombie Mushmom) and Lv 100
-- **Forgotten Hollow is NOT in Founder's Access** - Nexon confirmed this
-  in the Oct 3 Release Notes, planning it for a later patch
-
-So what fills Lv 65 to 100?
-
-1. **Repeatable boss grinding** - Jr. Balrog + Zombie Mushmom on
-   channel-hop rotation. The best EXP + drops combo at your level.
-2. **Taurospear / Wild Kargo grinding** in Sleepywood's deeper maps -
-   see our [Training routes L10-70 guide](/training-routes) sections
-   for L60+ map picks.
-3. **GM-run events** - Monster Invasion, Up and Up, Physical Fitness
-   Challenge during FA give burst EXP, but they're on fixed schedules
-   (see the [FA Events Calendar](/fa-events-calendar) for the full schedule).
-4. **Prepping for Grand Launch** - meso-farming so you can scroll your
-   gear, finishing Citizenship quests, maxing your 2nd job skill tree.
-
-If you were expecting a complete endgame loop at FA, you were going to
-be disappointed. The honest message to new players is: **FA is the
-appetizer, Grand Launch is the main course**.
-
-<h2 id="class-notes">Class notes</h2>
-
-### Clerics / Priests
-Shade and Zombie Mushmom are both undead. Holy damage carries both
-fights. If you're a Cleric heading into FA and you want to feel like a
-main character, these are your encounters.
-
-### Chief Bandits
-Meso Explosion dominates every boss fight on this list. Carry a Cleric
-or Priest for Shade (ACC still matters for the setup hits), otherwise
-you're the party's win condition against Mushmom, Zombie Mushmom, and
-Jr. Balrog.
-
-### Rangers / Snipers
-Strafe into every boss, especially Jr. Balrog where the knockback
-distance works for you. Mushmom KS culture favors ranged classes with
-reliable DPS - you can tag from off-screen while melee is still
-closing distance.
-
-### F/P / I/L mages
-Rough post-30 roster for pure elemental mages. Jr. Balrog's 450 magic
-defense is punishing; Mushmom resists direct elemental damage less but
-she's the only comfortable farm. Lean into the party-support role at
-KPQ and the training routes rather than solo bossing.
-
-### Warriors (Fighter / Page / Spearman)
-Melee bosses respect your HP pool. Pages get the hardest Shade experience
-(Threaten + Power Guard reduce incoming hits, but your low ACC against
-999 evasion means long fights). Spearmen with Hyper Body carry
-Zombie Mushmom parties. Fighters are the solo pick for Mushmom.
-
-### Assassins / Hermits
-Avenger with Shadow Partner clears Mushmom reliably. Jr. Balrog is
-harder because of the magic defense. Shade is a struggle without ACC
-gear; recruit a Cleric.
-
-### Hunters / Crossbowmen
-Both branches work for every FA boss. Hunter's Arrow Bomb AoE helps
-with Mushmom's baby adds; Crossbowman's Iron Arrow pierce is efficient
-on Zombie Mushmom when she stacks with mob adds.
+<h2 id="the-ladder">The ladder</h2>
+
+| Boss | Level | HP | EXP | Spawns | Weak to | Resists |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Mano](/bosses/mano) | 20 | 7,420 | 148 | Thicket Around the Beach III | - | - |
+| [King Slime](/bosses/king-slime) | 32 | 16,820 | 2,400 | Kerning PQ, last stage | - | Fire, Ice, Lightning, Holy |
+| [Stumpy](/bosses/stumpy) | 35 | 19,220 | 276 | Parched Land | Fire | Lightning |
+| [Mushmom](/bosses/mushmom) | 40 | 34,440 | 340 | Someone Else's House | Fire | - |
+| [Shade](/bosses/shade) | 48 | 47,000 | 488 | Cabin of the Forsaken (quest) | Holy | Poison |
+| [Zombie Mushmom](/bosses/zombie-mushmom) | 55 | 66,640 | 668 | The Grave of Mushmom | Holy | - |
+| [Jr. Balrog](/bosses/jr-balrog) | 80 | 325,400 | 2,188 | The Cursed Sanctuary | Holy | Poison (immune) |
+
+Snapshot of the October 22 client data; the boss pages update with every
+data refresh. Spawn timers aren't in the client data, so if a boss is down,
+check other channels. Drops on the boss pages are community-reported (vote
+scores, not drop rates).
+
+The shape of the ladder is the big change from traditional MapleStory:
+there's a boss every few levels from 20 to 55, then a long gap to
+**Jr. Balrog at 80** - the endgame boss for the Lv 70-100 stretch.
+
+<h2 id="mano">Lv 20: Mano</h2>
+
+The first boss most characters meet, in Thicket Around the Beach III. At
+7,420 HP he takes a solo Lv 20 character a few minutes and a stack of
+potions; his 252 attack is high for his level. No elemental modifiers and
+only 13 avoidability, so every class hits him reliably.
+[Mano's page](/bosses/mano).
+
+<h2 id="king-slime">Lv 32: King Slime (Kerning PQ)</h2>
+
+The finale of the [Kerning City Party Quest](/party-quests/kerning-pq)
+("First Time Together", Lv 21+, Channels 3 - 12). He's strong against
+Fire, Ice, Lightning, and Holy, so elemental magic does reduced damage -
+Magic Claw and physical attacks are the reliable damage in a KPQ party.
+Per the MapleClassic Wiki he summons Slimes at half HP and splits on death.
+[King Slime's page](/bosses/king-slime).
+
+<h2 id="stumpy">Lv 35: Stumpy (new at Grand Launch)</h2>
+
+In Parched Land, off East Rocky Mountain V near Perion. The Perion quest
+"Monstrous Tree Stumpy" (Lv 34+) asks you to defeat him once. Weak to Fire,
+strong against Lightning - Fire/Poison Wizards shine, Ice/Lightning Wizards
+should avoid lightning spells. 477 attack and 524 magic attack at Lv 35:
+party up or come in over-leveled. [Stumpy's page](/bosses/stumpy).
+
+<h2 id="mushmom">Lv 40: Mushmom</h2>
+
+In Someone Else's House. 34,440 HP and 532 attack at Lv 40, weak to Fire.
+Ilbi Throwing Stars lead her community-reported drops, which makes her an
+Assassin and Bandit target. [Mushmom's page](/bosses/mushmom).
+
+<h2 id="shade">Lv 48: Shade</h2>
+
+Reached through the Henesys Citizenship quest "An Old Grudge" (from Arthur,
+after Lv 47) in the Cabin of the Forsaken. Weak to Holy, strong against
+Poison. 47,000 HP with 620 attack and 682 magic attack - the first boss on
+the ladder where a healer clearly pays off. [Shade's page](/bosses/shade).
+
+<h2 id="zombie-mushmom">Lv 55: Zombie Mushmom</h2>
+
+In The Grave of Mushmom. Undead and weak to Holy, with 66,640 HP and 697
+attack - a party fight for most groups, and a Cleric's best showcase on the
+ladder. [Zombie Mushmom's page](/bosses/zombie-mushmom).
+
+<h2 id="jr-balrog">Lv 80: Jr. Balrog</h2>
+
+In The Cursed Sanctuary, deep in the Sleepywood dungeon. **325,400 HP**,
+972 attack, 1,069 magic attack, immune to Poison, weak to Holy. This is the
+endgame boss of Grand Launch: plan on a full party in the 70s or higher
+with healers, and plenty of potions. He's also the best EXP on the ladder at
+2,188 per kill. [Jr. Balrog's page](/bosses/jr-balrog).
+
+For the rest of the Lv 70-100 stretch, see the
+[Lv 70-100 guide](/level-70-100-capstone). Crimson Balrog appears in the
+client data at Lv 100 but isn't on the live roster.
+
+<h2 id="elements">Elements by class</h2>
+
+The client data's elemental modifiers decide more of these fights than any
+traditional-MapleStory habit:
+
+- **Clerics:** Holy is a weakness for Shade, Zombie Mushmom, and Jr. Balrog -
+  the three hardest live bosses. Avoid relying on Holy against King Slime,
+  which resists it.
+- **Fire/Poison Wizards:** Fire is a weakness for Stumpy and Mushmom. Skip
+  poison against Shade (resists) and Jr. Balrog (immune).
+- **Ice/Lightning Wizards:** no live boss is weak to Ice or Lightning;
+  Stumpy and King Slime resist Lightning. Expect to play support at bosses.
+- **Warriors, Bowmen, Thieves:** physical attacks aren't elemental, so your
+  damage is consistent across the ladder - including against King Slime,
+  where the mages struggle.
 
 <h2 id="faq">FAQ</h2>
 
-**What's the best EXP boss at FA cap?**
+**What's the best EXP boss?**
 
-Zombie Mushmom at 1,500 EXP, but her once-per-hour spawn makes her a
-side-objective, not a farm. For sustained EXP you want
-[training-route grinds](/training-routes), not bosses.
+Jr. Balrog at 2,188 EXP per kill, if your party can take a 325,400 HP fight.
+Below that, King Slime's 2,400 comes with a full Kerning PQ clear.
 
-**Why does Jr. Balrog give only 10 EXP?**
+**Are spawns per channel?**
 
-Not a datamine typo - verified by eye. Jr. Balrog is a loot pinata, not
-an XP target. His 30,000 HP + the knockback mechanic means you'd fight
-him for 10-15 minutes for 10 EXP, which is a joke. Grind him for drops
-only.
+Each channel has its own boss. If one is down, check other channels. The
+client data doesn't include respawn timers.
 
-**Is there a Zakum fight at FA?**
+**Is there a Zakum fight?**
 
-No - and not at Grand Launch either. Zakum isn't on either release
-notes' boss roster, and Nexon hasn't said when it will open.
+No. Zakum isn't on the Founder's Access or Grand Launch roster, and Nexon
+hasn't said when it will open.
 
-**Are hidden-street boss spawns per-channel or per-world?**
+**Why do these numbers differ from other MapleStory guides?**
 
-Per-channel per-map. If Mushmom is dead on channel 1, hop to channel 2
-and check again. Spawn timers tick independently per channel.
+Classic World restatted its monsters. Guides written from traditional
+MapleStory data - including an earlier version of this one - will show
+lower HP and different levels.
 
-**Does Shade count as a Lv 47 fight or a Lv 56 fight?**
-
-Both, depending on how you measure. The *quest* unlocks at Lv 47, but
-Shade's mob stats are Lv 56 - so even though you can start the
-questline at 47, you're better off coming back at 55+ for the hit
-rate (and don't forget: if you're not a Cleric, the 999 evasion will
-embarrass you anyway).
-
-**What should I do if the next boss is dead on every channel?**
-
-Train. The [Training routes guide](/training-routes) covers the best
-grind maps per level bracket. Boss rotations are supplementary to
-sustained training, not a replacement for it.
-
-**Will this guide update when Nexon ships more content?**
-
-Yes. Grand Launch's new boss, Stumpy, gets a page once its data is in
-our datamine; later bosses (Zakum, Papulatus, Pianus, and others) get
-added to [/bosses](/bosses) as they go live. Last reviewed: 2026-10-21.
+Last reviewed: 2026-10-22.

@@ -63,10 +63,12 @@ From the Grand Launch release notes:
 - **The world is Maple Island and Victoria Island**, plus the new
   **Excavation Site** in Perion. Ossyria, Zakum, and Papulatus are not
   part of Grand Launch.
-- **Bosses:** the six launch bosses are [Mano](/bosses/mano), Stumpy,
+- **Bosses:** the six launch bosses are [Mano](/bosses/mano), [Stumpy](/bosses/stumpy),
   [Mushmom](/bosses/mushmom), [Shade](/bosses/shade),
   [Zombie Mushmom](/bosses/zombie-mushmom), and [Jr. Balrog](/bosses/jr-balrog).
-  Past Lv. 70 they are mostly drop runs rather than EXP.
+  Past Lv. 70 they are mostly drop runs - except [Jr. Balrog](/bosses/jr-balrog),
+  who is Lv 80 with 325,400 HP in the Classic World client: the real
+  endgame boss of Grand Launch.
 - **Forgotten Hollow** opens in November - a likely new training option
   for this level range once it's live.
 
@@ -96,10 +98,10 @@ damage slot - see
 ### 4. Try the Excavation Site
 
 Perion's new area is the one piece of genuinely new map content at
-launch. Its eight monsters (Ghost Stump, Wooden Mask, Rocky Mask,
-Skeledog, Mummydog, Skeleton Soldier, Officer Skeleton, Commander
-Skeleton) aren't in our datamine yet, so we can't tell you their levels
-- check them in-game.
+launch, and its far end is built for this level range: Officer
+Skeletons (Lv 63) in the camps and **Commander Skeletons (Lv 73)** in
+Remains &lt;Tomb&gt; IV and Remains &lt;Cliff&gt;. All undead and weak
+to Holy. See the [Excavation Site guide](/excavation-site#cliff).
 
 ### 5. Catch up on quests
 

@@ -424,7 +424,7 @@ export const victoriaTowns: VictoriaTown[] = [
 		lore: [
 			"Perion is the desert town. Red-orange stone cliffs, wooden watchtowers, drums beating in the distance from the tribal encampment. It's Victoria Island's harshest environment by design - if Henesys is farmland and Ellinia is forest, Perion is where you learn to survive on grit. The residents dress in furs and hides and treat everyone else on the island as slightly soft.",
 			"Dances with Balrog is the Warrior instructor. His name is a reference to the ancient boss Balrog that terrorizes Sleepywood Dungeon - Dances is a retired veteran who fought (and survived, if not defeated) Balrog in his prime. He grants Warrior first-job advancement in his dojo, which is a fenced-off wooden ring at the town's center. Fights break out routinely.",
-			"New at Grand Launch: Perion's Excavation Site. Nexon's release notes list eight monsters there - Ghost Stump, Wooden Mask, Rocky Mask, Skeledog, Mummydog, Skeleton Soldier, Officer Skeleton, and Commander Skeleton. None of them are in our datamine yet, so levels and drops are unconfirmed until the area is checked in-game.",
+			"New at Grand Launch: Perion's Excavation Site, entered from Rocky Road III. It runs twelve maps deep - Ghost Stumps and Wooden and Rocky Masks (Lv 19-24) near the entrance, a base camp with NPCs Shuang and Shawn, then tombs of Skeledogs and Mummydogs (Lv 44-47), skeleton camps (Lv 57-63), and Lv 73 Commander Skeletons on the cliff at the far end.",
 		],
 		activities: [
 			{
@@ -434,7 +434,7 @@ export const victoriaTowns: VictoriaTown[] = [
 			},
 			{
 				title: "Explore the new Excavation Site",
-				description: "New at Grand Launch: skeletons, masks, ghost stumps, and bone dogs (Skeledog, Mummydog). Levels unconfirmed - scout before you commit to grinding there.",
+				description: "New at Grand Launch: a Lv 19-73 training complex. Masks and stumps up front, undead dogs and skeletons deeper in - see the Excavation Site guide.",
 				category: "combat",
 			},
 			{

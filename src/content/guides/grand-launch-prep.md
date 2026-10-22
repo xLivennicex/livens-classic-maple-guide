@@ -108,7 +108,7 @@ Six bosses on Victoria Island:
 | Boss | Notes |
 | --- | --- |
 | [Mano](/bosses/mano) | Hidden-street mini-boss |
-| **Stumpy** | New versus Founder's Access. Not in our datamine yet - dossier coming after the next data refresh |
+| [Stumpy](/bosses/stumpy) | New versus Founder's Access - Lv 35, in Parched Land near Perion |
 | [Mushmom](/bosses/mushmom) | Hidden-street world boss |
 | [Shade](/bosses/shade) | Citizenship-quest ghost boss |
 | [Zombie Mushmom](/bosses/zombie-mushmom) | Sleepywood hidden street |
@@ -126,9 +126,9 @@ with eight listed monsters:
 Ghost Stump, Wooden Mask, Rocky Mask, Skeledog, Mummydog, Skeleton
 Soldier, Officer Skeleton, Commander Skeleton.
 
-None of the eight are in our datamine yet, so there are no stat pages
-for them. Levels, maps, and drops will follow once the data is
-refreshed or verified in-game.
+It turns out to be a twelve-map training complex running from Lv 19
+masks and stumps near the entrance to Lv 73 Commander Skeletons at the
+far end. Full breakdown: the [Excavation Site guide](/excavation-site).
 
 <h2 id="systems">Systems</h2>
 
@@ -209,7 +209,7 @@ November. Nexon hasn't given an exact date.
 **Is Stumpy a new boss?**
 
 New to Classic World's roster - it wasn't one of the five Founder's
-Access bosses. We don't have its stats yet; it will get a boss page
-after our next data refresh.
+Access bosses. Lv 35 with 19,220 HP in the Classic World client, weak to
+Fire - see [Stumpy's page](/bosses/stumpy).
 
-Last reviewed 2026-10-21.
+Last reviewed 2026-10-22.

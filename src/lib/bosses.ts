@@ -25,7 +25,7 @@
 
 import mobDossiers from "../data/db/mobs.json";
 import bossManifest from "../data/boss-manifest.json";
-import { mobDossierRichness } from "./mob-dedup";
+import { compareCanonicalMob } from "./mob-dedup";
 import type { SiteTheme } from "../layouts/BaseLayout.astro";
 
 type ThreatLevel = "low" | "moderate" | "high" | "extreme";
@@ -91,7 +91,9 @@ function buildBossList(): BossDossier[] {
 			console.warn(`[bosses] manifest wzId ${wzId} (${entry.slug}) not in mobs.json - skipping`);
 			continue;
 		}
-		const best = candidates.slice().sort((a, b) => mobDossierRichness(b) - mobDossierRichness(a))[0]!;
+		// Same ordering as the /mobs dedup, so a boss page and its mob
+		// page always show the same dossier (and the same stats).
+		const best = candidates.slice().sort(compareCanonicalMob)[0]!;
 		bosses.push({
 			slug: entry.slug,
 			role: entry.role,
@@ -147,13 +149,9 @@ export interface PendingDataBoss {
 	sourceSlug: string;
 }
 
-export const pendingDataBosses: PendingDataBoss[] = [
-	{
-		name: "Stumpy",
-		note: "New on the Grand Launch roster (it wasn't one of the Founder's Access five). Not in our datamine yet - stats, location, and drops will follow the next data refresh.",
-		sourceSlug: "nexon-grand-launch-release-notes",
-	},
-];
+// Empty since 2026-10-22: Stumpy landed in the datamine and moved to
+// boss-manifest.json. Kept for the next boss Nexon announces ahead of data.
+export const pendingDataBosses: PendingDataBoss[] = [];
 
 /**
  * Human-readable threat label + a CSS class suffix for styling.

@@ -47,7 +47,7 @@ const bossNames = allBosses.map((b) => b.mob.name).join(", ");
 			</p>
 			<p class="build-meta">
 				<strong>{liveRosterBosses.length + pendingDataBosses.length} live at Grand Launch</strong>
-				({pendingDataBosses.length} awaiting data),
+				{pendingDataBosses.length > 0 && `(${pendingDataBosses.length} awaiting data)`},
 				<strong>{allBosses.length} with dossiers</strong>.
 				Endgame bosses (Zakum, Papulatus, Pianus) are not part of Grand
 				Launch. For a sequential walkthrough of the live bosses in
