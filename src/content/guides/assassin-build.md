@@ -330,7 +330,7 @@ Drops from:
 - **[Jr. Balrog](/bosses/jr-balrog)** (Lv 80, 325,400 HP, world boss) - The Cursed Sanctuary in the Sleepywood dungeon. A full-party endgame fight, not a farm.
 - **[Zombie Mushmom](/bosses/zombie-mushmom)** (Lv 55, 66,640 HP, world boss) - Same hunt as Ilbi, dual-drop boss.
 
-**Grind reality footnote ² — Hwabi is arguably harder to farm than Ilbi.** Both drop sources are world bosses with hourly spawns and heavy competition, and neither is a soloable fight for a Sin below the mid-50s. Jr. Balrog specifically is a party fight - most Sins need a warrior tank or a full 3-6 party to reliably clear him.
+**Grind reality footnote ² — Hwabi is arguably harder to farm than Ilbi.** Both drop sources are world bosses with randomized respawns (since the Oct 21 patch) and heavy competition, and neither is a soloable fight for a Sin below the mid-50s. Jr. Balrog specifically is a party fight - most Sins need a warrior tank or a full 3-6 party to reliably clear him.
 
 **Community wisdom:** most classic-era Sins never bothered with Hwabi. **The +2 WATK over Ilbi (7% damage bump on Lucky Seven) is not worth the doubled grind time.** Ilbi is the practical BiS; Hwabi is the flex.
 

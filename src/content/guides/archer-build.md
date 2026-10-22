@@ -421,8 +421,8 @@ unscrolled Lv 70 Red Hinkel territory.
 
 ### The Mushmom KS culture
 
-Mushmom spawns once per hour per channel with first-hit-wins loot
-rules. Archers dominate this because:
+Mushmom spawns on a randomized timer per channel (Nexon's Oct 21 patch
+randomized field boss respawns) with first-hit-wins loot rules. Archers dominate this because:
 - Strafe range exceeds Mushmom's attack range
 - Soul Arrow means no arrow restock gap
 - Final Attack procs stack with Strafe multi-hit
